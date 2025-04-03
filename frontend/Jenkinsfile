@@ -59,7 +59,6 @@ pipeline {
                     cd ${WORKSPACE}/frontend
                     npm install
                     npm run build
-                    echo "BACKEND_URL is: ${env.BACKEND_URL}"
                     sed -i 's|\${BACKEND_URL}|${env.BACKEND_URL}|' ${WORKSPACE}/frontend/nginx/default.conf
                 '''
             }
