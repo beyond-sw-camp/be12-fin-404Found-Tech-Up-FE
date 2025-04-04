@@ -42,7 +42,7 @@
       <!-- product sm items end -->
 
       <!-- blog item start -->
-      <blog-electronic />
+      <!-- <blog-electronic /> -->
       <!-- blog item end -->
 
     </nuxt-layout>
