@@ -1,9 +1,9 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   // npm run generate를 위한 설정정
-  nitro: {
-    preset: 'static'
-  },
+  // nitro: {
+  //   preset: 'static'
+  // },
 
   devtools: { enabled: true },
   modules: [
