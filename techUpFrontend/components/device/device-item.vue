@@ -15,11 +15,11 @@
 
     <!-- action -->
     <td class="tp-cart-add-to-cart">
-      <button class="device-register" v-if="!registered" @click="deviceStore.addDeviceToList(item)">
+      <button class="device-register tp-btn-2" v-if="!registered" @click="deviceStore.addDeviceToList(item)">
         <svg-next-arrow />
         <span>등록하기</span>
       </button>
-      <button class="device-register" v-else @click="deviceStore.removeDeviceFromList(item)">
+      <button class="device-register tp-btn-2" v-else @click="deviceStore.removeDeviceFromList(item)">
         <svg-left-arrow />
         <span>등록 해제</span>
       </button>
@@ -38,7 +38,6 @@ const props = defineProps({ item: Object, registered: Boolean });
 
 <style scoped>
 .device-register {
-  background-color: blue;
   color: aliceblue;
 }
 </style>
