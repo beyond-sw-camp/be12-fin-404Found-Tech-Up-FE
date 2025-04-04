@@ -56,3 +56,10 @@ export default defineComponent({
   },
 });
 </script>
+
+<style scoped>
+.nice-select .current,
+.nice-select .option {
+  white-space: pre-wrap;
+}
+</style>

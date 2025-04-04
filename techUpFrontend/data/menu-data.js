@@ -140,7 +140,7 @@ export const menu_data = [
   {
     id:4,
     link:'/coupons',
-    title:'Coupons',
+    title:'쿠폰',
   },
   {
     id:5,

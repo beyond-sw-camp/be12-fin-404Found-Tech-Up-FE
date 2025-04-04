@@ -34,6 +34,9 @@
                 <div class="tab-pane fade" id="nav-address" role="tabpanel" aria-labelledby="nav-address-tab">
                   <profile-address />
                 </div>
+                <div class="tab-pane fade" id="nav-board" role="tabpanel" aria-labelledby="nav-board-tab">
+                  <profile-board />
+                </div>
                 <div class="tab-pane fade" id="nav-order" role="tabpanel" aria-labelledby="nav-order-tab">
                   <profile-orders />
                 </div>
