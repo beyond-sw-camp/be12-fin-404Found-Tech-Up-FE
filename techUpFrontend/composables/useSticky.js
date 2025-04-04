@@ -9,6 +9,8 @@ export function useSticky() {
       isSticky.value = false;
     }
   }
+
   onMounted(() => window.addEventListener("scroll", handleSticky));
   return { isSticky };
 }
+

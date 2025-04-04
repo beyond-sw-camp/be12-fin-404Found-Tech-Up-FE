@@ -46,11 +46,10 @@
     </div>
   </div>
 </template>
-
 <script>
 import category_data from "@/data/category-data";
 const props = defineProps<{ productType: string }>();
-let isCategoryActive = ref<boolean>(false);
+let isCategoryActive = ref(false);
 
 const filterCategories = computed(() => {
   return category_data.filter(
@@ -58,7 +57,7 @@ const filterCategories = computed(() => {
   );
 });
 
-let openCategory = ref<string>("");
+let openCategory = ref("");
 
 const handleOpenSubMenu = (title: string) => {
   if (title === openCategory.value) {

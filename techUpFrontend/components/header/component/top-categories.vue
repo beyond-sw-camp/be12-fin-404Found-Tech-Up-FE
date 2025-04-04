@@ -38,10 +38,12 @@ import { useRouter } from 'vue-router';
 import category_data from "@/data/category-data";
 import useClickOutside from '@/composables/useClickOutside.js';
 
+
 const router = useRouter();
 const category_items = category_data.filter(
   (c) => c.productType === "electronics"
 );
+
 let isActive = ref(false);
 
 // 토글 처리
@@ -80,6 +82,7 @@ export default {
     };
   }
 };
+
 </script>
 
 <style scoped>
@@ -87,6 +90,7 @@ export default {
 .v-leave-active {
   transition: opacity 0.5s ease;
 }
+
 .v-enter-from,
 .v-leave-to {
   opacity: 0;

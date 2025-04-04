@@ -43,13 +43,14 @@
   ></div>
 </template>
 
+
 <script>
 import { useUtilityStore } from "@/pinia/useUtilityStore";
 const router = useRouter();
-let searchText = ref<string>("");
-let productType = ref<string>("");
+let searchText = ref("");
+let productType = ref("");
 const utilityStore = useUtilityStore();
-const categories: string[] = ["electronics", "fashion", "beauty", "jewelry"];
+const categories= ["electronics", "fashion", "beauty", "jewelry"];
 
 // handleSubmit
 const handleSubmit = () => {
