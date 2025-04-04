@@ -1,3 +1,5 @@
+import { fileURLToPath } from 'node:url'
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   //npm run generate를 위한 설정정
@@ -55,6 +57,19 @@ export default defineNuxtConfig({
   },
 
   vite: {
+    ssr: {
+      noExternal: ['vuetify']
+    },
+    resolve: {
+      alias: {
+        '@': fileURLToPath(new URL('.', import.meta.url)),
+        '@core': fileURLToPath(new URL('./@core', import.meta.url)),
+        '@layouts': fileURLToPath(new URL('./@layouts', import.meta.url)),
+        '@/images': fileURLToPath(new URL('./public/images/', import.meta.url)),
+        '@styles': fileURLToPath(new URL('./assets/styles/', import.meta.url)),
+        '@configured-variables': fileURLToPath(new URL('./assets/styles/variables/_template.scss', import.meta.url)),
+      },
+    },
     css: {
       preprocessorOptions: {
         scss: {
@@ -63,8 +78,13 @@ export default defineNuxtConfig({
       }
     }
   },
+  
 
   css: [
+    '@core/scss/template/index.scss',
+    '@styles/styles.scss',
+    '@/plugins/iconify/icons.css',
+    '@layouts/styles/index.scss',
     "@/assets/css/font-awesome-pro.css",
     "@/assets/css/flaticon_techup.css",
     "@/assets/scss/main.scss"
