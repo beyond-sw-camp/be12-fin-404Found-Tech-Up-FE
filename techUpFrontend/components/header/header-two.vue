@@ -11,13 +11,15 @@
                   <a href="#">
                     <span>
                       <svg-facebook />
-                    </span> 7500k Followers
+                    </span>
+                    7500k Followers
                   </a>
                 </div>
                 <div class="tp-header-info-item">
                   <span>
                     <svg-phone />
-                  </span> 080 0808 0808
+                  </span>
+                  080 0808 0808
                 </div>
               </div>
             </div>
@@ -47,9 +49,7 @@
               <div class="col-xl-5 d-none d-xl-block">
                 <div class="main-menu menu-style-2">
                   <nav class="tp-main-menu-content">
-                    <!-- menus start -->
                     <header-component-menus />
-                    <!-- menus end -->
                   </nav>
                 </div>
               </div>
@@ -57,7 +57,7 @@
                 <div class="tp-header-bottom-right d-flex align-items-center justify-content-end pl-30">
                   <div class="tp-header-search-2 d-none d-sm-block">
                     <form @submit.prevent="handleSubmit">
-                      <input type="text" placeholder="Search for Products..." v-model="searchText">
+                      <input type="text" placeholder="Search for Products..." v-model="searchText" />
                       <button type="submit">
                         <svg-search />
                       </button>
@@ -96,37 +96,35 @@
     </div>
   </header>
 
-  <!-- cart offcanvas start -->
   <offcanvas-cart-sidebar />
-  <!-- cart offcanvas end -->
-
-  <!-- cart offcanvas start -->
   <offcanvas-mobile-sidebar product-type="fashion" />
-  <!-- cart offcanvas end -->
 </template>
 
-<script>
-const router = useRouter();
-const { isSticky } = useSticky();
+<script setup>
+import { useRouter } from 'vue-router';
+import { ref } from 'vue';
 import { useCartStore } from '@/pinia/useCartStore';
 import { useWishlistStore } from '@/pinia/useWishlistStore';
 import { useUtilityStore } from '@/pinia/useUtilityStore';
+import { useSticky } from '@/composables/useSticky'; // isSticky가 외부에서 오는 경우
+
+const router = useRouter();
+const { isSticky } = useSticky();
 
 const cartStore = useCartStore();
 const wishlistStore = useWishlistStore();
 const utilsStore = useUtilityStore();
 
-defineProps<{ style_2?: boolean }>()
+// props
+const props = defineProps({
+  style_2: Boolean
+});
 
-let searchText = ref<string>('');
+const searchText = ref('');
 
-// handleSubmit
+// 검색 제출 처리
 const handleSubmit = () => {
-  if (!searchText.value) {
-    return
-  }
-  else {
-    router.push(`/search?searchText=${searchText.value}`)
-  }
-}
+  if (!searchText.value) return;
+  router.push(`/search?searchText=${searchText.value}`);
+};
 </script>
