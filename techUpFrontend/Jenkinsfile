@@ -1,0 +1,144 @@
+// 전역 변수 선언
+// Jenkins에서는 pipeline 블록 바깥에 선언해야 전역으로 사용 가능
+def deployColor = ""
+def otherColor = ""
+def startTime = 0
+
+def sendDiscordMessage(String title, String description, String color) {
+    withCredentials([string(credentialsId: 'Discord-Webhook', variable: 'DISCORD')]) {
+        discordSend(
+            description: description,
+            footer: "Jenkins CI/CD",
+            link: env.BUILD_URL,
+            result: currentBuild.currentResult,
+            title: title,
+            color: color,
+            webhookURL: "$DISCORD"
+        )
+    }
+}
+
+pipeline {
+    agent any
+
+    options {
+        timestamps()
+    }
+
+    environment {
+        IMAGE_NAME = 'mstar228/techup-frontend'
+        IMAGE_TAG = "1.0.${BUILD_NUMBER}"
+        PATH = "/usr/local/bin:${env.PATH}"
+        FRONTEND_URL = credentials('FRONTEND_URL')
+        BACKEND_URL = credentials('BACKEND_URL')
+        EC2_HOST = "ubuntu@${FRONTEND_URL}"
+    }
+
+    stages {
+        stage('Start Timer') {
+            steps {
+                script {
+                    startTime = System.currentTimeMillis()
+                }
+            }
+        }
+
+        stage('Git Clone') {
+            steps {
+                echo "Cloning Repository"
+                git url: 'https://github.com/beyond-sw-camp/be12-fin-404Found-Tech-Up-FE.git',
+                    branch: "${env.GIT_BRANCH.replace('origin/', '')}"
+            }
+        }
+
+        stage('Build Frontend') {
+            steps {
+                echo "Building Frontend"
+                sh '''
+                    cd ${WORKSPACE}/techUpFrontend
+                    npm install
+                    npm run build
+                '''
+                echo "MODIFY default.conf"
+                sh """
+                    sed -i 's|\${BACKEND_URL}|${BACKEND_URL}|' ${WORKSPACE}/techUpFrontend/nginx/default.conf
+                """
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    echo "Building Docker Image ${IMAGE_NAME}:${IMAGE_TAG}"
+                    docker.build("${IMAGE_NAME}:${IMAGE_TAG}", "${WORKSPACE}/techUpFrontend")
+                }
+            }
+        }
+
+        stage('Push to Registry') {
+            steps {
+                script {
+                    echo "Pushing Docker Image ${IMAGE_NAME}:${IMAGE_TAG} to Registry"
+                    withDockerRegistry([credentialsId: 'DOCKER_HUB']) {
+                        docker.image("${IMAGE_NAME}:${IMAGE_TAG}").push()
+                        docker.image("${IMAGE_NAME}:${IMAGE_TAG}").push('latest')
+                    }
+                }
+            }
+        }
+
+        stage('Deploy to EC2') {
+            // when {
+            //     expression { env.GIT_BRANCH == 'origin/main' }
+            // }
+            steps {
+                script {
+                    echo "MODIFY DOCKER-COMPOSE.YML"
+                    sh """
+                        sed -i 's|mstar228/techup-frontend:latest|mstar228/techup-frontend:${IMAGE_TAG}|' ${WORKSPACE}/techUpFrontend/docker-compose.yml
+                    """
+
+                    echo "SCP DOCKER-COMPOSE.YML"
+                    sh """
+                        ssh -o StrictHostKeyChecking=no ${EC2_HOST} "[ -f /home/ubuntu/docker-compose.yml ] && echo 'File exists, overwriting' || echo 'File does not exist'"
+                        scp -o StrictHostKeyChecking=no ${WORKSPACE}/techUpFrontend/docker-compose.yml ${EC2_HOST}:/home/ubuntu/docker-compose.yml
+                    """
+
+                    echo "RUN DOCKER-COMPOSE"
+                    sh """
+                        ssh -o StrictHostKeyChecking=no ${EC2_HOST} <<'EOF'
+                        docker-compose -f /home/ubuntu/docker-compose.yml down  # 기존 컨테이너 중지 및 삭제
+                        docker-compose -f /home/ubuntu/docker-compose.yml up -d  # 새 컨테이너 실행
+                    """
+                }
+            }
+        }
+
+        stage('End Timer') {
+            steps {
+                script {
+                    def endTime = System.currentTimeMillis()
+                    def duration = (endTime - startTime) / 1000
+                    echo "⏱️ 전체 파이프라인 실행 시간: ${duration}초"
+                }
+            }
+        }
+    }
+
+    post {
+        success {
+            script {
+                def endTime = System.currentTimeMillis()
+                def duration = (endTime - startTime) / 1000
+                sendDiscordMessage("🎉 전체 파이프라인 성공!", "⏱️ 실행 시간: ${duration}초", "GREEN")
+            }
+        }
+        failure {
+            script {
+                def endTime = System.currentTimeMillis()
+                def duration = (endTime - startTime) / 1000
+                sendDiscordMessage("🚨 전체 파이프라인 실패!", "⏱️ 실행 시간: ${duration}초", "RED")
+            }
+        }
+    }
+}
