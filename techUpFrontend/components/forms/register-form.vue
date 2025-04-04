@@ -100,7 +100,7 @@ let showPass = ref(false);
 let showPassValid = ref(false);
 
 let showMailValid = ref(false);
-let clockCounter = ref(3);
+let clockCounter = ref(180);
 let clockCountingString = ref(`남은 시간 ${clockCounter.value}초`);
 
 let disableValidationButton = ref(false);
