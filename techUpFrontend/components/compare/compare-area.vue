@@ -1,17 +1,21 @@
 <template>
     <section class="tp-compare-area pb-120">
       <div class="container">
+        <!-- 비교 항목이 없을 때 -->
         <div v-if="compareStore.compare_items.length === 0" class="text-center pt-50">
-          <h3>No Compare Items Found</h3>
-          <nuxt-link href="/shop" class="tp-cart-checkout-btn mt-20">Continue Shipping</nuxt-link>
+          <h3>비교할 상품이 없습니다</h3>
+          <nuxt-link href="/shop" class="tp-cart-checkout-btn mt-20">쇼핑 계속하기</nuxt-link>
         </div>
+  
+        <!-- 비교 항목이 있을 때 -->
         <div v-else class="row">
           <div class="col-xl-12">
             <div class="tp-compare-table table-responsive text-center">
               <table class="table">
                 <tbody>
+                  <!-- 상품 정보 -->
                   <tr>
-                    <th>Product</th>
+                    <th>상품</th>
                     <td v-for="item in compareStore.compare_items" :key="item.id">
                       <div class="tp-compare-thumb">
                         <img :src="item.img" alt="product" />
@@ -22,8 +26,9 @@
                     </td>
                   </tr>
   
+                  <!-- 설명 -->
                   <tr>
-                    <th>Description</th>
+                    <th>상품 설명</th>
                     <td v-for="item in compareStore.compare_items" :key="item.id">
                       <div class="tp-compare-desc">
                         <p>{{ item.description.substring(0, 150) }}</p>
@@ -31,8 +36,9 @@
                     </td>
                   </tr>
   
+                  <!-- 가격 -->
                   <tr>
-                    <th>Price</th>
+                    <th>가격</th>
                     <td v-for="item in compareStore.compare_items" :key="item.id">
                       <div class="tp-compare-price" v-if="item.discount > 0">
                         <span>{{ formatPrice(item.price, false) }}</span>
@@ -46,17 +52,19 @@
                     </td>
                   </tr>
   
+                  <!-- 장바구니 담기 -->
                   <tr>
-                    <th>Add to cart</th>
+                    <th>장바구니</th>
                     <td v-for="item in compareStore.compare_items" :key="item.id">
                       <div class="tp-compare-add-to-cart">
-                        <button @click="cartStore.addCartProduct(item)" type="button" class="tp-btn">Add to Cart</button>
+                        <button @click="cartStore.addCartProduct(item)" type="button" class="tp-btn">장바구니 담기</button>
                       </div>
                     </td>
                   </tr>
   
+                  <!-- 평점 -->
                   <tr>
-                    <th>Rating</th>
+                    <th>평점</th>
                     <td v-for="item in compareStore.compare_items" :key="item.id">
                       <div class="tp-compare-rating">
                         <span><i class="fas fa-star"></i></span>
@@ -68,8 +76,9 @@
                     </td>
                   </tr>
   
+                  <!-- 제거 -->
                   <tr>
-                    <th>Remove</th>
+                    <th>삭제</th>
                     <td v-for="item in compareStore.compare_items" :key="item.id">
                       <div class="tp-compare-remove">
                         <button @click="compareStore.removeCompare(item)">

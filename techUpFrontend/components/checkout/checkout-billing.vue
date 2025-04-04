@@ -4,55 +4,55 @@
       <div class="row">
         <div class="col-md-6">
           <div class="tp-checkout-input">
-            <label>First Name <span>*</span></label>
-            <input type="text" placeholder="First Name">
+            <label>이름 <span>*</span></label>
+            <input type="text" placeholder="이름을 입력하세요" />
           </div>
         </div>
         <div class="col-md-6">
           <div class="tp-checkout-input">
-            <label>Last Name <span>*</span></label>
-            <input type="text" placeholder="Last Name">
+            <label>성 <span>*</span></label>
+            <input type="text" placeholder="성을 입력하세요" />
           </div>
         </div>
         <div class="col-md-12">
           <div class="tp-checkout-input">
-            <label>Company name (optional)</label>
-            <input type="text" placeholder="Example LTD.">
+            <label>회사명 (선택)</label>
+            <input type="text" placeholder="예: OO 주식회사" />
           </div>
         </div>
         <div class="col-md-12">
           <div class="tp-checkout-input">
-            <label>Country / Region </label>
-            <input type="text" placeholder="United States (US)">
+            <label>국가 / 지역</label>
+            <input type="text" placeholder="대한민국" />
           </div>
         </div>
         <div class="col-md-12">
           <div class="tp-checkout-input">
-            <label>Street address</label>
-            <input type="text" placeholder="House number and street name">
+            <label>주소</label>
+            <input type="text" placeholder="도로명, 번지 등을 입력하세요" />
           </div>
 
           <div class="tp-checkout-input">
-            <input type="text" placeholder="Apartment, suite, unit, etc. (optional)">
+            <input type="text" placeholder="아파트, 동/호수 등 (선택사항)" />
           </div>
         </div>
         <div class="col-md-12">
           <div class="tp-checkout-input">
-            <label>Town / City</label>
-            <input type="text" placeholder="">
+            <label>시 / 도</label>
+            <input type="text" placeholder="" />
           </div>
         </div>
         <div class="col-md-6">
           <div class="tp-checkout-input">
-            <label>State / County</label>
+            <label>행정구역 / 구</label>
             <ui-nice-select
               :options="[
-                { value: 'new-york-us', text: 'New York US' },
-                { value: 'berlin-germany', text: 'Berlin Germany' },
-                { value: 'paris-france', text: 'Paris France' },
-                { value: 'tokiyo-japan', text: 'Tokiyo Japan' }
+                { value: 'seoul', text: '서울특별시' },
+                { value: 'busan', text: '부산광역시' },
+                { value: 'incheon', text: '인천광역시' },
+                { value: 'jeju', text: '제주특별자치도' }
               ]"
-              name="New York US"
+              name="seoul"
               :default-current="0"
               @onChange="changeHandler"
             />
@@ -60,26 +60,26 @@
         </div>
         <div class="col-md-6">
           <div class="tp-checkout-input">
-            <label>Postcode ZIP</label>
-            <input type="text" placeholder="">
+            <label>우편번호</label>
+            <input type="text" placeholder="예: 12345" />
           </div>
         </div>
         <div class="col-md-12">
           <div class="tp-checkout-input">
-            <label>Phone <span>*</span></label>
-            <input type="text" placeholder="">
+            <label>전화번호 <span>*</span></label>
+            <input type="text" placeholder="예: 010-1234-5678" />
           </div>
         </div>
         <div class="col-md-12">
           <div class="tp-checkout-input">
-            <label>Email address <span>*</span></label>
-            <input type="email" placeholder="">
+            <label>이메일 주소 <span>*</span></label>
+            <input type="email" placeholder="예: example@email.com" />
           </div>
         </div>
         <div class="col-md-12">
           <div class="tp-checkout-input">
-            <label>Order notes (optional)</label>
-            <textarea placeholder="Notes about your order, e.g. special notes for delivery."></textarea>
+            <label>주문 메모 (선택)</label>
+            <textarea placeholder="배송 요청사항 등을 입력하세요"></textarea>
           </div>
         </div>
       </div>
