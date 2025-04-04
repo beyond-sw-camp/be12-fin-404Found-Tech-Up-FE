@@ -57,7 +57,7 @@ pipeline {
                 sh '''
                     cd ${WORKSPACE}/techUpFrontend
                     npm install
-                    npm run generate
+                    npm run build
                 '''
                 echo "MODIFY default.conf"
                 sh """
