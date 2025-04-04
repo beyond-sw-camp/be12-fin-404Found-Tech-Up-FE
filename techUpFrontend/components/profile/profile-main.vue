@@ -12,14 +12,14 @@
               </div>
             </div>
             <div class="profile__main-content">
-              <h4 class="profile__main-title">Welcome Mr. Admin!</h4>
-              <p>You have <span>08</span> notifications</p>
+              <h4 class="profile__main-title">환영합니다, 홍길동님!</h4>
+              <p>당신에게 <span>08</span>개 알림이 있습니다</p>
             </div>
           </div>
         </div>
         <div class="col-md-6">
           <div class="profile__main-logout text-sm-end">
-            <nuxt-link href="/login" class="tp-logout-btn">Logout</nuxt-link>
+            <nuxt-link href="/login" class="tp-logout-btn">로그아웃</nuxt-link>
           </div>
         </div>
       </div>
@@ -34,7 +34,7 @@
                 <svg-download />
               </span>
             </div>
-            <h4 class="profile__main-info-title">Downlaods</h4>
+            <h4 class="profile__main-info-title">설명서 다운로드</h4>
           </div>
         </div>
         <div class="col-md-3 col-sm-6">
@@ -45,7 +45,7 @@
                 <svg-orders />
               </span>
             </div>
-            <h4 class="profile__main-info-title">Orders</h4>
+            <h4 class="profile__main-info-title">주문</h4>
           </div>
         </div>
         <div class="col-md-3 col-sm-6">
@@ -56,7 +56,7 @@
                 <svg-wishlist-2 />
               </span>
             </div>
-            <h4 class="profile__main-info-title">Wishlist</h4>
+            <h4 class="profile__main-info-title">위시리스트</h4>
           </div>
         </div>
         <div class="col-md-3 col-sm-6">
@@ -67,7 +67,7 @@
                 <svg-gift-box />
               </span>
             </div>
-            <h4 class="profile__main-info-title">Gift Box</h4>
+            <h4 class="profile__main-info-title">쿠폰함</h4>
           </div>
         </div>
       </div>
