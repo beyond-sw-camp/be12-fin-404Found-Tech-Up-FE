@@ -24,14 +24,14 @@
             </span>
           </div>
           <div class="profile__address-content">
-            <h3 class="profile__address-title">Billing Address</h3>
-            <p><span>Street:</span>3576 Glen Street</p>
-            <p><span>City:</span>Summer Shade</p>
-            <p><span>State/province/area:</span>Kentucky</p>
-            <p><span>Phone number:</span>270-428-8378</p>
-            <p><span>Zip code:</span>42166</p>
-            <p><span>Country calling code:</span> +1</p>
-            <p><span>Country:</span>United States</p>
+            <h3 class="profile__address-title">결제자 주소</h3>
+            <p><span>도로명:</span>청와대로 1</p>
+            <p><span>시/군/구구:</span>종로구</p>
+            <p><span>특별시/광역시/도:</span>서울특별시</p>
+            <p><span>전화번호:</span>01012341234</p>
+            <p><span>우편번호:</span>00001</p>
+            <p><span>국가전화코드:</span>+82</p>
+            <p><span>국가:</span>대한민국</p>
           </div>
         </div>
       </div>
@@ -57,14 +57,14 @@
             </span>
           </div>
           <div class="profile__address-content">
-            <h3 class="profile__address-title">Shipping Address</h3>
-            <p><span>Street:</span>3133 Lewis Street</p>
-            <p><span>City:</span>Naperville</p>
-            <p><span>State/province/area:</span>Illinois</p>
-            <p><span>Phone number:</span>630-857-9127</p>
-            <p><span>Zip code:</span> 60563</p>
-            <p><span>Country calling code:</span>+1</p>
-            <p><span>Country:</span>United States</p>
+            <h3 class="profile__address-title">배송 주소</h3>
+            <p><span>도로명:</span>청와대로 1</p>
+            <p><span>시/군/구구:</span>종로구</p>
+            <p><span>특별시/광역시/도:</span>서울특별시</p>
+            <p><span>전화번호:</span>01012341234</p>
+            <p><span>우편번호:</span>00001</p>
+            <p><span>국가전화코드:</span>+82</p>
+            <p><span>국가:</span>대한민국</p>
           </div>
         </div>
       </div>
