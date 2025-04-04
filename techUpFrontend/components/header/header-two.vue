@@ -105,7 +105,7 @@
   <!-- cart offcanvas end -->
 </template>
 
-<script>
+<script setup>
 const router = useRouter();
 const { isSticky } = useSticky();
 import { useCartStore } from '@/pinia/useCartStore';
@@ -116,9 +116,9 @@ const cartStore = useCartStore();
 const wishlistStore = useWishlistStore();
 const utilsStore = useUtilityStore();
 
-defineProps<{ style_2?: boolean }>()
+defineProps({ style_2: Boolean });
 
-let searchText = ref<string>('');
+let searchText = ref('');
 
 // handleSubmit
 const handleSubmit = () => {
