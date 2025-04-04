@@ -2,6 +2,8 @@
 import aviato from '/images/logos/aviato.png'
 import bitbank from '/images/logos/bitbank.png'
 import zipcar from '/images/logos/zipcar.png'
+import { VCard, VCardItem, VCardText, VCardTitle } from 'vuetify/components'
+import { VAvatar, VIcon, VList, VListItem, VListItemSubtitle, VListItemTitle, VProgressLinear } from 'vuetify/components'
 
 const earnings = [
   {

@@ -9,6 +9,9 @@ import gumroad from '/images/logos/gumroad.png'
 import mastercardLabel from '/images/logos/mastercard-label.png'
 import slack from '/images/logos/slack.png'
 import stripe from '/images/logos/stripe.png'
+import { VCard, VCardItem, VCardText, VCardTitle } from 'vuetify/components'
+import { VCol, VRow, VDivider, VImg, VList, VListItem, VListItemAction, VListItemSubtitle, VListItemTitle } from 'vuetify/components'
+
 
 const deposits = [
   {

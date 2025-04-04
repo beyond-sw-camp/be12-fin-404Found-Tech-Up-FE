@@ -1,4 +1,6 @@
 <script setup>
+import { VAvatar, VCard, VCardItem, VCardText, VCardTitle, VIcon, VList, VListItem, VListItemSubtitle, VListItemTitle } from 'vuetify/components'
+
 const salesByCountries = [
   {
     abbr: 'US',
