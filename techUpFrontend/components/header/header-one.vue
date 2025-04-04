@@ -47,3 +47,12 @@
     </div>
   </div>
 </template>
+
+<script setup>
+import { ref } from 'vue';
+import { useSticky } from '../../composables/useSticky';
+let sticky = useSticky();
+let isSticky = ref(false);
+isSticky.value = sticky.isSticky;
+
+</script>

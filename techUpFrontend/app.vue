@@ -5,7 +5,7 @@
   </NuxtLayout>
 </template>
 
-<script setup lang="ts">
+<script setup>
 /*
 import { useProductFilterStore } from './pinia/useProductFilterStore';
 import { useUtilityStore } from './pinia/useUtilityStore';
@@ -19,5 +19,5 @@ watch(() => route.path, () => {
   prdFilterStore.handleResetFilter();
   utilsStore.removeBackdrop();
 })
-  */
+*/
 </script>

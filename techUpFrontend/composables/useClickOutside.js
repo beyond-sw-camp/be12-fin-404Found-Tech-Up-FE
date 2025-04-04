@@ -1,11 +1,13 @@
-export default function useClickOutside(callback: () => void) {
-  const elementRef: Ref<HTMLElement | HTMLElement[] | null> = ref(null);
+import {ref, onMounted, onUnmounted} from 'vue';
 
-  const handleClickOutside = (event: MouseEvent) => {
-    const target = event.target as Node;
+export default function useClickOutside(callback) {
+  const elementRef = ref(null);
+
+  const handleClickOutside = (event) => {
+    const target = event.target;
 
     // Handle cases where elementRef is a single element
-    if (elementRef.value instanceof HTMLElement) {
+    if (elementRef.value) {
       if (elementRef.value.contains(target)) {
         return; // Click inside, do nothing
       }

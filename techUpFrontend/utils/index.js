@@ -1,4 +1,4 @@
-export function formatPrice(price: number,showDecimals=true) {
+export function formatPrice(price,showDecimals) {
   return new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: "USD",
@@ -6,7 +6,7 @@ export function formatPrice(price: number,showDecimals=true) {
     maximumFractionDigits: showDecimals ? 2 : 0
   }).format(price);
 }
-export function formatString(str: string): string {
+export function formatString(str) {
   return str
       .toLowerCase()
       .replace(/&/g, "") // Remove all occurrences of "&"
