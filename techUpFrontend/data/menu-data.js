@@ -58,7 +58,6 @@ export const menu_data = [
           {title:'Filter Dropdown',link:'/shop-filter-dropdown'},
           {title:'Filters Offcanvas',link:'/shop-filter-offcanvas'},
           {title:'Filters Sidebar',link:'/shop'},
-          {title:'Load More button',link:'/shop-load-more'},
           {title:'1600px Layout',link:'/shop-1600'},
           {title:'Collections list',link:'/shop-list'},
           {title:'Hidden search',link:'/shop'},
@@ -145,7 +144,8 @@ export const menu_data = [
   {
     id:5,
     link:'/blog',
-    title:'커뮤니티',
+    title:'Blog',
+    /*
     drop_down:true,
     dropdown_menus:[
       {title:'Blog Standard',link:'/blog'},
@@ -154,6 +154,7 @@ export const menu_data = [
       {title:'Blog Details Full Width',link:'/blog-details-2'},
       {title:'Blog Details',link:'/blog-details'},
     ]
+    */
   },
   {
     id:5,
@@ -209,7 +210,6 @@ const mobile_menu = [
       { title: 'Shop No Sidebar', link: '/shop-no-sidebar' },
       { title: 'Shop Filter Dropdown', link: '/shop-filter-dropdown' },
       { title: 'Shop Filter Offcanvas', link: '/shop-filter-offcanvas' },
-      { title: 'Shop Load More', link: '/shop-load-more' },
       { title: 'Shop List', link: '/shop-list' },
       { title: 'Only Categories', link: '/shop-categories' },
     ],

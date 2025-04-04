@@ -1,9 +1,32 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  // npm run generate를 위한 설정정
-  // nitro: {
-  //   preset: 'static'
-  // },
+  //npm run generate를 위한 설정정
+  nitro: {
+    preset: 'static',
+    prerender: {
+      ignore: [
+        '/home-2',
+        '/home-3',
+        '/home-4',
+        '/shop-categories',
+        '/shop-list',
+        '/shop-filter-offcanvas',
+        '/product-details-video',
+        '/product-details',
+        '/product-details-swatches',
+        '/product-details-gallery',
+        '/product-details-list',
+        '/product-details-slider',
+        '/product-details-countdown',
+        '/order',
+        '/shop-1600',
+        '/shop-full-width',
+        '/shop-right-sidebar',
+        '/shop-no-sidebar',
+        '/shop-filter-dropdown'
+      ]
+    }
+  },
 
   devtools: { enabled: true },
   modules: [
