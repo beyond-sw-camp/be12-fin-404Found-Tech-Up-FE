@@ -3,28 +3,18 @@
     <div class="tp-login-input-wrapper">
       <div class="tp-login-input-box">
         <div class="tp-login-input">
-          <input
-            id="email"
-            type="email"
-            placeholder="shofy@mail.com"
-            v-bind="email"
-          />
+          <input id="email" type="email" placeholder="example@mail.com" v-bind="email" />
         </div>
         <div class="tp-login-input-title">
-          <label for="email">Your Email</label>
+          <label for="email">이메일</label>
         </div>
         <err-message :msg="errors.email" />
       </div>
       <div class="tp-login-input-box">
         <div class="p-relative">
           <div class="tp-login-input">
-            <input
-              id="tp_password"
-              :type="showPass ? 'text' : 'password'"
-              name="password"
-              placeholder="Min. 6 character"
-              v-bind="password"
-            />
+            <input id="tp_password" :type="showPass ? 'text' : 'password'" name="password"
+              placeholder="Min. 6 character" v-bind="password" />
           </div>
           <div class="tp-login-input-eye" id="password-show-toggle">
             <span class="open-eye" @click="togglePasswordVisibility">
@@ -37,41 +27,35 @@
             </span>
           </div>
           <div class="tp-login-input-title">
-            <label for="tp_password">Password</label>
+            <label for="tp_password">비밀번호</label>
           </div>
         </div>
         <err-message :msg="errors.password" />
       </div>
     </div>
-    <div
-      class="tp-login-suggetions d-sm-flex align-items-center justify-content-between mb-20"
-    >
+    <div class="tp-login-suggetions d-sm-flex align-items-center justify-content-between mb-20">
       <div class="tp-login-remeber">
         <input id="remeber" type="checkbox" />
-        <label for="remeber">Remember me</label>
+        <label for="remeber">아이디 기억하기</label>
       </div>
       <div class="tp-login-forgot">
-        <nuxt-link href="/forgot">Forgot Password?</nuxt-link>
+        <nuxt-link href="/forgot">비밀번호를 잊으셨나요?</nuxt-link>
       </div>
     </div>
     <div class="tp-login-bottom">
-      <button type="submit" class="tp-login-btn w-100">Login</button>
+      <button type="submit" class="tp-login-btn w-100">로그인</button>
     </div>
   </form>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { useForm } from "vee-validate";
 import * as yup from "yup";
 
-let showPass = ref<boolean>(false);
+let showPass = ref(false);
 
-interface IFormValues {
-  email?: string | null;
-  password?: string | null;
-}
 const { errors, handleSubmit, defineInputBinds, resetForm } =
-  useForm<IFormValues>({
+  useForm({
     validationSchema: yup.object({
       email: yup.string().required().email().label("Email"),
       password: yup.string().required().min(6).label("Password"),

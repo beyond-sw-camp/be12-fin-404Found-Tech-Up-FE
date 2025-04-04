@@ -11,10 +11,10 @@
         <div class="col-xl-6 col-lg-8">
           <div class="tp-login-wrapper">
             <div class="tp-login-top text-center mb-30">
-              <h3 class="tp-login-title">Login to Shofy.</h3>
+              <h3 class="tp-login-title">테크 업에 로그인</h3>
               <p>
-                Don’t have an account?
-                <span><nuxt-link href="/register">Create a free account</nuxt-link></span>
+                계정이 없나요?
+                <span><nuxt-link href="/register">계정 생성하기</nuxt-link></span>
               </p>
             </div>
             <div class="tp-login-option">
@@ -22,7 +22,7 @@
               <login-social />
               <!-- social login end -->
               <div class="tp-login-mail text-center mb-40">
-                <p>or Sign in with <a href="#">Email</a></p>
+                <p>혹은 <a href="#">이메일</a>로 로그인</p>
               </div>
               <!-- form start -->
               <forms-login-form />
@@ -35,5 +35,5 @@
   </section>
 </template>
 
-<script setup lang="ts">
+<script setup>
 </script>
