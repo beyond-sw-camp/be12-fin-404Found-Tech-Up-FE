@@ -1,24 +1,15 @@
 <template>
-  <div
-    class="tp-login-social mb-10 d-flex flex-wrap align-items-center justify-content-center"
-  >
-    <div class="tp-login-option-item has-google">
+  <div class="tp-login-social mb-10 d-flex flex-wrap align-items-center justify-content-center">
+    <div class="tp-login-option-item has-kakao">
       <a href="#">
-        <img src="/img/icon/login/google.svg" alt="" />
-        Sign in with google
-      </a>
-    </div>
-    <div class="tp-login-option-item">
-      <a href="#">
-        <img src="/img/icon/login/facebook.svg" alt="" />
-      </a>
-    </div>
-    <div class="tp-login-option-item">
-      <a href="#">
-        <img class="apple" src="/img/icon/login/apple.svg" alt="" />
+        <img src="/img/login/kakao_login_medium_narrow.png" alt="카카오 로그인" />
       </a>
     </div>
   </div>
 </template>
-
-<script setup lang="ts"></script>
+<style scoped>
+.has-kakao>a {
+  width: 12rem;
+}
+</style>
+<script setup></script>

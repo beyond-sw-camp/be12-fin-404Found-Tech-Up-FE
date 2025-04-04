@@ -3,70 +3,60 @@
     <div class="tp-login-input-wrapper">
       <div class="tp-login-input-box">
         <div class="tp-login-input">
-          <input id="name" type="text" placeholder="Shahnewaz Sakil" v-bind="name" />
+          <input id="name" type="text" placeholder="gildong Hong" v-bind="name" />
         </div>
         <div class="tp-login-input-title">
-          <label for="name">Your Name</label>
+          <label for="name">이름</label>
         </div>
         <err-message :msg="errors.name" />
       </div>
       <div class="tp-login-input-box">
         <div class="tp-login-input">
-          <input id="email" type="email" placeholder="shofy@mail.com" v-bind="email" />
+          <input id="email" type="email" placeholder="example@mail.com" v-bind="email" />
         </div>
         <div class="tp-login-input-title">
-          <label for="email">Your Email</label>
+          <label for="email">이메일</label>
         </div>
         <err-message :msg="errors.email" />
       </div>
       <div class="tp-login-input-box">
         <div class="p-relative">
           <div class="tp-login-input">
-          <input
-            id="tp_password"
-            :type="showPass?'text':'password'"
-            name="password"
-            placeholder="Min. 6 character"
-            v-bind="password"
-          />
-        </div>
-        <div class="tp-login-input-eye" id="password-show-toggle">
+            <input id="tp_password" :type="showPass ? 'text' : 'password'" name="password"
+              placeholder="Min. 6 character" v-bind="password" />
+          </div>
+          <div class="tp-login-input-eye" id="password-show-toggle">
 
-          <span class="open-eye" @click="togglePasswordVisibility">
-            <template v-if="showPass">
-              <svg-open-eye />
-            </template>
-            <template v-else>
-              <svg-close-eye />
-            </template>
-          </span>
-          
+            <span class="open-eye" @click="togglePasswordVisibility">
+              <template v-if="showPass">
+                <svg-open-eye />
+              </template>
+              <template v-else>
+                <svg-close-eye />
+              </template>
+            </span>
+
+          </div>
+          <div class="tp-login-input-title">
+            <label for="tp_password">비밀번호</label>
+          </div>
         </div>
-        <div class="tp-login-input-title">
-          <label for="tp_password">Password</label>
-        </div>
-      </div>
-      <err-message :msg="errors.password" />
+        <err-message :msg="errors.password" />
       </div>
     </div>
     <div class="tp-login-bottom">
-      <button type="submit" class="tp-login-btn w-100">Sign Up</button>
+      <button type="submit" class="tp-login-btn w-100">회원가입</button>
     </div>
   </form>
 </template>
 
-<script setup lang="ts"> 
+<script setup>
 import { useForm } from 'vee-validate';
 import * as yup from 'yup';
 
-let showPass = ref<boolean>(false);
+let showPass = ref(false);
 
-interface IFormValues {
-  name?: string | null;
-  email?: string | null;
-  password?: string | null;
-}
-const { errors, handleSubmit, defineInputBinds,resetForm } = useForm<IFormValues>({
+const { errors, handleSubmit, defineInputBinds, resetForm } = useForm({
   validationSchema: yup.object({
     name: yup.string().required().label("Name"),
     email: yup.string().required().email().label("Email"),
