@@ -127,9 +127,9 @@
                   </button>
                 </div>
                 <div class="tp-header-action-item d-lg-none">
-                  <button @click="utilsStore.handleOpenMobileMenu()" type="button" class="tp-header-action-btn tp-offcanvas-open-btn">
+                  <!-- <button @click="utilsStore.handleOpenMobileMenu()" type="button" class="tp-header-action-btn tp-offcanvas-open-btn">
                     <svg-menu-icon />
-                  </button>
+                  </button> -->
 
                 </div>
               </div>
@@ -145,7 +145,7 @@
   <!-- cart offcanvas end -->
 
   <!-- cart offcanvas start -->
-  <offcanvas-mobile-sidebar product-type="electronics" />
+  <!-- <offcanvas-mobile-sidebar product-type="electronics" /> -->
   <!-- cart offcanvas end -->
 </template>
 
