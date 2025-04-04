@@ -130,3 +130,10 @@ const handleSubmit = () => {
   }
 }
 </script>
+
+<style scoped>
+.tp-main-menu-content {
+  position: relative;
+  left: 4vw;
+}
+</style>
