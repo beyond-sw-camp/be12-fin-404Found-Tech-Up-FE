@@ -4,7 +4,7 @@
       <span>
         <SvgDropdown />
       </span>
-      All Categories 
+      전체 카테고리 
     </button>
     <Transition>
       <nav v-if="isActive" class="tp-category-menu-content" :class="{ active: isActive }">

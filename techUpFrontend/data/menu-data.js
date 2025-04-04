@@ -140,12 +140,12 @@ export const menu_data = [
   {
     id:4,
     link:'/coupons',
-    title:'Coupons',
+    title:'쿠폰',
   },
   {
     id:5,
     link:'/blog',
-    title:'Blog',
+    title:'커뮤니티',
     drop_down:true,
     dropdown_menus:[
       {title:'Blog Standard',link:'/blog'},
