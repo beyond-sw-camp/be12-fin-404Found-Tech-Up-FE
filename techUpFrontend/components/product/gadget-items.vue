@@ -75,7 +75,7 @@
                 :key="item.id"
                 class="col-xl-4 col-sm-6"
               >
-                <ProductElectronicsItem :item="item" />
+                <ProductItem :item="item" />
               </div>
             </div>
           </div>

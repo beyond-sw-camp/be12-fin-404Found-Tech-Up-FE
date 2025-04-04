@@ -8,13 +8,14 @@
         <div class="tp-header-search-category">
           <ui-nice-select
             :options="[
-              { value: 'select-category', text: 'Select Category' },
+              { value: '', text: 'Select Category' },
               { value: 'electronics', text: 'Electronics' },
               { value: 'fashion', text: 'Fashion' },
               { value: 'beauty', text: 'Beauty' },
               { value: 'jewelry', text: 'Jewelry' }
             ]"
             name="Select Category"
+            v-model="productType"
             :default-current="0"
             @onChange="changeHandler"
           />
@@ -34,9 +35,9 @@ import { ref } from "vue";
 
 export default {
   setup() {
-    // useRouter는 Nuxt에서 자동으로 주입되거나, 필요하다면 import { useRouter } from 'vue-router' 로 추가합니다.
     const router = useRouter();
     const searchText = ref("");
+    // 초기값을 빈 문자열로 설정하여 기본 옵션("Select Category")이 표시되게 함
     const productType = ref("");
 
     const changeHandler = (e) => {

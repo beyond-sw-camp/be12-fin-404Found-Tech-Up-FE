@@ -1,7 +1,5 @@
 <template>
-  <section
-    :class="`tp-search-area tp-search-style-brown ${utilityStore.openSearchBar ? 'opened' : ''}`"
-  >
+  <section :class="`tp-search-area tp-search-style-brown ${utilityStore.openSearchBar ? 'opened' : ''}`">
     <div class="container">
       <div class="row">
         <div class="col-xl-12">
@@ -45,28 +43,39 @@
 
 
 <script>
-import { useUtilityStore } from "@/pinia/useUtilityStore";
-const router = useRouter();
-let searchText = ref("");
-let productType = ref("");
-const utilityStore = useUtilityStore();
-const categories= ["electronics", "fashion", "beauty", "jewelry"];
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { useUtilityStore } from '@/pinia/useUtilityStore';
 
-// handleSubmit
-const handleSubmit = () => {
-  if (!searchText.value && !productType.value) {
-    return
-  }
-  else if (searchText.value && productType.value) {
-    router.push(
-      `/search?searchText=${searchText.value}&productType=${productType.value}`
-    );
-  } else if (searchText.value && !productType.value) {
-    router.push(`/search?searchText=${searchText.value}`);
-  } else if (!searchText.value && productType.value) {
-    router.push(`/search?productType=${productType.value}`);
-  } else {
-    router.push(`/search`);
+export default {
+  setup() {
+    const router = useRouter();
+    const utilityStore = useUtilityStore();
+    const searchText = ref("");
+    const productType = ref("");
+    const categories = ["electronics", "fashion", "beauty", "jewelry"];
+
+    const handleSubmit = () => {
+      if (!searchText.value && !productType.value) {
+        return;
+      } else if (searchText.value && productType.value) {
+        router.push(`/search?searchText=${searchText.value}&productType=${productType.value}`);
+      } else if (searchText.value && !productType.value) {
+        router.push(`/search?searchText=${searchText.value}`);
+      } else if (!searchText.value && productType.value) {
+        router.push(`/search?productType=${productType.value}`);
+      } else {
+        router.push(`/search`);
+      }
+    };
+
+    return {
+      utilityStore,
+      searchText,
+      productType,
+      categories,
+      handleSubmit,
+    };
   }
 };
 </script>

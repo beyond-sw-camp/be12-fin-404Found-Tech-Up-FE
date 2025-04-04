@@ -55,7 +55,7 @@
               class="tp-product-offer-slider-active swiper-container"
             >
               <SwiperSlide v-for="(item, i) in offer_products" :key="i">
-                <ProductElectronicsItem :item="item" :offer_style="true" />
+                <ProductItem :item="item" :offer_style="true" />
               </SwiperSlide>
               <div class="tp-deals-slider-dot tp-swiper-dot text-center mt-40"></div>
             </Swiper>
