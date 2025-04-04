@@ -3,6 +3,7 @@ import { defineStore } from "pinia";
 import { ref } from "vue";
 
 export const useProductStore = defineStore("product", () => {
+
   let activeImg = ref(product_data[0].img);
   let openFilterDropdown = ref(false);
   let openFilterOffcanvas = ref(false);
@@ -20,6 +21,7 @@ export const useProductStore = defineStore("product", () => {
   // handle filter offcanvas toggle
   const handleOpenFilterOffcanvas = () => {
     openFilterOffcanvas.value = !openFilterOffcanvas.value;
+
   };
 
   return {

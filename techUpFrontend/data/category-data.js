@@ -1,3 +1,4 @@
+
 const category_data = [
   {
     id: "641d424bdbfab7b02ab28b95",
@@ -231,6 +232,6 @@ const category_data = [
     ],
     status: "Show"
   }
-];
+]
 
 export default category_data;

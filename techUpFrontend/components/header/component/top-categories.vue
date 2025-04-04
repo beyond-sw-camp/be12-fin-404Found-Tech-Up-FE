@@ -38,38 +38,38 @@ import { useRouter } from 'vue-router';
 import category_data from "@/data/category-data";
 import useClickOutside from '@/composables/useClickOutside.js';
 
-const router = useRouter();
-const category_items = category_data.filter(
-  (c) => c.productType === "electronics"
-);
-let isActive = ref(false);
-
-// 토글 처리
-const handleActive = () => {
-  isActive.value = !isActive.value;
-};
-
-// 상위 카테고리 클릭 처리
-const handleParentCategory = (value) => {
-  const newCategory = value.toLowerCase().replace("&", "").split(" ").join("-");
-  router.push(`/shop?category=${newCategory}`);
-};
-
-// 서브 카테고리 클릭 처리
-const handleSubCategory = (value) => {
-  const newCategory = value.toLowerCase().replace("&", "").split(" ").join("-");
-  router.push(`/shop?subCategory=${newCategory}`);
-};
-
-const closeAction = () => {
-  isActive.value = false;
-};
-
-const actionButtonRef = ref(null);
-useClickOutside(actionButtonRef, closeAction);
-
 export default {
   setup() {
+    const router = useRouter();
+    const category_items = category_data.filter(
+      (c) => c.productType === "electronics"
+    );
+    const isActive = ref(false);
+
+    // 토글 처리
+    const handleActive = () => {
+      isActive.value = !isActive.value;
+    };
+
+    // 상위 카테고리 클릭 처리
+    const handleParentCategory = (value) => {
+      const newCategory = value.toLowerCase().replace("&", "").split(" ").join("-");
+      router.push(`/shop?category=${newCategory}`);
+    };
+
+    // 서브 카테고리 클릭 처리
+    const handleSubCategory = (value) => {
+      const newCategory = value.toLowerCase().replace("&", "").split(" ").join("-");
+      router.push(`/shop?subCategory=${newCategory}`);
+    };
+
+    const closeAction = () => {
+      isActive.value = false;
+    };
+
+    const actionButtonRef = ref(null);
+    useClickOutside(actionButtonRef, closeAction);
+
     return {
       category_items,
       isActive,
@@ -80,6 +80,7 @@ export default {
     };
   }
 };
+
 </script>
 
 <style scoped>
@@ -87,6 +88,7 @@ export default {
 .v-leave-active {
   transition: opacity 0.5s ease;
 }
+
 .v-enter-from,
 .v-leave-to {
   opacity: 0;

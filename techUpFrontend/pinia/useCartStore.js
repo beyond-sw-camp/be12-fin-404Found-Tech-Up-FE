@@ -1,3 +1,4 @@
+
 import { ref, onMounted, computed, watch } from "vue";
 import { defineStore } from "pinia";
 import { toast } from "vue3-toastify";
@@ -130,7 +131,6 @@ export const useCartStore = defineStore("cart_product", () => {
   watch(() => route.path, () => {
     orderQuantity.value = 1;
   });
-
   return {
     addCartProduct,
     cart_products,

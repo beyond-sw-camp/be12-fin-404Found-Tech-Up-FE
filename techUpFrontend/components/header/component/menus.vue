@@ -5,6 +5,7 @@
       <div v-if="item.home_pages" class="home-menu tp-submenu tp-mega-menu">
         <div class="row row-cols-1 row-cols-lg-4 row-cols-xl-4">
           <div v-for="(home,i) in item.home_pages" :key="i" class="col">
+
             <div class="home-menu-item">
               <nuxt-link :href="home.link">
                 <div class="home-menu-thumb p-relative fix">
@@ -27,6 +28,7 @@
               <ul>
                 <li v-for="(shop_sm,i) in shop_m.list_menus" :key="i">
                   <nuxt-link :href="shop_sm.link">{{shop_sm.title}}</nuxt-link>
+
                 </li>
               </ul>
             </div>
@@ -75,7 +77,6 @@
           <nuxt-link :href="drop_m.link">{{drop_m.title}}</nuxt-link>
         </li>
       </ul>
-      
     </li>
   </ul>
 </template>

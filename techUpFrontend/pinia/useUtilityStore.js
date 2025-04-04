@@ -14,6 +14,7 @@ export const useUtilityStore = defineStore("utility", () => {
   let modalId = ref('product-modal-641e887d05f9ee1717e1348a');
   let product = ref(product_data[0]);
   // video modal
+
   const videoUrl = ref('https://www.youtube.com/embed/EW4ZYb3mCZk');
   const isVideoOpen = ref(false);
   let iframeElement = null;
@@ -22,6 +23,7 @@ export const useUtilityStore = defineStore("utility", () => {
   const handleOpenSearchBar = () => {
     openSearchBar.value = !openSearchBar.value;
   };
+
 
   // handle mobile menu toggle
   const handleOpenMobileMenu = () => {
@@ -40,6 +42,7 @@ export const useUtilityStore = defineStore("utility", () => {
     }
     
     isVideoOpen.value = true;
+
     if (videoOverlay) {
       videoOverlay.classList.add("open");
       videoOverlay.appendChild(iframeElement);
@@ -53,10 +56,12 @@ export const useUtilityStore = defineStore("utility", () => {
       iframeElement.remove();
       iframeElement = null;
     }
+
     isVideoOpen.value = false;
     if (videoOverlay) {
       videoOverlay.classList.remove("open");
     }
+
   };
 
   // handle Open Modal
@@ -65,6 +70,7 @@ export const useUtilityStore = defineStore("utility", () => {
     product.value = item;
     productStore.handleImageActive(item.img);
     cartStore.initialOrderQuantity();
+
   };
 
   const removeBackdrop = () => {
