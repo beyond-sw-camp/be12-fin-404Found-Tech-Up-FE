@@ -10,7 +10,7 @@
     </div>
   </template>
   
-  <script setup lang="ts">
+  <script setup>
   useSeoMeta({ title: "Compare Page" });
   </script>
   
