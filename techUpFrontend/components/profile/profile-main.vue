@@ -34,7 +34,7 @@
                 <svg-download />
               </span>
             </div>
-            <h4 class="profile__main-info-title">설명서 다운로드</h4>
+            <h4 class="profile__main-info-title">내 기기 보기</h4>
           </div>
         </div>
         <div class="col-md-3 col-sm-6">

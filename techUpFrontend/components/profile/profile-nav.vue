@@ -13,6 +13,10 @@
         role="tab" aria-controls="nav-address" aria-selected="false">
         <span><i class="fa-light fa-location-dot"></i></span> 주소
       </button>
+      <button class="nav-link" id="nav-board-tab" data-bs-toggle="tab" data-bs-target="#nav-board" type="button"
+        role="tab" aria-controls="nav-board" aria-selected="false">
+        <span><i class="fa-light fa-clipboard-list-check"></i></span> 내 게시글
+      </button>
       <button class="nav-link" id="nav-order-tab" data-bs-toggle="tab" data-bs-target="#nav-order" type="button"
         role="tab" aria-controls="nav-order" aria-selected="false">
         <span><i class="fa-light fa-clipboard-list-check"></i></span> 내 주문
