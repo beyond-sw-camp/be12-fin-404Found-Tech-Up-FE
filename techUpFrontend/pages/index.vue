@@ -40,6 +40,11 @@
       <!-- product sm items start -->
       <product-sm-items />
       <!-- product sm items end -->
+
+      <!-- blog item start -->
+      <blog-electronic />
+      <!-- blog item end -->
+
     </nuxt-layout>
   </div>
 </template>

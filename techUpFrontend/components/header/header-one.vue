@@ -85,6 +85,7 @@
       </div>
     </div>
 
+
     <!-- header sticky start -->
     <div id="header-sticky-2" :class="`tp-header-sticky-area ${isSticky ? 'header-sticky-2' : ''}`">
       <div class="container">
@@ -129,6 +130,7 @@
                   <button @click="utilsStore.handleOpenMobileMenu()" type="button" class="tp-header-action-btn tp-offcanvas-open-btn">
                     <svg-menu-icon />
                   </button>
+
                 </div>
               </div>
             </div>
@@ -166,3 +168,4 @@ const cartStore = useCartStore();
 const wishlistStore = useWishlistStore();
 const utilsStore = useUtilityStore();
 </script>
+

@@ -1,4 +1,5 @@
 <template>
+
   <div class="tp-header-main-right d-flex align-items-center justify-content-end">
     <div class="tp-header-login d-none d-lg-block">
       <nuxt-link href="/profile" class="d-flex align-items-center">
@@ -43,6 +44,7 @@
     </div>
   </div>
 </template>
+
 
 <script setup>
 import { useCartStore } from '@/pinia/useCartStore';

@@ -1,5 +1,6 @@
 import { ref, onMounted, onUnmounted } from "vue";
 
+
 export default function useClickOutside(callback) {
   const elementRef = ref(null);
 

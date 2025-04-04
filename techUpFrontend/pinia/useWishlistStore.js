@@ -25,7 +25,9 @@ export const useWishlistStore = defineStore("wishlist_product", () => {
     localStorage.setItem("wishlist_products", JSON.stringify(wishlists.value));
   };
 
+
   // wishlist product initialize
+
   const initializeWishlistProducts = () => {
     const wishlistData = localStorage.getItem("wishlist_products");
     if (wishlistData) {
@@ -37,7 +39,6 @@ export const useWishlistStore = defineStore("wishlist_product", () => {
   onMounted(() => {
     initializeWishlistProducts();
   });
-
   return {
     add_wishlist_product,
     removeWishlist,
