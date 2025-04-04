@@ -19,7 +19,7 @@
 
       <!-- banner area start -->
       <banner-area />
-      <!-- banner area en -->
+      <!-- banner area end -->
 
       <!-- offer product start -->
       <product-offer-items />
@@ -40,12 +40,11 @@
       <!-- product sm items start -->
       <product-sm-items />
       <!-- product sm items end -->
-
     </nuxt-layout>
   </div>
 </template>
 
-<script>
+<script setup>
 definePageMeta({
   layout: false,
 });

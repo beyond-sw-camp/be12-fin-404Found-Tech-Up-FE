@@ -12,7 +12,7 @@
             </div>
 
             <div class="tp-product-sm-wrapper mr-20">
-              <ProductElectronicsSmItem
+              <ProductSmItem
                 v-for="item in discount_products"
                 :key="item.id"
                 :item="item"
@@ -30,7 +30,7 @@
             </div>
 
             <div class="tp-product-sm-wrapper mr-20">
-              <ProductElectronicsSmItem
+              <ProductSmItem
                 v-for="item in featured_products"
                 :key="item.id"
                 :item="item"
@@ -48,7 +48,7 @@
             </div>
 
             <div class="tp-product-sm-wrapper mr-20">
-              <ProductElectronicsSmItem
+              <ProductSmItem
                 v-for="item in selling_products"
                 :key="item.id"
                 :item="item"

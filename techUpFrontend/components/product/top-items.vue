@@ -37,7 +37,7 @@
                 :key="i"
                 class="col-xl-3 col-lg-3 col-sm-6"
               >
-                <ProductElectronicsItem :item="item" />
+                <ProductItem :item="item" />
               </div>
             </div>
           </div>

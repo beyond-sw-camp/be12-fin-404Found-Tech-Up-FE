@@ -52,7 +52,7 @@
               class="tp-product-arrival-active swiper-container"
             >
               <SwiperSlide v-for="(item, i) in new_arrivals" :key="i">
-                <ProductElectronicsItem :item="item" />
+                <ProductItem :item="item" />
               </SwiperSlide>
             </Swiper>
           </div>
