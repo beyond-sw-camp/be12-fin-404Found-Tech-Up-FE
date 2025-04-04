@@ -14,7 +14,7 @@
       <!-- feature area end -->
 
       <!-- product area start -->
-      <product-electronics-top-items />
+      <product-top-items />
       <!-- product area end -->
 
       <!-- banner area start -->
@@ -22,11 +22,11 @@
       <!-- banner area en -->
 
       <!-- offer product start -->
-      <product-electronics-offer-items />
+      <product-offer-items />
       <!-- offer product end -->
 
       <!-- product gadget area start -->
-      <product-electronics-gadget-items />
+      <product-gadget-items />
       <!-- product gadget area end -->
 
       <!-- product banner start -->
@@ -34,16 +34,12 @@
       <!-- product banner end -->
 
       <!-- product new arrivals area start -->
-      <product-electronics-new-arrivals />
+      <product-new-arrivals />
       <!-- product new arrivals area end -->
 
       <!-- product sm items start -->
-      <product-electronics-sm-items />
+      <product-sm-items />
       <!-- product sm items end -->
-
-      <!-- blog item start -->
-      <blog-electronic/>
-      <!-- blog item end -->
 
     </nuxt-layout>
   </div>
