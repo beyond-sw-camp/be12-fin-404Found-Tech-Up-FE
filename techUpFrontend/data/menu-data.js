@@ -146,6 +146,7 @@ export const menu_data = [
     id:5,
     link:'/blog',
     title:'Blog',
+    /*
     drop_down:true,
     dropdown_menus:[
       {title:'Blog Standard',link:'/blog'},
@@ -154,6 +155,7 @@ export const menu_data = [
       {title:'Blog Details Full Width',link:'/blog-details-2'},
       {title:'Blog Details',link:'/blog-details'},
     ]
+    */
   },
   {
     id:5,
