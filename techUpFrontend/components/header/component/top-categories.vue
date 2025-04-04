@@ -67,8 +67,7 @@ export default {
       isActive.value = false;
     };
 
-    const actionButtonRef = ref(null);
-    useClickOutside(actionButtonRef, closeAction);
+    const actionButtonRef = useClickOutside(closeAction);
 
     return {
       category_items,
