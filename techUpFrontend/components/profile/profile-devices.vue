@@ -2,13 +2,15 @@
   <div style="margin: 1rem 0;">
     <h4>기기 검색</h4>
   </div>
-  <div class="tp-header-search-box" style="display:inline-flex">
-    <input type="text" placeholder="Search for Products..." v-model="searchText" />
-    <button type="submit">
+  <div class="tp-header-search-box"
+    style="width:50vw;display:inline-flex;background-color:#f8f8f8; padding-right: 2rem;">
+    <input type="text" placeholder="Search for Products..." v-model="searchText"
+      style="color:black;background-color:inherit; padding-right: inherit;" />
+    <button type="submit" style="width:1rem;">
       <SvgSearch />
     </button>
   </div>
-  <div class="profile__address">
+  <div class="profile__address" style="padding-top:2rem;">
     <div class="row">
       <div v-if="!foundResult" class='text-center pt-50'>
         <h5>품목이 없습니다</h5>
@@ -35,7 +37,7 @@
       </div>
     </div>
   </div>
-  <div style="background-color:#d5d5d5;height:5px;">
+  <div style="width:50vw;background-color:#d5d5d5;height:5px;">
   </div>
   <div style="margin: 1rem 0;">
     <h4>내 기기 목록</h4>
@@ -87,15 +89,23 @@ watch(deviceStore.registerList, (value) => {
     hasDevices.value = true;
   }
 }, { deep: true });
+watch(deviceStore.deviceList, (value) => {
+  if (value.length === 0) {
+    foundResult.value = false;
+  } else {
+    foundResult.value = true;
+  }
+}, { deep: true });
 watch(hasDevices);
 watch(foundResult);
 
 onMounted(() => {
   // GET 요청으로 내가 등록한 기기 목록 받아오기
-  product_data.forEach((value) => deviceStore.registerList.push(value));
-})
 
-// 임시 
+  // 임시로 항목 띄우는 용도
+  // product_data.forEach((value) => deviceStore.registerList.push(value));
+  // product_data.forEach((value) => deviceStore.deviceList.push(value));
+})
 
 </script>
 
