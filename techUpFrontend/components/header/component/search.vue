@@ -8,11 +8,12 @@
         <div class="tp-header-search-category">
           <ui-nice-select
             :options="[
-              { value: '', text: 'Select Category' },
-              { value: 'electronics', text: 'Electronics' },
-              { value: 'fashion', text: 'Fashion' },
-              { value: 'beauty', text: 'Beauty' },
-              { value: 'jewelry', text: 'Jewelry' }
+              { value: '', text: '전체 카테고리         ' },
+              { value: 'cpu', text: 'CPU                           ' },
+              { value: 'gpu', text: 'GPU                           ' },
+              { value: 'ram', text: 'RAM                           ' },
+              { value: 'ssd', text: 'SSD                           ' },
+              { value: 'hdd', text: 'HDD                           ' }
             ]"
             name="Select Category"
             v-model="productType"
