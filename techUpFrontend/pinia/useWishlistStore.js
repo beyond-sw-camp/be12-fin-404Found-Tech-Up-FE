@@ -17,6 +17,7 @@ export const useWishlistStore = defineStore("wishlist_product", () => {
     }
     localStorage.setItem("wishlist_products", JSON.stringify(wishlists.value));
   };
+
   // removeWishlist
   const removeWishlist = (payload) => {
     wishlists.value = wishlists.value.filter((p) => p.id !== payload.id);
@@ -24,7 +25,9 @@ export const useWishlistStore = defineStore("wishlist_product", () => {
     localStorage.setItem("wishlist_products", JSON.stringify(wishlists.value));
   };
 
-  // cart product initialize
+
+  // wishlist product initialize
+
   const initializeWishlistProducts = () => {
     const wishlistData = localStorage.getItem("wishlist_products");
     if (wishlistData) {
@@ -32,7 +35,7 @@ export const useWishlistStore = defineStore("wishlist_product", () => {
     }
   };
 
-  // mounted to update cart products
+  // mounted to update wishlist products
   onMounted(() => {
     initializeWishlistProducts();
   });

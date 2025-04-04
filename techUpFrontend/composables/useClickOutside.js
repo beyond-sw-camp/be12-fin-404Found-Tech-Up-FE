@@ -1,4 +1,5 @@
-import {ref, onMounted, onUnmounted} from 'vue';
+import { ref, onMounted, onUnmounted } from "vue";
+
 
 export default function useClickOutside(callback) {
   const elementRef = ref(null);
@@ -6,21 +7,21 @@ export default function useClickOutside(callback) {
   const handleClickOutside = (event) => {
     const target = event.target;
 
-    // Handle cases where elementRef is a single element
-    if (elementRef.value) {
+    // elementRef가 단일 요소인 경우
+    if (elementRef.value instanceof HTMLElement) {
       if (elementRef.value.contains(target)) {
-        return; // Click inside, do nothing
+        return; // 내부 클릭 시 아무 동작도 하지 않음
       }
     }
 
-    // Handle cases where elementRef is an array of elements
+    // elementRef가 여러 요소의 배열인 경우
     if (Array.isArray(elementRef.value)) {
       if (elementRef.value.some((el) => el.contains(target))) {
-        return; // Click inside one of the elements, do nothing
+        return; // 배열 내 요소 중 하나라도 내부 클릭이면 아무 동작도 하지 않음
       }
     }
 
-    // Click is outside, trigger the callback
+    // 클릭이 외부에서 발생했으므로 callback 실행
     callback();
   };
 

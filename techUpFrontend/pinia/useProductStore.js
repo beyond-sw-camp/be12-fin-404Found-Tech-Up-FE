@@ -13,14 +13,15 @@ export const useProductStore = defineStore("product", () => {
     activeImg.value = img;
   };
 
-  // handle image active
+  // handle filter dropdown toggle
   const handleOpenFilterDropdown = () => {
-    openFilterDropdown.value = !openFilterDropdown.value
+    openFilterDropdown.value = !openFilterDropdown.value;
   };
 
-  // handle image active
+  // handle filter offcanvas toggle
   const handleOpenFilterOffcanvas = () => {
-    openFilterOffcanvas.value = !openFilterOffcanvas.value
+    openFilterOffcanvas.value = !openFilterOffcanvas.value;
+
   };
 
   return {

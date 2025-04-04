@@ -1,16 +1,11 @@
 <template>
   <div>
-    <header-one />
+    <header-four />
     <main>
       <slot />
     </main>
-    <footer-one />
+    <footer-two />
     <back-to-top />
     <!-- <modal-product /> -->
   </div>
 </template>
-
-<script>
-
-
-</script>

@@ -1,16 +1,13 @@
 <template>
   <div>
-    <header-one />
+    <header-two :style_2="true" />
     <main>
       <slot />
     </main>
-    <footer-one />
+    <footer-one :primary_style="true" />
     <back-to-top />
     <!-- <modal-product /> -->
   </div>
 </template>
 
-<script>
-
-
-</script>
+<script></script>

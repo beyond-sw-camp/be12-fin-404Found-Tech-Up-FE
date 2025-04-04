@@ -1,5 +1,5 @@
 
-const product_data= [
+const product_data = [
   {
     id: "641e887d05f9ee1717e1348a",
     sku: "NTB7SDVX44",

@@ -1,7 +1,6 @@
 <template>
-  <div
-    class="tp-header-main-right d-flex align-items-center justify-content-end"
-  >
+
+  <div class="tp-header-main-right d-flex align-items-center justify-content-end">
     <div class="tp-header-login d-none d-lg-block">
       <nuxt-link href="/profile" class="d-flex align-items-center">
         <div class="tp-header-login-icon">
@@ -24,7 +23,7 @@
       <div class="tp-header-action-item d-none d-lg-block">
         <nuxt-link href="/wishlist" class="tp-header-action-btn">
           <svg-wishlist />
-          <span class="tp-header-action-badge">{{wishlistStore.wishlists.length}}</span>
+          <span class="tp-header-action-badge">{{ wishlistStore.wishlists.length }}</span>
         </nuxt-link>
       </div>
       <div class="tp-header-action-item">
@@ -46,10 +45,11 @@
   </div>
 </template>
 
-<script setup lang="ts">
+
+<script setup>
 import { useCartStore } from '@/pinia/useCartStore';
 import { useWishlistStore } from '@/pinia/useWishlistStore';
-import { useUtilityStore} from '@/pinia/useUtilityStore';
+import { useUtilityStore } from '@/pinia/useUtilityStore';
 
 const cartStore = useCartStore();
 const wishlistStore = useWishlistStore();

@@ -61,12 +61,12 @@
     </nav>
 </template>
 
-<script setup lang="ts">
+<script>
 import { mobile_menu } from "@/data/menu-data";
 
-let isActiveMenu = ref<string>("");
+let isActiveMenu = ref("");
 
-const handleOpenSubMenu = (title: string) => {
+const handleOpenSubMenu = (title) => {
   if (title === isActiveMenu.value) {
     isActiveMenu.value = "";
   } else {

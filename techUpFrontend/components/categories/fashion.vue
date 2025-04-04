@@ -34,7 +34,7 @@
   </section>
 </template>
 
-<script setup lang="ts">
+<script>
 import category_data from "@/data/category-data";
 
 const category_items = category_data.filter((c) => c.productType === "fashion");

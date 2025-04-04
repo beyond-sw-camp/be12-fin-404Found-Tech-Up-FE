@@ -6,7 +6,7 @@
           <div class="tp-feature-item d-flex align-items-start">
             <div class="tp-feature-icon mr-15">
               <span>
-                <svg-delivery/>
+                <svg-delivery />
               </span>
             </div>
             <div class="tp-feature-content">
@@ -19,7 +19,7 @@
           <div class="tp-feature-item d-flex align-items-start">
             <div class="tp-feature-icon mr-15">
               <span>
-                <svg-refund/>
+                <svg-refund />
               </span>
             </div>
             <div class="tp-feature-content">
@@ -32,12 +32,12 @@
           <div class="tp-feature-item d-flex align-items-start">
             <div class="tp-feature-icon mr-15">
               <span>
-                <svg-discount/>
+                <svg-discount />
               </span>
             </div>
             <div class="tp-feature-content">
               <h3 class="tp-feature-title">Member Discount</h3>
-              <p>One very order over {{formatPrice(140)}}</p>
+              <p>One very order over {{ formatPrice(140) }}</p>
             </div>
           </div>
         </div>
@@ -45,19 +45,30 @@
           <div class="tp-feature-item d-flex align-items-start">
             <div class="tp-feature-icon mr-15">
               <span>
-                <svg-support/>
-            </span>
-          </div>
-          <div class="tp-feature-content">
-            <h3 class="tp-feature-title">Support 24/7</h3>
-            <p>Contact us 24 hours a day</p>
+                <svg-support />
+              </span>
+            </div>
+            <div class="tp-feature-content">
+              <h3 class="tp-feature-title">Support 24/7</h3>
+              <p>Contact us 24 hours a day</p>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 </template>
 
-<script setup lang="ts">
+<script>
+export default {
+  setup() {
+    // 간단한 가격 포맷팅 함수 (필요에 따라 변경)
+    const formatPrice = (price) => {
+      return `$${price.toFixed(2)}`;
+    };
+
+    return { formatPrice };
+  }
+};
 </script>
+

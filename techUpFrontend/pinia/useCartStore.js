@@ -1,9 +1,10 @@
-import { ref, onMounted } from "vue";
+
+import { ref, onMounted, computed, watch } from "vue";
 import { defineStore } from "pinia";
 import { toast } from "vue3-toastify";
 
 export const useCartStore = defineStore("cart_product", () => {
-  const route = useRoute();
+  const route = useRoute(); // Nuxt의 useRoute는 auto-import 되거나, 필요 시 import 구문 추가
   let cart_products = ref([]);
   let orderQuantity = ref(1);
   let cartOffcanvas = ref(false);
@@ -11,10 +12,9 @@ export const useCartStore = defineStore("cart_product", () => {
   // add_cart_product
   const addCartProduct = (payload) => {
     const isExist = cart_products.value.some((i) => i.id === payload.id);
-    if(payload.status === 'out-of-stock'){
+    if (payload.status === "out-of-stock") {
       toast.error(`Out of stock ${payload.title}`);
-    }
-    else if (!isExist) {
+    } else if (!isExist) {
       const newItem = {
         ...payload,
         orderQuantity: 1,
@@ -30,9 +30,7 @@ export const useCartStore = defineStore("cart_product", () => {
                 orderQuantity.value !== 1
                   ? orderQuantity.value + item.orderQuantity
                   : item.orderQuantity + 1;
-              toast.success(
-                `${orderQuantity.value} ${item.title} added to cart`
-              );
+              toast.success(`${orderQuantity.value} ${item.title} added to cart`);
             } else {
               toast.error(`No more quantity available for this product!`);
               orderQuantity.value = 1;
@@ -47,16 +45,15 @@ export const useCartStore = defineStore("cart_product", () => {
 
   // quantity increment
   const increment = () => {
-   return orderQuantity.value = orderQuantity.value + 1;
-  }
+    orderQuantity.value = orderQuantity.value + 1;
+    return orderQuantity.value;
+  };
 
   // quantity decrement
   const decrement = () => {
-   return orderQuantity.value =
-      orderQuantity.value > 1
-        ? orderQuantity.value - 1
-        : (orderQuantity.value = 1);
-  }
+    orderQuantity.value = orderQuantity.value > 1 ? orderQuantity.value - 1 : 1;
+    return orderQuantity.value;
+  };
 
   // quantityDecrement
   const quantityDecrement = (payload) => {
@@ -74,11 +71,9 @@ export const useCartStore = defineStore("cart_product", () => {
     localStorage.setItem("cart_products", JSON.stringify(cart_products.value));
   };
 
-  // remover_cart_products
+  // remove_cart_products
   const removeCartProduct = (payload) => {
-    cart_products.value = cart_products.value.filter(
-      (p) => p.id !== payload.id
-    );
+    cart_products.value = cart_products.value.filter((p) => p.id !== payload.id);
     toast.error(`${payload.title} remove to cart`);
     localStorage.setItem("cart_products", JSON.stringify(cart_products.value));
   };
@@ -93,17 +88,17 @@ export const useCartStore = defineStore("cart_product", () => {
 
   // clear cart
   const clear_cart = () => {
-    const confirmMsg = window.confirm(
-      "Are you sure deleted your all cart items ?"
-    );
+    const confirmMsg = window.confirm("Are you sure deleted your all cart items ?");
     if (confirmMsg) {
       cart_products.value = [];
     }
     localStorage.setItem("cart_products", JSON.stringify(cart_products.value));
   };
+
   // initialOrderQuantity
   const initialOrderQuantity = () => {
-   return orderQuantity.value = 1;
+    orderQuantity.value = 1;
+    return orderQuantity.value;
   };
 
   // totalPriceQuantity
@@ -118,28 +113,24 @@ export const useCartStore = defineStore("cart_product", () => {
         }
         return cartTotal;
       },
-      {
-        total: 0,
-        quantity: 0,
-      }
+      { total: 0, quantity: 0 }
     );
   });
 
-  //handle cartOffcanvas
+  // handle cartOffcanvas
   const handleCartOffcanvas = () => {
-    cartOffcanvas.value = !cartOffcanvas.value
-  }
+    cartOffcanvas.value = !cartOffcanvas.value;
+  };
 
-  // set local storage product when project are mounted
+  // set local storage product when project is mounted
   onMounted(() => {
     initializeCartProducts();
   });
 
-
-  // when router change than order quantity will be 1
+  // when router changes then order quantity will be 1
   watch(() => route.path, () => {
-    orderQuantity.value = 1
-  })
+    orderQuantity.value = 1;
+  });
   return {
     addCartProduct,
     cart_products,

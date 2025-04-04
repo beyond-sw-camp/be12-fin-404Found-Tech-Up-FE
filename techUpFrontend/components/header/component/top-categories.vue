@@ -18,11 +18,10 @@
                   style="width: 50px; height: 50px; object-fit: contain"
                 />
               </span>
-              {{item.parent}}
+              {{ item.parent }}
             </a>
-  
             <ul v-if="item.children" class="tp-submenu">
-              <li v-for="(child, i) in item.children" :key="i">
+              <li v-for="(child, j) in item.children" :key="j">
                 <a class="cursor-pointer" @click="handleSubCategory(child)">{{ child }}</a>
               </li>
             </ul>
@@ -33,33 +32,57 @@
   </div>
 </template>
 
-<script setup lang="ts">
+<script>
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 import category_data from "@/data/category-data";
+import useClickOutside from '@/composables/useClickOutside.js';
+
+
 const router = useRouter();
 const category_items = category_data.filter(
   (c) => c.productType === "electronics"
 );
-let isActive = ref<boolean>(false);
-// handle active
-const handleActive = () => isActive.value = !isActive.value;
 
-// handle parent
-const handleParentCategory = (value:string) => {
-  const newCategory = value.toLowerCase().replace("&", "").split(" ").join("-");
-  router.push(`/shop?category=${newCategory}`);
-}
+let isActive = ref(false);
 
-// handle parent
-const handleSubCategory = (value:string) => {
-  const newCategory = value.toLowerCase().replace("&", "").split(" ").join("-");
-  router.push(`/shop?subCategory=${newCategory}`);
-}
-
-const closeAction = () => {
-    isActive.value = false
+// 토글 처리
+const handleActive = () => {
+  isActive.value = !isActive.value;
 };
 
-const actionButtonRef = useClickOutside(closeAction);
+// 상위 카테고리 클릭 처리
+const handleParentCategory = (value) => {
+  const newCategory = value.toLowerCase().replace("&", "").split(" ").join("-");
+  router.push(`/shop?category=${newCategory}`);
+};
+
+// 서브 카테고리 클릭 처리
+const handleSubCategory = (value) => {
+  const newCategory = value.toLowerCase().replace("&", "").split(" ").join("-");
+  router.push(`/shop?subCategory=${newCategory}`);
+};
+
+const closeAction = () => {
+  isActive.value = false;
+};
+
+const actionButtonRef = ref(null);
+useClickOutside(actionButtonRef, closeAction);
+
+export default {
+  setup() {
+    return {
+      category_items,
+      isActive,
+      handleActive,
+      handleParentCategory,
+      handleSubCategory,
+      actionButtonRef,
+    };
+  }
+};
+
 </script>
 
 <style scoped>

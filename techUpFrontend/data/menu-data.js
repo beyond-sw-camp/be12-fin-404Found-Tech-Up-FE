@@ -163,7 +163,7 @@ export const menu_data = [
 ]
 
 // mobile menu data 
-export const mobile_menu = [
+const mobile_menu = [
   {
     id: 1,
     homes: true,
