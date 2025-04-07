@@ -50,9 +50,9 @@
               <img src="/img/menu/product/menu-product-img-2.jpg" alt="" />
               <div class="shop-mega-menu-btn">
                 <nuxt-link
-                  href="/shop?category=headphones"
+                  href="/shop?category=gpu"
                   class="tp-menu-showcase-btn tp-menu-showcase-btn-2"
-                  >Headphones</nuxt-link
+                  >GPU</nuxt-link
                 >
               </div>
             </div>
