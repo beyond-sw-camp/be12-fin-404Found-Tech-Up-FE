@@ -24,20 +24,19 @@
       </ul>
     </div>
     <div class="tp-header-top-menu-item tp-header-setting">
-      <span @click="handleActive('setting')" class="tp-header-setting-toggle"
-        id="tp-header-setting-toggle">Setting</span>
+      <span @click="handleActive('setting')" class="tp-header-setting-toggle" id="tp-header-setting-toggle">설정</span>
       <ul :class="`${isActive === 'setting' ? 'tp-setting-list-open' : ''}`">
         <li>
-          <nuxt-link href="/profile">My Profile</nuxt-link>
+          <nuxt-link href="/profile">내 프로파일</nuxt-link>
         </li>
         <li>
-          <nuxt-link href="/wishlist">Wishlist</nuxt-link>
+          <nuxt-link href="/wishlist">위시리스트</nuxt-link>
         </li>
         <li>
-          <nuxt-link href="/cart">Cart</nuxt-link>
+          <nuxt-link href="/cart">장바구니</nuxt-link>
         </li>
         <li>
-          <nuxt-link href="/login">Login</nuxt-link>
+          <nuxt-link href="/login">로그인</nuxt-link>
         </li>
       </ul>
     </div>
