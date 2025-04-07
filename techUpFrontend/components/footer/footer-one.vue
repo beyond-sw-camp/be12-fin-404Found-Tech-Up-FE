@@ -14,7 +14,7 @@
                       <img src="/img/logo/logo.svg" alt="logo">
                     </nuxt-link>
                   </div>
-                  <p class="tp-footer-desc">We are a team of designers and developers that create high quality WordPress
+                  <p class="tp-footer-desc">최고의 선택을 도와줍니다
                   </p>
                   <div class="tp-footer-social">
                     <!-- social links -->
@@ -26,41 +26,37 @@
             </div>
             <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6">
               <div class="tp-footer-widget footer-col-2 mb-50">
-                <h4 class="tp-footer-widget-title">My Account</h4>
+                <h4 class="tp-footer-widget-title">사용자</h4>
                 <div class="tp-footer-widget-content">
                   <ul>
-                    <li><a href="#">Track Orders</a></li>
-                    <li><a href="#">Shipping</a></li>
-                    <li><a href="#">Wishlist</a></li>
-                    <li><a href="#">My Account</a></li>
-                    <li><a href="#">Order History</a></li>
-                    <li><a href="#">Returns</a></li>
+                    <li><a href="#">주문 내역</a></li>
+                    <li><a href="#">카트</a></li>
+                    <li><a href="#">위시리스트</a></li>
+                    <li><a href="#">내 프로파일</a></li>
+                    <li><a href="#">게시글 보기</a></li>
                   </ul>
                 </div>
               </div>
             </div>
             <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6">
               <div class="tp-footer-widget footer-col-3 mb-50">
-                <h4 class="tp-footer-widget-title">Infomation</h4>
+                <h4 class="tp-footer-widget-title">정보</h4>
                 <div class="tp-footer-widget-content">
                   <ul>
-                    <li><a href="#">Our Story</a></li>
-                    <li><a href="#">Careers</a></li>
-                    <li><a href="#">Privacy Policy</a></li>
-                    <li><a href="#">Terms & Conditions</a></li>
-                    <li><a href="#">Latest News</a></li>
-                    <li><a href="#">Contact Us</a></li>
+                    <li><a href="#">소개</a></li>
+                    <li><a href="#">개인정보처리방침</a></li>
+                    <li><a href="#">약관 </a></li>
                   </ul>
                 </div>
               </div>
             </div>
             <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6">
               <div class="tp-footer-widget footer-col-4 mb-50">
-                <h4 class="tp-footer-widget-title">Talk To Us</h4>
+                <h4 class="tp-footer-widget-title">문의</h4>
                 <div class="tp-footer-widget-content">
                   <div class="tp-footer-talk mb-20">
-                    <span>Got Questions? Call us</span>
-                    <h4><a href="tel:670-413-90-762">+670 413 90 762</a></h4>
+                    <span>전화번호</span>
+                    <h4><a href="tel:670-413-90-762">(+82) 010-1234-1234</a></h4>
                   </div>
                   <!-- footer contact start -->
                   <footer-contact />
