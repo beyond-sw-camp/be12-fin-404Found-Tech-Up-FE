@@ -38,7 +38,7 @@
           <div class="tp-mega-menu-wrapper p-relative">
             <div class="row align-items-center">
               <div class="col-xl-2 col-lg-5 col-md-5 col-sm-4 col-6">
-                <div class="logo">
+                <div class="logo" style="object-fit: cover;">
                   <nuxt-link href="/">
                     <img src="/img/logo/logo.svg" alt="logo">
                   </nuxt-link>
@@ -54,7 +54,7 @@
                 </div>
               </div>
               <div class="col-xl-5 col-lg-7 col-md-7 col-sm-8 col-6">
-                <div class="tp-header-bottom-right d-flex align-items-center justify-content-end pl-30">
+                <div class="tp-header-bottom-right d-flex align-items-center justify-content-end pl-60">
                   <div class="tp-header-search-2 d-none d-sm-block">
                     <form @submit.prevent="handleSubmit">
                       <input type="text" placeholder="상품 검색" v-model="searchText">
