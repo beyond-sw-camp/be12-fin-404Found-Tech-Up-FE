@@ -61,6 +61,7 @@ pipeline {
                 '''
                 echo "MODIFY default.conf"
                 sh """
+                    sed -i 's|\${FRONTEND_URL}|${FRONTEND_URL}|' ${WORKSPACE}/techUpFrontend/nginx/default.conf
                     sed -i 's|\${BACKEND_URL}|${BACKEND_URL}|' ${WORKSPACE}/techUpFrontend/nginx/default.conf
                 """
             }

@@ -10,7 +10,7 @@
                 <span>
                   <svg-shipping-car />
                 </span>
-                <p>FREE Express Shipping On Orders {{ formatPrice(570) }}+</p>
+                <p>{{ formatPrice(64000) }} 이상 구매하면 배송비 무료!</p>
               </div>
             </div>
             <div class="col-md-6">
@@ -27,7 +27,7 @@
         <div class="container">
           <div class="row align-items-center">
             <div class="col-xl-2 col-lg-2 col-md-4 col-6">
-              <div class="logo">
+              <div class="logo" style="object-fit: cover;">
                 <nuxt-link href="/">
                   <img src="/img/logo/logo.svg" alt="logo" />
                 </nuxt-link>
@@ -75,7 +75,7 @@
                   </div>
                   <div class="tp-header-contact-content">
                     <h5>Hotline:</h5>
-                    <p>+080 0808 0808</p>
+                    <p>+82 010-1234-1234</p>
                   </div>
                 </div>
               </div>
@@ -121,7 +121,8 @@
                   </nuxt-link>
                 </div>
                 <div class="tp-header-action-item">
-                  <button @click="cartStore.handleCartOffcanvas" type="button" class="tp-header-action-btn cartmini-open-btn">
+                  <button @click="cartStore.handleCartOffcanvas" type="button"
+                    class="tp-header-action-btn cartmini-open-btn">
                     <svg-cart-bag />
                     <span class="tp-header-action-badge">{{ cartStore.totalPriceQuantity.quantity }}</span>
                   </button>
@@ -158,9 +159,9 @@ import { useSticky } from '@/composables/useSticky.js';
 // 만약 formatPrice 함수가 전역에 없다면 직접 정의하세요.
 const formatPrice = (price, withCurrency = true) => {
   if (withCurrency) {
-    return `$${price.toFixed(2)}`;
+    return `${price.toFixed(0)}원`;
   }
-  return price.toFixed(2);
+  return price.toFixed(0);
 };
 
 const { isSticky } = useSticky();
@@ -168,4 +169,3 @@ const cartStore = useCartStore();
 const wishlistStore = useWishlistStore();
 const utilsStore = useUtilityStore();
 </script>
-

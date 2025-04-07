@@ -3,6 +3,7 @@ const category_data = [
   {
     id: "641d424bdbfab7b02ab28b95",
     img: "https://i.ibb.co/fYkYrr37/cpu-image.png",
+
     parent: "CPU",
     children: [
       "인텔",
