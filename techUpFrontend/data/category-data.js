@@ -2,7 +2,7 @@
 const category_data = [
   {
     id: "641d424bdbfab7b02ab28b95",
-    img: "https://i.ibb.co/sVxYFDY/product-cat-1.png",
+    img: "/img/menu/product/ryzen_3700x.jpg",
     parent: "CPU",
     children: [
       "인텔",
@@ -17,7 +17,7 @@ const category_data = [
   },
   {
     id: "6419723bd7dc5155c04350d4",
-    img: "https://i.ibb.co/xHFpQTV/product-cat-2.png",
+    img: "/img/menu/product/ZMASLO_RTX_5090.png",
     parent: "GPU",
     children: [
       "GIGABYTE",
@@ -36,7 +36,7 @@ const category_data = [
   },
   {
     id: "6419723bd7dc5155c04350d5",
-    img: "https://i.ibb.co/S0GjZdp/product-cat-3.png",
+    img: "/img/menu/product/DDR5.jpg",
     parent: "RAM",
     children: [
       "삼성 전자",
@@ -55,7 +55,7 @@ const category_data = [
   },
   {
     id: "6419723bd7dc5155c04350d6",
-    img: "https://i.ibb.co/g3YK8H2/product-cat-4.png",
+    img: "/img/menu/product/SSD.jpg",
     parent: "SSD",
     children: [
       "삼성 전자",
@@ -74,7 +74,7 @@ const category_data = [
   },
   {
     id: "6419723bd7dc5155c04350d7",
-    img: "https://i.ibb.co/D9qfYWX/product-cat-5.png",
+    img: "/img/menu/product/Mk2010_HDD.jpg",
     parent: "HDD",
     children: [
       "Seagate",
