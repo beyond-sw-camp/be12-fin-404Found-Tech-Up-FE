@@ -27,7 +27,7 @@
         <div class="container">
           <div class="row align-items-center">
             <div class="col-xl-2 col-lg-2 col-md-4 col-6">
-              <div class="logo">
+              <div class="logo" style="object-fit: cover;">
                 <nuxt-link href="/">
                   <img src="/img/logo/logo.svg" alt="logo" />
                 </nuxt-link>
