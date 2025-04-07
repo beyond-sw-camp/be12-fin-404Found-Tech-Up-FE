@@ -20,7 +20,7 @@
                   <li><nuxt-link href="/shop">Monitor</nuxt-link></li>
                   <li><nuxt-link href="/shop">Thermometer</nuxt-link></li>
                   <li><nuxt-link href="/shop">Backpack</nuxt-link></li>
-                  <li><nuxt-link href="/shop">Headphones</nuxt-link></li>
+                  <li><nuxt-link href="/shop">GPU</nuxt-link></li>
                 </ul>
               </div>
 
