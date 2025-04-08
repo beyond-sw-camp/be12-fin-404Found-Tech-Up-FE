@@ -436,9 +436,9 @@ const product_data = [
   {
     id: "641e887d05f9ee1717e1349f",
     sku: "AF7SDVX65",
-    img: "https://i.ibb.co/3WMPkkf/mobile-5.png",
-    title: "iPhone 14 Pro",
-    slug: "iPhone-14-pro",
+    img: "https://i.ibb.co/Vpxfqtf3/cpu-amd-1.png",
+    title: "AMD 라이젠7-6세대 9700X",
+    slug: "AMD-라이젠7-6세대-9700X",
     unit: "10pcs",
     imageURLs: [
       {
@@ -446,37 +446,37 @@ const product_data = [
           name: "Lunar Green",
           clrCode: "#33422B",
         },
-        img: "https://i.ibb.co/3WMPkkf/mobile-5.png",
+        img: "https://i.ibb.co/Vpxfqtf3/cpu-amd-1.png",
       },
       {
         color: {
           name: "Dark",
           clrCode: "#292C31",
         },
-        img: "https://i.ibb.co/MfdxWfv/mobile-6.png",
+        img: "https://i.ibb.co/mVTfRS7X/cpu-amd-2.png",
       },
       {
         color: {
           name: "Red Wine",
           clrCode: "#BA1827",
         },
-        img: "https://i.ibb.co/vV22rXc/mobile-7.png",
+        img: "https://i.ibb.co/Cstyk8TF/cpu-amd-3.png",
       },
       {
         color: {
           name: "Peach Schnapps",
           clrCode: "#EAD2CE",
         },
-        img: "https://i.ibb.co/Kby3sY7/mobile-8.png",
+        img: "https://i.ibb.co/ynMDKt2h/cpu-amd-4.png",
       },
     ],
     parent: "CPU",
-    children: "Apple",
+    children: "AMD",
     price: 1199,
     discount: 15,
     quantity: 20,
     brand: {
-      name: "Apple",
+      name: "AMD",
     },
     category: {
       name: "CPU",
@@ -537,7 +537,7 @@ const product_data = [
     ],
     featured: true,
     sellCount: 0,
-    tags: ["Mobile ", "Tablets", "Apple"],
+    tags: ["CPU", "AMD"],
   },
   {
     id: "641d4106dbfab7b02ab28b22",
