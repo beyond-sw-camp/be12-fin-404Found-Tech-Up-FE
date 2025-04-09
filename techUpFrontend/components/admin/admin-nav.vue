@@ -1,0 +1,36 @@
+<template>
+  <nav>
+    <div class="nav nav-tabs tp-tab-menu flex-column" id="admin-tab" role="tablist">
+      <button class="nav-link active" id="nav-dashboard-tab" data-bs-toggle="tab" data-bs-target="#nav-dashboard"
+        type="button" role="tab" aria-controls="nav-dashboard" aria-selected="false">
+        <span><i class="fa-regular fa-user-pen"></i></span>대시보드
+      </button>
+      <button class="nav-link" id="nav-users-tab" data-bs-toggle="tab" data-bs-target="#nav-users" type="button"
+        role="tab" aria-controls="nav-users" aria-selected="false">
+        <span><i class="fa-regular fa-circle-info"></i></span> 사용자 관리
+      </button>
+      <button class="nav-link" id="nav-devregister-tab" data-bs-toggle="tab" data-bs-target="#nav-devregister"
+        type="button" role="tab" aria-controls="nav-devregister" aria-selected="false">
+        <span><i class="fa-light fa-location-dot"></i></span> 제품 등록
+      </button>
+      <button class="nav-link" id="nav-devlist-tab" data-bs-toggle="tab" data-bs-target="#nav-devlist" type="button"
+        role="tab" aria-controls="nav-devlist" aria-selected="false">
+        <span><i class="fa-light fa-clipboard-list-check"></i></span> 제품 목록
+      </button>
+      <button class="nav-link" id="nav-notifications-tab" data-bs-toggle="tab" data-bs-target="#nav-notifications"
+        type="button" role="tab" aria-controls="nav-notifications" aria-selected="false">
+        <span><i class="fa-light fa-clipboard-list-check"></i></span> 알림
+      </button>
+      <button class="nav-link" id="nav-coupons-tab" data-bs-toggle="tab" data-bs-target="#nav-coupons" type="button"
+        role="tab" aria-controls="nav-coupons" aria-selected="false">
+        <span><i class="fa-regular fa-bell"></i></span> 쿠폰 목록
+      </button>
+      <button class="nav-link" id="nav-alert-tab" data-bs-toggle="tab" data-bs-target="#nav-alert" type="button"
+        role="tab" aria-controls="nav-alert" aria-selected="false">
+        <span><i class="fa-regular fa-lock"></i></span> 관리자 알림
+      </button>
+    </div>
+  </nav>
+</template>
+
+<script setup></script>
