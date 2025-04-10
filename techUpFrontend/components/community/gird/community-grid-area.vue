@@ -131,3 +131,70 @@ const handlePagination = (data, start, end) => {
   endIndex.value = end;
 };
 </script>
+
+<style scoped>
+/* 커뮤니티 게시판 리스트 페이지 스타일 */
+
+/* 영역 배경 및 여백 조정 */
+.tp-blog-grid-area {
+  padding-bottom: 80px;
+  background-color: #f4f6f8; /* 밝은 그레이 계열 배경 */
+}
+
+/* 게시판 전체 래퍼 */
+.tp-blog-grid-wrapper {
+  background-color: #ffffff;
+  padding: 20px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+}
+
+/* 상단 필터 및 결과 영역 */
+.tp-blog-grid-top {
+  border-bottom: 1px solid #e0e0e0;
+  padding-bottom: 15px;
+  margin-bottom: 20px;
+}
+
+/* 결과 텍스트 */
+.tp-blog-grid-result p {
+  font-size: 16px;
+  color: #333;
+  margin: 0;
+}
+
+/* 탭 버튼 스타일 */
+.nav-tabs .nav-link {
+  font-size: 16px;
+  font-weight: 500;
+  color: #666;
+  background: none;
+  border: none;
+  margin-right: 10px;
+  padding: 8px 12px;
+  border-bottom: 2px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.nav-tabs .nav-link.active {
+  color: #000;
+  border-bottom: 2px solid #000;
+}
+
+/* Grid / List 아이템 래퍼 */
+.tp-blog-grid-item-wrapper,
+.tp-blog-list-item-wrapper {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+/* Pagination 영역 */
+.tp-blog-pagination {
+  text-align: center;
+  margin-top: 20px;
+}
+.tp-pagination {
+  display: inline-block;
+}
+</style>

@@ -1,126 +1,78 @@
 <template>
-  <article class="tp-postbox-item format-image mb-50 transition-3">
-    <!-- 기본 이미지 카드 -->
-    <div v-if="!item.blockquote && !item.video && !item.audio && !item.slider">
-      <div class="tp-postbox-thumb w-img">
-        <nuxt-link :to="`/community-details/${item.id}`">
-          <img :src="item.img" alt="community img" />
-        </nuxt-link>
-      </div>
+  <article class="community-post-item-simple mb-30">
+    <!-- 메타 정보: 작성일, 작성자, 댓글 수, 좋아요, 싫어요 -->
+    <div class="community-post-meta">
+      <span>
+        <i class="far fa-calendar-check"></i> {{ item.date }}
+      </span>
+      <span>
+        <i class="far fa-user"></i> {{ item.author }}
+      </span>
+      <span>
+        <i class="fal fa-comments"></i> {{ item.comments }} Comments
+      </span>
+      <!-- 좋아요 수가 있을 때 표시 -->
+      <span v-if="item.likes !== undefined">
+        <i class="fas fa-thumbs-up"></i> {{ item.likes }}
+      </span>
+      <!-- 싫어요 수가 있을 때 표시 -->
+      <span v-if="item.unlikes !== undefined">
+        <i class="fas fa-thumbs-down"></i> {{ item.unlikes }}
+      </span>
     </div>
-
-    <!-- 비디오 카드 -->
-    <div
-      v-if="item.video && item.video_id"
-      class="tp-postbox-thumb tp-postbox-video w-img p-relative"
-    >
-      <nuxt-link :to="`/community-details/${item.id}`">
-        <img :src="item.img" alt="community img" />
-      </nuxt-link>
-      <a
-        @click="utilsStore.playVideo(item.video_id)"
-        class="cursor-pointer tp-postbox-video-btn popup-video"
-      >
-        <i class="fas fa-play"></i>
-      </a>
-    </div>
-
-    <!-- 오디오 카드 -->
-    <div
-      v-if="item.audio"
-      class="tp-postbox-thumb tp-postbox-audio w-img p-relative"
-    >
-      <iframe allow="autoplay" :src="item.audio_id"></iframe>
-    </div>
-
-    <!-- 슬라이더 카드 -->
-    <div
-      v-if="item.slider"
-      class="tp-postbox-thumb tp-postbox-slider swiper-container w-img p-relative"
-    >
-      <swiper
-        v-bind="slider_setting"
-        :modules="[Navigation, Autoplay]"
-        class="tp-postbox-slider swiper-container w-img p-relative"
-      >
-        <swiper-slide
-          v-for="(img, i) in item.slider_images"
-          :key="i"
-          class="tp-postbox-slider-item"
-        >
-          <img :src="img" alt="slider img" />
-        </swiper-slide>
-        <div class="tp-postbox-nav">
-          <button class="tp-postbox-slider-button-next">
-            <i class="fal fa-arrow-right"></i>
-          </button>
-          <button class="tp-postbox-slider-button-prev">
-            <i class="fal fa-arrow-left"></i>
-          </button>
-        </div>
-      </swiper>
-    </div>
-
-    <!-- 일반 콘텐츠 -->
-    <div v-if="!item.blockquote" class="tp-postbox-content">
-      <div class="tp-postbox-meta">
-        <span>
-          <i class="far fa-calendar-check"></i> {{ item.date }}
-        </span>
-        <span>
-          <a href="#">
-            <i class="far fa-user"></i> {{ item.author }}
-          </a>
-        </span>
-        <span>
-          <a href="#">
-            <i class="fal fa-comments"></i> {{ item.comments }} Comments
-          </a>
-        </span>
-      </div>
-      <h3 class="tp-postbox-title">
-        <nuxt-link :to="`/community-details/${item.id}`">{{ item.title }}</nuxt-link>
-      </h3>
-      <div class="tp-postbox-text">
-        <p>{{ item.desc }} […]</p>
-      </div>
-      <div class="tp-postbox-read-more">
-        <nuxt-link :to="`/community-details/${item.id}`" class="tp-btn">
-          Read More
-        </nuxt-link>
-      </div>
-    </div>
-
-    <!-- 인용 블록 전용 -->
-    <div v-if="item.blockquote" class="tp-postbox-quote">
-      <blockquote>
-        <p>
-          {{ item.title }}
-          <cite>{{ item.author }}</cite>
-        </p>
-      </blockquote>
-    </div>
+    <!-- 게시글 제목 -->
+    <h3 class="community-post-title">
+      <nuxt-link :to="`/community-details/${item.id}`">{{ item.title }}</nuxt-link>
+    </h3>
   </article>
 </template>
 
-<script setup>
-import { Swiper, SwiperSlide } from "swiper/vue";
-import { Navigation, Autoplay } from "swiper/modules";
-import { useUtilityStore } from "@/pinia/useUtilityStore";
-
-const utilsStore = useUtilityStore();
-
-defineProps({
+<script setup lang="js">
+const props = defineProps({
   item: Object,
 });
-
-const slider_setting = {
-  slidesPerView: 1,
-  spaceBetween: 0,
-  autoplay: { delay: 3000 },
-  navigation: {
-    nextEl: ".tp-postbox-slider-button-next",
-    prevEl: ".tp-postbox-slider-button-prev",
-  },
-};
 </script>
+
+<style scoped>
+.community-post-item-simple {
+  background-color: #fff;
+  padding: 15px 20px;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  margin-bottom: 30px;
+  transition: transform 0.3s ease;
+}
+
+.community-post-item-simple:hover {
+  transform: translateY(-3px);
+}
+
+.community-post-meta {
+  font-size: 0.9rem;
+  color: #777;
+  margin-bottom: 10px;
+  display: flex;
+  gap: 15px;
+  justify-content: flex-start;
+}
+
+.community-post-meta span i {
+  margin-right: 5px;
+}
+
+.community-post-title {
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.community-post-title a {
+  color: #333;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.community-post-title a:hover {
+  color: #000;
+}
+</style>
