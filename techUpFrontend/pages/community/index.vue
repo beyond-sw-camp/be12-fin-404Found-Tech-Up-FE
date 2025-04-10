@@ -4,9 +4,9 @@
       <breadcrumb-2 title="Community" subtitle="Community" />
       <!-- breadcrumb end -->
   
-      <!-- blog postbox area start -->
-      <blog-postbox-area/>
-      <!-- blog postbox area end -->
+      <!-- community postbox area start -->
+      <community-postbox-area/>
+      <!-- community postbox area end -->
     </div>
   </template>
   
