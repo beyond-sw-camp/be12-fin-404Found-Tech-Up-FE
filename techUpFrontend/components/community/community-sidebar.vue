@@ -14,6 +14,15 @@
       </div>
     </div>
 
+    <!-- 글쓰기 버튼 -->
+    <div class="community-sidebar-widget mb-35">
+      <div class="community-sidebar-widget-content">
+        <nuxt-link to="/community/write" class="community-write-btn">
+          글쓰기
+        </nuxt-link>
+      </div>
+    </div>
+
     <!-- 최신 게시물 (썸네일 제거) -->
     <div class="community-sidebar-widget mb-35">
       <h3 class="community-sidebar-widget-title">최신 게시물</h3>
@@ -89,7 +98,7 @@
 <script setup>
 import communityData from '@/data/community-data';
 
-// 최신 게시물: 최신순 상위 3개 항목 (필요에 따라 조정)
+// 최신 게시물: communityData의 상위 3개 항목 사용 (필요에 따라 조정)
 const recent_post = communityData.slice(0, 3);
 </script>
 
@@ -138,6 +147,22 @@ const recent_post = communityData.slice(0, 3);
   margin-bottom: 15px;
 }
 
+/* 글쓰기 버튼 */
+.community-write-btn {
+  display: block;
+  width: 100%;
+  text-align: center;
+  background-color: #007bff;
+  color: #fff;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.375rem;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+.community-write-btn:hover {
+  background-color: #0056b3;
+}
+
 /* 최신 게시물 영역 (썸네일 제거) */
 .community-sidebar-blog-item-wrapper {
   display: flex;
@@ -152,6 +177,7 @@ const recent_post = communityData.slice(0, 3);
 .community-sidebar-blog-meta {
   font-size: 0.8rem;
   color: #777;
+  margin-bottom: 5px;
 }
 .community-sidebar-blog-title {
   font-size: 1rem;
