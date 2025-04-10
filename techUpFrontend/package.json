@@ -12,6 +12,8 @@
   "dependencies": {
     "@floating-ui/dom": "1.6.8",
     "@iconify-json/bxl": "^1.1.10",
+    "@nuxtjs/axios": "^5.13.6",
+    "@nuxtjs/proxy": "^2.1.0",
     "@pinia/nuxt": "^0.10.1",
     "@stylistic/stylelint-config": "^1.0.1",
     "@vueform/slider": "^2.1.10",

@@ -30,12 +30,18 @@ export default defineNuxtConfig({
     }
   },
 
-
+  runtimeConfig: {
+    public: {
+      apiBaseUrl: process.env.API_BASE_URL || 'http://localhost:8080'
+    }
+  },
 
   devtools: { enabled: true },
   modules: [
     [
       '@pinia/nuxt',
+      '@nuxtjs/axios',
+      '@nuxtjs/proxy',
       {
         autoImports: [
           'defineStore',
@@ -44,7 +50,24 @@ export default defineNuxtConfig({
       }
     ]
   ],
-  
+
+  axios: {
+    // 백엔드 API 기본 URL은 runtimeConfig.public.apiBaseUrl으로 설정
+    baseURL: process.env.API_BASE_URL || 'http://localhost:8080',
+    // 프록시 사용 - CORS 에러용
+    proxy: true,
+    // 인증이 필요한 경우, withCredentials:true를 추가
+    credentials: true,
+  },
+
+  proxy: {
+    // /api/* 로 오는 요청은 백엔드로 프록시 처리
+    '/api/': {
+      target: process.env.API_BASE_URL || 'http://localhost:8080',
+      changeOrigin: true,
+      pathRewrite: { '^/api/': '' }
+    }
+  },
 
   app: {
     head: {
@@ -96,7 +119,7 @@ export default defineNuxtConfig({
       }
     }
   },
-  
+
 
   css: [
     '@core/scss/template/index.scss',
@@ -109,4 +132,5 @@ export default defineNuxtConfig({
   ],
 
   compatibilityDate: "2025-01-27"
+
 });
