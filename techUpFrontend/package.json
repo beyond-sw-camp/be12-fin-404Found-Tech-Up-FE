@@ -15,6 +15,7 @@
     "@pinia/nuxt": "^0.10.1",
     "@stylistic/stylelint-config": "^1.0.1",
     "@vueform/slider": "^2.1.10",
+    "@vueup/vue-quill": "^1.2.0",
     "@vueuse/core": "^13.0.0",
     "@vueuse/math": "^10.11.1",
     "apexcharts": "^3.54.1",

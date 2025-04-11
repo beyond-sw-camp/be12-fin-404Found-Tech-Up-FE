@@ -30,8 +30,6 @@ export default defineNuxtConfig({
     }
   },
 
-
-
   devtools: { enabled: true },
   modules: [
     [
@@ -44,7 +42,6 @@ export default defineNuxtConfig({
       }
     ]
   ],
-  
 
   app: {
     head: {
@@ -60,21 +57,6 @@ export default defineNuxtConfig({
   },
 
   vite: {
-    build: {
-      commonjsOptions: {
-        transformMixedEsModules: true,
-      },
-    },
-    resolve: {
-      // quill 모듈 경로를 명시적으로 지정하여 default export 문제를 우회
-      alias: {
-        quill: 'quill/dist/quill.js'
-      }
-    },
-    optimizeDeps: {
-      // quill을 의존성 최적화에 포함
-      include: ['quill']
-    },
     ssr: {
       noExternal: ['vuetify']
     },
