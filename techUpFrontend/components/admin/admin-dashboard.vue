@@ -8,6 +8,7 @@ import AnalyticsTotalProfitLineCharts from '@/views/dashboard/AnalyticsTotalProf
 import AnalyticsTransactions from '@/views/dashboard/AnalyticsTransactions.vue'
 import AnalyticsUserTable from '@/views/dashboard/AnalyticsUserTable.vue'
 import AnalyticsWeeklyOverview from '@/views/dashboard/AnalyticsWeeklyOverview.vue'
+import AnalyticsTopWishlist from '../../views/dashboard/AnalyticsTopWishlist.vue';
 
 const totalProfit = {
   title: 'Total Profit',
@@ -54,9 +55,15 @@ const newProject = {
         </VCol>
       </VRow>
     </VCol>
-
+    <!--
     <VCol cols="12" md="4">
       <AnalyticsSalesByCountries />
+    </VCol>
+    -->
+
+
+    <VCol cols="12" md="4">
+      <AnalyticsTopWishlist />
     </VCol>
 
     <VCol cols="12" md="8">
