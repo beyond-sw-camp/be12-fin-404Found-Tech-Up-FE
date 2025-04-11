@@ -19,7 +19,7 @@ const result = await useFetch('/statistics', {
   baseURL: config.public.apiBaseUrl
 });
 
-console.log(result.data.value);
+// console.log(result.data.value);
 
 let topWishList = ref(result.data.value.topWishList.map((value) => {
   let result = {};

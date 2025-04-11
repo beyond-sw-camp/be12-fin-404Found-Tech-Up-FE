@@ -12,8 +12,6 @@ let topWishList = props.topWishList.map((value) => {
   result.amount = value.cw;
 });
 
-console.log(topWishList);
-
 </script>
 
 <template>

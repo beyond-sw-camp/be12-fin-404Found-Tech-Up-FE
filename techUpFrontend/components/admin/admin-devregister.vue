@@ -5,33 +5,33 @@
       <!-- 기본 상품 정보 -->
       <div class="form-group">
         <label class="form-label">제품명</label>
-        <input v-model="product.product_name" type="text" class="form-input" required />
+        <input v-model="product.name" type="text" class="form-input" required />
       </div>
 
       <div class="form-group">
         <label class="form-label">제품 가격</label>
-        <input v-model="product.product_price" type="number" step="0.01" class="form-input" required />
+        <input v-model="product.price" type="number" step="0.01" class="form-input" required />
       </div>
 
       <div class="form-group">
         <label class="form-label">브랜드</label>
-        <input v-model="product.product_brand" type="text" class="form-input" required />
+        <input v-model="product.brand" type="text" class="form-input" required />
       </div>
 
       <div class="form-group">
         <label class="form-label">재고</label>
-        <input v-model="product.product_stock" type="number" class="form-input" required />
+        <input v-model="product.stock" type="number" class="form-input" required />
       </div>
 
       <div class="form-group">
         <label class="form-label">제품 설명</label>
-        <textarea v-model="product.product_description" class="form-textarea" required></textarea>
+        <textarea v-model="product.description" class="form-textarea" required></textarea>
       </div>
 
       <!-- 카테고리 선택 -->
       <div class="form-group">
         <label class="form-label">카테고리</label>
-        <select v-model="product.product_category" class="form-select" required>
+        <select v-model="product.category" class="form-select" required>
           <option disabled value="">선택하세요</option>
           <option value="SSD">SSD</option>
           <option value="RAM">RAM</option>
@@ -42,7 +42,7 @@
       </div>
 
       <!-- SSD 스펙 -->
-      <div v-if="product.product_category === 'SSD'" class="spec-box">
+      <div v-if="product.category === 'SSD'" class="spec-box">
         <h3 class="spec-title">SSD 스펙</h3>
         <div class="form-group">
           <label class="form-label">SSD 용량 (GB)</label>
@@ -60,7 +60,7 @@
       </div>
 
       <!-- RAM 스펙 -->
-      <div v-if="product.product_category === 'RAM'" class="spec-box">
+      <div v-if="product.category === 'RAM'" class="spec-box">
         <h3 class="spec-title">RAM 스펙</h3>
         <div class="form-group">
           <label class="form-label">RAM 타입</label>
@@ -77,7 +77,7 @@
       </div>
 
       <!-- HDD 스펙 -->
-      <div v-if="product.product_category === 'HDD'" class="spec-box">
+      <div v-if="product.category === 'HDD'" class="spec-box">
         <h3 class="spec-title">HDD 스펙</h3>
         <div class="form-group">
           <label class="form-label">HDD 용량 (GB)</label>
@@ -95,7 +95,7 @@
       </div>
 
       <!-- CPU 스펙 -->
-      <div v-if="product.product_category === 'CPU'" class="spec-box">
+      <div v-if="product.category === 'CPU'" class="spec-box">
         <h3 class="spec-title">CPU 스펙</h3>
         <div class="form-group">
           <label class="form-label">CPU 종류</label>
@@ -144,15 +144,16 @@
 </template>
 
 <script setup>
+import { useAsyncData, useFetch, useRuntimeConfig } from 'nuxt/app'
 import { ref } from 'vue'
 
 const product = ref({
-  product_name: '',
-  product_price: '',
-  product_brand: '',
-  product_stock: '',
-  product_description: '',
-  product_category: '',
+  name: '',
+  price: '',
+  brand: '',
+  stock: '',
+  description: '',
+  category: '',
 })
 
 // 기존 SSD, RAM + 새로 추가된 HDD, CPU, GPU
@@ -173,21 +174,34 @@ const handleImageUpload = (event) => {
   previewImages.value = selectedFiles.value.map(file => URL.createObjectURL(file))
 }
 
+const config = useRuntimeConfig();
+
 // 폼 제출
 const submitForm = () => {
   // 카테고리에 맞는 스펙 데이터를 합쳐서 payload 구성
   const payload = {
     ...product.value,
-    ...(product.value.product_category === 'SSD' ? ssd.value : {}),
-    ...(product.value.product_category === 'RAM' ? ram.value : {}),
-    ...(product.value.product_category === 'HDD' ? hdd.value : {}),
-    ...(product.value.product_category === 'CPU' ? cpu.value : {}),
-    ...(product.value.product_category === 'GPU' ? gpu.value : {}),
+  }
+  /*
+  ...(product.value.category === 'SSD' ? ssd.value : {}),
+    ...(product.value.category === 'RAM' ? ram.value : {}),
+    ...(product.value.category === 'HDD' ? hdd.value : {}),
+    ...(product.value.category === 'CPU' ? cpu.value : {}),
+    ...(product.value.category === 'GPU' ? gpu.value : {}),
     // 필요하다면 선택된 파일들을 추가 처리
     images: selectedFiles.value,
-  }
+   */
   console.log('등록 데이터:', payload)
   // axios.post('/api/products', payload) 등으로 서버 전송 처리
+  $fetch('/api/product/register', {
+    baseURL: config.public.apiBaseUrl,
+    method: "POST",
+    body: payload
+  }).then((result) => {
+    console.log(result.data.value);
+  }).catch((e) => {
+    console.log(e);
+  });
 }
 </script>
 

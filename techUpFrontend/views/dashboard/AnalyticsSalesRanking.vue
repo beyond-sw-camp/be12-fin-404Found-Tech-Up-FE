@@ -12,8 +12,6 @@ let salesRank = props.salesRank.map((value) => {
   result.number = value.number;
 });
 
-console.log(salesRank);
-
 </script>
 
 <template>
