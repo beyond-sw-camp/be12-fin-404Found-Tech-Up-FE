@@ -8,24 +8,23 @@ import AnalyticsRecentOrders from '@/views/dashboard/AnalyticsRecentOrders.vue';
 import AnalyticsSalesRanking from '@/views/dashboard/AnalyticsSalesRanking.vue';
 import AnalyticsViewRanking from '@/views/dashboard/AnalyticsViewRanking.vue';
 import AnalyticsNewcomers from '../../views/dashboard/AnalyticsNewcomers.vue';
+import { useRuntimeConfig } from 'nuxt/app';
 
-const totalProfit = {
-  title: 'Total Profit',
-  color: 'secondary',
-  icon: 'ri-pie-chart-2-line',
-  stats: '$25.6k',
-  change: 42,
-  subtitle: 'Weekly Project',
-}
 
-const newProject = {
-  title: 'New Project',
-  color: 'primary',
-  icon: 'ri-file-word-2-line',
-  stats: '862',
-  change: -18,
-  subtitle: 'Yearly Project',
-}
+const config = useRuntimeConfig();
+
+const result = await useFetch('/statistics', {
+  baseURL: config.public.apiBaseUrl
+});
+
+console.log(result.data.value);
+
+let topWishList = ref(result.data.value.topWishList.map((value) => {
+  let result = {};
+  result.abbr = value.brand;
+  result.amount = value.cw;
+}));
+
 </script>
 
 <template>
@@ -72,7 +71,7 @@ const newProject = {
   <!-- 위시리스트 상위 제품 -->
   <VRow class="match-height">
     <VCol cols="12" md="12">
-      <AnalyticsTopWishlist />
+      <AnalyticsTopWishlist :topWishList="topWishList" />
     </VCol>
   </VRow>
   <!-- 상위 검색 키워드 목록 -->

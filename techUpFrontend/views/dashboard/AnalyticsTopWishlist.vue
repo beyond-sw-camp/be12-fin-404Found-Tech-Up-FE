@@ -1,31 +1,12 @@
 <script setup>
-import { useFetch } from 'nuxt/app';
-import { onMounted } from 'vue';
 import { VAvatar, VCard, VCardItem, VCardText, VCardTitle, VIcon, VList, VListItem, VListItemSubtitle, VListItemTitle } from 'vuetify/components'
 
-const config = useRuntimeConfig();
-
-const moreList = [
-  {
-    title: 'Yesterday',
-    value: 'Yesterday',
-  },
-  {
-    title: 'Last Week',
-    value: 'Last Week',
-  },
-  {
-    title: 'Last Month',
-    value: 'Last Month',
-  },
-]
-
-
-const result = await useFetch('/statistics', {
-  baseURL: config.public.apiBaseUrl
+const props = defineProps({
+  topWishList: []
 });
 
-let topWishList = result.data.value.topWishList.map((value) => {
+
+let topWishList = props.topWishList.map((value) => {
   let result = {};
   result.abbr = value.brand;
   result.amount = value.cw;
@@ -39,12 +20,6 @@ console.log(topWishList);
   <VCard>
     <VCardItem>
       <VCardTitle>Top Wishlist</VCardTitle>
-
-      <template #append>
-        <div class="me-n3">
-          <MoreBtn :menu-list="moreList" />
-        </div>
-      </template>
     </VCardItem>
 
 
