@@ -5,6 +5,14 @@ import { VCard, VCardItem, VCardTitle, VCardText, VBtn } from 'vuetify/component
 import { useTheme } from 'vuetify'
 import { hexToRgb } from '@layouts/utils'
 
+
+const props = defineProps({
+  xaxis: Array,
+  data: Array,
+  ratio: Number
+});
+
+
 const vuetifyTheme = useTheme()
 
 const options = computed(() => {
@@ -51,15 +59,7 @@ const options = computed(() => {
       active: { filter: { type: 'none' } },
     },
     xaxis: {
-      categories: [
-        'Sun',
-        'Mon',
-        'Tue',
-        'Wed',
-        'Thu',
-        'Fri',
-        'Sat',
-      ],
+      categories: props.xaxis,
       tickPlacement: 'on',
       labels: { show: false },
       crosshairs: { opacity: 0 },
@@ -74,7 +74,7 @@ const options = computed(() => {
           colors: disabledColor,
           fontSize: '13px',
         },
-        formatter: value => `${value > 999 ? `${(value / 1000).toFixed(0)}` : value}k`,
+        formatter: value => `${value > 9999 ? `${(value / 10000).toFixed(0)}` : value}만`,
       },
     },
     responsive: [
@@ -91,31 +91,12 @@ const options = computed(() => {
 })
 
 const series = [{
-  data: [
-    37,
-    57,
-    45,
-    75,
-    57,
-    40,
-    65,
-  ],
+  data: props.data,
 }]
 
-const moreList = [
-  {
-    title: 'Share',
-    value: 'Share',
-  },
-  {
-    title: 'Refresh',
-    value: 'Refresh',
-  },
-  {
-    title: 'Update',
-    value: 'Update',
-  },
-]
+const ratio = ref(props.ratio ? props.ratio : 0);
+
+
 </script>
 
 <template>
@@ -129,7 +110,7 @@ const moreList = [
 
       <div class="d-flex align-center mb-5 gap-x-4">
         <h4 class="text-h4">
-          45%
+          {{ ratio }}%
         </h4>
       </div>
       <!--

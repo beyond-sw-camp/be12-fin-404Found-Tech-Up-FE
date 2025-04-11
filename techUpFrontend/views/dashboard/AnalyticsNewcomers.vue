@@ -20,6 +20,13 @@ const newComers = ref(props.newComers ? props.newComers : 0);
           {{ newComers }}
         </h5>
       </div>
+      <!-- 활성화? -->
+      <!--
+      <VIcon size="24" icon="ri-arrow-up-s-line" color="success" />
+      <div class="text-success">
+        10%
+      </div>
+      -->
     </VCardText>
   </VCard>
 </template>
