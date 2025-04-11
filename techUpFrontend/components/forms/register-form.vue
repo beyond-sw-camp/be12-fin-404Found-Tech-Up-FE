@@ -2,22 +2,24 @@
 import { useForm } from 'vee-validate';
 import * as yup from 'yup';
 import { useUserStore } from '@/pinia/useUserStore'; // useUserStore import 추가
+import { useRouter } from '#app';
 
 let showPass = ref(false);
 let showPassValid = ref(false);
 
 // let showMailValid = ref(false);
-// let clockCounter = ref(180);
-// let clockCountingString = ref(`남은 시간 ${clockCounter.value}초`);
+let clockCounter = ref(180);
+let clockCountingString = ref(`남은 시간 ${clockCounter.value}초`);
 
-// let disableValidationButton = ref(false);
+let disableValidationButton = ref(false);
 
 // let emailValidationString = ref('');
 let nicknameValidationDisabled = ref(false); // 닉네임 중복 확인 버튼 비활성화 상태 추가
 
-// let timer = ref(null);
+let timer = ref(null);
 
 const userStore = useUserStore();
+const router = useRouter();
 
 const signupuser = ref({
   userNickname: "",
@@ -52,34 +54,31 @@ const validateNickname = async () => {
 };
 
 const signup = async () => {
-    console.log(signupuser.value);
+  console.log(signupuser.value);
+  if (signupuser.value.verifyNickname == false) {
+    alert("닉네임 중복 여부를 확인해주세요.");
+    return;
+  }
 
-    if (signupuser.value.userPassword !== signupuser.value.userConfirmPassword) {
-        showError("비밀번호가 일치하지 않습니다.");
-        return;
+  if (signupuser.value.userPassword !== signupuser.value.userConfirmPassword) {
+    alert("비밀번호가 일치하지 않습니다.");
+    return;
+  }
+  try {
+    const response = await userStore.signup(signupuser.value);
+    console.log("Signup success:", response);
+    alert('회원가입이 완료되었습니다.');
+    router.push('/login'); // 회원가입 성공 시 /login 경로로 이동
+  } catch (error) {
+    if (error.response) {
+      // 서버에서 반환한 에러 메시지 처리
+      alert(error.response.data.errorMessage);
+    } else {
+      // 네트워크 에러 또는 서버와의 연결 문제
+      alert("서버와 연결할 수 없습니다. 다시 시도해주세요.");
     }
-    try {
-        const response = await userStore.signup(signupuser.value);
-        console.log("Signup success:", response);
-        alert('회원가입이 완료되었습니다.');
-    } catch (error) {
-        if (error.response) {
-            // 서버에서 반환한 에러 메시지 처리
-            const errorMessage = error.response.data.errorMessage;
-            showError(errorMessage);
-        } else {
-            // 네트워크 에러 또는 서버와의 연결 문제
-            showError("서버와 연결할 수 없습니다. 다시 시도해주세요.");
-        }
-    }
-}
-
-// const errorMessage = ref("");
-
-// function showError(message) {
-//     errorMessage.value = message;
-// }
-
+  }
+};
 
 const { errors, handleSubmit, defineInputBinds, resetForm } = useForm({
   validationSchema: yup.object({
@@ -96,24 +95,24 @@ const { errors, handleSubmit, defineInputBinds, resetForm } = useForm({
 //   resetForm();
 // });
 
-// const togglePasswordVisibility = () => {
-//   showPass.value = !showPass.value;
-// };
+const togglePasswordVisibility = () => {
+  showPass.value = !showPass.value;
+};
 
-// const togglePasswordValidVisibility = () => {
-//   showPassValid.value = !showPassValid.value;
-// };
+const togglePasswordValidVisibility = () => {
+  showPassValid.value = !showPassValid.value;
+};
 
-// const decreaseCounter = () => {
-//   if (clockCounter.value === 0) {
-//     clearInterval(timer.value);
-//     disableValidationButton.value = true;
-//     clockCountingString.value = '시간이 만료되었습니다. 다시 가입을 진행해주세요.';
-//   } else {
-//     clockCounter.value -= 1;
-//     clockCountingString.value = `남은 시간 ${clockCounter.value}초`;
-//   }
-// };
+const decreaseCounter = () => {
+  if (clockCounter.value === 0) {
+    clearInterval(timer.value);
+    disableValidationButton.value = true;
+    clockCountingString.value = '시간이 만료되었습니다. 다시 가입을 진행해주세요.';
+  } else {
+    clockCounter.value -= 1;
+    clockCountingString.value = `남은 시간 ${clockCounter.value}초`;
+  }
+};
 
 // const sendEmailValidation = (ev) => {
 //   // axios 요청
