@@ -12,7 +12,7 @@ const profit = ref(props.totalSales);
 <template>
   <VCard>
     <VCardItem>
-      <VCardTitle>총 수입(원)</VCardTitle>
+      <VCardTitle>이 달의 수입(원)</VCardTitle>
     </VCardItem>
 
     <VCardText>

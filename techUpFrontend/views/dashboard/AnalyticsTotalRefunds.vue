@@ -13,7 +13,7 @@ const totalRefunds = ref(props.totalRefunds);
 <template>
   <VCard>
     <VCardItem>
-      <VCardTitle>총 주문 취소</VCardTitle>
+      <VCardTitle>이 달의 주문 취소</VCardTitle>
     </VCardItem>
 
     <VCardText>

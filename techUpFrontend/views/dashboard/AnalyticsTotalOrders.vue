@@ -13,7 +13,7 @@ const totalOrders = ref(props.totalOrders);
 <template>
   <VCard>
     <VCardItem>
-      <VCardTitle>총 주문</VCardTitle>
+      <VCardTitle>이 달의 주문</VCardTitle>
     </VCardItem>
 
     <VCardText>

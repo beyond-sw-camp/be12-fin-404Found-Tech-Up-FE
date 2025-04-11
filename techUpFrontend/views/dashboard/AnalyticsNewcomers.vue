@@ -13,7 +13,7 @@ const newComers = ref(props.newComers);
 <template>
   <VCard>
     <VCardItem>
-      <VCardTitle>신규 회원</VCardTitle>
+      <VCardTitle>이 달의 신규 회원</VCardTitle>
     </VCardItem>
 
     <VCardText>
