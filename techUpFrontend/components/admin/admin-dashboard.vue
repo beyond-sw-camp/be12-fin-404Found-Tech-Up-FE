@@ -76,6 +76,7 @@ let topSales = ref(result.data.value.topSales);
 
   </VRow>
   <!-- 조회수 상위 제품 -->
+  <!-- TODO -->
   <VRow class="match-height">
     <VCol cols="12" md="12">
       <AnalyticsViewRanking />
@@ -94,12 +95,13 @@ let topSales = ref(result.data.value.topSales);
     </VCol>
   </VRow>
   <!-- 상위 검색 키워드 목록 -->
+  <!-- TODO -->
   <VRow class="match-height">
     <VCol cols="12" md="12">
       <AnalyticsTopKeyword />
     </VCol>
   </VRow>
-
+  <!-- 기존 컴포넌트 메모용 -->
   <!--
     <VCol cols="12" md="8">
       <AnalyticsTransactions />

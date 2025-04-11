@@ -21,6 +21,10 @@
         type="button" role="tab" aria-controls="nav-notifications" aria-selected="false">
         <span><i class="fa-light fa-clipboard-list-check"></i></span> 알림
       </button>
+      <button class="nav-link" id="nav-coupon-create-tab" data-bs-toggle="tab" data-bs-target="#nav-coupon-create"
+        type="button" role="tab" aria-controls="nav-coupon-create" aria-selected="false">
+        <span><i class="fa-light fa-location-dot"></i></span> 쿠폰 등록
+      </button>
       <button class="nav-link" id="nav-coupons-tab" data-bs-toggle="tab" data-bs-target="#nav-coupons" type="button"
         role="tab" aria-controls="nav-coupons" aria-selected="false">
         <span><i class="fa-regular fa-bell"></i></span> 쿠폰 목록
