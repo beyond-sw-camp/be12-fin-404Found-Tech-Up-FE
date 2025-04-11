@@ -6,7 +6,8 @@ export const useUserStore = defineStore('user', {
   actions: {
     async verifyNickname(nickname) {
         try {
-            const response = await axios.post('/api/user/verify/nickname', { nickname });
+            const response = await axios.post('/api/user/verify/nickname', { userNickname: nickname }, // JSON 데이터
+                { headers: { 'Content-Type': 'application/json' } }); // 헤더 설정
             return response.data; // { success: true/false }
         } catch (error) {
             console.error('API 요청 중 오류 발생:', error);

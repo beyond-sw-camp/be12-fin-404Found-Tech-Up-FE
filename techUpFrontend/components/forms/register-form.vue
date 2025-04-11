@@ -6,16 +6,16 @@ import { useUserStore } from '@/pinia/useUserStore'; // useUserStore import 추�
 let showPass = ref(false);
 let showPassValid = ref(false);
 
-let showMailValid = ref(false);
-let clockCounter = ref(180);
-let clockCountingString = ref(`남은 시간 ${clockCounter.value}초`);
+// let showMailValid = ref(false);
+// let clockCounter = ref(180);
+// let clockCountingString = ref(`남은 시간 ${clockCounter.value}초`);
 
-let disableValidationButton = ref(false);
+// let disableValidationButton = ref(false);
 
-let emailValidationString = ref('');
+// let emailValidationString = ref('');
 let nicknameValidationDisabled = ref(false); // 닉네임 중복 확인 버튼 비활성화 상태 추가
 
-let timer = ref(null);
+// let timer = ref(null);
 
 const userStore = useUserStore();
 
@@ -36,11 +36,14 @@ const validateNickname = async () => {
 
   try {
     const response = await userStore.verifyNickname(nickname); // Pinia store의 함수 호출
-    if (response.verifyNickname) {
+    if (response.data.verifyNickname) {
       alert('사용 가능한 별명입니다.');
-      nicknameValidationDisabled.verifyNickname = true; // 버튼 비활성화
+      signupuser.value.verifyNickname = response.data.verifyNickname; // 서버에서 받은 고유값 저장
+      nicknameValidationDisabled.value = true; // 버튼 비활성화
+      console.log(signupuser.value.verifyNickname);
     } else {
-      alert('중복된 별명입니다.');
+      alert('중복된 별명입니다. 다른 별명을 입력해주세요.');
+      signupuser.value.userNickname = ""; // 입력 필드 초기화
     }
   } catch (error) {
     console.error('닉네임 중복 확인 중 오류 발생:', error);
@@ -71,11 +74,11 @@ const signup = async () => {
     }
 }
 
-const errorMessage = ref("");
+// const errorMessage = ref("");
 
-function showError(message) {
-    errorMessage.value = message;
-}
+// function showError(message) {
+//     errorMessage.value = message;
+// }
 
 
 const { errors, handleSubmit, defineInputBinds, resetForm } = useForm({
@@ -88,57 +91,57 @@ const { errors, handleSubmit, defineInputBinds, resetForm } = useForm({
   }),
 });
 
-const onSubmit = handleSubmit(values => {
-  alert(JSON.stringify(values, null, 2));
-  resetForm();
-});
+// const onSubmit = handleSubmit(values => {
+//   alert(JSON.stringify(values, null, 2));
+//   resetForm();
+// });
 
-const togglePasswordVisibility = () => {
-  showPass.value = !showPass.value;
-};
+// const togglePasswordVisibility = () => {
+//   showPass.value = !showPass.value;
+// };
 
-const togglePasswordValidVisibility = () => {
-  showPassValid.value = !showPassValid.value;
-};
+// const togglePasswordValidVisibility = () => {
+//   showPassValid.value = !showPassValid.value;
+// };
 
-const decreaseCounter = () => {
-  if (clockCounter.value === 0) {
-    clearInterval(timer.value);
-    disableValidationButton.value = true;
-    clockCountingString.value = '시간이 만료되었습니다. 다시 가입을 진행해주세요.';
-  } else {
-    clockCounter.value -= 1;
-    clockCountingString.value = `남은 시간 ${clockCounter.value}초`;
-  }
-};
+// const decreaseCounter = () => {
+//   if (clockCounter.value === 0) {
+//     clearInterval(timer.value);
+//     disableValidationButton.value = true;
+//     clockCountingString.value = '시간이 만료되었습니다. 다시 가입을 진행해주세요.';
+//   } else {
+//     clockCounter.value -= 1;
+//     clockCountingString.value = `남은 시간 ${clockCounter.value}초`;
+//   }
+// };
 
-const sendEmailValidation = (ev) => {
-  // axios 요청
+// const sendEmailValidation = (ev) => {
+//   // axios 요청
 
-  // 즉시 인증창 드러냄
-  showMailValid.value = true;
-  // 타이머 설정
-  timer.value = setInterval(decreaseCounter, 1000);
-};
+//   // 즉시 인증창 드러냄
+//   showMailValid.value = true;
+//   // 타이머 설정
+//   timer.value = setInterval(decreaseCounter, 1000);
+// };
 
-const confirmValidation = (ev) => {
-  // axios 요청
+// const confirmValidation = (ev) => {
+//   // axios 요청
 
-  // 요청이 성공이면 고유값을 저장하고 버튼 비활성화
-  emailValidationString.value = '';
-  disableValidationButton.value = true;
-  clearInterval(timer.value);
-  clockCountingString.value = '인증되었습니다.';
+//   // 요청이 성공이면 고유값을 저장하고 버튼 비활성화
+//   emailValidationString.value = '';
+//   disableValidationButton.value = true;
+//   clearInterval(timer.value);
+//   clockCountingString.value = '인증되었습니다.';
 
-  // 요청이 실패하면 오류 처리, 타이머는 계속 돌림
-  // clockCountingString.value = '인증에 실패했습니다.'
-};
+//   // 요청이 실패하면 오류 처리, 타이머는 계속 돌림
+//   // clockCountingString.value = '인증에 실패했습니다.'
+// };
 
-// const name = defineInputBinds('name');
-// const email = defineInputBinds('email');
-const emailValid = defineInputBinds('emailvalid');
-// const password = defineInputBinds('password');
-// const passwordValid = defineInputBinds('passwordvalid');
+// // const name = defineInputBinds('name');
+// // const email = defineInputBinds('email');
+// const emailValid = defineInputBinds('emailvalid');
+// // const password = defineInputBinds('password');
+// // const passwordValid = defineInputBinds('passwordvalid');
 </script>
 
 <template>
@@ -149,8 +152,19 @@ const emailValid = defineInputBinds('emailvalid');
           <label for="name">별명</label>
         </div>
         <div class="tp-login-input" style="display:inline-flex; width:100%;">
-          <input id="name" type="text" placeholder="홍길동" v-model="signupuser.userNickname" />
-          <button type="submit" class="tp-login-btn w-50" @onClick="validateNickname">중복 확인</button>
+          <input
+            id="name"
+            type="text"
+            placeholder="홍길동"
+            v-model="signupuser.userNickname"
+            :disabled="nicknameValidationDisabled"
+          />
+          <button
+            type="button"
+            class="tp-login-btn w-50"
+            @click="validateNickname"
+            :disabled="nicknameValidationDisabled"
+          >중복 확인</button>
         </div>
         <err-message :msg="errors.name" />
       </div>
