@@ -2,19 +2,18 @@
 import { VAvatar, VCard, VCardItem, VCardText, VCardTitle, VList, VListItem, VListItemTitle } from 'vuetify/components'
 
 const props = defineProps({
-  salesRank: []
+  salesRank: Array
 });
-let salesRank = [];
 
-/*
 let salesRank = props.salesRank.map((value) => {
   let result = {};
-  result.abbr = value.name;
-  result.amount = value.price;
+  result.productIdx = value.productIdx;
+  result.productName = value.productName;
+  result.number = value.number;
 });
 
 console.log(salesRank);
-*/
+
 </script>
 
 <template>
@@ -22,25 +21,30 @@ console.log(salesRank);
     <VCardItem>
       <VCardTitle>Top Sales</VCardTitle>
     </VCardItem>
-    <!--
+
     <VCardText>
       <VList class="card-list">
         <VListItem v-for="data in salesRank" :key="data.abbr">
           <template #prepend>
             <VAvatar :color="data.color" variant="tonal" size="40">
-              {{ data.abbr }}
+              {{ data.title }}
             </VAvatar>
           </template>
 
-<VListItemTitle class="mb-1 d-flex align-center">
-  <h6 class="text-h6">
-    {{ data.amount }}
-  </h6>
-</VListItemTitle>
-</VListItem>
-</VList>
-</VCardText>
--->
+          <VListItemTitle class="mb-1 d-flex align-center">
+            <h6 class="text-h6">
+              {{ data.productName }}
+            </h6>
+          </VListItemTitle>
+          <template #append>
+            <VAvatar :color="data.color" variant="tonal" size="40">
+              {{ data.number }}
+            </VAvatar>
+          </template>
+        </VListItem>
+      </VList>
+    </VCardText>
+
   </VCard>
 </template>
 

@@ -32,6 +32,8 @@ let totalSales = ref(result.data.value.totalSales);
 let totalOrders = ref(result.data.value.totalOrders);
 let totalRefunds = ref(result.data.value.totalRefunds);
 
+let topSales = ref(result.data.value.topSales);
+
 </script>
 
 <template>
@@ -39,7 +41,7 @@ let totalRefunds = ref(result.data.value.totalRefunds);
     <!-- 이번 달 신규 회원수-->
     <!-- 이번 달 총 주문 수 -->
     <!-- 이번 달 총 주문 취소 수 -->
-    <VCol cols="4" md="7">
+    <VCol cols="4" md="12">
       <!-- 요약 통계(신규 회원수, 총 주문 수, 총 주문 취소 수)-->
       <VRow class="match-height">
         <VCol cols="4" md="6">
@@ -64,11 +66,13 @@ let totalRefunds = ref(result.data.value.totalRefunds);
         </VCol>
       </VRow>
     </VCol>
-
+    <!-- 최근 주문 내역 -->
+    <!--
     <VCol cols="8" md="5">
       <AnalyticsRecentOrders />
     </VCol>
-    <!-- 최근 주문 내역 -->
+    -->
+
 
   </VRow>
   <!-- 조회수 상위 제품 -->
@@ -80,7 +84,7 @@ let totalRefunds = ref(result.data.value.totalRefunds);
   <!-- 판매량 상위 제품 -->
   <VRow class="match-height">
     <VCol cols="12" md="12">
-      <AnalyticsSalesRanking />
+      <AnalyticsSalesRanking :salesRank="topSales" />
     </VCol>
   </VRow>
   <!-- 위시리스트 상위 제품 -->
