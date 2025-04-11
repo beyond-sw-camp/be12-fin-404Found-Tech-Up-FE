@@ -2,10 +2,10 @@
 import { VCard, VCardItem, VCardText, VCardTitle } from 'vuetify/components';
 
 const props = defineProps({
-  newComers: Number
+  totalOrders: Number
 })
 
-const newComers = ref(props.newComers);
+const totalOrders = ref(props.totalOrders);
 
 
 </script>
@@ -13,13 +13,13 @@ const newComers = ref(props.newComers);
 <template>
   <VCard>
     <VCardItem>
-      <VCardTitle>신규 회원</VCardTitle>
+      <VCardTitle>총 주문</VCardTitle>
     </VCardItem>
 
     <VCardText>
       <div class="d-flex align-center">
         <h5 class="text-h5">
-          {{ newComers }}
+          {{ totalOrders }}
         </h5>
       </div>
       <!-- 활성화? -->

@@ -9,6 +9,8 @@ import AnalyticsSalesRanking from '@/views/dashboard/AnalyticsSalesRanking.vue';
 import AnalyticsViewRanking from '@/views/dashboard/AnalyticsViewRanking.vue';
 import AnalyticsNewcomers from '../../views/dashboard/AnalyticsNewcomers.vue';
 import { useRuntimeConfig } from 'nuxt/app';
+import AnalyticsTotalOrders from '../../views/dashboard/AnalyticsTotalOrders.vue';
+import AnalyticsTotalRefunds from '../../views/dashboard/AnalyticsTotalRefunds.vue';
 
 
 const config = useRuntimeConfig();
@@ -25,6 +27,11 @@ let topWishList = ref(result.data.value.topWishList.map((value) => {
   result.amount = value.cw;
 }));
 
+let newComers = ref(result.data.value.newCustomers);
+let totalSales = ref(result.data.value.totalSales);
+let totalOrders = ref(result.data.value.totalOrders);
+let totalRefunds = ref(result.data.value.totalRefunds);
+
 </script>
 
 <template>
@@ -36,10 +43,18 @@ let topWishList = ref(result.data.value.topWishList.map((value) => {
       <!-- 요약 통계(신규 회원수, 총 주문 수, 총 주문 취소 수)-->
       <VRow class="match-height">
         <VCol cols="4" md="6">
-          <AnalyticsNewcomers />
+          <AnalyticsNewcomers :newComers="newComers" />
         </VCol>
         <VCol cols="4" md="6">
-          <AnalyticsTotalEarning />
+          <AnalyticsTotalEarning :totalSales="totalSales" />
+        </VCol>
+      </VRow>
+      <VRow class="match-height">
+        <VCol cols="4" md="6">
+          <AnalyticsTotalOrders :totalOrders="totalOrders" />
+        </VCol>
+        <VCol cols="4" md="6">
+          <AnalyticsTotalRefunds :totalRefunds="totalRefunds" />
         </VCol>
       </VRow>
       <!-- 매출 요약 -->

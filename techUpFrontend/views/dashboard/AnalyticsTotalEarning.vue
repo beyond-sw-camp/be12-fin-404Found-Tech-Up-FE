@@ -3,10 +3,10 @@ import { VCard, VCardItem, VCardText, VCardTitle } from 'vuetify/components'
 import { VIcon } from 'vuetify/components'
 
 const props = defineProps({
-  profit: Number
+  totalSales: Number
 })
 
-const profit = ref(props.profit ? props.profit : 0.0);
+const profit = ref(props.totalSales);
 </script>
 
 <template>
