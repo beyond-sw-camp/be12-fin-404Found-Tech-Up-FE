@@ -2,8 +2,27 @@ import { fileURLToPath } from 'node:url'
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  //npm run generate를 위한 설정정
+  modules: [
+    [
+      '@pinia/nuxt',
+      {
+        autoImports: [
+          'defineStore',
+          ['defineStore', 'definePiniaStore'],
+        ],
+      },
+    ],
+  ],
+
+  //npm run generate를 위한 설정
   nitro: {
+    devProxy: {
+      '/api': {
+        target: 'http://localhost:8080', // 프록시 대상 URL
+        changeOrigin: true,
+        prependPath: true,
+      },
+    },
     preset: 'static',
     prerender: {
       ignore: [
@@ -31,17 +50,6 @@ export default defineNuxtConfig({
   },
 
   devtools: { enabled: true },
-  modules: [
-    [
-      '@pinia/nuxt',
-      {
-        autoImports: [
-          'defineStore',
-          ['defineStore', 'definePiniaStore']
-        ]
-      }
-    ]
-  ],
 
   app: {
     head: {
@@ -78,7 +86,7 @@ export default defineNuxtConfig({
       }
     }
   },
-  
+
 
   css: [
     '@core/scss/template/index.scss',
@@ -91,4 +99,5 @@ export default defineNuxtConfig({
   ],
 
   compatibilityDate: "2025-01-27"
+
 });

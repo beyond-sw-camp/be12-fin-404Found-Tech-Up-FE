@@ -101,7 +101,7 @@
   <!-- cart offcanvas end -->
 
   <!-- cart offcanvas start -->
-  <offcanvas-mobile-sidebar product-type="fashion" />
+  <!-- <offcanvas-mobile-sidebar product-type="fashion" /> -->
   <!-- cart offcanvas end -->
 </template>
 

@@ -38,9 +38,9 @@
                         </ul>
                       </div>
                       <div class="tp-shop-top-result">
-                        <p v-if="store.filteredProducts?.length && product_data?.length">
+                        <p v-if="store.filteredProducts?.length && product?.length">
   Showing 1–{{ store.filteredProducts.slice(startIndex, endIndex).length }}
-  of {{ product_data.length }} results
+  of {{ product.length }} results
 </p>
 
                       </div>
@@ -107,8 +107,19 @@
   <script setup>
 
   import product_data from '@/data/product-data';
-  import { useProductFilterStore } from '@/pinia/useProductFilterStore';
+  import { useProductFilterBackStore } from '@/pinia/useProductFilterBackStore';
   
+  const config = useRuntimeConfig();
+  const { data: products, error } = await useFetch('/product/list', {
+    baseURL: config.public.apiBaseUrl
+  });
+  if (error.value) {
+    console.error("상품 리스트를 불러오는데 실패했습니다.", error.value);
+  } else {
+    console.log("상품 리스트:", products.value.data);
+  }
+  product_data.value = products.value.data;
+
   const route = useRoute();
   
   const props = defineProps({
@@ -120,7 +131,7 @@
   });
   
   const active_tab = ref(props.list_style ? 'list' : 'grid');
-  const store = useProductFilterStore();
+  const store = useProductFilterBackStore();
   
   let filteredProductsItems = ref(store.filteredProducts || []);
   let startIndex = ref(0);
