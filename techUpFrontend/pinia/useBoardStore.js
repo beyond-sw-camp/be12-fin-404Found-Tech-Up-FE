@@ -86,22 +86,22 @@ export const useBoardStore = defineStore('boardStore', {
     },
 
     async createBoard({
-      board_title,
-      board_content,
-      board_category,
-      user_idx,
+      boardTitle,
+      boardContent,
+      boardCategory,
+      userIdx,
       attachments = []
     }) {
       try {
         // 게시글 생성
         const boardPayload = {
-          board_title,
-          board_content, // 이미 처리된 콘텐츠 (Base64 → S3 URL로 변환됨)
-          board_category,
-          user_idx
+          boardTitle,
+          boardContent, // 이미 처리된 콘텐츠 (Base64 → S3 URL로 변환됨)
+          boardCategory,
+          userIdx
         };
         console.log('스토어 결과', boardPayload);
-        const boardRes = await axios.post('/api/board', boardPayload);
+        const boardRes = await axios.post('/api/board/create', boardPayload);
         const createdBoard = boardRes.data;
         const boardIdx = createdBoard.board_idx;
         console.log('게시글 생성 완료:', createdBoard);

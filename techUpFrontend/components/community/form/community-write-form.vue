@@ -5,7 +5,7 @@
         <!-- 게시글 기본 정보 -->
         <div class="form-group">
           <label class="form-label">게시글 제목</label>
-          <input v-model="board.title" type="text" class="form-input" required />
+          <input v-model="board.boardTitle" type="text" class="form-input" required />
         </div>
   
         <div class="form-group">
@@ -16,7 +16,7 @@
             <!-- 콘텐츠 디버깅용 (실제 사용 시 제거) -->
             <div class="mt-2 text-xs text-gray-500">
               <strong>콘텐츠 미리보기:</strong>
-              <div v-html="board.content.substring(0, 100) + (board.content.length > 100 ? '...' : '')"></div>
+              <div v-html="board.boardContent.substring(0, 100) + (board.boardContent.length > 100 ? '...' : '')"></div>
             </div>
           </ClientOnly>
         </div>
@@ -24,7 +24,7 @@
         <!-- 게시글 카테고리 선택 -->
         <div class="form-group">
           <label class="form-label">게시글 카테고리</label>
-          <select v-model="board.category" class="form-select" required>
+          <select v-model="board.boardCategory" class="form-select" required>
             <option disabled value="">선택하세요</option>
             <option value="Q&A">Q&amp;A</option>
             <option value="자유">자유</option>
@@ -76,9 +76,9 @@
   
   // 게시글 정보를 담을 reactive 객체
   const board = reactive({
-    title: '',
-    content: '',
-    category: ''
+    boardTitle: '',
+    boardContent: '',
+    boardCategory: ''
   });
   
   // 제출 상태 관리
@@ -102,7 +102,7 @@
   // Base64 이미지에서 업로드할 이미지 추출
   const extractImagesFromContent = () => {
     const regex = /<img[^>]+src="(data:image\/[^"]+)"[^>]*>/g;
-    const content = board.content;
+    const content = board.boardContent;
     let match;
     const images = [];
     
@@ -155,9 +155,9 @@
     const images = extractImagesFromContent();
     console.log(`컨텐츠에서 ${images.length}개의 이미지 발견`);
     
-    if (images.length === 0) return board.content;
+    if (images.length === 0) return board.boardContent;
     
-    let processedContent = board.content;
+    let processedContent = board.boardContent;
     let offset = 0; // 문자열 길이 변화에 따른 오프셋 조정
     
     // 각 이미지를 S3에 업로드하고 URL 교체
@@ -193,7 +193,7 @@
   
   // watch로 board.content 변경 감지 (디버깅용)
   watch(
-    () => board.content,
+    () => board.boardContent,
     (newContent) => {
       console.log("watch: board.content changed");
     }
@@ -217,9 +217,9 @@
       
       // 3. 게시글 등록
       const payload = {
-        board_title: board.title,
-        board_content: processedContent, // 처리된 컨텐츠로 교체
-        board_category: board.category,
+        boardTitle: board.boardTitle,
+        boardContent: processedContent, // 처리된 컨텐츠로 교체
+        boardCategory: board.boardCategory,
         attachments: attachedFiles.value
       };
       
@@ -300,7 +300,7 @@
         
         // 텍스트 변경 감지 및 board.content 업데이트
         quill.on('text-change', function() {
-          board.content = quill.root.innerHTML;
+          board.boardContent = quill.root.innerHTML;
           console.log("에디터 내용 업데이트");
         });
         
