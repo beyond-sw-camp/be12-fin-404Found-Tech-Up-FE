@@ -121,13 +121,7 @@ const moreList = [
 <template>
   <VCard>
     <VCardItem>
-      <VCardTitle>Weekly Overview</VCardTitle>
-
-      <template #append>
-        <div class="me-n3">
-          <MoreBtn :menu-list="moreList" />
-        </div>
-      </template>
+      <VCardTitle>월간 수입</VCardTitle>
     </VCardItem>
 
     <VCardText>
@@ -137,14 +131,12 @@ const moreList = [
         <h4 class="text-h4">
           45%
         </h4>
-        <p class="mb-0">
-          Your sales performance is 45% <span class="text-high-emphasis">😎</span> better compared to last month
-        </p>
       </div>
-
-      <VBtn block>
-        Details
-      </VBtn>
+      <!--
+        <VBtn block>
+          Details
+        </VBtn>
+      -->
     </VCardText>
   </VCard>
 </template>
