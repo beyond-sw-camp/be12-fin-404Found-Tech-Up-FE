@@ -1,12 +1,6 @@
 <script setup>
 import { VCol, VRow } from 'vuetify/components';
-import AnalyticsBarCharts from '@/views/dashboard/AnalyticsBarCharts.vue'
-import AnalyticsDepositWithdraw from '@/views/dashboard/AnalyticsDepositWithdraw.vue'
-import AnalyticsSalesByCountries from '@/views/dashboard/AnalyticsSalesByCountries.vue'
 import AnalyticsTotalEarning from '@/views/dashboard/AnalyticsTotalEarning.vue'
-import AnalyticsTotalProfitLineCharts from '@/views/dashboard/AnalyticsTotalProfitLineCharts.vue'
-import AnalyticsTransactions from '@/views/dashboard/AnalyticsTransactions.vue'
-import AnalyticsUserTable from '@/views/dashboard/AnalyticsUserTable.vue'
 import AnalyticsWeeklyOverview from '@/views/dashboard/AnalyticsWeeklyOverview.vue'
 import AnalyticsTopWishlist from '../../views/dashboard/AnalyticsTopWishlist.vue';
 
@@ -31,47 +25,77 @@ const newProject = {
 
 <template>
   <VRow class="match-height">
-
-    <VCol cols="12" md="8">
-      <AnalyticsTransactions />
-    </VCol>
-
-    <VCol cols="12" md="4">
-      <AnalyticsWeeklyOverview />
-    </VCol>
-
-    <VCol cols="12" md="4">
-      <AnalyticsTotalEarning />
-    </VCol>
-
-    <VCol cols="12" md="4">
+    <!-- 이번 달 신규 회원수-->
+    <!-- 이번 달 총 주문 수 -->
+    <!-- 이번 달 총 주문 취소 수 -->
+    <VCol cols="4" md="6">
+      <!-- 요약 통계(신규 회원수, 총 주문 수, 총 주문 취소 수)-->
       <VRow class="match-height">
-        <VCol cols="12" sm="6">
-          <AnalyticsTotalProfitLineCharts />
+        <VCol cols="4" md="12">
+          <AnalyticsTotalEarning />
         </VCol>
-
-        <VCol cols="12" sm="6">
-          <AnalyticsBarCharts />
+      </VRow>
+      <!-- 매출 요약 -->
+      <VRow class="match-height">
+        <VCol cols="4" md="12">
+          <AnalyticsWeeklyOverview />
         </VCol>
       </VRow>
     </VCol>
-    <!--
-    <VCol cols="12" md="4">
-      <AnalyticsSalesByCountries />
-    </VCol>
-    -->
 
-
-    <VCol cols="12" md="4">
+    <VCol cols="8" md="6">
       <AnalyticsTopWishlist />
     </VCol>
+    <!-- 최근 주문 내역 -->
 
-    <VCol cols="12" md="8">
-      <AnalyticsDepositWithdraw />
-    </VCol>
-
-    <VCol cols="12">
-      <AnalyticsUserTable />
+  </VRow>
+  <!-- 조회수 상위 제품 -->
+  <VRow class="match-height">
+    <VCol cols="12" md="12">
+      <AnalyticsTopWishlist />
     </VCol>
   </VRow>
+  <!-- 판매량 상위 제품 -->
+  <VRow class="match-height">
+    <VCol cols="12" md="12">
+      <AnalyticsTopWishlist />
+    </VCol>
+  </VRow>
+  <!-- 상위 검색 키워드 목록 -->
+  <VRow class="match-height">
+    <VCol cols="12" md="12">
+      <AnalyticsTopWishlist />
+    </VCol>
+  </VRow>
+  <!-- 위시리스트 상위 제품 -->
+  <VRow class="match-height">
+    <VCol cols="12" md="12">
+      <AnalyticsTopWishlist />
+    </VCol>
+  </VRow>
+
+  <!--
+      <VCol cols="12" md="8">
+        <AnalyticsTransactions />
+      </VCol>
+      <VCol cols="12" md="4">
+        <VRow class="match-height">
+          <VCol cols="12" sm="6">
+            <AnalyticsTotalProfitLineCharts />
+          </VCol>
+
+          <VCol cols="12" sm="6">
+            <AnalyticsBarCharts />
+          </VCol>
+        </VRow>
+      </VCol>
+
+      <VCol cols="12" md="8">
+        <AnalyticsDepositWithdraw />
+      </VCol>
+
+      <VCol cols="12">
+        <AnalyticsUserTable />
+      </VCol>
+    -->
 </template>

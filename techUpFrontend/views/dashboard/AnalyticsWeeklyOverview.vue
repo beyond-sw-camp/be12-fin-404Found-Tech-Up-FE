@@ -10,9 +10,9 @@ const vuetifyTheme = useTheme()
 const options = computed(() => {
   const currentTheme = ref(vuetifyTheme.current.value.colors)
   const variableTheme = ref(vuetifyTheme.current.value.variables)
-  const disabledColor = `rgba(${ hexToRgb(currentTheme.value['on-surface']) },${ variableTheme.value['disabled-opacity'] })`
-  const borderColor = `rgba(${ hexToRgb(String(variableTheme.value['border-color'])) },${ variableTheme.value['border-opacity'] })`
-  
+  const disabledColor = `rgba(${hexToRgb(currentTheme.value['on-surface'])},${variableTheme.value['disabled-opacity']})`
+  const borderColor = `rgba(${hexToRgb(String(variableTheme.value['border-color']))},${variableTheme.value['border-opacity']})`
+
   return {
     chart: {
       offsetY: -10,
@@ -74,7 +74,7 @@ const options = computed(() => {
           colors: disabledColor,
           fontSize: '13px',
         },
-        formatter: value => `${ value > 999 ? `${ (value / 1000).toFixed(0) }` : value }k`,
+        formatter: value => `${value > 999 ? `${(value / 1000).toFixed(0)}` : value}k`,
       },
     },
     responsive: [
@@ -131,12 +131,7 @@ const moreList = [
     </VCardItem>
 
     <VCardText>
-      <VueApexCharts
-        type="bar"
-        :options="options"
-        :series="series"
-        :height="200"
-      />
+      <VueApexCharts type="bar" :options="options" :series="series" :height="200" />
 
       <div class="d-flex align-center mb-5 gap-x-4">
         <h4 class="text-h4">
