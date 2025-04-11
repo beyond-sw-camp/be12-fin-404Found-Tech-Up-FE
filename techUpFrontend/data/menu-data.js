@@ -11,7 +11,7 @@ export const menu_data = [
   },
   {
     id:3,
-    link:'/blog',
+    link:'/community',
     title:'커뮤니티',
     /*
     drop_down:true,
