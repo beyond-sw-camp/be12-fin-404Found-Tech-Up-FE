@@ -108,12 +108,8 @@
 
   import product_data from '@/data/product-data';
   import { useProductFilterBackStore } from '@/pinia/useProductFilterBackStore';
-  
-  const productStore = useProductFilterBackStore();
-
-  onMounted(() => {
-    productStore.fetchProducts();
-  });
+  import { onMounted, ref, computed } from 'vue';
+  import { useRoute } from 'vue-router';
 
   const route = useRoute();
   
@@ -128,6 +124,12 @@
   const active_tab = ref(props.list_style ? 'list' : 'grid');
   const store = useProductFilterBackStore();
   
+  const productStore = useProductFilterBackStore();
+
+  onMounted(() => {
+    store.fetchProducts();
+  });
+
   let filteredProductsItems = ref(store.filteredProducts || []);
   let startIndex = ref(0);
   let endIndex = ref(store.filteredProducts?.length || 0);

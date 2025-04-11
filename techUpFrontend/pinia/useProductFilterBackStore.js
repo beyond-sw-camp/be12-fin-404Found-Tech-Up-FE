@@ -14,16 +14,18 @@ export const useProductFilterBackStore = defineStore("product_filter", () => {
   // Axios를 이용해 백엔드 API에서 제품 목록을 가져오는 함수
   async function fetchProducts() {
     try {
-      // 백엔드 API의 엔드포인트로 요청
-      const response = await axios.get("/api/product/list");
+      const config = useRuntimeConfig();
+      const response = await axios.get("/api/product/list", {
+        baseURL: config.public.apiBaseUrl
+      });
       if (response.data && response.data.data) {
         products.value = response.data.data;
-        console.log("상품 데이터:", products.value);
+        console.log("백엔드에서 가져온 제품 데이터:", products.value);
       } else {
-        console.error("상품 데이터를 불러올 수 없습니다.", response.data);
+        console.error("API 응답 형식이 올바르지 않습니다.", response.data);
       }
     } catch (err) {
-      console.error("API 호출 오류:", err);
+      console.error("제품 데이터 API 호출 오류:", err);
     }
   }
 
