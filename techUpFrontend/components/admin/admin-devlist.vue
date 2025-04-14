@@ -18,16 +18,16 @@
                 <th style="width:30%">제품</th>
                 <th style="width:10%">카테고리</th>
                 <th style="width:10%">재고</th>
-                <th style="width:10%">평점</th>
+                <th style="width:10%">가격</th>
                 <th style="width:10%">쿠폰 발급</th>
                 <th style="width:10%">삭제</th>
                 <th style="width:10%">편집</th>
               </tr>
             </thead>
             <tbody>
-              <!-- wishlist item start -->
-              <device-item v-for="item in deviceList" :key="item.id" :item="item" :registered="true" />
-              <!-- wishlist item end -->
+              <!-- registered item start -->
+              <admin-device-item v-for="item in filteredItems" :key="item.id" :item="item" :registered="true" />
+              <!-- registered item end -->
             </tbody>
           </table>
         </div>
@@ -40,9 +40,21 @@
 </template>
 
 <script setup>
-let filteredItems = ref([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
+let filteredItems = ref([]);
 let startIndex = ref(0);
 let endIndex = ref(filteredItems.length);
+
+const config = useRuntimeConfig();
+
+$fetch('/product/list', {
+  baseURL: config.public.apiBaseUrl,
+  method: "GET",
+}).then((result) => {
+  console.log(result);
+  filteredItems.value = result;
+}).catch((e) => {
+  console.log(e);
+});
 
 const handlePagination = (data, start, end) => {
   console.log("data", data, "start", start, "end", end);

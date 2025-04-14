@@ -5,14 +5,22 @@ import { VCard, VCardItem, VCardTitle, VCardText, VBtn } from 'vuetify/component
 import { useTheme } from 'vuetify'
 import { hexToRgb } from '@layouts/utils'
 
+
+const props = defineProps({
+  xaxis: Array,
+  data: Array,
+  ratio: Number
+});
+
+
 const vuetifyTheme = useTheme()
 
 const options = computed(() => {
   const currentTheme = ref(vuetifyTheme.current.value.colors)
   const variableTheme = ref(vuetifyTheme.current.value.variables)
-  const disabledColor = `rgba(${ hexToRgb(currentTheme.value['on-surface']) },${ variableTheme.value['disabled-opacity'] })`
-  const borderColor = `rgba(${ hexToRgb(String(variableTheme.value['border-color'])) },${ variableTheme.value['border-opacity'] })`
-  
+  const disabledColor = `rgba(${hexToRgb(currentTheme.value['on-surface'])},${variableTheme.value['disabled-opacity']})`
+  const borderColor = `rgba(${hexToRgb(String(variableTheme.value['border-color']))},${variableTheme.value['border-opacity']})`
+
   return {
     chart: {
       offsetY: -10,
@@ -51,15 +59,7 @@ const options = computed(() => {
       active: { filter: { type: 'none' } },
     },
     xaxis: {
-      categories: [
-        'Sun',
-        'Mon',
-        'Tue',
-        'Wed',
-        'Thu',
-        'Fri',
-        'Sat',
-      ],
+      categories: props.xaxis,
       tickPlacement: 'on',
       labels: { show: false },
       crosshairs: { opacity: 0 },
@@ -74,7 +74,7 @@ const options = computed(() => {
           colors: disabledColor,
           fontSize: '13px',
         },
-        formatter: value => `${ value > 999 ? `${ (value / 1000).toFixed(0) }` : value }k`,
+        formatter: value => `${value > 9999 ? `${(value / 10000).toFixed(0)}` : value}만`,
       },
     },
     responsive: [
@@ -91,65 +91,33 @@ const options = computed(() => {
 })
 
 const series = [{
-  data: [
-    37,
-    57,
-    45,
-    75,
-    57,
-    40,
-    65,
-  ],
+  data: props.data,
 }]
 
-const moreList = [
-  {
-    title: 'Share',
-    value: 'Share',
-  },
-  {
-    title: 'Refresh',
-    value: 'Refresh',
-  },
-  {
-    title: 'Update',
-    value: 'Update',
-  },
-]
+const ratio = ref(props.ratio ? props.ratio : 0);
+
+
 </script>
 
 <template>
   <VCard>
     <VCardItem>
-      <VCardTitle>Weekly Overview</VCardTitle>
-
-      <template #append>
-        <div class="me-n3">
-          <MoreBtn :menu-list="moreList" />
-        </div>
-      </template>
+      <VCardTitle>월간 수입</VCardTitle>
     </VCardItem>
 
     <VCardText>
-      <VueApexCharts
-        type="bar"
-        :options="options"
-        :series="series"
-        :height="200"
-      />
+      <VueApexCharts type="bar" :options="options" :series="series" :height="200" />
 
       <div class="d-flex align-center mb-5 gap-x-4">
         <h4 class="text-h4">
-          45%
+          {{ ratio }}%
         </h4>
-        <p class="mb-0">
-          Your sales performance is 45% <span class="text-high-emphasis">😎</span> better compared to last month
-        </p>
       </div>
-
-      <VBtn block>
-        Details
-      </VBtn>
+      <!--
+        <VBtn block>
+          Details
+        </VBtn>
+      -->
     </VCardText>
   </VCard>
 </template>

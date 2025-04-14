@@ -50,8 +50,6 @@ const coupon = ref({
   product_idx: '',
 })
 
-const config = useRuntimeConfig();
-
 const submitForm = () => {
   // 실제 서버로 전송할 payload
   const payload = {
@@ -59,14 +57,6 @@ const submitForm = () => {
   }
   console.log('등록 데이터:', payload)
   // 여기서 axios.post('/api/coupons', payload).then(...)
-  $fetch('/coupon/register', {
-    baseURL: config.public.apiBaseUrl,
-    method: "POST",
-    body: payload
-  }).then((result) => {
-    console.log(result.data.value);
-  });
-
 }
 </script>
 
