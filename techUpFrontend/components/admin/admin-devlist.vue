@@ -40,9 +40,11 @@
 </template>
 
 <script setup>
+
 let filteredItems = ref([]);
 let startIndex = ref(0);
 let endIndex = ref(filteredItems.length);
+
 
 const config = useRuntimeConfig();
 

@@ -23,7 +23,7 @@
             </thead>
             <tbody>
               <!-- wishlist item start -->
-              <coupon-item.admin v-for="item in filteredItems" :key="item.id" :item="item" />
+              <coupon-item-admin v-for="item in filteredItems" :key="item.id" :item="item" />
               <!-- wishlist item end -->
             </tbody>
           </table>
@@ -37,12 +37,12 @@
 </template>
 
 <script setup>
+
 let filteredItems = ref([]);
 let startIndex = ref(0);
 let endIndex = ref(filteredItems.length);
 
 const config = useRuntimeConfig();
-
 $fetch('/coupon', {
   baseURL: config.public.apiBaseUrl,
   method: "GET",

@@ -46,16 +46,15 @@
         <h3 class="spec-title">SSD 스펙</h3>
         <div class="form-group">
           <label class="form-label">SSD 용량 (GB)</label>
-          <input v-model="ssd.SSD_capacity" type="number" class="form-input" placeholder="ex) 256, 512, 1024"
-            required />
+          <input v-model="ssd.ssdCapacity" type="number" class="form-input" placeholder="ex) 256, 512, 1024" required />
         </div>
         <div class="form-group">
           <label class="form-label">읽기 속도</label>
-          <input v-model="ssd.SSD_read" type="number" class="form-input" placeholder="ex) 3500" required />
+          <input v-model="ssd.ssdRead" type="number" class="form-input" placeholder="ex) 3500" required />
         </div>
         <div class="form-group">
           <label class="form-label">쓰기 속도</label>
-          <input v-model="ssd.SSD_write" type="number" class="form-input" placeholder="ex) 3000" required />
+          <input v-model="ssd.ssdWrite" type="number" class="form-input" placeholder="ex) 3000" required />
         </div>
       </div>
 
@@ -64,15 +63,19 @@
         <h3 class="spec-title">RAM 스펙</h3>
         <div class="form-group">
           <label class="form-label">RAM 타입</label>
-          <input v-model="ram.RAM_type" type="text" class="form-input" placeholder="ex) DDR4" required />
+          <input v-model="ram.ramType" type="text" class="form-input" placeholder="ex) DDR4" required />
         </div>
         <div class="form-group">
           <label class="form-label">RAM 개수</label>
-          <input v-model="ram.RAM_num" type="number" class="form-input" placeholder="ex) 2" required />
+          <input v-model="ram.ramNum" type="number" class="form-input" placeholder="ex) 2" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label">RAM 용량</label>
+          <input v-model="ram.ramSize" type="number" class="form-input" placeholder="ex) 2" required />
         </div>
         <div class="form-group">
           <label class="form-label">사용 장치</label>
-          <input v-model="ram.RAM_usage" type="text" class="form-input" placeholder="ex) 데스크탑용" required />
+          <input v-model="ram.ramUsage" type="text" class="form-input" placeholder="ex) 데스크탑용" required />
         </div>
       </div>
 
@@ -81,16 +84,15 @@
         <h3 class="spec-title">HDD 스펙</h3>
         <div class="form-group">
           <label class="form-label">HDD 용량 (GB)</label>
-          <input v-model="hdd.HDD_capacity" type="number" class="form-input" placeholder="ex) 256, 512, 1024"
-            required />
+          <input v-model="hdd.hddCapacity" type="number" class="form-input" placeholder="ex) 256, 512, 1024" required />
         </div>
         <div class="form-group">
           <label class="form-label">HDD 회전 속도 (RPM)</label>
-          <input v-model="hdd.HDD_rpm" type="number" class="form-input" placeholder="ex) 5400, 7200, 15000" required />
+          <input v-model="hdd.hddRpm" type="number" class="form-input" placeholder="ex) 5400, 7200, 15000" required />
         </div>
         <div class="form-group">
           <label class="form-label">HDD 버퍼 (MB)</label>
-          <input v-model="hdd.HDD_buffer" type="number" class="form-input" placeholder="ex) 32, 64, 512" required />
+          <input v-model="hdd.hddBuffer" type="number" class="form-input" placeholder="ex) 32, 64, 512" required />
         </div>
       </div>
 
@@ -99,15 +101,15 @@
         <h3 class="spec-title">CPU 스펙</h3>
         <div class="form-group">
           <label class="form-label">CPU 종류</label>
-          <input v-model="cpu.CPU_type" type="text" class="form-input" placeholder="ex) 코어i7, 라이젠5" required />
+          <input v-model="cpu.cpuType" type="text" class="form-input" placeholder="ex) 코어i7, 라이젠5" required />
         </div>
         <div class="form-group">
           <label class="form-label">코어 수</label>
-          <input v-model="cpu.CPU_core" type="number" class="form-input" placeholder="ex) 2, 4, 6, 24" required />
+          <input v-model="cpu.cpuCore" type="number" class="form-input" placeholder="ex) 2, 4, 6, 24" required />
         </div>
         <div class="form-group">
           <label class="form-label">스레드 수</label>
-          <input v-model="cpu.CPU_thread" type="number" class="form-input" placeholder="ex) 8, 16, 32" required />
+          <input v-model="cpu.cpuThreads" type="number" class="form-input" placeholder="ex) 8, 16, 32" required />
         </div>
       </div>
 
@@ -116,15 +118,15 @@
         <h3 class="spec-title">GPU 스펙</h3>
         <div class="form-group">
           <label class="form-label">메모리 (GB)</label>
-          <input v-model="gpu.GPU_memory" type="number" class="form-input" placeholder="ex) 6, 8, 12, 16" required />
+          <input v-model="gpu.gpuMemory" type="number" class="form-input" placeholder="ex) 6, 8, 12, 16" required />
         </div>
         <div class="form-group">
           <label class="form-label">칩셋</label>
-          <input v-model="gpu.GPU_chip" type="text" class="form-input" placeholder="ex) RTX 5090, RTX 5070" required />
+          <input v-model="gpu.gpuChip" type="text" class="form-input" placeholder="ex) RTX 5090, RTX 5070" required />
         </div>
         <div class="form-group">
           <label class="form-label">길이 (mm)</label>
-          <input v-model="gpu.GPU_length" type="number" class="form-input" placeholder="ex) 320, 330, 360" required />
+          <input v-model="gpu.gpuLength" type="number" class="form-input" placeholder="ex) 320, 330, 360" required />
         </div>
       </div>
 
@@ -146,6 +148,7 @@
 <script setup>
 import { useAsyncData, useFetch, useRuntimeConfig } from 'nuxt/app'
 import { ref } from 'vue'
+import { useAdminStore } from '../../pinia/useAdminStore'
 
 const product = ref({
   name: '',
@@ -157,11 +160,11 @@ const product = ref({
 })
 
 // 기존 SSD, RAM + 새로 추가된 HDD, CPU, GPU
-const ssd = ref({ SSD_capacity: '', SSD_read: '', SSD_write: '' })
-const ram = ref({ RAM_type: '', RAM_num: '', RAM_usage: '' })
-const hdd = ref({ HDD_capacity: '', HDD_rpm: '', HDD_buffer: '' })
-const cpu = ref({ CPU_type: '', CPU_core: '', CPU_thread: '' })
-const gpu = ref({ GPU_memory: '', GPU_chip: '', GPU_length: '' })
+const ssd = ref({ ssdCapacity: '', ssdRead: '', ssdWrite: '' })
+const ram = ref({ ramType: '', ramNum: '', ramSize: '', ramUsage: '' })
+const hdd = ref({ hddCapacity: '', hddRpm: '', hddBuffer: '' })
+const cpu = ref({ cpuType: '', cpuCore: '', cpuThreads: '' })
+const gpu = ref({ gpuMemory: '', gpuChip: '', gpuLength: '' })
 
 // 이미지 파일들 및 미리보기 URL 배열
 const previewImages = ref([])
@@ -176,16 +179,18 @@ const handleImageUpload = (event) => {
 
 const config = useRuntimeConfig();
 
+const adminStore = useAdminStore();
+
 // 폼 제출
 const submitForm = () => {
   // 카테고리에 맞는 스펙 데이터를 합쳐서 payload 구성
   const payload = {
     ...product.value,
-    ...(product.value.category === 'SSD' ? ssd.value : {}),
-    ...(product.value.category === 'RAM' ? ram.value : {}),
-    ...(product.value.category === 'HDD' ? hdd.value : {}),
-    ...(product.value.category === 'CPU' ? cpu.value : {}),
-    ...(product.value.category === 'GPU' ? gpu.value : {}),
+    ssdSpec: (product.value.category === 'SSD' ? ssd.value : {}),
+    ramSpec: (product.value.category === 'RAM' ? ram.value : {}),
+    hddSpec: (product.value.category === 'HDD' ? hdd.value : {}),
+    cpuSpec: (product.value.category === 'CPU' ? cpu.value : {}),
+    gpuSpec: (product.value.category === 'GPU' ? gpu.value : {}),
     // 필요하다면 선택된 파일들을 추가 처리
     images: selectedFiles.value,
   }
@@ -195,8 +200,9 @@ const submitForm = () => {
     baseURL: config.public.apiBaseUrl,
     method: "POST",
     body: payload
-  }).then((result) => {
+  }).then(async (result) => {
     console.log(result);
+    await adminStore.loadProductList();
   }).catch((e) => {
     console.log(e);
   });
