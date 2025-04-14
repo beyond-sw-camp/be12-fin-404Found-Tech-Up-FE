@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import product_data from "@/data/product-data";
-import {formatString} from '@/utils/index';
+import { formatString } from '@/utils/index';
 
 export const useProductFilterStore = defineStore("product_filter", () => {
   const route = useRoute();
@@ -8,7 +8,7 @@ export const useProductFilterStore = defineStore("product_filter", () => {
   let selectVal = ref("");
 
   const handleSelectFilter = (e) => {
-    console.log('handle select',e)
+    console.log('handle select', e)
     selectVal.value = e.value;
   }
 
@@ -28,7 +28,7 @@ export const useProductFilterStore = defineStore("product_filter", () => {
 
   const filteredProducts = computed(() => {
     let filteredProducts = [...product_data];
-  
+
     // Price filter
     if (route.query.minPrice && route.query.maxPrice) {
       filteredProducts = filteredProducts.filter(
@@ -36,7 +36,7 @@ export const useProductFilterStore = defineStore("product_filter", () => {
           p.price >= Number(route.query.minPrice) &&
           p.price <= Number(route.query.maxPrice)
       );
-    } 
+    }
     // Status filter
     if (route.query.status) {
       if (route.query.status === "on-sale") {
@@ -44,25 +44,25 @@ export const useProductFilterStore = defineStore("product_filter", () => {
       } else if (route.query.status === "in-stock") {
         filteredProducts = filteredProducts.filter((p) => p.status === "in-stock");
       }
-    } 
+    }
     // Category filter
     if (route.query.category) {
       filteredProducts = filteredProducts.filter(
         (p) => formatString(p.parent) === route.query.category
       );
-    } 
+    }
     // Sub-category filter
     if (route.query.subCategory) {
       filteredProducts = filteredProducts.filter(
         (p) => formatString(p.children) === route.query.subCategory
       );
-    } 
+    }
     // Brand filter
     if (route.query.brand) {
       filteredProducts = filteredProducts.filter(
         (p) => formatString(p.brand.name) === route.query.brand
       );
-    } 
+    }
     // Select filter
     if (selectVal.value) {
       if (selectVal.value === "default-sorting") {
@@ -77,7 +77,7 @@ export const useProductFilterStore = defineStore("product_filter", () => {
         filteredProducts = filteredProducts.filter((p) => p.discount > 0);
       }
     }
-  
+
     return filteredProducts;
   });
 
@@ -87,22 +87,22 @@ export const useProductFilterStore = defineStore("product_filter", () => {
   const searchFilteredItems = computed(() => {
     let filteredProducts = [...product_data];
     const { searchText, productType } = route.query;
-  
-    if (searchText && !productType) { 
+
+    if (searchText && !productType) {
       filteredProducts = filteredProducts.filter((prd) =>
         prd.title.toLowerCase().includes(searchText.toLowerCase())
       );
-    } 
-    if (!searchText && productType) { 
+    }
+    if (!searchText && productType) {
       filteredProducts = filteredProducts.filter(
         (prd) => prd.productType.toLowerCase() === productType.toLowerCase()
       );
-    } 
-    if (searchText && productType) { 
+    }
+    if (searchText && productType) {
       filteredProducts = filteredProducts.filter(
         (prd) => prd.productType.toLowerCase() === productType.toLowerCase()
       ).filter(p => p.title.toLowerCase().includes(searchText.toLowerCase()));
-    } 
+    }
     switch (selectVal.value) {
       case "default-sorting":
         break;
@@ -122,11 +122,11 @@ export const useProductFilterStore = defineStore("product_filter", () => {
     }
     return filteredProducts;
   });
-  
+
 
   watch(
     () => route.query || route.path,
-    () => {}
+    () => { }
   );
   return {
     maxProductPrice,
