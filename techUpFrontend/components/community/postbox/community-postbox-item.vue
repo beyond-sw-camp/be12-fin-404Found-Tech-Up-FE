@@ -1,35 +1,49 @@
 <template>
   <article class="community-post-item-simple mb-30">
-    <!-- 메타 정보: 작성일, 작성자, 댓글 수, 좋아요, 싫어요 -->
+    
     <div class="community-post-meta">
       <span>
-        <i class="far fa-calendar-check"></i> {{ item.date }}
+        <i class="far fa-calendar-check"></i> {{ formattedDate }}
       </span>
       <span>
-        <i class="far fa-user"></i> {{ item.author }}
+        <i class="far fa-user"></i> {{ item.writer }}
       </span>
       <span>
-        <i class="fal fa-comments"></i> {{ item.comments }} Comments
+        <i class="fal fa-comments"></i> {{ item.boardComments }} Comments
       </span>
-      <!-- 좋아요 수가 있을 때 표시 -->
-      <span v-if="item.likes !== undefined">
-        <i class="fas fa-thumbs-up"></i> {{ item.likes }}
+      <span v-if="item.boardLikes !== undefined">
+        <i class="fas fa-thumbs-up"></i> {{ item.boardLikes }}
       </span>
-      <!-- 싫어요 수가 있을 때 표시 -->
-      <span v-if="item.unlikes !== undefined">
-        <i class="fas fa-thumbs-down"></i> {{ item.unlikes }}
+      <span v-if="item.boardUnlikes !== undefined">
+        <i class="fas fa-thumbs-down"></i> {{ item.boardUnlikes }}
       </span>
     </div>
-    <!-- 게시글 제목 -->
+
     <h3 class="community-post-title">
-      <nuxt-link :to="`/community-details/${item.id}`">{{ item.title }}</nuxt-link>
+      <nuxt-link :to="`/community-details/${item.idx}`">{{ item.boardTitle }}</nuxt-link>
     </h3>
   </article>
 </template>
 
+
 <script setup lang="js">
+import { computed } from 'vue';
+import { format } from 'date-fns';
+
 const props = defineProps({
-  item: Object,
+  item: {
+    type: Object,
+    required: true
+  }
+});
+
+// 날짜 포맷팅 (ISO 날짜 문자열을 "yyyy-MM-dd HH:mm" 형식으로 변환)
+const formattedDate = computed(() => {
+  try {
+    return format(new Date(props.item.boardCreated), 'yyyy-MM-dd HH:mm');
+  } catch (e) {
+    return props.item.boardCreated; // fallback
+  }
 });
 </script>
 
