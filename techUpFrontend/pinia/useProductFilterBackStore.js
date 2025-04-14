@@ -7,7 +7,7 @@ import { formatString } from '@/utils/index';
 export const useProductFilterBackStore = defineStore("product_filter", () => {
   const route = useRoute();
   const router = useRouter();
-  
+
   // 백엔드 API에서 불러온 상품 데이터를 저장하는 상태
   const products = ref([]);
 
@@ -121,17 +121,17 @@ export const useProductFilterBackStore = defineStore("product_filter", () => {
     let filtered = [...products.value];
     const { searchText, productType } = route.query;
 
-    if (searchText && !productType) { 
+    if (searchText && !productType) {
       filtered = filtered.filter((prd) =>
         prd.title.toLowerCase().includes(searchText.toLowerCase())
       );
     }
-    if (!searchText && productType) { 
+    if (!searchText && productType) {
       filtered = filtered.filter(
         (prd) => prd.productType.toLowerCase() === productType.toLowerCase()
       );
     }
-    if (searchText && productType) { 
+    if (searchText && productType) {
       filtered = filtered.filter(
         (prd) => prd.productType.toLowerCase() === productType.toLowerCase()
       ).filter(p => p.title.toLowerCase().includes(searchText.toLowerCase()));
