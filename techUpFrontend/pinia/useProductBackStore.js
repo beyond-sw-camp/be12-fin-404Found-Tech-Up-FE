@@ -13,11 +13,9 @@ export const useProductBackStore = defineStore("product", () => {
     try {
       const config = useRuntimeConfig();
       // 백엔드 '/product/list' 엔드포인트 호출
-      const { data, error } = await useFetch('/product/list', {
-        baseURL: config.public.apiBaseUrl,
-      });
-      if (error.value) {
-        console.error("상품 데이터를 불러오는데 실패했습니다.", error.value);
+      const response = await axios.get("/api/product/list");
+      if (response.data && response.data.data) {
+        products.value = response.data.data;
       } else {
         products.value = data.value.data || [];
       }

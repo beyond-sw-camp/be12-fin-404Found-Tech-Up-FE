@@ -1,30 +1,31 @@
 import { defineStore } from "pinia";
 import { ref, computed, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
+import axios from "axios";
 import { formatString } from '@/utils/index';
 
 export const useProductFilterBackStore = defineStore("product_filter", () => {
   const route = useRoute();
   const router = useRouter();
   
-  // 백엔드로부터 불러온 상품 데이터를 저장하는 상태
+  // 백엔드 API에서 불러온 상품 데이터를 저장하는 상태
   const products = ref([]);
-  
-  // 백엔드 API에서 제품 목록을 가져오는 함수 (ex: useFetch 사용, Nuxt 3 기준)
+
+  // Axios를 이용해 백엔드 API에서 제품 목록을 가져오는 함수
   async function fetchProducts() {
     try {
       const config = useRuntimeConfig();
-      const { data, error } = await useFetch('/product/list', {
-        baseURL: config.public.apiBaseUrl,
+      const response = await axios.get("/api/product/list", {
+        baseURL: config.public.apiBaseUrl
       });
-      if (error.value) {
-        console.error("상품 데이터를 불러오는데 실패했습니다.", error.value);
+      if (response.data && response.data.data) {
+        products.value = response.data.data;
+        console.log("백엔드에서 가져온 제품 데이터:", products.value);
       } else {
-        // 응답 JSON이 BaseResponse 형태라면, 실제 데이터는 data.data 에 들어가 있음
-        products.value = data.value.data || [];
+        console.error("API 응답 형식이 올바르지 않습니다.", response.data);
       }
     } catch (err) {
-      console.error("API 호출 오류:", err);
+      console.error("제품 데이터 API 호출 오류:", err);
     }
   }
 
@@ -47,7 +48,7 @@ export const useProductFilterBackStore = defineStore("product_filter", () => {
   // 초기 가격 범위: [0, maxProductPrice]
   let priceValues = ref([0, maxProductPrice.value]);
 
-  // maxProductPrice가 변경될 경우 priceValues도 업데이트
+  // maxProductPrice가 변경되면 priceValues도 업데이트
   watch(maxProductPrice, (newVal) => {
     priceValues.value = [0, newVal];
   });
@@ -60,7 +61,7 @@ export const useProductFilterBackStore = defineStore("product_filter", () => {
     priceValues.value = [0, maxProductPrice.value];
   };
 
-  // 필터링: 백엔드에서 불러온 products 배열을 기반으로 필터링 처리
+  // 필터링: 백엔드에서 불러온 products 배열 기반 필터링 처리
   const filteredProducts = computed(() => {
     let filtered = [...products.value];
 
@@ -115,25 +116,25 @@ export const useProductFilterBackStore = defineStore("product_filter", () => {
     return filtered;
   });
 
-  // 검색 필터: route 쿼리 값(searchText, productType 등)을 이용
+  // 검색 필터: route 쿼리 값(searchText, productType 등)을 사용
   const searchFilteredItems = computed(() => {
     let filtered = [...products.value];
     const { searchText, productType } = route.query;
 
-    if (searchText && !productType) {
+    if (searchText && !productType) { 
       filtered = filtered.filter((prd) =>
         prd.title.toLowerCase().includes(searchText.toLowerCase())
       );
     }
-    if (!searchText && productType) {
+    if (!searchText && productType) { 
       filtered = filtered.filter(
         (prd) => prd.productType.toLowerCase() === productType.toLowerCase()
       );
     }
-    if (searchText && productType) {
+    if (searchText && productType) { 
       filtered = filtered.filter(
         (prd) => prd.productType.toLowerCase() === productType.toLowerCase()
-      ).filter((p) => p.title.toLowerCase().includes(searchText.toLowerCase()));
+      ).filter(p => p.title.toLowerCase().includes(searchText.toLowerCase()));
     }
     switch (selectVal.value) {
       case "default-sorting":
@@ -155,11 +156,11 @@ export const useProductFilterBackStore = defineStore("product_filter", () => {
     return filtered;
   });
 
-  // route의 변경 감지 (필요에 따라 리셋 로직 추가 가능)
+  // route의 변경 감지 (필요에 따라 리셋 등 처리)
   watch(
     () => ({ ...route.query, path: route.path }),
     () => {
-      // 필요하면 여기에 동작을 추가 (예: 초기화 등)
+      // 필요한 동작을 추가할 수 있습니다.
     }
   );
 

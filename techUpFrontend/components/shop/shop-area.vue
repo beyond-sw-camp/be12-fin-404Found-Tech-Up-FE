@@ -108,17 +108,8 @@
 
   import product_data from '@/data/product-data';
   import { useProductFilterBackStore } from '@/pinia/useProductFilterBackStore';
-  
-  const config = useRuntimeConfig();
-  const { data: products, error } = await useFetch('/product/list', {
-    baseURL: config.public.apiBaseUrl
-  });
-  if (error.value) {
-    console.error("상품 리스트를 불러오는데 실패했습니다.", error.value);
-  } else {
-    console.log("상품 리스트:", products.value.data);
-  }
-  product_data.value = products.value.data;
+  import { onMounted, ref, computed } from 'vue';
+  import { useRoute } from 'vue-router';
 
   const route = useRoute();
   
@@ -133,6 +124,12 @@
   const active_tab = ref(props.list_style ? 'list' : 'grid');
   const store = useProductFilterBackStore();
   
+  const productStore = useProductFilterBackStore();
+
+  onMounted(() => {
+    store.fetchProducts();
+  });
+
   let filteredProductsItems = ref(store.filteredProducts || []);
   let startIndex = ref(0);
   let endIndex = ref(store.filteredProducts?.length || 0);
