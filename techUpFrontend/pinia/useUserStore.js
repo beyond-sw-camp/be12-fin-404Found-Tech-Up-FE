@@ -23,5 +23,14 @@ export const useUserStore = defineStore('user', {
             throw error;
         }
     },
+    async login(user) {
+        try {
+            const response = await axios.post(`/api/login`, user);
+            return response.data;
+        } catch (error) {
+            console.error("Login error", error.response ? error.response.data : error.message);
+            throw error;
+        }
+    },
   },
 });
