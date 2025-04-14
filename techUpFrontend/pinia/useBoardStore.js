@@ -5,20 +5,34 @@ export const useBoardStore = defineStore('boardStore', {
   state: () => ({
     boardList: [],
     boardFiles: [],
+    totalElements: 0,
+    currentPage: 0,
     currentBoard: null,
     identifier: crypto.randomUUID(), // ✅ 작성 세션마다 고정된 identifier 생성
   }),
 
   actions: {
-    async fetchBoardList() {
-      try {
-        const response = await axios.get('/api/board');
-        this.boardList = response.data;
-        console.log('게시글 목록 조회 성공:', this.boardList);
-      } catch (error) {
-        console.error('게시글 목록 조회 오류:', error);
-      }
-    },
+    async fetchBoardList({ page = 0, size = 10, sort = 'boardCreated', direction = 'desc' } = {}) {
+        try {
+          console.log('페이지 요청:', page, '사이즈:', size);
+          const response = await axios.get('/api/board/list', {
+            params: { page, size, sort, direction }
+          });
+          
+          console.log('원본 응답:', response.data);
+          
+          if (response.data && response.data.data) {
+            this.boardList = response.data.data.boardList;
+            this.totalElements = response.data.data.totalElements;
+            console.log('게시글 목록 조회 성공:', this.boardList);
+            console.log('게시글 갯수 성공:', this.totalElements);
+          } else {
+            console.error('응답 형식 오류:', response.data);
+          }
+        } catch (error) {
+          console.error('게시글 목록 조회 오류:', error);
+        }
+      },
 
     async fetchBoardDetail(boardIdx) {
       try {
