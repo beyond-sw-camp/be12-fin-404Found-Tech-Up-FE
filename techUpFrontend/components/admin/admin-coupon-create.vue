@@ -34,6 +34,7 @@
 <script setup>
 import { ref } from 'vue'
 import { useAdminStore } from '../../pinia/useAdminStore';
+import { navigateTo } from 'nuxt/app';
 
 /**
  * coupon 테이블 구조:
@@ -68,7 +69,7 @@ const submitForm = () => {
   }).then(async (result) => {
     console.log(result.data);
     alert("등록되었습니다!");
-    await adminStore.loadCouponList();
+    navigateTo('/dashboard');
   }).catch((e) => {
     alert("등록 실패: " + e);
   });
