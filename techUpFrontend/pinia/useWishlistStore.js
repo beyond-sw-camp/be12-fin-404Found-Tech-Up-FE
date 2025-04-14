@@ -10,7 +10,7 @@ export const useWishlistStore = defineStore("wishlist_product", () => {
     const isAdded = wishlists.value.findIndex((p) => p.id === payload.id);
     if (isAdded !== -1) {
       wishlists.value = wishlists.value.filter((p) => p.id !== payload.id);
-      toast.error(`${payload.title} remove to wishlist`);
+      toast.error(`${payload.title} removed from wishlist`);
     } else {
       wishlists.value.push(payload);
       toast.success(`${payload.title} added to wishlist`);
@@ -21,7 +21,7 @@ export const useWishlistStore = defineStore("wishlist_product", () => {
   // removeWishlist
   const removeWishlist = (payload) => {
     wishlists.value = wishlists.value.filter((p) => p.id !== payload.id);
-    toast.error(`${payload.title} remove to wishlist`);
+    toast.error(`${payload.title} removed from wishlist`);
     localStorage.setItem("wishlist_products", JSON.stringify(wishlists.value));
   };
 

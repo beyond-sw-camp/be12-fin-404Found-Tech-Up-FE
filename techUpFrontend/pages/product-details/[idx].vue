@@ -10,8 +10,8 @@
 
     <!-- related products start -->
     <product-related 
-      :product-id="productBackStore.product.idx" 
-      :category="productBackStore.product.category.name" 
+      :product-id="String(productBackStore.product.idx)" 
+      :category="productBackStore.product.category" 
     />
     <!-- related products end -->
   </div>
