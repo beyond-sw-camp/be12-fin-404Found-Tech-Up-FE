@@ -8,7 +8,7 @@
     <!-- inventory details -->
     <div class="tp-product-details-inventory d-flex align-items-center mb-10">
       <div class="tp-product-details-stock mb-10">
-        <span>{{ product.status }}</span>
+        <span>남은 수량: {{ product.stock }}</span>
       </div>
       <div class="tp-product-details-rating-wrapper d-flex align-items-center mb-10">
         <div class="tp-product-details-rating">

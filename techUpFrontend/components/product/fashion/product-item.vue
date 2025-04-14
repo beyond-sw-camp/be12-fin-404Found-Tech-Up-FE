@@ -10,7 +10,7 @@
   
         <!-- product badge -->
         <div class="tp-product-badge">
-          <span v-if="item.status === 'out-of-stock'" class="product-hot">out-of-stock</span>
+          <span v-if="item.stock <= 0" class="product-hot">out-of-stock</span>
         </div>
   
         <!-- product action -->
