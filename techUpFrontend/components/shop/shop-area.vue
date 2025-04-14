@@ -38,10 +38,10 @@
                         </ul>
                       </div>
                       <div class="tp-shop-top-result">
-                        <p v-if="store.filteredProducts?.length && product?.length">
+                        <p v-if="store.filteredProducts?.length">
   Showing 1–{{ store.filteredProducts.slice(startIndex, endIndex).length }}
-  of {{ product.length }} results
-</p>
+  of {{ store.filteredProducts.length }} results
+                        </p>
 
                       </div>
                     </div>
@@ -105,8 +105,6 @@
   </template>
   
   <script setup>
-
-  import product_data from '@/data/product-data';
   import { useProductFilterBackStore } from '@/pinia/useProductFilterBackStore';
   import { onMounted, ref, computed } from 'vue';
   import { useRoute } from 'vue-router';
@@ -126,8 +124,8 @@
   
   const productStore = useProductFilterBackStore();
 
-  onMounted(() => {
-    store.fetchProducts();
+  onMounted(async () => {
+    await store.fetchProducts();
   });
 
   let filteredProductsItems = ref(store.filteredProducts || []);
