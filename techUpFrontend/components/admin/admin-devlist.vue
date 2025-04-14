@@ -44,6 +44,8 @@ let filteredItems = ref([]);
 let startIndex = ref(0);
 let endIndex = ref(filteredItems.length);
 
+const config = useRuntimeConfig();
+
 $fetch('/product/list', {
   baseURL: config.public.apiBaseUrl,
   method: "GET",
