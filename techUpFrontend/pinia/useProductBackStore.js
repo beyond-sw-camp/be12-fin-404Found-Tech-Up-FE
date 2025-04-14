@@ -1,54 +1,43 @@
-import { defineStore } from "pinia";
-import { ref } from "vue";
+import { defineStore } from 'pinia'
+import { ref } from 'vue'
+import axios from 'axios'
 
-export const useProductBackStore = defineStore("product", () => {
-  // 백엔드 API에서 받아온 상품 데이터를 저장할 상태
-  const products = ref([]);
+export const useProductBackStore = defineStore("productDetail", () => {
+  // 제품 상세 정보 저장 상태
+  const product = ref(null)
+  // 현재 활성화된 이미지 저장 상태
+  const activeImg = ref('')
 
-  // 활성 이미지 관련 상태
-  let activeImg = ref(null);
-
-  // API 호출 함수
-  async function fetchProducts() {
+  // 백엔드 API를 호출하여 제품 상세 정보를 가져오는 함수
+  async function fetchProductDetail(id) {
     try {
-      const config = useRuntimeConfig();
-      // 백엔드 '/product/list' 엔드포인트 호출
-      const response = await axios.get("/api/product/list");
+      const config = useRuntimeConfig()
+      const response = await axios.get(`/api/product/${id}`, {
+        baseURL: config.public.apiBaseUrl
+      })
+      // 백엔드 응답 구조에 맞춰 아래 조건문을 수정 (예: response.data.data 또는 response.data.result)
       if (response.data && response.data.data) {
-        products.value = response.data.data;
+        product.value = response.data.data
+        if (product.value.img) {
+          activeImg.value = product.value.img
+        }
       } else {
-        products.value = data.value.data || [];
+        console.error("API 응답 형식이 올바르지 않습니다.", response.data)
       }
-    } catch (err) {
-      console.error("API 호출 중 에러 발생", err);
+    } catch (error) {
+      console.error("제품 상세 데이터 호출 중 오류 발생:", error)
     }
   }
 
-  // 페이지가 생성될 때 혹은 사용자 액션에 따라 fetchProducts()를 호출할 수 있음
-
-  let openFilterDropdown = ref(false);
-  let openFilterOffcanvas = ref(false);
-  
+  // 이미지 활성화를 위한 헬퍼 함수
   const handleImageActive = (img) => {
-    activeImg.value = img;
-  };
-
-  const handleOpenFilterDropdown = () => {
-    openFilterDropdown.value = !openFilterDropdown.value;
-  };
-
-  const handleOpenFilterOffcanvas = () => {
-    openFilterOffcanvas.value = !openFilterOffcanvas.value;
-  };
+    activeImg.value = img
+  }
 
   return {
-    products,
+    product,
     activeImg,
-    openFilterDropdown,
-    openFilterOffcanvas,
-    fetchProducts,
-    handleImageActive,
-    handleOpenFilterDropdown,
-    handleOpenFilterOffcanvas,
-  };
-});
+    fetchProductDetail,
+    handleImageActive
+  }
+})
