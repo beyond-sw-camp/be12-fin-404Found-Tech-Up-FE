@@ -112,7 +112,7 @@
       </div>
 
       <!-- GPU 스펙 -->
-      <div v-if="product.product_category === 'GPU'" class="spec-box">
+      <div v-if="product.category === 'GPU'" class="spec-box">
         <h3 class="spec-title">GPU 스펙</h3>
         <div class="form-group">
           <label class="form-label">메모리 (GB)</label>
@@ -181,24 +181,22 @@ const submitForm = () => {
   // 카테고리에 맞는 스펙 데이터를 합쳐서 payload 구성
   const payload = {
     ...product.value,
-  }
-  /*
-  ...(product.value.category === 'SSD' ? ssd.value : {}),
+    ...(product.value.category === 'SSD' ? ssd.value : {}),
     ...(product.value.category === 'RAM' ? ram.value : {}),
     ...(product.value.category === 'HDD' ? hdd.value : {}),
     ...(product.value.category === 'CPU' ? cpu.value : {}),
     ...(product.value.category === 'GPU' ? gpu.value : {}),
     // 필요하다면 선택된 파일들을 추가 처리
     images: selectedFiles.value,
-   */
+  }
   console.log('등록 데이터:', payload)
   // axios.post('/api/products', payload) 등으로 서버 전송 처리
-  $fetch('/api/product/register', {
+  $fetch('/product/register', {
     baseURL: config.public.apiBaseUrl,
     method: "POST",
     body: payload
   }).then((result) => {
-    console.log(result.data.value);
+    console.log(result);
   }).catch((e) => {
     console.log(e);
   });
