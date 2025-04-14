@@ -2,7 +2,6 @@
 import { useForm } from 'vee-validate';
 import * as yup from 'yup';
 import { useUserStore } from '@/pinia/useUserStore'; // useUserStore import 추가
-import { useRouter } from '#app';
 
 let showPass = ref(false);
 let showPassValid = ref(false);
