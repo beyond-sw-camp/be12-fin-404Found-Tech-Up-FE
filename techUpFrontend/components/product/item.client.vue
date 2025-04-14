@@ -57,7 +57,7 @@
     <!-- product content -->
     <div class="tp-product-content">
       <div class="tp-product-category">
-        <nuxt-link :href="`/product-details/${item.idx}`">{{ item.category.name }}</nuxt-link>
+        <nuxt-link :href="`/product-details/${item.idx}`">{{ item.category }}</nuxt-link>
       </div>
       <h3 class="tp-product-title">
         <nuxt-link :href="`/product-details/${item.idx}`">

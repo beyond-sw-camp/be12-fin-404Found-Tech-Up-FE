@@ -11,7 +11,7 @@
       <nuxt-link :href="`/product-details/${item.idx}`">{{ item.name }}</nuxt-link>
     </td>
     <!-- price -->
-    <td class="tp-cart-category"><span>{{ item.category.name }}</span></td>
+    <td class="tp-cart-category"><span>{{ item.category }}</span></td>
 
     <!-- action -->
     <td class="tp-cart-add-to-cart">
