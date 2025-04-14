@@ -14,7 +14,7 @@
         <span><i class="fa-light fa-location-dot"></i></span> 제품 등록
       </button>
       <button class="nav-link" id="nav-devlist-tab" data-bs-toggle="tab" data-bs-target="#nav-devlist" type="button"
-        role="tab" aria-controls="nav-devlist" aria-selected="false">
+        role="tab" aria-controls="nav-devlist" aria-selected="false" @click="adminStore.loadProductList">
         <span><i class="fa-light fa-clipboard-list-check"></i></span> 제품 목록
       </button>
       <button class="nav-link" id="nav-notifications-tab" data-bs-toggle="tab" data-bs-target="#nav-notifications"
@@ -26,7 +26,7 @@
         <span><i class="fa-light fa-location-dot"></i></span> 쿠폰 등록
       </button>
       <button class="nav-link" id="nav-coupons-tab" data-bs-toggle="tab" data-bs-target="#nav-coupons" type="button"
-        role="tab" aria-controls="nav-coupons" aria-selected="false">
+        role="tab" aria-controls="nav-coupons" aria-selected="false" @click="adminStore.loadCouponList">
         <span><i class="fa-regular fa-bell"></i></span> 쿠폰 목록
       </button>
       <button class="nav-link" id="nav-alert-tab" data-bs-toggle="tab" data-bs-target="#nav-alert" type="button"
@@ -37,4 +37,9 @@
   </nav>
 </template>
 
-<script setup></script>
+<script setup>
+import { useAdminStore } from '../../pinia/useAdminStore';
+
+const adminStore = useAdminStore();
+
+</script>

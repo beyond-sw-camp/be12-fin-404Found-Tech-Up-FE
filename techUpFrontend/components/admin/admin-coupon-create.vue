@@ -33,6 +33,7 @@
 
 <script setup>
 import { ref } from 'vue'
+import { useAdminStore } from '../../pinia/useAdminStore';
 
 /**
  * coupon 테이블 구조:
@@ -51,6 +52,8 @@ let coupon = ref({
 
 const config = useRuntimeConfig();
 
+const adminStore = useAdminStore();
+
 const submitForm = () => {
   // 실제 서버로 전송할 payload
   const payload = {
@@ -62,9 +65,10 @@ const submitForm = () => {
     baseURL: config.public.apiBaseUrl,
     method: "POST",
     body: payload
-  }).then((result) => {
+  }).then(async (result) => {
     console.log(result.data);
     alert("등록되었습니다!");
+    await adminStore.loadCouponList();
   }).catch((e) => {
     alert("등록 실패: " + e);
   });
