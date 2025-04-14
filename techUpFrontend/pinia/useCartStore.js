@@ -25,7 +25,7 @@ export const useCartStore = defineStore("cart_product", () => {
       cart_products.value.map((item) => {
         if (item.idx === payload.idx) {
           if (typeof item.orderQuantity !== "undefined") {
-            if (item.quantity >= item.orderQuantity + orderQuantity.value) {
+            if (item.stock >= item.orderQuantity + orderQuantity.value) {
               item.orderQuantity =
                 orderQuantity.value !== 1
                   ? orderQuantity.value + item.orderQuantity
