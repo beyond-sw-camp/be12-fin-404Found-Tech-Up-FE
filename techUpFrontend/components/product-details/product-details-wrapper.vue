@@ -1,9 +1,9 @@
 <template>
   <div class="tp-product-details-wrapper has-sticky">
     <div class="tp-product-details-category">
-      <span>{{ product.parent }}</span>
+      <span>{{ product.category }}</span>
     </div>
-    <h3 class="tp-product-details-title">{{ product.title }}</h3>
+    <h3 class="tp-product-details-title">{{ product.name }}</h3>
 
     <!-- inventory details -->
     <div class="tp-product-details-inventory d-flex align-items-center mb-10">
@@ -121,7 +121,7 @@
         </div>
         <div class="tp-product-details-query-item d-flex align-items-center">
           <span>Category:  </span>
-          <p>{{ product.parent }}</p>
+          <p>{{ product.category }}</p>
         </div>
         <div class="tp-product-details-query-item d-flex align-items-center">
           <span>Tag: </span>

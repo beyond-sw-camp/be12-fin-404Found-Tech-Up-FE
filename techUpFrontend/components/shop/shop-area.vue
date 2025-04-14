@@ -46,7 +46,7 @@
             <div class="tp-shop-items-wrapper tp-shop-item-primary">
               <div v-if="active_tab === 'grid'">
                 <div class="row infinite-container">
-                  <div v-for="item in store.filteredProducts?.slice(startIndex, endIndex)" :key="item.id"
+                  <div v-for="item in store.filteredProducts?.slice(startIndex, endIndex)" :key="item.idx"
                     class="col-xl-4 col-md-6 col-sm-6 infinite-item">
                     <product-fashion-product-item :item="item" :spacing="true" />
                   </div>
@@ -57,7 +57,7 @@
                 <div class="row">
                   <div class="col-xl-12">
                     <product-list-item v-for="item in store.filteredProducts?.slice(startIndex, endIndex)"
-                      :key="item.id" :item="item" />
+                      :key="item.idx" :item="item" />
                   </div>
                 </div>
               </div>

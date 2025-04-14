@@ -1,7 +1,7 @@
 <template>
   <div class="tp-product-list-item d-md-flex">
     <div class="tp-product-list-thumb p-relative fix">
-      <nuxt-link :href="`/product-details/${item.id}`" style="height: 310px;background-color: #f2f3f5;">
+      <nuxt-link :href="`/product-details/${item.idx}`" style="height: 310px;background-color: #f2f3f5;">
         <img :src="item.img" alt="product-img" />
       </nuxt-link>
 
@@ -49,7 +49,7 @@
           <a href="#">{{ item.category.name }}</a>
         </div>
         <h3 class="tp-product-title-2">
-          <nuxt-link :href="`/product-details/${item.id}`">{{ item.title }}</nuxt-link>
+          <nuxt-link :href="`/product-details/${item.idx}`">{{ item.name }}</nuxt-link>
         </h3>
         <div class="tp-product-rating-icon tp-product-rating-icon-2">
           <span><i class="fa-solid fa-star"></i></span>

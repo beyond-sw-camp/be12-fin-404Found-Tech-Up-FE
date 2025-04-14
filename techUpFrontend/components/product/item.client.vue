@@ -1,7 +1,7 @@
 <template>
   <div :class="`${offer_style ? 'tp-product-offer-item' : 'mb-25'} tp-product-item transition-3`">
     <div class="tp-product-thumb p-relative fix m-img">
-      <nuxt-link :href="`/product-details/${item.id}`">
+      <nuxt-link :href="`/product-details/${item.idx}`">
         <img :src="item.img" alt="product-electronic" />
       </nuxt-link>
 
@@ -57,11 +57,11 @@
     <!-- product content -->
     <div class="tp-product-content">
       <div class="tp-product-category">
-        <nuxt-link :href="`/product-details/${item.id}`">{{ item.category.name }}</nuxt-link>
+        <nuxt-link :href="`/product-details/${item.idx}`">{{ item.category.name }}</nuxt-link>
       </div>
       <h3 class="tp-product-title">
-        <nuxt-link :href="`/product-details/${item.id}`">
-          {{ item.title }}
+        <nuxt-link :href="`/product-details/${item.idx}`">
+          {{ item.name }}
         </nuxt-link>
       </h3>
       <div class="tp-product-rating d-flex align-items-center">
