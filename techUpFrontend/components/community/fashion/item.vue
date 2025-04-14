@@ -1,7 +1,7 @@
 <template>
   <div class="community-item-alt mb-40">
     <div class="community-thumb p-relative fix">
-      <nuxt-link :to="`/community-details/${props.item.id}`">
+      <nuxt-link :to="`/community-details/${props.item.idx}`">
         <img :src="props.item.img" alt="community-img" />
       </nuxt-link>
       <div class="community-meta-date">
@@ -18,7 +18,7 @@
         </a>
       </div>
       <h3 class="community-title">
-        <nuxt-link :to="`/community-details/${props.item.id}`">
+        <nuxt-link :to="`/community-details/${props.item.idx}`">
           {{ props.item.title }}
         </nuxt-link>
       </h3>

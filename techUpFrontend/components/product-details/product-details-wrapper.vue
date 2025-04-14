@@ -1,9 +1,9 @@
 <template>
   <div class="tp-product-details-wrapper has-sticky">
     <div class="tp-product-details-category">
-      <span>{{ product.parent }}</span>
+      <span>{{ product.category }}</span>
     </div>
-    <h3 class="tp-product-details-title">{{ product.title }}</h3>
+    <h3 class="tp-product-details-title">{{ product.name }}</h3>
 
     <!-- inventory details -->
     <div class="tp-product-details-inventory d-flex align-items-center mb-10">
@@ -45,9 +45,9 @@
     </div>
 
     <!-- variations -->
-    <div v-if="hasColorData" class="tp-product-details-variation">
+    <!-- <div v-if="hasColorData" class="tp-product-details-variation">
       <div class="tp-product-details-variation-item">
-        <h4 class="tp-product-details-variation-title">Color :</h4>
+        <h4 class="tp-product-details-variation-title">옵션 :</h4>
         <div class="tp-product-details-variation-list">
           <button
             v-for="(item, i) in product.imageURLs"
@@ -64,7 +64,7 @@
           </button>
         </div>
       </div>
-    </div>
+    </div> -->
 
     <!-- product countdown start -->
     <div v-if="product.offerDate && product.offerDate.endDate">
@@ -121,7 +121,7 @@
         </div>
         <div class="tp-product-details-query-item d-flex align-items-center">
           <span>Category:  </span>
-          <p>{{ product.parent }}</p>
+          <p>{{ product.category }}</p>
         </div>
         <div class="tp-product-details-query-item d-flex align-items-center">
           <span>Tag: </span>
@@ -169,10 +169,6 @@ const props = defineProps({
   },
 });
 let textMore = ref(false);
-
-const hasColorData = computed(() => {
-  return props.product.imageURLs.some(item => item && item.color && item.color.name);
-});
 
 function formatPrice(price, withCurrency = true) {
   if (withCurrency) {

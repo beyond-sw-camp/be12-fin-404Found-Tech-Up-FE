@@ -30,7 +30,7 @@ export const useCartStore = defineStore("cart_product", () => {
                 orderQuantity.value !== 1
                   ? orderQuantity.value + item.orderQuantity
                   : item.orderQuantity + 1;
-              toast.success(`${orderQuantity.value} ${item.title} added to cart`);
+              toast.success(`${orderQuantity.value} ${item.name} added to cart`);
             } else {
               toast.error(`No more quantity available for this product!`);
               orderQuantity.value = 1;
@@ -62,7 +62,7 @@ export const useCartStore = defineStore("cart_product", () => {
         if (typeof item.orderQuantity !== "undefined") {
           if (item.orderQuantity > 1) {
             item.orderQuantity = item.orderQuantity - 1;
-            toast.info(`Decrement Quantity For ${item.title}`);
+            toast.info(`Decrement Quantity For ${item.name}`);
           }
         }
       }

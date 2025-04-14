@@ -4,8 +4,8 @@
         class="tp-product-thumb-2 p-relative z-index-1 fix w-img"
         style="background-color: #f2f3f5"
       >
-        <nuxt-link :href="`/product-details/${item.id}`">
-          <img :src="item.img" alt="product-img" />
+        <nuxt-link :href="`/product-details/${item.idx}`">
+          <img :src="item.img" alt="product-image" />
         </nuxt-link>
   
         <!-- product badge -->
@@ -73,10 +73,11 @@
   
       <div class="tp-product-content-2 pt-15">
         <div class="tp-product-tag-2">
-          <a href="#">{{ item.category.name }}</a>
+          <!-- TODO: 카테고리 별로 볼 수 있도록 설정 -->
+          {{ item.category }}
         </div>
         <h3 class="tp-product-title-2">
-          <nuxt-link :href="`/product-details/${item.id}`">{{ item.title }}</nuxt-link>
+          <nuxt-link :href="`/product-details/${item.idx}`">{{ item.name }}</nuxt-link>
         </h3>
         <div class="tp-product-rating-icon tp-product-rating-icon-2">
           <span><i class="fa-solid fa-star"></i></span>
