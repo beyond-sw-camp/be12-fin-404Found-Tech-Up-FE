@@ -5,26 +5,25 @@
       <!-- 쿠폰 이름 -->
       <div class="form-group">
         <label class="form-label">쿠폰 이름</label>
-        <input v-model="coupon.coupon_name" type="text" class="form-input" placeholder="예) 봄맞이 할인 쿠폰" required />
+        <input v-model="coupon.couponName" type="text" class="form-input" placeholder="예) 봄맞이 할인 쿠폰" required />
       </div>
 
       <!-- 할인율 -->
       <div class="form-group">
         <label class="form-label">할인율(%)</label>
-        <input v-model="coupon.coupon_discount_rate" type="number" step="1" class="form-input" placeholder="예) 10"
-          required />
+        <input v-model="coupon.discount" type="number" step="1" class="form-input" placeholder="예) 10" required />
       </div>
 
       <!-- 유효 기간 -->
       <div class="form-group">
         <label class="form-label">유효 기간</label>
-        <input v-model="coupon.coupon_valid_date" type="date" class="form-input" required />
+        <input v-model="coupon.expiryDate" type="date" class="form-input" required />
       </div>
 
       <!-- 연관 상품 (product_idx) -->
       <div class="form-group">
         <label class="form-label">연관 상품 (product_idx)</label>
-        <input v-model="coupon.product_idx" type="number" class="form-input" placeholder="예) 101" required />
+        <input v-model="coupon.productIdx" type="number" class="form-input" placeholder="예) 101" required />
       </div>
 
       <button type="submit" class="btn-submit">쿠폰 등록</button>
@@ -43,11 +42,11 @@ import { ref } from 'vue'
  *  - coupon_valid_date (DATETIME)
  *  - product_idx (INT, FK)
  */
-const coupon = ref({
-  coupon_name: '',
-  coupon_discount_rate: '',
-  coupon_valid_date: '',
-  product_idx: '',
+let coupon = ref({
+  couponName: '',
+  discount: '',
+  expiryDate: '',
+  productIdx: '',
 })
 
 const config = useRuntimeConfig();
@@ -59,12 +58,15 @@ const submitForm = () => {
   }
   console.log('등록 데이터:', payload)
   // 여기서 axios.post('/api/coupons', payload).then(...)
-  $fetch('/coupon/register', {
+  $fetch('/coupon/issueall', {
     baseURL: config.public.apiBaseUrl,
     method: "POST",
     body: payload
   }).then((result) => {
-    console.log(result.data.value);
+    console.log(result.data);
+    alert("등록되었습니다!");
+  }).catch((e) => {
+    alert("등록 실패: " + e);
   });
 
 }

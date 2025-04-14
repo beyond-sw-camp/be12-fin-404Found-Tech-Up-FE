@@ -13,24 +13,17 @@
         <div class="tp-cart-list mt-10">
           <table style="text-align:center;">
             <thead>
-              <tr>
-                <th style="width:10%">번호</th>
+              <tr style="width:50%">
+                <th style="width:6%">번호</th>
                 <th style="width:20%">쿠폰 이름</th>
-                <th style="width:30%">할인율</th>
-                <th style="width:10%">만료일</th>
-                <th colspan="2" style="width:10%">이 쿠폰을...</th>
+                <th style="width:4%">할인율</th>
+                <th style="width:20%">만료일</th>
+                <th colspan="2" style="width:20%">이 쿠폰을...</th>
               </tr>
             </thead>
             <tbody>
               <!-- wishlist item start -->
-              <tr style="font-size:x-small;">
-                <td>#1</td>
-                <td>RTX 5080 주간 할인</td>
-                <td>20%</td>
-                <td>2025-04-11</td>
-                <td><a href="#" class="tp-logout-btn" style="font-size:x-small">변경</a></td>
-                <td><a href="#" class="tp-logout-btn" style="font-size:x-small;background-color: red;">삭제</a></td>
-              </tr>
+              <coupon-item.admin v-for="item in filteredItems" :key="item.id" :item="item" />
               <!-- wishlist item end -->
             </tbody>
           </table>
@@ -44,9 +37,21 @@
 </template>
 
 <script setup>
-let filteredItems = ref([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
+let filteredItems = ref([]);
 let startIndex = ref(0);
 let endIndex = ref(filteredItems.length);
+
+const config = useRuntimeConfig();
+
+$fetch('/coupon', {
+  baseURL: config.public.apiBaseUrl,
+  method: "GET",
+}).then((result) => {
+  console.log(result);
+  filteredItems.value = result.data.couponList;
+}).catch((e) => {
+  console.log(e);
+});
 
 const handlePagination = (data, start, end) => {
   console.log("data", data, "start", start, "end", end);
