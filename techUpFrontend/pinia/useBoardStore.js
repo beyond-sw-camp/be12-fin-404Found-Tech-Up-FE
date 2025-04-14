@@ -5,7 +5,8 @@ export const useBoardStore = defineStore('boardStore', {
   state: () => ({
     boardList: [],
     boardFiles: [],
-    currentBoard: null
+    currentBoard: null,
+    identifier: crypto.randomUUID(), // ✅ 작성 세션마다 고정된 identifier 생성
   }),
 
   actions: {
@@ -33,120 +34,87 @@ export const useBoardStore = defineStore('boardStore', {
       }
     },
 
-    async uploadImageToS3(file, boardIdx) {
+    async uploadTempImage(file) {
       try {
-        const presignedRes = await axios.get('/api/board/files/presignedUrl', {
-          params: {
-            board_idx: boardIdx,
-            files_type: 'image',
-            files_name: file.name
-          }
+        const formData = new FormData();
+        formData.append('file', file);
+        const response = await axios.post('/api/board/files/temp-image', formData, {
+          params: { identifier: this.identifier }, // ✅ 임시 이미지 식별자 전달
+          headers: { 'Content-Type': 'multipart/form-data' }
         });
-
-        const { presignedUrl, finalUrl } = presignedRes.data;
-
-        await axios.put(presignedUrl, file, {
-          headers: {
-            'Content-Type': file.type
-          }
-        });
-
-        const filesPayload = {
-          board_idx: boardIdx,
-          files_url: finalUrl,
-          files_type: 'image',
-          files_name: file.name
-        };
-
-        await axios.post('/api/board/files', filesPayload);
-        console.log('Quill 이미지 업로드 및 DB 등록 완료:', finalUrl);
-
-        return finalUrl;
+        const s3Key = response.data.data.imageUrl; // ✅ 이렇게 수정해야 함
+        console.log('✅ image url test:', s3Key);
+        return s3Key;
       } catch (error) {
-        console.error('Quill 이미지 업로드 실패:', error);
+        console.error('임시 이미지 업로드 오류:', error);
         throw error;
       }
     },
 
-    // 새로 추가: Base64 이미지를 S3에 업로드하는 메서드
-    async uploadImage(formData) {
-      try {
-        // 임시 boardIdx 없이 이미지만 업로드 (임시 보관용)
-        const response = await axios.post('/api/board/upload/temp-image', formData);
-
-        // 업로드 결과에서 이미지 URL 반환
-        return {
-          success: true,
-          imageUrl: response.data.imageUrl
-        };
-      } catch (error) {
-        console.error('이미지 업로드 오류:', error);
-        throw error;
-      }
-    },
-
-    async createBoard({
-      boardTitle,
-      boardContent,
-      boardCategory,
-      userIdx,
-      attachments = []
-    }) {
-      try {
-        // 게시글 생성
-        const boardPayload = {
-          boardTitle,
-          boardContent, // 이미 처리된 콘텐츠 (Base64 → S3 URL로 변환됨)
-          boardCategory,
-          userIdx
-        };
-        console.log('스토어 결과', boardPayload);
-        const boardRes = await axios.post('/api/board/create', boardPayload);
-        const createdBoard = boardRes.data;
-        const boardIdx = createdBoard.board_idx;
-        console.log('게시글 생성 완료:', createdBoard);
-
-        // 게시글에 포함된 임시 이미지들을 해당 게시글과 연결
-        await axios.post(`/api/board/${boardIdx}/link-temp-images`);
-
-        // 첨부파일 처리 (이전과 동일)
-        if (attachments.length > 0) {
-          for (const file of attachments) {
-            const fileType = file.type.includes('image') ? 'image' : 'file';
-            const presignedRes = await axios.get('/api/board/files/presignedUrl', {
-              params: {
-                board_idx: boardIdx,
-                files_type: fileType,
-                files_name: file.name
+    async createBoard({ boardTitle, boardContent, boardCategory, userIdx, attachments = [] }) {
+        try {
+          const boardPayload = { boardTitle, boardContent, boardCategory, userIdx };
+          const boardRes = await axios.post('/api/board/create', boardPayload);
+          const createdBoard = boardRes.data;
+          const boardIdx = createdBoard.data.idx;
+      
+          console.log('게시글 생성 완료:', createdBoard);
+      
+          // ✅ 임시 이미지 연결 요청 (identifier 포함)
+          await axios.post(`/api/board/files/${boardIdx}/link-temp-images`, null, {
+            params: { identifier: this.identifier }
+          });
+      
+          // ✅ 첨부파일 처리
+          if (attachments.length > 0) {
+            for (const file of attachments) {
+              console.log('첨부파일 확인:', file);
+      
+              const fileType = file.type.includes('image') ? 'image' : 'file';
+      
+              const presignedRes = await axios.get('/api/board/files/presignedUrl', {
+                params: {
+                  board_idx: boardIdx,
+                  files_type: fileType,
+                  files_name: file.name
+                }
+              });
+      
+              // ✅ 구조 바로 여기서 추출 (중첩 .data 아님)
+              const { presignedUrl, finalUrl } = presignedRes.data;
+      
+              if (!presignedUrl || !finalUrl) {
+                console.error('프리사인드 URL 누락:', presignedRes.data);
+                continue;
               }
-            });
-
-            const { presignedUrl, finalUrl } = presignedRes.data;
-
-            await axios.put(presignedUrl, file, {
-              headers: {
-                'Content-Type': file.type
-              }
-            });
-
-            const filesPayload = {
-              board_idx: boardIdx,
-              files_url: finalUrl,
-              files_type: fileType,
-              files_name: file.name
-            };
-
-            await axios.post('/api/board/files', filesPayload);
-            console.log('첨부파일 업로드 및 DB 저장 완료:', finalUrl);
+      
+              // ✅ S3에 PUT 업로드
+              await axios.put(presignedUrl, file, {
+                headers: { 'Content-Type': file.type }
+              });
+      
+              // ✅ 파일 DB 등록
+              const filesPayload = {
+                boardIdx: boardIdx,       // ✅ 변수명 통일
+                filesUrl: finalUrl,
+                filesType: fileType,
+                filesName: file.name
+              };
+      
+              await axios.post('/api/board/files', filesPayload);
+              console.log('첨부파일 업로드 및 DB 저장 완료:', finalUrl);
+            }
           }
+      
+          return createdBoard;
+      
+        } catch (error) {
+          console.error('게시글 생성 오류:', error);
+          throw error;
         }
-
-        return createdBoard;
-      } catch (error) {
-        console.error('게시글 생성 오류:', error);
-        throw error;
-      }
-    },
+      },
+      
+      
 
     async deleteBoardFile(filesIdx) {
       try {
