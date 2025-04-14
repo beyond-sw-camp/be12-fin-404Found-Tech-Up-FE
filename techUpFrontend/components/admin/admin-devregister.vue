@@ -146,7 +146,7 @@
 </template>
 
 <script setup>
-import { useAsyncData, useFetch, useRuntimeConfig } from 'nuxt/app'
+import { navigateTo, useAsyncData, useFetch, useRuntimeConfig } from 'nuxt/app'
 import { ref } from 'vue'
 import { useAdminStore } from '../../pinia/useAdminStore'
 
@@ -202,7 +202,8 @@ const submitForm = () => {
     body: payload
   }).then(async (result) => {
     console.log(result);
-    await adminStore.loadProductList();
+    alert("등록되었습니다!");
+    navigateTo('/dashboard');
   }).catch((e) => {
     console.log(e);
   });

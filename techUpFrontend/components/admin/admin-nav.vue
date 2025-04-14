@@ -9,10 +9,12 @@
         role="tab" aria-controls="nav-users" aria-selected="false">
         <span><i class="fa-regular fa-circle-info"></i></span> 사용자 관리
       </button>
-      <button class="nav-link" id="nav-devregister-tab" data-bs-toggle="tab" data-bs-target="#nav-devregister"
-        type="button" role="tab" aria-controls="nav-devregister" aria-selected="false">
-        <span><i class="fa-light fa-location-dot"></i></span> 제품 등록
-      </button>
+      <!--
+        <button class="nav-link" id="nav-devregister-tab" data-bs-toggle="tab" data-bs-target="#nav-devregister"
+          type="button" role="tab" aria-controls="nav-devregister" aria-selected="false">
+          <span><i class="fa-light fa-location-dot"></i></span> 제품 등록
+        </button>
+      -->
       <button class="nav-link" id="nav-devlist-tab" data-bs-toggle="tab" data-bs-target="#nav-devlist" type="button"
         role="tab" aria-controls="nav-devlist" aria-selected="false" @click="adminStore.loadProductList">
         <span><i class="fa-light fa-clipboard-list-check"></i></span> 제품 목록
@@ -21,10 +23,12 @@
         type="button" role="tab" aria-controls="nav-notifications" aria-selected="false">
         <span><i class="fa-light fa-clipboard-list-check"></i></span> 알림
       </button>
+      <!--
       <button class="nav-link" id="nav-coupon-create-tab" data-bs-toggle="tab" data-bs-target="#nav-coupon-create"
         type="button" role="tab" aria-controls="nav-coupon-create" aria-selected="false">
         <span><i class="fa-light fa-location-dot"></i></span> 쿠폰 등록
       </button>
+      -->
       <button class="nav-link" id="nav-coupons-tab" data-bs-toggle="tab" data-bs-target="#nav-coupons" type="button"
         role="tab" aria-controls="nav-coupons" aria-selected="false" @click="adminStore.loadCouponList">
         <span><i class="fa-regular fa-bell"></i></span> 쿠폰 목록

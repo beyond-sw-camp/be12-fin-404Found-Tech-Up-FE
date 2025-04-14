@@ -8,6 +8,11 @@
         <SvgSearch />
       </button>
     </div>
+    <div style="text-align:right;">
+      <button class="tp-btn-2" style="color:white;">
+        <nuxt-link href="/device-register">제품 등록</nuxt-link>
+      </button>
+    </div>
     <div class="row">
       <div class="col-xl-12">
         <div class="tp-cart-list mt-10">
