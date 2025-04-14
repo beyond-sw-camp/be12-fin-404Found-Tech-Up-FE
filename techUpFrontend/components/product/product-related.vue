@@ -34,7 +34,7 @@ const props = defineProps<{ productId: string; category: string }>();
 // related_products
 const related_products = product_data.filter(
   (p) =>
-    p.category.name.toLowerCase() === props.category.toLowerCase() &&
+    (p.category?.name || '').toLowerCase() === (props.category || '').toLowerCase() &&
     p.id !== props.productId
 );
 // slider_setting
