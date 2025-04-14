@@ -1,7 +1,7 @@
 <template>
   <div :class="`community-grid-item ${props.style_2 ? 'community-grid-style2' : ''} p-relative mb-30`">
     <div class="community-grid-thumb w-img fix mb-30">
-      <nuxt-link :to="`/community-details/${props.item.id}`">
+      <nuxt-link :to="`/community-details/${props.item.idx}`">
         <img :src="props.item.img" alt="community-img" />
       </nuxt-link>
     </div>
@@ -21,13 +21,13 @@
         </span>
       </div>
       <h3 class="community-grid-title">
-        <nuxt-link :to="`/community-details/${props.item.id}`">{{ props.item.title }}</nuxt-link>
+        <nuxt-link :to="`/community-details/${props.item.idx}`">{{ props.item.title }}</nuxt-link>
       </h3>
       <p>
         Cursus mattis sociis natoque penatibus et magnis montes, nascetur ridiculus.
       </p>
       <div class="community-grid-btn">
-        <nuxt-link :to="`/community-details/${props.item.id}`" class="community-link-btn">
+        <nuxt-link :to="`/community-details/${props.item.idx}`" class="community-link-btn">
           Read More
           <span>
             <svg-right-arrow />
