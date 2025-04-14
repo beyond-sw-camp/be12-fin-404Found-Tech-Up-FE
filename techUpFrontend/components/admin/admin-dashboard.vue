@@ -15,24 +15,24 @@ import AnalyticsTotalRefunds from '../../views/dashboard/AnalyticsTotalRefunds.v
 
 const config = useRuntimeConfig();
 
-const result = await useFetch('/statistics', {
+let result = await useFetch('/statistics', {
   baseURL: config.public.apiBaseUrl
 });
 
 // console.log(result.data.value);
 
-let topWishList = ref(result.data.value.topWishList.map((value) => {
+let topWishList = ref(result.data.value.result.topWishList.map((value) => {
   let result = {};
   result.abbr = value.brand;
   result.amount = value.cw;
 }));
 
-let newComers = ref(result.data.value.newCustomers);
-let totalSales = ref(result.data.value.totalSales);
-let totalOrders = ref(result.data.value.totalOrders);
-let totalRefunds = ref(result.data.value.totalRefunds);
+let newComers = ref(result.data.value.result.newCustomers);
+let totalSales = ref(result.data.value.result.totalSales);
+let totalOrders = ref(result.data.value.result.totalOrders);
+let totalRefunds = ref(result.data.value.result.totalRefunds);
 
-let topSales = ref(result.data.value.topSales);
+let topSales = ref(result.data.value.result.topSales);
 
 </script>
 
