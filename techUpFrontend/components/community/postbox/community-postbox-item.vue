@@ -1,8 +1,12 @@
 <template>
   <article class="community-post-item-simple mb-30">
-    <!-- ✅ 메타 전체를 링크로 -->
     <nuxt-link :to="`/community-details/${item.idx}`" class="block-link" custom v-slot="{ navigate }">
       <div class="community-post-meta" @click="navigate">
+        <!-- ✅ 카테고리 -->
+        <span class="category-tag">
+          <i class="fas fa-tag"></i> {{ item.boardCategory }}
+        </span>
+
         <span>
           <i class="far fa-calendar-check"></i> {{ formattedDate }}
         </span>
@@ -10,7 +14,7 @@
           <i class="far fa-user"></i> {{ item.writer }}
         </span>
         <span>
-          <i class="fal fa-comments"></i> {{ item.boardComments }} Comments
+          <i class="fal fa-comments"></i> 댓글 {{ item.boardComments || 0 }}개
         </span>
         <span v-if="item.boardLikes !== undefined">
           <i class="fas fa-thumbs-up"></i> {{ item.boardLikes }}
@@ -21,12 +25,12 @@
       </div>
     </nuxt-link>
 
-    <!-- 제목은 그대로 링크 유지 -->
     <h3 class="community-post-title">
       <nuxt-link :to="`/community-details/${item.idx}`">{{ item.boardTitle }}</nuxt-link>
     </h3>
   </article>
 </template>
+
 
 
 
