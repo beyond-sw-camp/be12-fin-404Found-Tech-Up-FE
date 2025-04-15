@@ -86,26 +86,14 @@
     }
   };
 
-  const handleLike = async () => {
-  try {
-    console.log('좋아요 클릭됨');
-    // TODO: 백엔드 호출 (예: await axios.post(`/api/board/${board.value.idx}/like`))
-    // 좋아요 수 증가 처리 (임시)
-    board.value.boardLikes = (board.value.boardLikes || 0) + 1;
-  } catch (error) {
-    console.error('좋아요 처리 오류:', error);
-  }
+  // 👉 좋아요 버튼 클릭
+const handleLike = async () => {
+  await boardStore.toggleLike(board.value.idx, true);
 };
 
+// 👉 싫어요 버튼 클릭
 const handleUnlike = async () => {
-  try {
-    console.log('싫어요 클릭됨');
-    // TODO: 백엔드 호출 (예: await axios.post(`/api/board/${board.value.idx}/unlike`))
-    // 싫어요 수 증가 처리 (임시)
-    board.value.boardUnlikes = (board.value.boardUnlikes || 0) + 1;
-  } catch (error) {
-    console.error('싫어요 처리 오류:', error);
-  }
+  await boardStore.toggleLike(board.value.idx, false);
 };
   
   onMounted(fetchBoardDetail);
