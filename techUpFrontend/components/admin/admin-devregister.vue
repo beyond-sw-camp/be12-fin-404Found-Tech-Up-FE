@@ -166,11 +166,11 @@ let product = ref(props.modding ? props.productInfo : {
 })
 
 // 기존 SSD, RAM + 새로 추가된 HDD, CPU, GPU
-const ssd = ref(props.productInfo.ssdSpec ? props.productInfo.ssdSpec : { ssdCapacity: '', ssdRead: '', ssdWrite: '' })
-const ram = ref(props.productInfo.ramSpec ? props.productInfo.ramSpec : { ramType: '', ramNum: '', ramSize: '', ramUsage: '' })
-const hdd = ref(props.productInfo.hddSpec ? props.productInfo.hddSpec : { hddCapacity: '', hddRpm: '', hddBuffer: '' })
-const cpu = ref(props.productInfo.cpuSpec ? props.productInfo.cpuSpec : { cpuType: '', cpuCore: '', cpuThreads: '' })
-const gpu = ref(props.productInfo.gpuSpec ? props.productInfo.gpuSpec : { gpuMemory: '', gpuChip: '', gpuLength: '' })
+const ssd = ref(props.productInfo && props.productInfo.ssdSpec ? props.productInfo.ssdSpec : { ssdCapacity: '', ssdRead: '', ssdWrite: '' })
+const ram = ref(props.productInfo && props.productInfo.ramSpec ? props.productInfo.ramSpec : { ramType: '', ramNum: '', ramSize: '', ramUsage: '' })
+const hdd = ref(props.productInfo && props.productInfo.hddSpec ? props.productInfo.hddSpec : { hddCapacity: '', hddRpm: '', hddBuffer: '' })
+const cpu = ref(props.productInfo && props.productInfo.cpuSpec ? props.productInfo.cpuSpec : { cpuType: '', cpuCore: '', cpuThreads: '' })
+const gpu = ref(props.productInfo && props.productInfo.gpuSpec ? props.productInfo.gpuSpec : { gpuMemory: '', gpuChip: '', gpuLength: '' })
 
 // 이미지 파일들 및 미리보기 URL 배열
 const previewImages = ref([])
