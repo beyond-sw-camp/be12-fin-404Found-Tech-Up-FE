@@ -12,27 +12,26 @@ import { useRuntimeConfig } from 'nuxt/app';
 import AnalyticsTotalOrders from '../../views/dashboard/AnalyticsTotalOrders.vue';
 import AnalyticsTotalRefunds from '../../views/dashboard/AnalyticsTotalRefunds.vue';
 
-
 const config = useRuntimeConfig();
 
-let result = await useFetch('/statistics', {
+const result = await $fetch("/statistics", {
   baseURL: config.public.apiBaseUrl
 });
 
-console.log(result.data.value.data);
+console.log(result.data);
 
-let topWishList = ref(result.data.value.data.topWishList.map((value) => {
+let topWishList = ref(result.data.topWishList.map((value) => {
   let result = {};
   result.abbr = value.brand;
   result.amount = value.cw;
 }));
 
-let newComers = ref(result.data.value.data.newCustomers);
-let totalSales = ref(result.data.value.data.totalSales);
-let totalOrders = ref(result.data.value.data.totalOrders);
-let totalRefunds = ref(result.data.value.data.totalRefunds);
+let newComers = ref(result.data.newCustomers);
+let totalSales = ref(result.data.totalSales);
+let totalOrders = ref(result.data.totalOrders);
+let totalRefunds = ref(result.data.totalRefunds);
 
-let topSales = ref(result.data.value.data.topSales);
+let topSales = ref(result.data.topSales);
 
 </script>
 

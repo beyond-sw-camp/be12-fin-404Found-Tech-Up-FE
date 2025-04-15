@@ -26,7 +26,7 @@ export const useProductFilterBackStore = defineStore("product_filter", () => {
   async function fetchProducts() {
     try {
       const config = useRuntimeConfig();
-      const response = await axios.get("/api/product/list", {
+      const response = await axios.get("/product/list", {
         baseURL: config.public.apiBaseUrl
       });
       if (response.data && response.data.data) {

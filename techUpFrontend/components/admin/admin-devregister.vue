@@ -146,7 +146,7 @@
 </template>
 
 <script setup>
-import { navigateTo, useAsyncData, useFetch, useRuntimeConfig } from 'nuxt/app'
+import { navigateTo, useRuntimeConfig } from 'nuxt/app'
 import { ref } from 'vue'
 import { useAdminStore } from '../../pinia/useAdminStore'
 
@@ -180,8 +180,6 @@ const handleImageUpload = (event) => {
 
 const config = useRuntimeConfig();
 
-const adminStore = useAdminStore();
-
 // 폼 제출
 const submitForm = async () => {
   // 카테고리에 맞는 스펙 데이터를 합쳐서 payload 구성
@@ -189,19 +187,13 @@ const submitForm = async () => {
   let imageUrls = [];
   for (let file of selectedFiles.value) {
     let formdata = new FormData();
-    formdata.append(file.name, file);
-    const presignedResult = await $fetch('/productimage/presignedUrl', {
+    formdata.append("file", file);
+    const resultUrl = await $fetch('/productimage/upload', {
       baseURL: config.public.apiBaseUrl,
-      method: 'GET',
-      params: {
-        filename: file.name
-      }
-    });
-    const uploadResult = await $fetch(presignedResult.data, {
       method: 'PUT',
-      body: file
+      body: formdata
     });
-    imageUrls.push(uploadResult);
+    imageUrls.push(resultUrl.data);
   }
 
   const payload = {
@@ -211,24 +203,30 @@ const submitForm = async () => {
     hddSpec: (product.value.category === 'HDD' ? hdd.value : {}),
     cpuSpec: (product.value.category === 'CPU' ? cpu.value : {}),
     gpuSpec: (product.value.category === 'GPU' ? gpu.value : {}),
-    images: imageUrls
   }
   console.log('등록 데이터:', payload)
 
-  /*
   // axios.post('/api/products', payload) 등으로 서버 전송 처리
   $fetch('/product/register', {
     baseURL: config.public.apiBaseUrl,
-    method: "POST",
+    method: 'POST',
     body: payload
-  }).then((result) => {
+  }).then(async (result) => {
     console.log(result);
+    const saveResult = await $fetch('/productimage', {
+      baseURL: config.public.apiBaseUrl,
+      method: 'POST',
+      body: {
+        productIdx: result.data.idx,
+        imagePath: imageUrls
+      }
+    });
     alert("등록되었습니다!");
     navigateTo('/dashboard');
   }).catch((e) => {
     console.log(e);
   });
-  */
+
 }
 </script>
 
