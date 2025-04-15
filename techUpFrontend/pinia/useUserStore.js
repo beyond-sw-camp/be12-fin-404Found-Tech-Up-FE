@@ -35,5 +35,14 @@ export const useUserStore = defineStore('user', {
             throw error;
         }
     },
+    async logout() {
+        try {
+            const response = await axios.get(`/api/user/logout`);
+            return response.data;
+        } catch (error) {
+            console.error("logout error", error.response ? error.response.data : error.message);
+            throw error;
+        }
+    },
   },
 });

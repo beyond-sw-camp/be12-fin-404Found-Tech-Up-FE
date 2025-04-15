@@ -1,3 +1,27 @@
+<script setup>
+import { useUserStore } from '@/pinia/useUserStore'; // useUserStore import 추가
+
+const userStore = useUserStore();
+const router = useRouter();
+
+const logout = async () => {
+  try {
+    const response = await userStore.logout();
+    console.log("Logout success:", response);
+    alert('로그아웃이 완료되었습니다.');
+    router.push('/login'); // 로그인 성공 시 메인 페이지 경로로 이동
+  } catch (error) {
+    if (error.response) {
+      // 서버에서 반환한 에러 메시지 처리
+      alert(error.response.data.errorMessage);
+    } else {
+      // 네트워크 에러 또는 서버와의 연결 문제
+      alert("서버와 연결할 수 없습니다. 다시 시도해주세요.");
+    }
+  }
+};
+</script>
+
 <template>
   <div class="profile__main">
     <div class="profile__main-top pb-80">
@@ -19,7 +43,7 @@
         </div>
         <div class="col-md-6">
           <div class="profile__main-logout text-sm-end">
-            <nuxt-link href="/login" class="tp-logout-btn">로그아웃</nuxt-link>
+            <nuxt-link class="tp-logout-btn" @click="logout">로그아웃</nuxt-link>
           </div>
         </div>
       </div>
@@ -74,7 +98,3 @@
     </div>
   </div>
 </template>
-
-<script setup>
-
-</script>
