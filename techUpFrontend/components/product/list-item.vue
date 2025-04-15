@@ -13,7 +13,7 @@
             class="tp-product-action-btn-2 tp-product-quick-view-btn"
             data-bs-toggle="modal"
             :data-bs-target="`#${utilityStore.modalId}`"
-            @click="utilityStore.handleOpenModal(`product-modal-${item.id}`,item)"
+            @click="utilityStore.handleOpenModal(`product-modal-${item.idx}`,item)"
           >
             <svg-quick-view />
             <span class="tp-product-tooltip tp-product-tooltip-right">Quick View</span>
@@ -22,7 +22,7 @@
           <button
             @click="wishlistStore.add_wishlist_product(item)"
             type="button"
-            :class="`tp-product-action-btn-2 tp-product-add-to-wishlist-btn ${wishlistStore.wishlists.some((prd) => prd.id === item.id) ? 'active': ''}`"
+            :class="`tp-product-action-btn-2 tp-product-add-to-wishlist-btn ${wishlistStore.wishlists.some((prd) => prd.idx === item.idx) ? 'active': ''}`"
           >
             <svg-wishlist />
             <span class="tp-product-tooltip tp-product-tooltip-right">
@@ -33,7 +33,7 @@
           <button
             @click="compareStore.add_compare_product(item)"
             type="button"
-            :class="`tp-product-action-btn-2 tp-product-add-to-compare-btn ${compareStore.compare_items.some((prd) => prd.id === item.id) ? 'active': ''}`"
+            :class="`tp-product-action-btn-2 tp-product-add-to-compare-btn ${compareStore.compare_items.some((prd) => prd.idx === item.idx) ? 'active': ''}`"
           >
             <svg-compare-2 />
             <span class="tp-product-tooltip tp-product-tooltip-right">
@@ -98,12 +98,12 @@ const wishlistStore = useWishlistStore();
 const utilityStore = useUtilityStore();
 
 function isItemInWishlist(product: IProduct) {
-  return wishlistStore.wishlists.some((prd) => prd.id === product.id);
+  return wishlistStore.wishlists.some((prd) => prd.idx === product.idx);
 }
 function isItemInCompare(product: IProduct) {
-  return compareStore.compare_items.some((prd) => prd.id === product.id);
+  return compareStore.compare_items.some((prd) => prd.idx === product.idx);
 }
 function isItemInCart(product: IProduct) {
-  return cartStore.cart_products.some((prd: IProduct) => prd.id === product.id);
+  return cartStore.cart_products.some((prd: IProduct) => prd.idx === product.idx);
 }
 </script>
