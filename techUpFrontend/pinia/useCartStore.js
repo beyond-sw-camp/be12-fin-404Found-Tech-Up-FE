@@ -22,17 +22,22 @@ export const useCartStore = defineStore("cart_product", () => {
       cart_products.value.push(newItem);
       toast.success(`${payload.name} added to cart`);
     } else {
+      // TODO: 수정 필요
       cart_products.value.map((item) => {
         if (item.idx === payload.idx) {
           if (typeof item.orderQuantity !== "undefined") {
-            if (item.stock >= item.orderQuantity + orderQuantity.value) {
+            if (payload.stock >= item.orderQuantity + orderQuantity.value) {
               item.orderQuantity =
                 orderQuantity.value !== 1
                   ? orderQuantity.value + item.orderQuantity
                   : item.orderQuantity + 1;
               toast.success(`${orderQuantity.value} ${item.name} added to cart`);
             } else {
-              toast.error(`No more quantity available for this product!`);
+              toast.error(`${payload.name} 재고가 부족합니다.`);
+              console.log(payload);
+              console.log(item);
+              console.log("item.idx: ", item.productIdx);
+              console.log("payload.idx: ", payload.productIdx);
               orderQuantity.value = 1;
             }
           }

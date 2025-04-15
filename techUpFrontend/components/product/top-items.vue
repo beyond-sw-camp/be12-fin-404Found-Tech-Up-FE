@@ -54,7 +54,7 @@ import product_data from '@/data/product-data';
 export default {
   setup() {
     const active_tab = ref('New');
-    const tabs = ["New", "Featured", "Top Sellers"];
+    const tabs = ["New", "Featured"];
 
     const handleActiveTab = (tab) => {
       active_tab.value = tab;
@@ -70,11 +70,6 @@ export default {
         return allProducts.slice(0, 8);
       } else if (active_tab.value === 'Featured') {
         return allProducts.filter((product) => product.featured);
-      } else if (active_tab.value === 'Top Sellers') {
-        return allProducts
-          .slice()
-          .sort((a, b) => (b.sellCount || 0) - (a.sellCount || 0))
-          .slice(0, 8);
       } else {
         return [];
       }
