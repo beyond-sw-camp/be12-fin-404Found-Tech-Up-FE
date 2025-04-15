@@ -11,7 +11,7 @@
       </div>
       <h3 class="tp-product-title">
         <nuxt-link :href="`/product-details/${props.item.idx}`">
-          {{ props.item.title }}
+          {{ props.item.name }}
         </nuxt-link>
       </h3>
       <div class="tp-product-rating d-sm-flex align-items-center">

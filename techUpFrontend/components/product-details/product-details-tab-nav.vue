@@ -19,8 +19,8 @@
                       <div class="row">
                         <div class="col-lg-12">
                             <div class="tp-product-details-desc-content pt-25">
-                              <span>{{product.category.name}}</span>
-                              <h3 class="tp-product-details-desc-title">{{product.title}}</h3>
+                              <span>{{product.category}}</span>
+                              <h3 class="tp-product-details-desc-title">{{product.name}}</h3>
                               <p>{{ product.description }}</p>
                             </div>
                         </div>

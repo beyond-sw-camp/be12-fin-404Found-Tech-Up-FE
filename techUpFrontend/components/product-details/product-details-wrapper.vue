@@ -33,13 +33,13 @@
 
     <!-- price -->
     <div class="tp-product-details-price-wrapper mb-20">
-      <div v-if="product.discount > 0">
+      <div v-if="product.discount > 0 || product.discount !== null">
         <span class="tp-product-details-price old-price">{{ formatPrice(product.price, false) }}</span>
         <span class="tp-product-details-price new-price">
           {{ formatPrice(Number(product.price) - (Number(product.price) * Number(product.discount)) / 100) }}
         </span>
       </div>
-      <span v-else class="tp-product-details-price old-price">
+      <span v-else class="tp-product-details-price">
         {{ formatPrice(product.price) }}
       </span>
     </div>
@@ -93,7 +93,7 @@
           </button>
         </div>
       </div>
-      <nuxt-link :href="`/product-details/${product.id}`" class="tp-product-details-buy-now-btn w-100 text-center">
+      <nuxt-link :href="`/product-details/${product.idx}`" class="tp-product-details-buy-now-btn w-100 text-center">
         Buy Now
       </nuxt-link>
     </div>

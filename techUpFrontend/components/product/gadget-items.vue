@@ -57,7 +57,7 @@
                     </span>
                     <h3 class="tp-product-gadget-banner-title">
                       <nuxt-link href="/shop">
-                        <span v-html="item.title"></span>
+                        <span v-html="item.name"></span>
                       </nuxt-link>
                     </h3>
                   </div>
