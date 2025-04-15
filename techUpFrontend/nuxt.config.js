@@ -2,8 +2,27 @@ import { fileURLToPath } from 'node:url'
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  //npm run generate를 위한 설정정
+  modules: [
+    [
+      '@pinia/nuxt',
+      {
+        autoImports: [
+          'defineStore',
+          ['defineStore', 'definePiniaStore'],
+        ],
+      },
+    ],
+  ],
+
+  //npm run generate를 위한 설정
   nitro: {
+    devProxy: {
+      '/api': {
+        target: 'http://localhost:8080', // 프록시 대상 URL
+        changeOrigin: true,
+        prependPath: true,
+      },
+    },
     preset: 'static',
     prerender: {
       ignore: [
@@ -30,45 +49,7 @@ export default defineNuxtConfig({
     }
   },
 
-  runtimeConfig: {
-    public: {
-      apiBaseUrl: process.env.API_BASE_URL || 'http://localhost:8080'
-    }
-  },
-
   devtools: { enabled: true },
-  modules: [
-    [
-      '@pinia/nuxt',
-      '@nuxtjs/axios',
-      '@nuxtjs/proxy',
-      {
-        autoImports: [
-          'defineStore',
-          ['defineStore', 'definePiniaStore']
-        ]
-      }
-    ]
-  ],
-
-  axios: {
-    // 백엔드 API 기본 URL은 runtimeConfig.public.apiBaseUrl으로 설정
-    baseURL: process.env.API_BASE_URL || 'http://localhost:8080',
-    // 프록시 사용 - CORS 에러용
-    proxy: true,
-    // 인증이 필요한 경우, withCredentials:true를 추가
-    credentials: true,
-  },
-
-  proxy: {
-    // /api/* 로 오는 요청은 백엔드로 프록시 처리
-    '/api/': {
-      target: process.env.API_BASE_URL || 'http://localhost:8080',
-      changeOrigin: true,
-      pathRewrite: { '^/api/': '' }
-    }
-  },
-
   app: {
     head: {
       title: "Tech Up",
@@ -83,21 +64,6 @@ export default defineNuxtConfig({
   },
 
   vite: {
-    build: {
-      commonjsOptions: {
-        transformMixedEsModules: true,
-      },
-    },
-    resolve: {
-      // quill 모듈 경로를 명시적으로 지정하여 default export 문제를 우회
-      alias: {
-        quill: 'quill/dist/quill.js'
-      }
-    },
-    optimizeDeps: {
-      // quill을 의존성 최적화에 포함
-      include: ['quill']
-    },
     ssr: {
       noExternal: ['vuetify']
     },

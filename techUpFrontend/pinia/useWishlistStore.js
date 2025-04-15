@@ -7,21 +7,21 @@ export const useWishlistStore = defineStore("wishlist_product", () => {
 
   // add_wishlist_product
   const add_wishlist_product = (payload) => {
-    const isAdded = wishlists.value.findIndex((p) => p.id === payload.id);
+    const isAdded = wishlists.value.findIndex((p) => p.idx === payload.idx);
     if (isAdded !== -1) {
-      wishlists.value = wishlists.value.filter((p) => p.id !== payload.id);
-      toast.error(`${payload.title} remove to wishlist`);
+      wishlists.value = wishlists.value.filter((p) => p.idx !== payload.idx);
+      toast.error(`${payload.name} removed from wishlist`);
     } else {
       wishlists.value.push(payload);
-      toast.success(`${payload.title} added to wishlist`);
+      toast.success(`${payload.name} added to wishlist`);
     }
     localStorage.setItem("wishlist_products", JSON.stringify(wishlists.value));
   };
 
   // removeWishlist
   const removeWishlist = (payload) => {
-    wishlists.value = wishlists.value.filter((p) => p.id !== payload.id);
-    toast.error(`${payload.title} remove to wishlist`);
+    wishlists.value = wishlists.value.filter((p) => p.idx !== payload.idx);
+    toast.error(`${payload.name} removed from wishlist`);
     localStorage.setItem("wishlist_products", JSON.stringify(wishlists.value));
   };
 

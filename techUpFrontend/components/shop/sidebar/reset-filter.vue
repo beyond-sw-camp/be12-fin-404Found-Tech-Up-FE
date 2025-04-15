@@ -8,9 +8,9 @@
 </template>
 
 <script setup>
-import { useProductFilterStore } from '@/pinia/useProductFilterStore';
+import { useProductFilterBackStore } from '@/pinia/useProductFilterBackStore';
 
-const store = useProductFilterStore();
+const store = useProductFilterBackStore();
 const router = useRouter();
 
 // 필요하다면 아래 props 로직도 JS 형태로 사용할 수 있어요

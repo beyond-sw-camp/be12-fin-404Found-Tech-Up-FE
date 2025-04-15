@@ -1,3 +1,6 @@
+<script setup>
+</script>
+
 <template>
   <section class="tp-login-area pb-140 p-relative z-index-1 fix">
     <div class="tp-login-shape">
@@ -34,6 +37,3 @@
     </div>
   </section>
 </template>
-
-<script setup>
-</script>

@@ -4,13 +4,13 @@
         class="tp-product-thumb-2 p-relative z-index-1 fix w-img"
         style="background-color: #f2f3f5"
       >
-        <nuxt-link :href="`/product-details/${item.id}`">
-          <img :src="item.img" alt="product-img" />
+        <nuxt-link :href="`/product-details/${item.idx}`">
+          <img :src="item.img" alt="product-image" />
         </nuxt-link>
   
         <!-- product badge -->
         <div class="tp-product-badge">
-          <span v-if="item.status === 'out-of-stock'" class="product-hot">out-of-stock</span>
+          <span v-if="item.stock <= 0" class="product-hot">out-of-stock</span>
         </div>
   
         <!-- product action -->
@@ -40,7 +40,7 @@
               class="tp-product-action-btn-2 tp-product-quick-view-btn"
               data-bs-toggle="modal"
               :data-bs-target="`#${utilityStore.modalId}`"
-              @click="utilityStore.handleOpenModal(`product-modal-${item.id}`, item)"
+              @click="utilityStore.handleOpenModal(`product-modal-${item.idx}`, item)"
             >
               <svg-quick-view />
               <span class="tp-product-tooltip tp-product-tooltip-right">Quick View</span>
@@ -73,10 +73,11 @@
   
       <div class="tp-product-content-2 pt-15">
         <div class="tp-product-tag-2">
-          <a href="#">{{ item.category.name }}</a>
+          <!-- TODO: 카테고리 별로 볼 수 있도록 설정 -->
+          {{ item.category }}
         </div>
         <h3 class="tp-product-title-2">
-          <nuxt-link :href="`/product-details/${item.id}`">{{ item.title }}</nuxt-link>
+          <nuxt-link :href="`/product-details/${item.idx}`">{{ item.name }}</nuxt-link>
         </h3>
         <div class="tp-product-rating-icon tp-product-rating-icon-2">
           <span><i class="fa-solid fa-star"></i></span>
@@ -121,13 +122,13 @@
   });
   
   function isItemInWishlist(product) {
-    return wishlistStore.wishlists.some((prd) => prd.id === product.id);
+    return wishlistStore.wishlists.some((prd) => prd.idx === product.idx);
   }
   function isItemInCompare(product) {
-    return compareStore.compare_items.some((prd) => prd.id === product.id);
+    return compareStore.compare_items.some((prd) => prd.idx === product.idx);
   }
   function isItemInCart(product) {
-    return cartStore.cart_products.some((prd) => prd.id === product.id);
+    return cartStore.cart_products.some((prd) => prd.idx === product.idx);
   }
   </script>
   

@@ -26,7 +26,7 @@
           </div>
           <h4 class="tp-shop-widget-product-title">
             <nuxt-link :href="`/product-details/${item.product.id}`">
-              {{ item.product.title }}
+              {{ item.product.name }}
             </nuxt-link>
           </h4>
           <div class="tp-shop-widget-product-price-wrapper">

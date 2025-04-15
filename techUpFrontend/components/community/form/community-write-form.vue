@@ -2,108 +2,139 @@
     <div class="form-container">
       <h2 class="form-title">게시글 작성</h2>
       <form @submit.prevent="submitForm" class="space-y-6">
-        <!-- 게시글 기본 정보 -->
         <div class="form-group">
           <label class="form-label">게시글 제목</label>
           <input v-model="board.boardTitle" type="text" class="form-input" required />
         </div>
-    
+  
         <div class="form-group">
           <label class="form-label">게시글 내용</label>
-          <!-- 클라이언트 사이드 전용 Quill Editor -->
           <ClientOnly>
-            <QuillEditor
-              v-model="board.boardContent"
-              class="form-editor"
-              :options="editorOptions"
-            />
+            <div ref="editorContainer" class="form-editor"></div>
+            <div class="mt-2 text-xs text-gray-500">
+              <strong>콘텐츠 미리보기:</strong>
+              <div v-html="board.boardContent.substring(0, 100) + (board.boardContent.length > 100 ? '...' : '')"></div>
+            </div>
           </ClientOnly>
         </div>
-    
-        <!-- 첨부파일 업로드 (이미지 제외, ex. txt, pdf, doc 등) -->
+  
+        <div class="form-group">
+          <label class="form-label">게시글 카테고리</label>
+          <select v-model="board.boardCategory" class="form-select" required>
+            <option disabled value="">선택하세요</option>
+            <option value="Q&A">Q&amp;A</option>
+            <option value="자유">자유</option>
+            <option value="후기">후기</option>
+            <option value="추천">추천</option>
+          </select>
+        </div>
+  
         <div class="form-group">
           <label class="form-label">첨부파일 업로드 (최대 5개)</label>
-          <input
-            type="file"
-            accept=".txt,.pdf,.doc,.docx"
-            multiple
-            @change="handleAttachmentUpload"
-            class="form-input"
-          />
-          <!-- 첨부파일 미리보기: 파일명만 출력 -->
+          <input type="file" accept=".txt,.pdf,.doc,.docx" multiple @change="handleAttachmentUpload" class="form-input" />
           <div class="preview-container" v-if="attachedFileNames.length">
             <div v-for="(file, index) in attachedFileNames" :key="index" class="preview-file">
               {{ file }}
             </div>
           </div>
         </div>
-    
-        <button type="submit" class="btn-submit">게시글 작성</button>
+  
+        <button type="submit" class="btn-submit" :disabled="isSubmitting">
+          {{ isSubmitting ? '처리 중...' : '게시글 작성' }}
+        </button>
       </form>
     </div>
   </template>
   
   <script setup lang="js">
-  import { ref, defineAsyncComponent } from 'vue';
-  // 동적 import: 반환되는 컴포넌트를 여러 속성 중 존재하는 것으로 결정
-  const QuillEditor = defineAsyncComponent({
-  loader: () =>
-    import('vue3-quill').then(module => {
-      console.log("vue3-quill module keys:", Object.keys(module));
-      // module.quillEditor가 존재하면 이를 반환
-      return module.quillEditor;
-    }),
-  loadingComponent: {
-    template: '<p>Loading editor...</p>'
-  },
-  errorComponent: {
-    template: '<p>Error loading editor</p>'
-  },
-  delay: 200,
-  timeout: 3000
-});
-
-  // Quill CSS 임포트
-  import 'quill/dist/quill.snow.css';
+  import { reactive, ref, onMounted } from 'vue';
+  import { useRouter } from 'vue-router';
+  import { useBoardStore } from '@/pinia/useBoardStore';
   
-  console.log("페이지 로드됨?");
+  const boardStore = useBoardStore();
+  const router = useRouter();
+  const editorContainer = ref(null);
+  let quill = null;
   
-  const board = ref({
+  const board = reactive({
     boardTitle: '',
-    boardContent: ''
+    boardContent: '',
+    boardCategory: ''
   });
   
-  // Quill Editor 옵션
-  const editorOptions = {
-    theme: 'snow',
-    placeholder: '여기에 게시글 내용을 작성하세요...'
-  };
-  
-  // 첨부파일(일반 파일) 처리: 최대 5개
+  const isSubmitting = ref(false);
   const attachedFiles = ref([]);
   const attachedFileNames = ref([]);
   
   const handleAttachmentUpload = (event) => {
     const files = event.target.files;
-    console.log("첨부파일 선택됨, 파일 개수:", files.length);
     attachedFiles.value = Array.from(files).slice(0, 5);
     attachedFileNames.value = attachedFiles.value.map(file => file.name);
-    console.log("선택된 파일들:", attachedFileNames.value);
   };
   
-  const submitForm = () => {
-    console.log("폼 제출 시도");
-    const payload = {
-      ...board.value,
-      attachments: attachedFiles.value
-    };
-    console.log('게시글 등록 데이터:', payload);
-    // 실제 전송 구현: 예, axios.post('/api/board', payload)
+  const submitForm = async () => {
+    if (isSubmitting.value) return;
+    isSubmitting.value = true;
+    try {
+      const payload = {
+        boardTitle: board.boardTitle,
+        boardContent: board.boardContent,
+        boardCategory: board.boardCategory,
+        attachments: attachedFiles.value
+      };
+      const result = await boardStore.createBoard(payload);
+      console.log('게시글 생성 완료:', result);
+      router.push('/community');
+    } catch (e) {
+      console.error('폼 제출 오류:', e);
+    } finally {
+      isSubmitting.value = false;
+    }
   };
+  
+  onMounted(async () => {
+    const Quill = await import('quill').then(m => m.default);
+    await import('quill/dist/quill.snow.css');
+  
+    const ImageHandler = () => {
+      const input = document.createElement('input');
+      input.setAttribute('type', 'file');
+      input.setAttribute('accept', 'image/*');
+      input.click();
+      input.onchange = () => {
+        const file = input.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = (e) => {
+            const base64 = e.target.result;
+            const range = quill.getSelection(true);
+            quill.insertEmbed(range.index, 'image', base64);
+            quill.setSelection(range.index + 1);
+          };
+          reader.readAsDataURL(file);
+        }
+      };
+    };
+  
+    if (editorContainer.value) {
+      quill = new Quill(editorContainer.value, {
+        theme: 'snow',
+        placeholder: '여기에 게시글 내용을 작성하세요...',
+        modules: {
+          toolbar: {
+            container: [['bold', 'italic', 'underline', 'strike'], ['link', 'image']],
+            handlers: { image: ImageHandler }
+          }
+        }
+      });
+      quill.on('text-change', () => {
+        board.boardContent = quill.root.innerHTML;
+      });
+    }
+  });
   </script>
   
   <style scoped>
-  /* 전체 폼 컨테이너 */
   .form-container {
     max-width: 64rem;
     margin: 0 auto;
@@ -120,7 +151,6 @@
     text-align: center;
   }
   
-  /* 폼 그룹 */
   .form-group {
     margin-bottom: 1.5rem;
   }
@@ -133,9 +163,7 @@
     margin-bottom: 0.5rem;
   }
   
-  /* 인풋, 에디터, 텍스트에리어, 셀렉트 */
   .form-input,
-  .form-editor,
   .form-textarea,
   .form-select {
     width: 100%;
@@ -146,10 +174,25 @@
   }
   
   .form-editor {
-    min-height: 6rem;
+    min-height: 200px;
+    border: 1px solid #d1d5db;
+    border-radius: 0.375rem;
+    margin-bottom: 1rem;
   }
   
-  /* 미리보기 영역: 첨부파일 이름만 출력 */
+  :deep(.ql-toolbar) {
+    border-top-left-radius: 0.375rem;
+    border-top-right-radius: 0.375rem;
+    border-color: #d1d5db;
+  }
+  
+  :deep(.ql-container) {
+    border-bottom-left-radius: 0.375rem;
+    border-bottom-right-radius: 0.375rem;
+    border-color: #d1d5db;
+    min-height: 150px;
+  }
+  
   .preview-container {
     margin-top: 0.5rem;
     display: flex;
@@ -165,7 +208,6 @@
     font-size: 0.85rem;
   }
   
-  /* 제출 버튼 */
   .btn-submit {
     display: block;
     width: 100%;
@@ -178,8 +220,14 @@
     cursor: pointer;
     transition: background-color 0.3s ease;
   }
-  .btn-submit:hover {
+  
+  .btn-submit:hover:not(:disabled) {
     background-color: #333;
+  }
+  
+  .btn-submit:disabled {
+    background-color: #999;
+    cursor: not-allowed;
   }
   </style>
   

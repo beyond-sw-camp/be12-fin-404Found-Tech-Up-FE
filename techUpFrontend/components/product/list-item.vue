@@ -1,8 +1,11 @@
 <template>
   <div class="tp-product-list-item d-md-flex">
     <div class="tp-product-list-thumb p-relative fix">
-      <nuxt-link :href="`/product-details/${item.id}`" style="height: 310px;background-color: #f2f3f5;">
+      <nuxt-link :href="`/product-details/${item.idx}`" style="height: 310px;background-color: #f2f3f5;">
         <img :src="item.img" alt="product-img" />
+        <div class="tp-product-badge">
+          <span v-if="item.stock <= 0" class="product-hot">out-of-stock</span>
+        </div>
       </nuxt-link>
 
       <!-- product action -->
@@ -13,7 +16,7 @@
             class="tp-product-action-btn-2 tp-product-quick-view-btn"
             data-bs-toggle="modal"
             :data-bs-target="`#${utilityStore.modalId}`"
-            @click="utilityStore.handleOpenModal(`product-modal-${item.id}`,item)"
+            @click="utilityStore.handleOpenModal(`product-modal-${item.idx}`,item)"
           >
             <svg-quick-view />
             <span class="tp-product-tooltip tp-product-tooltip-right">Quick View</span>
@@ -22,7 +25,7 @@
           <button
             @click="wishlistStore.add_wishlist_product(item)"
             type="button"
-            :class="`tp-product-action-btn-2 tp-product-add-to-wishlist-btn ${wishlistStore.wishlists.some((prd) => prd.id === item.id) ? 'active': ''}`"
+            :class="`tp-product-action-btn-2 tp-product-add-to-wishlist-btn ${wishlistStore.wishlists.some((prd) => prd.idx === item.idx) ? 'active': ''}`"
           >
             <svg-wishlist />
             <span class="tp-product-tooltip tp-product-tooltip-right">
@@ -33,7 +36,7 @@
           <button
             @click="compareStore.add_compare_product(item)"
             type="button"
-            :class="`tp-product-action-btn-2 tp-product-add-to-compare-btn ${compareStore.compare_items.some((prd) => prd.id === item.id) ? 'active': ''}`"
+            :class="`tp-product-action-btn-2 tp-product-add-to-compare-btn ${compareStore.compare_items.some((prd) => prd.idx === item.idx) ? 'active': ''}`"
           >
             <svg-compare-2 />
             <span class="tp-product-tooltip tp-product-tooltip-right">
@@ -46,10 +49,10 @@
     <div class="tp-product-list-content">
       <div class="tp-product-content-2 pt-15">
         <div class="tp-product-tag-2">
-          <a href="#">{{ item.category.name }}</a>
+          <a href="#">{{ item.category }}</a>
         </div>
         <h3 class="tp-product-title-2">
-          <nuxt-link :href="`/product-details/${item.id}`">{{ item.title }}</nuxt-link>
+          <nuxt-link :href="`/product-details/${item.idx}`">{{ item.name }}</nuxt-link>
         </h3>
         <div class="tp-product-rating-icon tp-product-rating-icon-2">
           <span><i class="fa-solid fa-star"></i></span>
@@ -98,12 +101,12 @@ const wishlistStore = useWishlistStore();
 const utilityStore = useUtilityStore();
 
 function isItemInWishlist(product: IProduct) {
-  return wishlistStore.wishlists.some((prd) => prd.id === product.id);
+  return wishlistStore.wishlists.some((prd) => prd.idx === product.idx);
 }
 function isItemInCompare(product: IProduct) {
-  return compareStore.compare_items.some((prd) => prd.id === product.id);
+  return compareStore.compare_items.some((prd) => prd.idx === product.idx);
 }
 function isItemInCart(product: IProduct) {
-  return cartStore.cart_products.some((prd: IProduct) => prd.id === product.id);
+  return cartStore.cart_products.some((prd: IProduct) => prd.idx === product.idx);
 }
 </script>

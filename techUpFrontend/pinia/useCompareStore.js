@@ -7,15 +7,15 @@ export const useCompareStore = defineStore("compare_product", () => {
 
   // add_compare_product
   const add_compare_product = (payload) => {
-    const isAdded = compare_items.value.findIndex((p) => p.id === payload.id);
+    const isAdded = compare_items.value.findIndex((p) => p.idx === payload.idx);
     if (isAdded !== -1) {
       compare_items.value = compare_items.value.filter(
-        (p) => p.id !== payload.id
+        (p) => p.idx !== payload.idx
       );
-      toast.error(`${payload.title} remove to compare`);
+      toast.error(`${payload.name} remove to compare`);
     } else {
       compare_items.value.push(payload);
-      toast.success(`${payload.title} added to compare`);
+      toast.success(`${payload.name} added to compare`);
     }
     localStorage.setItem(
       "compare_products",
@@ -25,9 +25,9 @@ export const useCompareStore = defineStore("compare_product", () => {
   // removeCompare
   const removeCompare = (payload) => {
     compare_items.value = compare_items.value.filter(
-      (p) => p.id !== payload.id
+      (p) => p.idx !== payload.idx
     );
-    toast.error(`${payload.title} remove to compare`);
+    toast.error(`${payload.name} remove to compare`);
     localStorage.setItem(
       "compare_products",
       JSON.stringify(compare_items.value)

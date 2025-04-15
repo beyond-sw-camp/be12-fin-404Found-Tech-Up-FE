@@ -1,13 +1,13 @@
 <template>
   <div :class="`${offer_style ? 'tp-product-offer-item' : 'mb-25'} tp-product-item transition-3`">
     <div class="tp-product-thumb p-relative fix m-img">
-      <nuxt-link :href="`/product-details/${item.id}`">
+      <nuxt-link :href="`/product-details/${item.idx}`">
         <img :src="item.img" alt="product-electronic" />
       </nuxt-link>
 
       <!-- product badge -->
       <div class="tp-product-badge">
-        <span v-if="item.status === 'out-of-stock'" class="product-hot">out-of-stock</span>
+        <span v-if="item.stock <= 0" class="product-hot">out-of-stock</span>
       </div>
 
       <!-- product action -->
@@ -36,7 +36,7 @@
             class="tp-product-action-btn tp-product-quick-view-btn"
             data-bs-toggle="modal"
             :data-bs-target="`#${utilityStore.modalId}`"
-            @click="utilityStore.handleOpenModal(`product-modal-${item.id}`, item)"
+            @click="utilityStore.handleOpenModal(`product-modal-${item.idx}`, item)"
           >
             <svg-quick-view />
             <span class="tp-product-tooltip">Quick View</span>
@@ -57,11 +57,11 @@
     <!-- product content -->
     <div class="tp-product-content">
       <div class="tp-product-category">
-        <nuxt-link :href="`/product-details/${item.id}`">{{ item.category.name }}</nuxt-link>
+        <nuxt-link :href="`/product-details/${item.idx}`">{{ item.category }}</nuxt-link>
       </div>
       <h3 class="tp-product-title">
-        <nuxt-link :href="`/product-details/${item.id}`">
-          {{ item.title }}
+        <nuxt-link :href="`/product-details/${item.idx}`">
+          {{ item.name }}
         </nuxt-link>
       </h3>
       <div class="tp-product-rating d-flex align-items-center">
@@ -123,10 +123,10 @@ const wishlistStore = useWishlistStore();
 const utilityStore = useUtilityStore();
 
 function isItemInWishlist(product) {
-  return wishlistStore.wishlists.some((prd) => prd.id === product.id);
+  return wishlistStore.wishlists.some((prd) => prd.idx === product.idx);
 }
 function isItemInCart(product) {
-  return cartStore.cart_products.some((prd) => prd.id === product.id);
+  return cartStore.cart_products.some((prd) => prd.idx === product.idx);
 }
 
 let timer;

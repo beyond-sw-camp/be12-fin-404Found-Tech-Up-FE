@@ -2,7 +2,7 @@
   <tr>
     <!-- img -->
     <td class="tp-cart-img">
-      <nuxt-link :href="`/product-details/${item.id}`" style="background-color: #F2F3F5;display: block;">
+      <nuxt-link :href="`/product-details/${item.idx}`" style="background-color: #F2F3F5;display: block;">
         <img :src="item.img" alt="image" />
       </nuxt-link>
     </td>

@@ -11,26 +11,26 @@ export const useCartStore = defineStore("cart_product", () => {
 
   // add_cart_product
   const addCartProduct = (payload) => {
-    const isExist = cart_products.value.some((i) => i.id === payload.id);
-    if (payload.status === "out-of-stock") {
-      toast.error(`Out of stock ${payload.title}`);
+    const isExist = cart_products.value.some((i) => i.idx === payload.idx);
+    if (payload.stock <= 0) {
+      toast.error(`Out of stock ${payload.name}`);
     } else if (!isExist) {
       const newItem = {
         ...payload,
         orderQuantity: 1,
       };
       cart_products.value.push(newItem);
-      toast.success(`${payload.title} added to cart`);
+      toast.success(`${payload.name} added to cart`);
     } else {
       cart_products.value.map((item) => {
-        if (item.id === payload.id) {
+        if (item.idx === payload.idx) {
           if (typeof item.orderQuantity !== "undefined") {
-            if (item.quantity >= item.orderQuantity + orderQuantity.value) {
+            if (item.stock >= item.orderQuantity + orderQuantity.value) {
               item.orderQuantity =
                 orderQuantity.value !== 1
                   ? orderQuantity.value + item.orderQuantity
                   : item.orderQuantity + 1;
-              toast.success(`${orderQuantity.value} ${item.title} added to cart`);
+              toast.success(`${orderQuantity.value} ${item.name} added to cart`);
             } else {
               toast.error(`No more quantity available for this product!`);
               orderQuantity.value = 1;
@@ -58,11 +58,11 @@ export const useCartStore = defineStore("cart_product", () => {
   // quantityDecrement
   const quantityDecrement = (payload) => {
     cart_products.value.map((item) => {
-      if (item.id === payload.id) {
+      if (item.idx === payload.idx) {
         if (typeof item.orderQuantity !== "undefined") {
           if (item.orderQuantity > 1) {
             item.orderQuantity = item.orderQuantity - 1;
-            toast.info(`Decrement Quantity For ${item.title}`);
+            toast.info(`Decrement Quantity For ${item.name}`);
           }
         }
       }
@@ -73,8 +73,8 @@ export const useCartStore = defineStore("cart_product", () => {
 
   // remove_cart_products
   const removeCartProduct = (payload) => {
-    cart_products.value = cart_products.value.filter((p) => p.id !== payload.id);
-    toast.error(`${payload.title} remove to cart`);
+    cart_products.value = cart_products.value.filter((p) => p.idx !== payload.idx);
+    toast.error(`${payload.name} removed from cart`);
     localStorage.setItem("cart_products", JSON.stringify(cart_products.value));
   };
 

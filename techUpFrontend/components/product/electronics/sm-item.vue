@@ -1,16 +1,16 @@
 <template>
   <div class="tp-product-sm-item d-flex align-items-center">
     <div class="tp-product-thumb mr-25 fix">
-      <nuxt-link :href="`/product-details/${item.id}`">
+      <nuxt-link :href="`/product-details/${item.idx}`">
         <img :src="item.img" alt="product-img" width="140" height="140" />
       </nuxt-link>
     </div>
     <div class="tp-product-sm-content">
       <div class="tp-product-category">
-        <nuxt-link :href="`/product-details/${item.id}`">{{item.category.name}}</nuxt-link>
+        <nuxt-link :href="`/product-details/${item.idx}`">{{item.category}}</nuxt-link>
       </div>
       <h3 class="tp-product-title">
-        <nuxt-link :href="`/product-details/${item.id}`">{{item.title}}</nuxt-link>
+        <nuxt-link :href="`/product-details/${item.idx}`">{{item.name}}</nuxt-link>
       </h3>
       <div class="tp-product-rating d-sm-flex align-items-center">
         <div class="tp-product-rating-icon">
