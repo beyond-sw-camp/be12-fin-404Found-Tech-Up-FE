@@ -25,7 +25,7 @@
               <div class="tab-content" id="dashboard-tabContent">
                 <div class="tab-pane fade show active" id="nav-dashboard" role="tabpanel"
                   aria-labelledby="nav-dashboard-tab">
-                  <admin-devregister :modding="false" />
+                  <admin-devregister :modding="modding" :productInfo="productInfo" />
                 </div>
               </div>
             </div>
@@ -37,5 +37,36 @@
 </template>
 
 <script setup>
+import { useRuntimeConfig } from 'nuxt/app';
+
+const props = defineProps({
+  modify: Boolean,
+  idx: Number
+})
+
+const modding = ref(props.modify);
+const idx = ref(props.idx);
+
+let productInfo = ref({});
+const config = useRuntimeConfig();
+
+// 기존 정보를 가져온다.
+const result = await $fetch(`/product/${idx.value}`, {
+  baseURL: config.public.apiBaseUrl,
+});
+
+productInfo.value = {
+  name: result.data.name,
+  price: result.data.price,
+  brand: result.data.brand,
+  stock: result.data.stock,
+  description: result.data.description,
+  category: result.data.category,
+  cpuSpec: result.data.cpuSpec ? result.data.cpuSpec : null,
+  gpuSpec: result.data.gpuSpec ? result.data.gpuSpec : null,
+  hddSpec: result.data.hddSpec ? result.data.hddSpec : null,
+  ssdSpec: result.data.ssdSpec ? result.data.ssdSpec : null,
+  ramSpec: result.data.ramSpec ? result.data.ramSpec : null
+};
 
 </script>

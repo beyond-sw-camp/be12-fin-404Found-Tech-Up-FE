@@ -3,7 +3,7 @@
     <!-- img -->
     <td class="tp-cart-img">
       <nuxt-link :href="`/product-details/${item.idx}`" style="background-color: #F2F3F5;display: block;">
-        <img :src="item.img" alt="image" />
+        <img :src="item.images[0]" alt="image" />
       </nuxt-link>
     </td>
     <!-- title -->
@@ -31,9 +31,11 @@
       </button>
     </td>
     <td>
-      <button class="device-register tp-btn-2" @click="">
-        <span>수정</span>
-      </button>
+      <nuxt-link :href="`/product-modify/${item.idx}`">
+        <button class="device-register tp-btn-2" @click="">
+          <span>수정</span>
+        </button>
+      </nuxt-link>
     </td>
   </tr>
 </template>
