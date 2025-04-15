@@ -41,19 +41,25 @@ async fetchBoardList({ page = 0, size = 10 } = {}) {
     }
   },
 
-    async fetchBoardDetail(boardIdx) {
-      try {
-        const boardRes = await axios.get(`/api/board/${boardIdx}`);
-        this.currentBoard = boardRes.data;
+  async fetchBoardDetail(boardIdx) {
+    try {
+    console.log('함수 실행은 한거지? ');
+      const boardRes = await axios.get(`/api/board/read/${boardIdx}`);
+      console.log('머가맞아? ' + boardRes.data);
+      console.log('이건가 : '+boardRes.data.data);
+      if (boardRes.data && boardRes.data.isSuccess && boardRes.data.data) {
+        this.currentBoard = boardRes.data.data; // ✅ 바로 data로 저장
         console.log('게시글 상세 조회 성공:', this.currentBoard);
-
-        const filesRes = await axios.get(`/api/board/${boardIdx}/files`);
-        this.boardFiles = filesRes.data;
-        console.log('게시글 파일 목록:', this.boardFiles);
-      } catch (error) {
-        console.error('게시글 상세 조회 오류:', error);
+      } else {
+        console.error('게시글 상세 조회 실패: 응답 형식 오류', boardRes.data);
+        this.currentBoard = null;
       }
-    },
+    } catch (error) {
+      console.error('게시글 상세 조회 오류:', error);
+      this.currentBoard = null;
+    }
+  },
+  
 
     async uploadTempImage(file) {
       try {
