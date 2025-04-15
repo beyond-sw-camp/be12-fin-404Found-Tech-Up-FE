@@ -150,7 +150,13 @@ import { navigateTo, useRuntimeConfig } from 'nuxt/app'
 import { ref } from 'vue'
 import { useAdminStore } from '../../pinia/useAdminStore'
 
-const product = ref({
+
+const props = defineProps({
+  modding: Boolean,
+  productInfo: Object
+})
+
+let product = ref(props.modding ? props.productInfo : {
   name: '',
   price: '',
   brand: '',
@@ -160,11 +166,11 @@ const product = ref({
 })
 
 // 기존 SSD, RAM + 새로 추가된 HDD, CPU, GPU
-const ssd = ref({ ssdCapacity: '', ssdRead: '', ssdWrite: '' })
-const ram = ref({ ramType: '', ramNum: '', ramSize: '', ramUsage: '' })
-const hdd = ref({ hddCapacity: '', hddRpm: '', hddBuffer: '' })
-const cpu = ref({ cpuType: '', cpuCore: '', cpuThreads: '' })
-const gpu = ref({ gpuMemory: '', gpuChip: '', gpuLength: '' })
+const ssd = ref(props.productInfo.ssdSpec ? props.productInfo.ssdSpec : { ssdCapacity: '', ssdRead: '', ssdWrite: '' })
+const ram = ref(props.productInfo.ramSpec ? props.productInfo.ramSpec : { ramType: '', ramNum: '', ramSize: '', ramUsage: '' })
+const hdd = ref(props.productInfo.hddSpec ? props.productInfo.hddSpec : { hddCapacity: '', hddRpm: '', hddBuffer: '' })
+const cpu = ref(props.productInfo.cpuSpec ? props.productInfo.cpuSpec : { cpuType: '', cpuCore: '', cpuThreads: '' })
+const gpu = ref(props.productInfo.gpuSpec ? props.productInfo.gpuSpec : { gpuMemory: '', gpuChip: '', gpuLength: '' })
 
 // 이미지 파일들 및 미리보기 URL 배열
 const previewImages = ref([])
@@ -185,7 +191,7 @@ const submitForm = async () => {
   // 카테고리에 맞는 스펙 데이터를 합쳐서 payload 구성
   // 파일 업로드 요청
   let imageUrls = [];
-  for (let file of selectedFiles.value) {
+  for await (let file of selectedFiles.value) {
     let formdata = new FormData();
     formdata.append("file", file);
     const resultUrl = await $fetch('/productimage/upload', {

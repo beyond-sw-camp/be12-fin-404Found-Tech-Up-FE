@@ -31,9 +31,11 @@
       </button>
     </td>
     <td>
-      <button class="device-register tp-btn-2" @click="">
-        <span>수정</span>
-      </button>
+      <nuxt-link :href="`/product-modify/${item.idx}`">
+        <button class="device-register tp-btn-2" @click="">
+          <span>수정</span>
+        </button>
+      </nuxt-link>
     </td>
   </tr>
 </template>
