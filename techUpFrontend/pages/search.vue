@@ -36,7 +36,7 @@
                   <div class="row infinite-container">
                     <div
                       v-for="item in store.searchFilteredItems?.slice(0,perView)"
-                      :key="item.id"
+                      :key="item.idx"
                       class="col-xl-4 col-md-6 col-sm-6 infinite-item"
                     >
                       <product-fashion-product-item
@@ -77,10 +77,10 @@ useSeoMeta({ title: "Search Page" });
 
 import { ref } from "vue";
 import product_data from "@/data/product-data";
-import { useProductFilterStore } from "@/pinia/useProductFilterStore";
+import { useProductFilterBackStore } from "@/pinia/useProductFilterBackStore";
 
 let perView = ref(9);
-const store = useProductFilterStore();
+const store = useProductFilterBackStore();
 
 function handlePerView() {
   perView.value = perView.value + 3;
