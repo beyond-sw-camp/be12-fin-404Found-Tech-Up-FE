@@ -175,6 +175,7 @@ const handleImageUpload = (event) => {
   // 최대 5장까지만 선택 (초과 시 앞의 5개만 사용)
   selectedFiles.value = Array.from(files).slice(0, 5)
   previewImages.value = selectedFiles.value.map(file => URL.createObjectURL(file))
+  console.log(selectedFiles.value);
 }
 
 const config = useRuntimeConfig();
@@ -182,8 +183,27 @@ const config = useRuntimeConfig();
 const adminStore = useAdminStore();
 
 // 폼 제출
-const submitForm = () => {
+const submitForm = async () => {
   // 카테고리에 맞는 스펙 데이터를 합쳐서 payload 구성
+  // 파일 업로드 요청
+  let imageUrls = [];
+  for (let file of selectedFiles.value) {
+    let formdata = new FormData();
+    formdata.append(file.name, file);
+    const presignedResult = await $fetch('/productimage/presignedUrl', {
+      baseURL: config.public.apiBaseUrl,
+      method: 'GET',
+      params: {
+        filename: file.name
+      }
+    });
+    const uploadResult = await $fetch(presignedResult.data, {
+      method: 'PUT',
+      body: file
+    });
+    imageUrls.push(uploadResult);
+  }
+
   const payload = {
     ...product.value,
     ssdSpec: (product.value.category === 'SSD' ? ssd.value : {}),
@@ -191,22 +211,24 @@ const submitForm = () => {
     hddSpec: (product.value.category === 'HDD' ? hdd.value : {}),
     cpuSpec: (product.value.category === 'CPU' ? cpu.value : {}),
     gpuSpec: (product.value.category === 'GPU' ? gpu.value : {}),
-    // 필요하다면 선택된 파일들을 추가 처리
-    images: selectedFiles.value,
+    images: imageUrls
   }
   console.log('등록 데이터:', payload)
+
+  /*
   // axios.post('/api/products', payload) 등으로 서버 전송 처리
   $fetch('/product/register', {
     baseURL: config.public.apiBaseUrl,
     method: "POST",
     body: payload
-  }).then(async (result) => {
+  }).then((result) => {
     console.log(result);
     alert("등록되었습니다!");
     navigateTo('/dashboard');
   }).catch((e) => {
     console.log(e);
   });
+  */
 }
 </script>
 
