@@ -36,7 +36,7 @@
             class="tp-product-action-btn tp-product-quick-view-btn"
             data-bs-toggle="modal"
             :data-bs-target="`#${utilityStore.modalId}`"
-            @click="utilityStore.handleOpenModal(`product-modal-${item.id}`, item)"
+            @click="utilityStore.handleOpenModal(`product-modal-${item.idx}`, item)"
           >
             <svg-quick-view />
             <span class="tp-product-tooltip">Quick View</span>

@@ -16,7 +16,7 @@
           <cart-progress />
         </div>
         <div v-if="cartStore.cart_products.length > 0" class="cartmini__widget">
-          <div v-for="item in cartStore.cart_products" :key="item.id" class="cartmini__widget-item">
+          <div v-for="item in cartStore.cart_products" :key="item.idx" class="cartmini__widget-item">
             <div class="cartmini__thumb">
               <nuxt-link :href="`/product-details/${item.idx}`">
                 <img :src="item.img" alt="cart-img" width="70" height="60" />
@@ -25,7 +25,7 @@
             <div class="cartmini__content">
               <h5 class="cartmini__title">
                 <nuxt-link :href="`/product-details/${item.idx}`">
-                  {{ item.title }}
+                  {{ item.name }}
                 </nuxt-link>
               </h5>
               <div class="cartmini__price-wrapper">

@@ -16,15 +16,15 @@
                     <div class="tp-shop-top-tab tp-tab">
                       <ul class="nav nav-tabs" id="productTab" role="tablist">
                         <li class="nav-item" role="presentation">
-                          <button :class="`nav-link ${active_tab === 'grid' ? 'active' : ''}`"
-                            @click="handleActiveTab('grid')">
-                            <svg-grid />
-                          </button>
-                        </li>
-                        <li class="nav-item" role="presentation">
                           <button :class="`nav-link ${active_tab === 'list' ? 'active' : ''}`"
                             @click="handleActiveTab('list')">
                             <svg-list />
+                          </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                          <button :class="`nav-link ${active_tab === 'grid' ? 'active' : ''}`"
+                            @click="handleActiveTab('grid')">
+                            <svg-grid />
                           </button>
                         </li>
                       </ul>
@@ -97,7 +97,7 @@ const props = defineProps({
   shop_no_side: Boolean
 });
 
-const active_tab = ref(props.list_style ? 'list' : 'grid');
+const active_tab = ref(props.list_style ? 'grid' : 'list');
 const store = useProductFilterBackStore();
 
 let startIndex = ref(0)
