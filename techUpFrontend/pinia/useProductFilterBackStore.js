@@ -8,6 +8,17 @@ export const useProductFilterBackStore = defineStore("product_filter", () => {
   const route = useRoute();
   const router = useRouter();
 
+  // 초기 상태를 정의하는 함수
+  function getDefaultState() {
+    return {
+      products: [],
+      selectVal: "",
+      priceValues: [0, 0]
+    };
+  }
+
+  const state = getDefaultState();
+
   // 백엔드 API에서 불러온 상품 데이터를 저장하는 상태
   const products = ref([]);
 
@@ -19,13 +30,20 @@ export const useProductFilterBackStore = defineStore("product_filter", () => {
         baseURL: config.public.apiBaseUrl
       });
       if (response.data && response.data.data) {
-        products.value = response.data.data;
+        // 응답 데이터가 배열인지 확인하여 배열이 아니면 빈 배열을 할당
+        products.value = Array.isArray(response.data.data)
+          ? response.data.data
+          : [];
         console.log("백엔드에서 가져온 제품 데이터:", products.value);
       } else {
         console.error("API 응답 형식이 올바르지 않습니다.", response.data);
+        // 빈 배열로 초기화
+        products.value = [];
       }
     } catch (err) {
       console.error("제품 데이터 API 호출 오류:", err);
+      // 오류 발생 시 빈 배열로 초기화
+      products.value = [];
     }
   }
 
@@ -46,7 +64,7 @@ export const useProductFilterBackStore = defineStore("product_filter", () => {
   });
 
   // 초기 가격 범위: [0, maxProductPrice]
-  let priceValues = ref([0, maxProductPrice.value]);
+  let priceValues = ref([0, maxProductPrice.value || 0]);
 
   // maxProductPrice가 변경되면 priceValues도 업데이트
   watch(maxProductPrice, (newVal) => {
@@ -63,7 +81,8 @@ export const useProductFilterBackStore = defineStore("product_filter", () => {
 
   // 필터링: 백엔드에서 불러온 products 배열 기반 필터링 처리
   const filteredProducts = computed(() => {
-    let filtered = [...products.value];
+    const base = Array.isArray(products.value) ? [...products.value] : [];
+    let filtered = base;
 
     // Price filter
     if (route.query.minPrice && route.query.maxPrice) {
@@ -121,22 +140,18 @@ export const useProductFilterBackStore = defineStore("product_filter", () => {
   // 검색 필터: route 쿼리 값(searchText, productType 등)을 사용
   const searchFilteredItems = computed(() => {
     let filtered = [...products.value];
-    const { searchText, productType } = route.query;
+    const searchText = route.query.searchText || "";
+    const productType = route.query.productType || "";
 
     if (searchText && !productType) {
       filtered = filtered.filter((prd) =>
-        prd.name.toLowerCase().includes(searchText.toLowerCase())
-      );
-    }
-    if (!searchText && productType) {
-      filtered = filtered.filter(
-        (prd) => prd.productType.toLowerCase() === productType.toLowerCase()
+        (prd.name || "").toLowerCase().includes((searchText || "").toLowerCase())
       );
     }
     if (searchText && productType) {
-      filtered = filtered.filter(
-        (prd) => prd.productType.toLowerCase() === productType.toLowerCase()
-      ).filter(p => p.name.toLowerCase().includes(searchText.toLowerCase()));
+      filtered = filtered.filter((prd) => {
+        return (prd.category || "").toLowerCase() === productType.toLowerCase();
+      }).filter(p => (p.name || "").toLowerCase().includes(searchText.toLowerCase()));
     }
     switch (selectVal.value) {
       case "default-sorting":
@@ -158,6 +173,13 @@ export const useProductFilterBackStore = defineStore("product_filter", () => {
     return filtered;
   });
 
+  function reset() {
+    const defaults = getDefaultState();
+    products.value = defaults.products;
+    selectVal.value = defaults.selectVal;
+    priceValues.value = defaults.priceValues;
+  }
+
   // route의 변경 감지 (필요에 따라 리셋 등 처리)
   watch(
     () => ({ ...route.query, path: route.path }),
@@ -177,5 +199,11 @@ export const useProductFilterBackStore = defineStore("product_filter", () => {
     handleResetFilter,
     selectVal,
     searchFilteredItems,
+    reset
+  };
+  {
+    persist: {
+      paths: ['products', 'priceValues', 'selectVal']  // 메서드는 포함하지 않음
+    }
   };
 });
