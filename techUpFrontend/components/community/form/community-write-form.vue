@@ -47,92 +47,101 @@
   </template>
   
   <script setup lang="js">
-  import { reactive, ref, onMounted } from 'vue';
-  import { useRouter } from 'vue-router';
-  import { useBoardStore } from '@/pinia/useBoardStore';
-  
-  const boardStore = useBoardStore();
-  const router = useRouter();
-  const editorContainer = ref(null);
-  let quill = null;
-  
-  const board = reactive({
-    boardTitle: '',
-    boardContent: '',
-    boardCategory: ''
-  });
-  
-  const isSubmitting = ref(false);
-  const attachedFiles = ref([]);
-  const attachedFileNames = ref([]);
-  
-  const handleAttachmentUpload = (event) => {
-    const files = event.target.files;
-    attachedFiles.value = Array.from(files).slice(0, 5);
-    attachedFileNames.value = attachedFiles.value.map(file => file.name);
-  };
-  
-  const submitForm = async () => {
-    if (isSubmitting.value) return;
-    isSubmitting.value = true;
-    try {
-      const payload = {
-        boardTitle: board.boardTitle,
-        boardContent: board.boardContent,
-        boardCategory: board.boardCategory,
-        attachments: attachedFiles.value
-      };
-      const result = await boardStore.createBoard(payload);
-      console.log('게시글 생성 완료:', result);
-      router.push('/community');
-    } catch (e) {
-      console.error('폼 제출 오류:', e);
-    } finally {
-      isSubmitting.value = false;
-    }
-  };
-  
-  onMounted(async () => {
-    const Quill = await import('quill').then(m => m.default);
-    await import('quill/dist/quill.snow.css');
-  
-    const ImageHandler = () => {
-      const input = document.createElement('input');
-      input.setAttribute('type', 'file');
-      input.setAttribute('accept', 'image/*');
-      input.click();
-      input.onchange = () => {
-        const file = input.files[0];
-        if (file) {
-          const reader = new FileReader();
-          reader.onload = (e) => {
-            const base64 = e.target.result;
-            const range = quill.getSelection(true);
-            quill.insertEmbed(range.index, 'image', base64);
-            quill.setSelection(range.index + 1);
-          };
-          reader.readAsDataURL(file);
-        }
-      };
+import { reactive, ref, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+import { useBoardStore } from '@/pinia/useBoardStore';
+
+const boardStore = useBoardStore();
+const router = useRouter();
+const editorContainer = ref(null);
+let quill = null;
+const s3BaseUrl = 'https://ogh-spring-prac.s3.ap-northeast-2.amazonaws.com/';
+
+
+const board = reactive({
+  boardTitle: '',
+  boardContent: '',
+  boardCategory: ''
+});
+
+const isSubmitting = ref(false);
+const attachedFiles = ref([]);
+const attachedFileNames = ref([]);
+
+const handleAttachmentUpload = (event) => {
+  const files = event.target.files;
+  attachedFiles.value = Array.from(files).slice(0, 5);
+  attachedFileNames.value = attachedFiles.value.map(file => file.name);
+};
+
+const submitForm = async () => {
+  if (isSubmitting.value) return;
+  isSubmitting.value = true;
+  try {
+    const payload = {
+      boardTitle: board.boardTitle,
+      boardContent: board.boardContent,
+      boardCategory: board.boardCategory,
+      attachments: attachedFiles.value
     };
-  
-    if (editorContainer.value) {
-      quill = new Quill(editorContainer.value, {
-        theme: 'snow',
-        placeholder: '여기에 게시글 내용을 작성하세요...',
-        modules: {
-          toolbar: {
-            container: [['bold', 'italic', 'underline', 'strike'], ['link', 'image']],
-            handlers: { image: ImageHandler }
-          }
-        }
-      });
-      quill.on('text-change', () => {
-        board.boardContent = quill.root.innerHTML;
-      });
+    const result = await boardStore.createBoard(payload);
+    console.log('게시글 생성 완료:', result);
+    router.push('/community');
+  } catch (e) {
+    console.error('폼 제출 오류:', e);
+  } finally {
+    isSubmitting.value = false;
+  }
+};
+
+onMounted(async () => {
+  const Quill = await import('quill').then(m => m.default);
+  await import('quill/dist/quill.snow.css');
+
+  const ImageHandler = () => {
+  const input = document.createElement('input');
+  input.setAttribute('type', 'file');
+  input.setAttribute('accept', 'image/*');
+  input.click();
+
+  input.onchange = async () => {
+    const file = input.files[0];
+    if (file) {
+      try {
+        const imageKey = await boardStore.uploadTempImage(file); // ✅ imageKey만 반환됨
+        const fullUrl = s3BaseUrl + imageKey; // ✅ 도메인 붙이기
+        const range = quill.getSelection(true);
+        quill.insertEmbed(range.index, 'image', fullUrl);
+        quill.setSelection(range.index + 1);
+      } catch (e) {
+        alert('이미지 업로드 실패');
+        console.error(e);
+      }
     }
-  });
-  </script>
+  };
+};
+
+  if (editorContainer.value) {
+    quill = new Quill(editorContainer.value, {
+      theme: 'snow',
+      placeholder: '여기에 게시글 내용을 작성하세요...',
+      modules: {
+        toolbar: {
+          container: [['bold', 'italic', 'underline', 'strike'], ['link', 'image']],
+          handlers: { image: ImageHandler }
+        }
+      }
+    });
+
+    // 🔁 에디터의 내용이 바뀔 때마다 boardContent에 저장
+    quill.on('text-change', () => {
+      board.boardContent = quill.root.innerHTML;
+    });
+  }
+});
+</script>
+
+
   
   <style scoped>
   .form-container {

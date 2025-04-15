@@ -83,7 +83,7 @@ const goEdit = () => {
 const confirmDelete = async () => {
   if (!confirm('정말로 이 게시글을 삭제하시겠습니까?')) return;
   try {
-    await fetch(`/api/board/${board.value.idx}`, { method: 'DELETE' });
+    await boardStore.deleteBoard(board.value.idx);
     alert('게시글이 삭제되었습니다.');
     router.push('/community');
   } catch (err) {
@@ -91,6 +91,7 @@ const confirmDelete = async () => {
     alert('삭제 중 문제가 발생했습니다.');
   }
 };
+
 
 const handleLike = async () => {
   await boardStore.toggleLike(board.value.idx, true);

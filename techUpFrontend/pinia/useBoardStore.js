@@ -113,6 +113,16 @@ export const useBoardStore = defineStore('boardStore', {
       }
     },
 
+    async deleteBoard(boardIdx) {
+      try {
+        await axios.delete(`/api/board/delete/${boardIdx}`);
+        this.currentBoard = null; // 상세 정보 초기화
+      } catch (error) {
+        console.error('게시글 삭제 오류:', error);
+        throw error;
+      }
+    },    
+
     async deleteBoardFile(filesIdx) {
       try {
         await axios.delete(`/api/board/files/${filesIdx}`);
