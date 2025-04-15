@@ -3,8 +3,7 @@ import axios from 'axios';
 
 export const useUserStore = defineStore('user', {
   state: () => ({
-    user: null, // 사용자 정보 저장
-    token: null,
+    isLoggedIn: false, // 로그인 상태 추가
   }),
   actions: {
     async verifyNickname(nickname) {
@@ -29,6 +28,17 @@ export const useUserStore = defineStore('user', {
     async login(user) {
         try {
             const response = await axios.post(`/api/login`, user);
+            this.isLoggedIn = true;
+            return response.data;
+        } catch (error) {
+            console.error("Login error", error.response ? error.response.data : error.message);
+            throw error;
+        }
+    },
+    async social() {
+        try {
+            const response = await axios.get(`/api/oauth2/authorization/kakao`, user);
+            this.isLoggedIn = true;
             return response.data;
         } catch (error) {
             console.error("Login error", error.response ? error.response.data : error.message);
@@ -37,7 +47,8 @@ export const useUserStore = defineStore('user', {
     },
     async logout() {
         try {
-            const response = await axios.get(`/api/user/logout`);
+            const response = await axios.post(`/api/user/logout`);
+            this.isLoggedIn = false;
             return response.data;
         } catch (error) {
             console.error("logout error", error.response ? error.response.data : error.message);

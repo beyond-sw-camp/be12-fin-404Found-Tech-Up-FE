@@ -1,3 +1,35 @@
+<script lang="ts" setup>
+import { ref } from 'vue';
+import { useUserStore } from '@/pinia/useUserStore'; // Pinia 스토어 가져오기
+
+const userStore = useUserStore(); // 스토어 초기화
+const router = useRouter();
+
+let isActive = ref<string>('')
+// handle active
+const handleActive = (type: string) => {
+  if (type === isActive.value) {
+    isActive.value = ''
+  }
+  else {
+    isActive.value = type
+  }
+}
+
+// 로그아웃 처리
+const handleLogout = async () => {
+  try {
+    const response = await userStore.logout();
+    console.log("Logout success:", response);
+    alert('로그아웃이 완료되었습니다.');
+    router.push('/login');
+  } catch (error) {
+    console.error('Logout error:', error);
+    alert('로그아웃 중 오류가 발생했습니다.');
+  }
+};
+</script>
+
 <template>
   <div class="tp-header-top-menu d-flex align-items-center justify-content-end">
     <div class="tp-header-top-menu-item tp-header-lang">
@@ -35,24 +67,13 @@
         <li>
           <nuxt-link href="/cart">장바구니</nuxt-link>
         </li>
-        <li>
+        <li v-if="!userStore.isLoggedIn">
           <nuxt-link href="/login">로그인</nuxt-link>
+        </li>
+        <li v-else>
+          <button @click="handleLogout">로그아웃</button>
         </li>
       </ul>
     </div>
   </div>
 </template>
-
-<script lang="ts" setup>
-import { ref } from 'vue';
-let isActive = ref<string>('')
-// handle active
-const handleActive = (type: string) => {
-  if (type === isActive.value) {
-    isActive.value = ''
-  }
-  else {
-    isActive.value = type
-  }
-}
-</script>
