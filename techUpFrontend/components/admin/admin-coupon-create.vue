@@ -64,8 +64,8 @@ const submitForm = () => {
   // 여기서 axios.post('/api/coupons', payload).then(...)
   $fetch('/coupon/issueall', {
     baseURL: config.public.apiBaseUrl,
-    method: 'POST',
-    body: payload,
+    method: "POST",
+    body: payload
   }).then(async (result) => {
     console.log(result.data);
     alert("등록되었습니다!");

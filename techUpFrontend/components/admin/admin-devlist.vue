@@ -45,6 +45,7 @@
 </template>
 
 <script setup>
+
 let filteredItems = ref([]);
 let startIndex = ref(0);
 let endIndex = ref(filteredItems.length);
@@ -54,10 +55,10 @@ const config = useRuntimeConfig();
 
 $fetch('/product/list', {
   baseURL: config.public.apiBaseUrl,
-  method: 'GET'
+  method: "GET",
 }).then((result) => {
   console.log(result);
-  filteredItems.value = result.data;
+  filteredItems.value = result;
 }).catch((e) => {
   console.log(e);
 });

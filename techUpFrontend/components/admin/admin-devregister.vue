@@ -146,17 +146,11 @@
 </template>
 
 <script setup>
-import { navigateTo, useRuntimeConfig } from 'nuxt/app'
+import { navigateTo, useAsyncData, useFetch, useRuntimeConfig } from 'nuxt/app'
 import { ref } from 'vue'
 import { useAdminStore } from '../../pinia/useAdminStore'
 
-
-const props = defineProps({
-  modding: Boolean,
-  productInfo: Object
-})
-
-let product = ref(props.modding ? props.productInfo : {
+const product = ref({
   name: '',
   price: '',
   brand: '',
@@ -166,11 +160,11 @@ let product = ref(props.modding ? props.productInfo : {
 })
 
 // 기존 SSD, RAM + 새로 추가된 HDD, CPU, GPU
-const ssd = ref(props.productInfo && props.productInfo.ssdSpec ? props.productInfo.ssdSpec : { ssdCapacity: '', ssdRead: '', ssdWrite: '' })
-const ram = ref(props.productInfo && props.productInfo.ramSpec ? props.productInfo.ramSpec : { ramType: '', ramNum: '', ramSize: '', ramUsage: '' })
-const hdd = ref(props.productInfo && props.productInfo.hddSpec ? props.productInfo.hddSpec : { hddCapacity: '', hddRpm: '', hddBuffer: '' })
-const cpu = ref(props.productInfo && props.productInfo.cpuSpec ? props.productInfo.cpuSpec : { cpuType: '', cpuCore: '', cpuThreads: '' })
-const gpu = ref(props.productInfo && props.productInfo.gpuSpec ? props.productInfo.gpuSpec : { gpuMemory: '', gpuChip: '', gpuLength: '' })
+const ssd = ref({ ssdCapacity: '', ssdRead: '', ssdWrite: '' })
+const ram = ref({ ramType: '', ramNum: '', ramSize: '', ramUsage: '' })
+const hdd = ref({ hddCapacity: '', hddRpm: '', hddBuffer: '' })
+const cpu = ref({ cpuType: '', cpuCore: '', cpuThreads: '' })
+const gpu = ref({ gpuMemory: '', gpuChip: '', gpuLength: '' })
 
 // 이미지 파일들 및 미리보기 URL 배열
 const previewImages = ref([])
@@ -181,27 +175,15 @@ const handleImageUpload = (event) => {
   // 최대 5장까지만 선택 (초과 시 앞의 5개만 사용)
   selectedFiles.value = Array.from(files).slice(0, 5)
   previewImages.value = selectedFiles.value.map(file => URL.createObjectURL(file))
-  console.log(selectedFiles.value);
 }
 
 const config = useRuntimeConfig();
 
-// 폼 제출
-const submitForm = async () => {
-  // 카테고리에 맞는 스펙 데이터를 합쳐서 payload 구성
-  // 파일 업로드 요청
-  let imageUrls = [];
-  for await (let file of selectedFiles.value) {
-    let formdata = new FormData();
-    formdata.append("file", file);
-    const resultUrl = await $fetch('/productimage/upload', {
-      baseURL: config.public.apiBaseUrl,
-      method: 'PUT',
-      body: formdata
-    });
-    imageUrls.push(resultUrl.data);
-  }
+const adminStore = useAdminStore();
 
+// 폼 제출
+const submitForm = () => {
+  // 카테고리에 맞는 스펙 데이터를 합쳐서 payload 구성
   const payload = {
     ...product.value,
     ssdSpec: (product.value.category === 'SSD' ? ssd.value : {}),
@@ -209,30 +191,22 @@ const submitForm = async () => {
     hddSpec: (product.value.category === 'HDD' ? hdd.value : {}),
     cpuSpec: (product.value.category === 'CPU' ? cpu.value : {}),
     gpuSpec: (product.value.category === 'GPU' ? gpu.value : {}),
+    // 필요하다면 선택된 파일들을 추가 처리
+    images: selectedFiles.value,
   }
   console.log('등록 데이터:', payload)
-
   // axios.post('/api/products', payload) 등으로 서버 전송 처리
   $fetch('/product/register', {
     baseURL: config.public.apiBaseUrl,
-    method: 'POST',
+    method: "POST",
     body: payload
   }).then(async (result) => {
     console.log(result);
-    const saveResult = await $fetch('/productimage', {
-      baseURL: config.public.apiBaseUrl,
-      method: 'POST',
-      body: {
-        productIdx: result.data.idx,
-        imagePath: imageUrls
-      }
-    });
     alert("등록되었습니다!");
     navigateTo('/dashboard');
   }).catch((e) => {
     console.log(e);
   });
-
 }
 </script>
 

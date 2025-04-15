@@ -1,7 +1,6 @@
 import { useRuntimeConfig } from "nuxt/app";
 import { defineStore } from "pinia";
 import { onMounted, watch } from "vue";
-import axios from 'axios';
 
 export const useAdminStore = defineStore( 'admin', () => {
   // 요청-응답을 위한 config
@@ -15,8 +14,9 @@ export const useAdminStore = defineStore( 'admin', () => {
   let userList = ref([]);
 
   const loadProductList = async () => {
-    const result = await axios.get('/product/list', {
+    const result = await $fetch('/product/list', {
       baseURL: config.public.apiBaseUrl,
+      method: "GET",
     });
     console.log(result);
     productList.value = result;
@@ -24,8 +24,9 @@ export const useAdminStore = defineStore( 'admin', () => {
   };
 
   const loadCouponList = async () => {
-    const result = await axios.get('/coupon', {
+    const result = await $fetch('/coupon', {
       baseURL: config.public.apiBaseUrl,
+      method: "GET",
     });
     console.log(result);
     couponList.value = result.data.couponList;
