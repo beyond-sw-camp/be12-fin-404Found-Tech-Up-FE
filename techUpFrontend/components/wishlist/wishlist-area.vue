@@ -40,6 +40,12 @@
 </template>
 
 <script setup>
-import { useWishlistStore } from "@/pinia/useWishlistStore";
+import { onMounted } from 'vue';
+import { useWishlistStore } from '@/pinia/useWishlistStore';
+
 const wishlistStore = useWishlistStore();
+
+onMounted(() => {
+  wishlistStore.fetchWishlist();
+});
 </script>
