@@ -75,10 +75,12 @@ export const useProductFilterBackStore = defineStore("product_filter", () => {
     }
     // Status filter (예: on-sale 또는 in-stock)
     if (route.query.status) {
-      if (route.query.status === "on-sale") {
+      const statuses = route.query.status.split(',');
+      if (statuses.includes("on-sale")) {
         filtered = filtered.filter((p) => p.discount > 0);
-      } else if (route.query.status === "in-stock") {
-        filtered = filtered.filter((p) => p.status === "in-stock");
+      }
+      if (statuses.includes("in-stock")) {
+        filtered = filtered.filter((p) => p.stock > 0);
       }
     }
     // Category filter

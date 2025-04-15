@@ -39,10 +39,12 @@ export const useProductFilterStore = defineStore("product_filter", () => {
     }
     // Status filter
     if (route.query.status) {
-      if (route.query.status === "on-sale") {
-        filteredProducts = filteredProducts.filter((p) => p.discount > 0);
-      } else if (route.query.status === "in-stock") {
-        filteredProducts = filteredProducts.filter((p) => p.status === "in-stock");
+      const statuses = route.query.status.split(',');
+      if (statuses.includes("on-sale")) {
+        filtered = filtered.filter((p) => p.discount > 0);
+      }
+      if (statuses.includes("in-stock")) {
+        filtered = filtered.filter((p) => p.stock > 0);
       }
     }
     // Category filter
