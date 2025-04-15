@@ -2,7 +2,10 @@ import { defineStore } from 'pinia';
 import axios from 'axios';
 
 export const useUserStore = defineStore('user', {
-  state: () => ({}),
+  state: () => ({
+    user: null, // 사용자 정보 저장
+    token: null,
+  }),
   actions: {
     async verifyNickname(nickname) {
         try {
