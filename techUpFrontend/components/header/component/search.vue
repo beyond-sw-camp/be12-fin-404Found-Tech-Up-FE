@@ -6,20 +6,16 @@
           <input type="text" placeholder="상품 검색" v-model="searchText" />
         </div>
         <div class="tp-header-search-category">
-          <ui-nice-select
-            :options="[
+          <client-only>
+            <ui-nice-select :options="[
               { value: '', text: '전체 카테고리         ' },
               { value: 'cpu', text: 'CPU                           ' },
               { value: 'gpu', text: 'GPU                           ' },
               { value: 'ram', text: 'RAM                           ' },
               { value: 'ssd', text: 'SSD                           ' },
               { value: 'hdd', text: 'HDD                           ' }
-            ]"
-            name="Select Category"
-            v-model="productType"
-            :default-current="0"
-            @onChange="changeHandler"
-          />
+            ]" name="Select Category" v-model="productType" :default-current="0" @onChange="changeHandler" />
+          </client-only>
         </div>
         <div class="tp-header-search-btn">
           <button type="submit">

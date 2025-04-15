@@ -57,7 +57,7 @@
                     </span>
                     <h3 class="tp-product-gadget-banner-title">
                       <nuxt-link href="/shop">
-                        <span v-html="item.title"></span>
+                        <span v-html="item.name"></span>
                       </nuxt-link>
                     </h3>
                   </div>
@@ -72,7 +72,7 @@
             <div class="row">
               <div
                 v-for="item in product_data.slice(0, 6)"
-                :key="item.id"
+                :key="item.idx"
                 class="col-xl-4 col-sm-6"
               >
                 <ProductItem :item="item" />

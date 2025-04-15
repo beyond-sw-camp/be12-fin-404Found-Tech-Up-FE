@@ -16,15 +16,15 @@
                     <div class="tp-shop-top-tab tp-tab">
                       <ul class="nav nav-tabs" id="productTab" role="tablist">
                         <li class="nav-item" role="presentation">
-                          <button :class="`nav-link ${active_tab === 'grid' ? 'active' : ''}`"
-                            @click="handleActiveTab('grid')">
-                            <svg-grid />
-                          </button>
-                        </li>
-                        <li class="nav-item" role="presentation">
                           <button :class="`nav-link ${active_tab === 'list' ? 'active' : ''}`"
                             @click="handleActiveTab('list')">
                             <svg-list />
+                          </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                          <button :class="`nav-link ${active_tab === 'grid' ? 'active' : ''}`"
+                            @click="handleActiveTab('grid')">
+                            <svg-grid />
                           </button>
                         </li>
                       </ul>
@@ -97,7 +97,7 @@ const props = defineProps({
   shop_no_side: Boolean
 });
 
-const active_tab = ref(props.list_style ? 'list' : 'grid');
+const active_tab = ref(props.list_style ? 'grid' : 'list');
 const store = useProductFilterBackStore();
 
 let startIndex = ref(0)
@@ -107,23 +107,24 @@ const productStore = useProductFilterBackStore();
 
 // 페이지가 처음 로드될 때 products를 가져오고 인덱스를 초기화
 onMounted(async () => {
+  store.reset()
   await store.fetchProducts()
   // products가 채워진 후, 표시할 아이템 개수(예제에서는 9개)를 기준으로 인덱스 초기화
-  const total = store.filteredProducts.length
-  startIndex.value = 0
-  endIndex.value = total > 9 ? 9 : total
-})
+  const total = (store.filteredProducts || []).length;
+  startIndex.value = 0;
+  endIndex.value = total > 9 ? 9 : total;
+});
 
 // store.filteredProducts가 바뀔 때마다 startIndex, endIndex 업데이트 (예: 검색 조건 등)
 watch(
   () => store.filteredProducts,
   (newProducts) => {
-    const total = newProducts.length
-    startIndex.value = 0
-    endIndex.value = total > 9 ? 9 : total
+    const total = newProducts ? newProducts.length : 0;
+    startIndex.value = 0;
+    endIndex.value = total > 9 ? 9 : total;
   },
   { immediate: true }
-)
+);
 
 const handlePagination = (data, start, end) => {
   // Pagination 컴포넌트에서 emit한 값으로 인덱스 갱신

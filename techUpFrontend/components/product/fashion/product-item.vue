@@ -40,7 +40,7 @@
               class="tp-product-action-btn-2 tp-product-quick-view-btn"
               data-bs-toggle="modal"
               :data-bs-target="`#${utilityStore.modalId}`"
-              @click="utilityStore.handleOpenModal(`product-modal-${item.id}`, item)"
+              @click="utilityStore.handleOpenModal(`product-modal-${item.idx}`, item)"
             >
               <svg-quick-view />
               <span class="tp-product-tooltip tp-product-tooltip-right">Quick View</span>
@@ -122,13 +122,13 @@
   });
   
   function isItemInWishlist(product) {
-    return wishlistStore.wishlists.some((prd) => prd.id === product.id);
+    return wishlistStore.wishlists.some((prd) => prd.idx === product.idx);
   }
   function isItemInCompare(product) {
-    return compareStore.compare_items.some((prd) => prd.id === product.id);
+    return compareStore.compare_items.some((prd) => prd.idx === product.idx);
   }
   function isItemInCart(product) {
-    return cartStore.cart_products.some((prd) => prd.id === product.id);
+    return cartStore.cart_products.some((prd) => prd.idx === product.idx);
   }
   </script>
   

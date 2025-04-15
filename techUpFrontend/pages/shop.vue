@@ -12,5 +12,5 @@
 
 <script setup>
 
-useSeoMeta({ title: "Shop Page" });
+useSeoMeta({ title: "Tech Up" });
 </script>
