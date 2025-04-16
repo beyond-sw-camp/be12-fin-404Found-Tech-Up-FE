@@ -30,9 +30,9 @@ export const useUserStore = defineStore('user', {
             throw error;
         }
     },
-    async sendEmail(email) {
+    async sendEmail(email, issign) {
         try {
-            const response = await axios.post('/api/user/email', { userEmail: email }, // JSON 데이터
+            const response = await axios.post('/api/user/email', { userEmail: email, isSignup: issign }, // JSON 데이터
                 { headers: { 'Content-Type': 'application/json' } }); // 헤더 설정
             return response.data; // { success: true/false }
         } catch (error) {

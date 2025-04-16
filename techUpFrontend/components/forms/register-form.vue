@@ -19,6 +19,7 @@ let timer = ref(null);
 const userStore = useUserStore();
 const router = useRouter();
 
+let isSignup = ref(true);
 const signupuser = ref({
   userNickname: "",
   verifyNickname: "",
@@ -53,13 +54,14 @@ const validateNickname = async () => {
 
 const sendEmail = async () => {
   const email = signupuser.value.userEmail; // 입력된 닉네임 가져오기
+  const issign = isSignup.value;
   if (!email) {
     alert('이메일을 입력해주세요.');
     return;
   }
 
   try {
-    const response = await userStore.sendEmail(email); // Pinia store의 함수 호출
+    const response = await userStore.sendEmail(email, issign); // Pinia store의 함수 호출
     console.log(response);
     if (response.isSuccess) {
       alert('이메일을 전송하였습니다.');
@@ -72,8 +74,10 @@ const sendEmail = async () => {
       signupuser.value.userEmail = ""; // 입력 필드 초기화
     }
   } catch (error) {
-    console.error('이메일 전송 중 오류 발생:', error);
-    alert('오류가 발생했습니다. 다시 시도해주세요.');
+    console.error('이메일 전송 중 오류 발생:', error.response.data);
+    if (error.response.data.code === 2012) {
+      alert('가입된 이메일입니다.');
+    }
   }
 };
 
