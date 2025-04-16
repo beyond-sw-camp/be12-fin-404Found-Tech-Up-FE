@@ -113,6 +113,48 @@ export const useBoardStore = defineStore('boardStore', {
       }
     },
 
+    async updateBoard(boardIdx, { boardTitle, boardContent, boardCategory, attachments = [] }) {
+      try {
+        const payload = { boardTitle, boardContent, boardCategory };
+        await axios.patch(`/api/board/update/${boardIdx}`, payload); // 백엔드에 patch API 필요
+    
+        // 첨부파일이 있을 경우 Presigned URL 방식으로 업로드
+        if (attachments.length > 0) {
+          for (const file of attachments) {
+            const fileType = file.type.includes('image') ? 'image' : 'file';
+            const presignedRes = await axios.get('/api/board/files/presignedUrl', {
+              params: {
+                board_idx: boardIdx,
+                files_type: fileType,
+                files_name: file.name
+              }
+            });
+    
+            const { presignedUrl, finalUrl } = presignedRes.data;
+    
+            if (!presignedUrl || !finalUrl) continue;
+    
+            await axios.put(presignedUrl, file, {
+              headers: { 'Content-Type': file.type }
+            });
+    
+            const filesPayload = {
+              boardIdx: boardIdx,
+              filesUrl: finalUrl,
+              filesType: fileType,
+              filesName: file.name
+            };
+    
+            await axios.post('/api/board/files', filesPayload);
+          }
+        }
+      } catch (error) {
+        console.error('게시글 수정 오류:', error);
+        throw error;
+      }
+    },
+    
+
     async deleteBoard(boardIdx) {
       try {
         await axios.delete(`/api/board/delete/${boardIdx}`);
