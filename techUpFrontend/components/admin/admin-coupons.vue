@@ -42,22 +42,15 @@
 </template>
 
 <script setup>
+import { storeToRefs } from 'pinia';
+import { useAdminStore } from '../../pinia/useAdminStore';
 
-
-let filteredItems = ref([]);
+const adminStore = useAdminStore();
+const storeRef = storeToRefs(adminStore);
+let filteredItems = ref(storeRef.couponList);
 let startIndex = ref(0);
 let endIndex = ref(filteredItems.length);
 
-const config = useRuntimeConfig();
-$fetch('/coupon', {
-  baseURL: config.public.apiBaseUrl,
-  method: 'GET'
-}).then((result) => {
-  console.log(result);
-  filteredItems.value = result.data.couponList;
-}).catch((e) => {
-  console.log(e);
-});
 
 const handlePagination = (data, start, end) => {
   console.log("data", data, "start", start, "end", end);

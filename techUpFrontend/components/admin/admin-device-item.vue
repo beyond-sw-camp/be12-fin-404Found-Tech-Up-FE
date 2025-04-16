@@ -26,7 +26,7 @@
       </button>
     </td>
     <td class="tp-cart-add-to-cart">
-      <button class="device-register tp-btn-2" @click="">
+      <button class="device-register tp-btn-2" @click="adminStore.deleteProduct(item.idx)">
         <span>삭제</span>
       </button>
     </td>
@@ -41,10 +41,14 @@
 </template>
 
 <script setup>
+import { useAdminStore } from '../../pinia/useAdminStore';
+
 
 const props = defineProps({ item: Object });
 
 const item = props.item;
+
+const adminStore = useAdminStore();
 
 </script>
 

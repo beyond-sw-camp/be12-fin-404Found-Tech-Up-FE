@@ -1,37 +1,37 @@
 <template>
   <div class="form-container">
-    <h2 class="form-title">제품 등록</h2>
+    <h2 class="form-title">제품 수정</h2>
     <form @submit.prevent="submitForm" class="space-y-6">
       <!-- 기본 상품 정보 -->
       <div class="form-group">
         <label class="form-label">제품명</label>
-        <input v-model="product.name" type="text" class="form-input" required />
+        <input v-model="storeRef.targetProduct.value.name" type="text" class="form-input" required />
       </div>
 
       <div class="form-group">
         <label class="form-label">제품 가격</label>
-        <input v-model="product.price" type="number" step="0.01" class="form-input" required />
+        <input v-model="storeRef.targetProduct.value.price" type="number" step="0.01" class="form-input" required />
       </div>
 
       <div class="form-group">
         <label class="form-label">브랜드</label>
-        <input v-model="product.brand" type="text" class="form-input" required />
+        <input v-model="storeRef.targetProduct.value.brand" type="text" class="form-input" required />
       </div>
 
       <div class="form-group">
         <label class="form-label">재고</label>
-        <input v-model="product.stock" type="number" class="form-input" required />
+        <input v-model="storeRef.targetProduct.value.stock" type="number" class="form-input" required />
       </div>
 
       <div class="form-group">
         <label class="form-label">제품 설명</label>
-        <textarea v-model="product.description" class="form-textarea" required></textarea>
+        <textarea v-model="storeRef.targetProduct.value.description" class="form-textarea" required></textarea>
       </div>
 
       <!-- 카테고리 선택 -->
       <div class="form-group">
         <label class="form-label">카테고리</label>
-        <select v-model="product.category" class="form-select" required>
+        <select v-model="storeRef.targetProduct.value.category" class="form-select" required>
           <option disabled value="">선택하세요</option>
           <option value="SSD">SSD</option>
           <option value="RAM">RAM</option>
@@ -42,91 +42,107 @@
       </div>
 
       <!-- SSD 스펙 -->
-      <div v-if="product.category === 'SSD'" class="spec-box">
+      <div v-if="storeRef.targetProduct.value.category === 'SSD'" class="spec-box">
         <h3 class="spec-title">SSD 스펙</h3>
         <div class="form-group">
           <label class="form-label">SSD 용량 (GB)</label>
-          <input v-model="ssd.ssdCapacity" type="number" class="form-input" placeholder="ex) 256, 512, 1024" required />
+          <input v-model="storeRef.targetProduct.value.ssdSpec.ssdCapacity" type="number" class="form-input"
+            placeholder="ex) 256, 512, 1024" required />
         </div>
         <div class="form-group">
           <label class="form-label">읽기 속도</label>
-          <input v-model="ssd.ssdRead" type="number" class="form-input" placeholder="ex) 3500" required />
+          <input v-model="storeRef.targetProduct.value.ssdSpec.ssdRead" type="number" class="form-input"
+            placeholder="ex) 3500" required />
         </div>
         <div class="form-group">
           <label class="form-label">쓰기 속도</label>
-          <input v-model="ssd.ssdWrite" type="number" class="form-input" placeholder="ex) 3000" required />
+          <input v-model="storeRef.targetProduct.value.ssdSpec.ssdWrite" type="number" class="form-input"
+            placeholder="ex) 3000" required />
         </div>
       </div>
 
       <!-- RAM 스펙 -->
-      <div v-if="product.category === 'RAM'" class="spec-box">
+      <div v-if="storeRef.targetProduct.value.category === 'RAM'" class="spec-box">
         <h3 class="spec-title">RAM 스펙</h3>
         <div class="form-group">
           <label class="form-label">RAM 타입</label>
-          <input v-model="ram.ramType" type="text" class="form-input" placeholder="ex) DDR4" required />
+          <input v-model="storeRef.targetProduct.value.ramSpec.ramType" type="text" class="form-input"
+            placeholder="ex) DDR4" required />
         </div>
         <div class="form-group">
           <label class="form-label">RAM 개수</label>
-          <input v-model="ram.ramNum" type="number" class="form-input" placeholder="ex) 2" required />
+          <input v-model="storeRef.targetProduct.value.ramSpec.ramNum" type="number" class="form-input"
+            placeholder="ex) 2" required />
         </div>
         <div class="form-group">
           <label class="form-label">RAM 용량</label>
-          <input v-model="ram.ramSize" type="number" class="form-input" placeholder="ex) 2" required />
+          <input v-model="storeRef.targetProduct.value.ramSpec.ramSize" type="number" class="form-input"
+            placeholder="ex) 2" required />
         </div>
         <div class="form-group">
           <label class="form-label">사용 장치</label>
-          <input v-model="ram.ramUsage" type="text" class="form-input" placeholder="ex) 데스크탑용" required />
+          <input v-model="storeRef.targetProduct.value.ramSpec.ramUsage" type="text" class="form-input"
+            placeholder="ex) 데스크탑용" required />
         </div>
       </div>
 
       <!-- HDD 스펙 -->
-      <div v-if="product.category === 'HDD'" class="spec-box">
+      <div v-if="storeRef.targetProduct.value.category === 'HDD'" class="spec-box">
         <h3 class="spec-title">HDD 스펙</h3>
         <div class="form-group">
           <label class="form-label">HDD 용량 (GB)</label>
-          <input v-model="hdd.hddCapacity" type="number" class="form-input" placeholder="ex) 256, 512, 1024" required />
+          <input v-model="storeRef.targetProduct.value.hddSpec.hddCapacity" type="number" class="form-input"
+            placeholder="ex) 256, 512, 1024" required />
         </div>
         <div class="form-group">
           <label class="form-label">HDD 회전 속도 (RPM)</label>
-          <input v-model="hdd.hddRpm" type="number" class="form-input" placeholder="ex) 5400, 7200, 15000" required />
+          <input v-model="storeRef.targetProduct.value.hddSpec.hddRpm" type="number" class="form-input"
+            placeholder="ex) 5400, 7200, 15000" required />
         </div>
         <div class="form-group">
           <label class="form-label">HDD 버퍼 (MB)</label>
-          <input v-model="hdd.hddBuffer" type="number" class="form-input" placeholder="ex) 32, 64, 512" required />
+          <input v-model="storeRef.targetProduct.value.hddSpec.hddBuffer" type="number" class="form-input"
+            placeholder="ex) 32, 64, 512" required />
         </div>
       </div>
 
       <!-- CPU 스펙 -->
-      <div v-if="product.category === 'CPU'" class="spec-box">
+      <div v-if="storeRef.targetProduct.value.category === 'CPU'" class="spec-box">
         <h3 class="spec-title">CPU 스펙</h3>
         <div class="form-group">
           <label class="form-label">CPU 종류</label>
-          <input v-model="cpu.cpuType" type="text" class="form-input" placeholder="ex) 코어i7, 라이젠5" required />
+          <input v-model="storeRef.targetProduct.value.cpuSpec.cpuType" type="text" class="form-input"
+            placeholder="ex) 코어i7, 라이젠5" required />
         </div>
         <div class="form-group">
           <label class="form-label">코어 수</label>
-          <input v-model="cpu.cpuCore" type="number" class="form-input" placeholder="ex) 2, 4, 6, 24" required />
+          <input v-model="storeRef.targetProduct.value.cpuSpec.cpuCore" type="number" class="form-input"
+            placeholder="ex) 2, 4, 6, 24" required />
         </div>
         <div class="form-group">
           <label class="form-label">스레드 수</label>
-          <input v-model="cpu.cpuThreads" type="number" class="form-input" placeholder="ex) 8, 16, 32" required />
+          <input v-model="storeRef.targetProduct.value.cpuSpec.cpuThreads" type="number" class="form-input"
+            placeholder="ex) 8, 16, 32" required />
         </div>
       </div>
 
       <!-- GPU 스펙 -->
-      <div v-if="product.category === 'GPU'" class="spec-box">
+      <div v-if="storeRef.targetProduct.value.category === 'GPU'" class="spec-box">
         <h3 class="spec-title">GPU 스펙</h3>
         <div class="form-group">
           <label class="form-label">메모리 (GB)</label>
-          <input v-model="gpu.gpuMemory" type="number" class="form-input" placeholder="ex) 6, 8, 12, 16" required />
+          <input v-model="storeRef.targetProduct.value.gpuSpec.gpuMemory" type="number" class="form-input"
+            placeholder="ex) 6, 8, 12, 16" required />
         </div>
         <div class="form-group">
           <label class="form-label">칩셋</label>
-          <input v-model="gpu.gpuChip" type="text" class="form-input" placeholder="ex) RTX 5090, RTX 5070" required />
+          <input v-model="storeRef.targetProduct.value.gpuSpec.gpuChip" type="text" class="form-input"
+            placeholder="ex) RTX 5090, RTX 5070" required />
         </div>
         <div class="form-group">
           <label class="form-label">길이 (mm)</label>
-          <input v-model="gpu.gpuLength" type="number" class="form-input" placeholder="ex) 320, 330, 360" required />
+          <input v-model="storeRef.targetProduct.value.gpuSpec.gpuLength" type="number" class="form-input"
+            placeholder="ex) 320, 330, 360" required />
         </div>
       </div>
 
@@ -140,52 +156,46 @@
         </div>
       </div>
 
-      <button type="submit" class="btn-submit">제품 등록</button>
+      <button type="submit" class="btn-submit">제품 수정</button>
     </form>
   </div>
 </template>
 
 <script setup>
 import { useRuntimeConfig } from 'nuxt/app'
-import { ref } from 'vue'
-import { useAdminStore } from '../../pinia/useAdminStore';
+import { ref, onMounted } from 'vue'
+import { useAdminStore } from '../../pinia/useAdminStore'
+import { storeToRefs } from 'pinia';
+
 
 const adminStore = useAdminStore();
+const storeRef = storeToRefs(adminStore);
 
-let product = ref({
-  name: '',
-  price: '',
-  brand: '',
-  stock: '',
-  description: '',
-  category: '',
-});
+const previewImages = ref([]);
 
-// 기존 SSD, RAM + 새로 추가된 HDD, CPU, GPU
-const ssd = ref({ ssdCapacity: '', ssdRead: '', ssdWrite: '' })
-const ram = ref({ ramType: '', ramNum: '', ramSize: '', ramUsage: '' })
-const hdd = ref({ hddCapacity: '', hddRpm: '', hddBuffer: '' })
-const cpu = ref({ cpuType: '', cpuCore: '', cpuThreads: '' })
-const gpu = ref({ gpuMemory: '', gpuChip: '', gpuLength: '' })
+const props = defineProps({
+  idx: Number
+})
+const idx = ref(props.idx);
 
 // 이미지 파일들 및 미리보기 URL 배열
-const previewImages = ref([])
-const selectedFiles = ref([])
 
 const handleImageUpload = (event) => {
-  const files = event.target.files
+  const files = event.target.files;
   // 최대 5장까지만 선택 (초과 시 앞의 5개만 사용)
-  selectedFiles.value = Array.from(files).slice(0, 5)
-  previewImages.value = selectedFiles.value.map(file => URL.createObjectURL(file))
-  console.log(selectedFiles.value);
+  storeRef.targetSelectedFiles.value = Array.from(files.concat(storeRef.targetSelectedFiles.value)).slice(0, 5);
+  previewImages.value = storeRef.targetSelectedFiles.value.map(file => URL.createObjectURL(file))
 }
 
-// const config = useRuntimeConfig();
+const config = useRuntimeConfig();
 
 // 폼 제출
 const submitForm = async () => {
-  await adminStore.submitProductRegisterForm(product.value, selectedFiles.value, ssd.value, ram.value, hdd.value, cpu.value, gpu.value)
+  await adminStore.submitProductModifyForm();
 }
+onMounted(async () => {
+  await adminStore.loadProductInfo(idx.value);
+});
 </script>
 
 <style scoped>

@@ -1,11 +1,13 @@
 <script setup>
 import { VCard, VCardItem, VCardText, VCardTitle } from 'vuetify/components';
 
-const props = defineProps({
-  totalOrders: Number
-})
+import { useAdminStore } from '../../pinia/useAdminStore';
+import { storeToRefs } from 'pinia';
 
-const totalOrders = ref(props.totalOrders);
+const adminStore = useAdminStore();
+const storeRef = storeToRefs(adminStore);
+
+let totalOrders = ref(storeRef.totalOrders);
 
 
 </script>

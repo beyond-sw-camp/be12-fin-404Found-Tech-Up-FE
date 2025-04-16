@@ -1,16 +1,12 @@
 <script setup>
 import { VAvatar, VCard, VCardItem, VCardText, VCardTitle, VIcon, VList, VListItem, VListItemSubtitle, VListItemTitle } from 'vuetify/components'
+import { useAdminStore } from '../../pinia/useAdminStore';
+import { storeToRefs } from 'pinia';
 
-const props = defineProps({
-  topWishList: []
-});
+const adminStore = useAdminStore();
+const storeRef = storeToRefs(adminStore);
 
-
-let topWishList = props.topWishList.map((value) => {
-  let result = {};
-  result.abbr = value.brand;
-  result.amount = value.cw;
-});
+let topWishList = ref(storeRef.topWishList);
 
 </script>
 
