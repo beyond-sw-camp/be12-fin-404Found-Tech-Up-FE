@@ -90,8 +90,10 @@ const cartStore = useCartStore();
 const wishlistStore = useWishlistStore();
 const utilityStore = useUtilityStore();
 
-function isItemInWishlist(product: IProduct) {
-  return wishlistStore.wishlists.some((prd) => prd.idx === product.idx);
+function isItemInWishlist(product) {
+  return wishlistStore.wishlists.some(
+    (wishlistItem) => Number(wishlistItem.product.productIdx) === Number(product.idx)
+  );
 }
 function isItemInCompare(product: IProduct) {
   return compareStore.compare_items.some((prd) => prd.idx === product.idx);

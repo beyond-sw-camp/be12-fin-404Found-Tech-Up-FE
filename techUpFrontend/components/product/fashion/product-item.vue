@@ -102,7 +102,9 @@ const props = defineProps({
 });
 
 function isItemInWishlist(product) {
-  return wishlistStore.wishlists.some((prd) => prd.idx === product.idx);
+  return wishlistStore.wishlists.some(
+    (wishlistItem) => Number(wishlistItem.product.productIdx) === Number(product.idx)
+  );
 }
 function isItemInCompare(product) {
   return compareStore.compare_items.some((prd) => prd.idx === product.idx);
