@@ -1,29 +1,37 @@
 <template>
   <article class="community-post-item-simple mb-30">
-    
-    <div class="community-post-meta">
-      <span>
-        <i class="far fa-calendar-check"></i> {{ formattedDate }}
-      </span>
-      <span>
-        <i class="far fa-user"></i> {{ item.writer }}
-      </span>
-      <span>
-        <i class="fal fa-comments"></i> {{ item.boardComments }} Comments
-      </span>
-      <span v-if="item.boardLikes !== undefined">
-        <i class="fas fa-thumbs-up"></i> {{ item.boardLikes }}
-      </span>
-      <span v-if="item.boardUnlikes !== undefined">
-        <i class="fas fa-thumbs-down"></i> {{ item.boardUnlikes }}
-      </span>
-    </div>
+    <nuxt-link :to="`/community-details/${item.idx}`" class="block-link" custom v-slot="{ navigate }">
+      <div class="community-post-meta" @click="navigate">
+        <!-- ✅ 카테고리 -->
+        <span class="category-tag">
+          <i class="fas fa-tag"></i> {{ item.boardCategory }}
+        </span>
+
+        <span>
+          <i class="far fa-calendar-check"></i> {{ formattedDate }}
+        </span>
+        <span>
+          <i class="far fa-user"></i> {{ item.writer }}
+        </span>
+        <span>
+          <i class="fal fa-comments"></i> 댓글 {{ item.boardComments || 0 }}개
+        </span>
+        <span v-if="item.boardLikes !== undefined">
+          <i class="fas fa-thumbs-up"></i> {{ item.boardLikes }}
+        </span>
+        <span v-if="item.boardUnlikes !== undefined">
+          <i class="fas fa-thumbs-down"></i> {{ item.boardUnlikes }}
+        </span>
+      </div>
+    </nuxt-link>
 
     <h3 class="community-post-title">
       <nuxt-link :to="`/community-details/${item.idx}`">{{ item.boardTitle }}</nuxt-link>
     </h3>
   </article>
 </template>
+
+
 
 
 <script setup lang="js">

@@ -5,27 +5,33 @@
         <!-- 게시글 리스트 -->
         <div class="col-xl-9 col-lg-8">
           <div class="tp-postbox-wrapper pr-50">
+            <!-- 데이터가 없을 경우 메시지 표시 -->
+            <div v-if="paginatedItems.length === 0" class="alert alert-warning">
+              표시할 게시글이 없습니다.
+            </div>
+            
+            <!-- 각 아이템 렌더링 -->
             <community-postbox-item
               v-for="(post, i) in paginatedItems"
-              :key="post.idx"
+              :key="post.idx || i"
               :item="post"
             />
-
+            
             <!-- 페이지네이션 -->
             <div class="tp-blog-pagination mt-50" v-if="totalElements > 0">
               <div class="tp-pagination">
-                <ui-pagination
-                  :items-per-page="size"
-                  :total-items="totalElements"
-                  :data="fakePaginationArray"
-                  :current-page="page + 1"
-                  @handle-paginate="onPageChange"
-                />
+                <ui-pagination2
+  :data="boardStore.boardList" 
+  :totalItems="totalElements"
+  :itemsPerPage="size"
+  :initialPage="currentPage"  
+  @handlePaginate="onPageChange"
+/>
               </div>
             </div>
           </div>
         </div>
-
+        
         <!-- 사이드바 -->
         <div class="col-xl-3 col-lg-4">
           <community-sidebar />
@@ -33,65 +39,71 @@
       </div>
     </div>
   </section>
-
-  <!-- 비디오 모달 -->
-  <modal-video />
 </template>
 
 <script setup>
-import { ref, computed, onMounted, watch } from 'vue';
+import { ref, onMounted, computed, watch } from 'vue';
 import { useBoardStore } from '@/pinia/useBoardStore';
 
 const boardStore = useBoardStore();
 
-// computed 대신 ref로 변경하고 초기값은 빈 배열로 설정
-const paginatedItems = ref([]);
-const page = ref(0);
+const currentPage = ref(1);
 const size = ref(10);
-const totalElements = ref(0);
 
-const fakePaginationArray = computed(() =>
-  Array.from({ length: totalElements.value })
-);
-
-const fetchList = async () => {
-  await boardStore.fetchBoardList({ page: page.value, size: size.value });
+// 전체 게시글 수 - API 응답에서 가져옴
+const totalElements = computed(() => {
+  // API 응답에 있는 totalElements 사용
+  const total = boardStore.totalElements;
+  console.log('계산된 totalElements:', total);
   
-  // 데이터 할당
-  paginatedItems.value = [...boardStore.boardList];
-  totalElements.value = boardStore.totalElements;
-  console.log('페이지네이션 업데이트 후 데이터:', paginatedItems.value);
-};
-
-const onPageChange = async (newPage) => {
-  console.log('요청된 페이지:', newPage, '타입:', typeof newPage);
-  
-  // newPage가 유효한 숫자인지 확인
-  const pageNum = parseInt(newPage, 10);
-  if (isNaN(pageNum) || pageNum < 1) {
-    console.warn('잘못된 페이지 요청 감지, 기본 페이지로 이동');
-    page.value = 0;
-  } else {
-    page.value = pageNum - 1; // 0-based 인덱싱으로 변환
+  // 안전 장치: 값이 없거나 유효하지 않으면 boardList 길이 사용
+  if (!total || total <= 0) {
+    return boardStore.boardList.length;
   }
   
-  // 페이지 변경 후 데이터 다시 불러오기
-  await fetchList();
+  return total;
+});
+
+// 현재 페이지의 게시글 목록
+// 현재 페이지의 게시글 목록
+const paginatedItems = computed(() => {
+  if (!Array.isArray(boardStore.boardList) || boardStore.boardList.length === 0) {
+    return [];
+  }
+  
+  console.log(`현재 페이지: ${currentPage.value}, 전체 데이터: ${boardStore.boardList.length}개`);
+  
+  // 페이지 계산 (0 인덱스가 아닌 1 인덱스 기준)
+  const startIndex = (currentPage.value - 1) * size.value;
+  const endIndex = Math.min(startIndex + size.value, boardStore.boardList.length);
+  
+  console.log(`계산된 인덱스 범위: ${startIndex} ~ ${endIndex}`);
+  const items = boardStore.boardList.slice(startIndex, endIndex);
+  console.log(`현재 페이지 아이템 수: ${items.length}개`);
+  
+  return items;
+});
+
+// 페이지 변경 처리
+const onPageChange = async (newPage) => {
+  const pageParam = newPage - 1; // 1-based → 0-based
+  await boardStore.fetchBoardList({ page: pageParam, size: size.value });
+  window.scroll(0, 0);
 };
 
-// watch는 유지하되 paginatedItems가 ref이므로 적용 가능
-watch(
-  () => boardStore.boardList,
-  (newList) => {
-    console.log('게시글 목록 변경 감지:', newList);
-    if (newList && newList.length > 0) {
-      paginatedItems.value = [...newList];
-    }
-  },
-  { deep: true }
-);
 
-onMounted(() => {
-  fetchList();
+onMounted(async () => {
+  console.log('컴포넌트 마운트됨');
+  await boardStore.fetchBoardList();
+  console.log(`초기 데이터 로드 완료: ${boardStore.boardList.length}개`);
+  console.log(`totalElements: ${boardStore.totalElements}, totalPages: ${Math.ceil(boardStore.totalElements / size.value)}`);
 });
 </script>
+
+<style scoped>
+.tp-pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+</style>
