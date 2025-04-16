@@ -7,14 +7,9 @@ const router = useRouter();
 // 카카오 로그인 처리 함수
 const kakaoLogin = async () => {
   try {
-    // const Auth_url = '/api/oauth2/authorization/kakao';
-    // window.location.href = Auth_url;
-    const response = await userStore.social();
-    console.log("Login success:", response);
-    alert('로그인이 완료되었습니다.');
+    const Auth_url = '/api/oauth2/authorization/kakao';
+    window.location.href = Auth_url;
     router.push('/'); // 로그인 성공 시 메인 페이지 경로로 이동
-
-    // const response = await userStore.social();
   } catch (error) {
     console.error('카카오 로그인 에러:', error);
   }

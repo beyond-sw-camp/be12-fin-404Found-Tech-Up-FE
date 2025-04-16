@@ -28,6 +28,12 @@ const handleLogout = async () => {
     alert('로그아웃 중 오류가 발생했습니다.');
   }
 };
+
+// 컴포넌트가 마운트될 때 사용자 정보 가져오기
+onMounted(async () => {
+  await userStore.checkAuth();
+  console.log('App.vue에서 확인한 로그인 상태:', userStore.isLoggedIn);
+});
 </script>
 
 <template>
