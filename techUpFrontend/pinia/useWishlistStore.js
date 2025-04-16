@@ -49,7 +49,7 @@ export const useWishlistStore = defineStore("wishlist_product", () => {
         { baseURL: config.public.apiBaseUrl }
       );
       // 서버 응답에 따라 토스트 메시지를 표시 (WishlistController의 응답 참고&#8203;:contentReference[oaicite:2]{index=2}&#8203;:contentReference[oaicite:3]{index=3})
-      if (response.data.code === 200) {
+      if (response.data.code === 11000) {
         toast.success("위시리스트가 업데이트되었습니다.");
         await fetchWishlist();
       } else if (response.data.code === 11003) {
