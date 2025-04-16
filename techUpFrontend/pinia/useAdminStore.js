@@ -93,6 +93,36 @@ export const useAdminStore = defineStore( 'admin',() => {
   
   };
 
+  const submitProductModifyForm = async () => {
+    // 카테고리에 맞는 스펙 데이터를 합쳐서 payload 구성
+    // 파일 업로드 요청
+    let imageUrls = [];
+    for await (let file of targetSelectedFiles.value) {
+      let formdata = new FormData();
+      formdata.append("file", file);
+      const resultUrl = await axios.put('/api/productimage/upload', formdata);
+      imageUrls.push(resultUrl.data.data);
+    }
+    const payload = {
+      ...targetProduct.value
+    }
+    console.log(payload);
+    // axios.post('/api/products', payload) 등으로 서버 전송 처리
+    axios.put(`/api/product/update/${route.params.idx}`, payload
+    ).then(async (result) => {
+      const imagePayload = {
+        productIdx: result.data.data.idx,
+        imagePath: imageUrls
+      };
+      await axios.post('/api/productimage', imagePayload);
+      alert("수정되었습니다!");
+      navigateTo('/dashboard');
+    }).catch((e) => {
+      console.log(e);
+    });
+  
+  };
+
   const loadProductInfo = async (idx) => {
     // 기존 정보를 가져온다.
     const result = await axios.get(`/api/product/${idx}`, {
@@ -165,6 +195,8 @@ export const useAdminStore = defineStore( 'admin',() => {
     // CREATE 
     submitProductRegisterForm,
 
+    // UPDATE
+    submitProductModifyForm,
     // 메타데이터
     modifyingProduct,
     // 제품 목록, 쿠폰 목록, 사용자 목록, 알림 목록록

@@ -1,6 +1,6 @@
 <template>
   <div class="form-container">
-    <h2 class="form-title">제품 등록</h2>
+    <h2 class="form-title">제품 수정</h2>
     <form @submit.prevent="submitForm" class="space-y-6">
       <!-- 기본 상품 정보 -->
       <div class="form-group">
@@ -156,13 +156,13 @@
         </div>
       </div>
 
-      <button type="submit" class="btn-submit">제품 등록</button>
+      <button type="submit" class="btn-submit">제품 수정</button>
     </form>
   </div>
 </template>
 
 <script setup>
-import { navigateTo, useRuntimeConfig } from 'nuxt/app'
+import { useRuntimeConfig } from 'nuxt/app'
 import { ref, onMounted } from 'vue'
 import { useAdminStore } from '../../pinia/useAdminStore'
 import { storeToRefs } from 'pinia';
@@ -170,6 +170,8 @@ import { storeToRefs } from 'pinia';
 
 const adminStore = useAdminStore();
 const storeRef = storeToRefs(adminStore);
+
+const previewImages = ref([]);
 
 const props = defineProps({
   idx: Number
@@ -182,58 +184,14 @@ const handleImageUpload = (event) => {
   const files = event.target.files;
   // 최대 5장까지만 선택 (초과 시 앞의 5개만 사용)
   storeRef.targetSelectedFiles.value = Array.from(files.concat(storeRef.targetSelectedFiles.value)).slice(0, 5);
-  previewImages.value = selectedFiles.value.map(file => URL.createObjectURL(file))
-  console.log(selectedFiles.value);
+  previewImages.value = storeRef.targetSelectedFiles.value.map(file => URL.createObjectURL(file))
 }
 
 const config = useRuntimeConfig();
 
 // 폼 제출
 const submitForm = async () => {
-  // 카테고리에 맞는 스펙 데이터를 합쳐서 payload 구성
-  // 파일 업로드 요청
-  let imageUrls = [];
-  for await (let file of selectedFiles.value) {
-    let formdata = new FormData();
-    formdata.append("file", file);
-    const resultUrl = await $fetch('/productimage/upload', {
-      baseURL: config.public.apiBaseUrl,
-      method: 'PUT',
-      body: formdata
-    });
-    imageUrls.push(resultUrl.data);
-  }
-
-  const payload = {
-    ...product.value,
-    ssdSpec: (product.value.category === 'SSD' ? ssd.value : {}),
-    ramSpec: (product.value.category === 'RAM' ? ram.value : {}),
-    hddSpec: (product.value.category === 'HDD' ? hdd.value : {}),
-    cpuSpec: (product.value.category === 'CPU' ? cpu.value : {}),
-    gpuSpec: (product.value.category === 'GPU' ? gpu.value : {}),
-  }
-  console.log('등록 데이터:', payload)
-
-  // axios.post('/api/products', payload) 등으로 서버 전송 처리
-  $fetch('/product/register', {
-    baseURL: config.public.apiBaseUrl,
-    method: 'POST',
-    body: payload
-  }).then(async (result) => {
-    console.log(result);
-    const saveResult = await $fetch('/productimage', {
-      baseURL: config.public.apiBaseUrl,
-      method: 'POST',
-      body: {
-        productIdx: result.data.idx,
-        imagePath: imageUrls
-      }
-    });
-    alert("등록되었습니다!");
-    navigateTo('/dashboard');
-  }).catch((e) => {
-    console.log(e);
-  });
+  await adminStore.submitProductModifyForm();
 }
 onMounted(async () => {
   await adminStore.loadProductInfo(idx.value);
