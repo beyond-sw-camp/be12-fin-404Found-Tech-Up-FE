@@ -11,7 +11,7 @@ export const useCartStore = defineStore("cart_product", () => {
 
   // add_cart_product
   const addCartProduct = (payload) => {
-    const isExist = cart_products.value.some((i) => i.idx === payload.idx);
+    const isExist = cart_products.value.some((i) => i.productIdx === payload.productIdx);
     if (payload.stock <= 0) {
       toast.error(`Out of stock ${payload.name}`);
     } else if (!isExist) {
@@ -24,7 +24,12 @@ export const useCartStore = defineStore("cart_product", () => {
     } else {
       // TODO: 수정 필요
       cart_products.value.map((item) => {
-        if (item.idx === payload.idx) {
+        if (item.productIdx === payload.productIdx) {
+          console.log("item: ", item);
+          console.log("payload: ", payload);
+          console.log("orderQuantity: ", orderQuantity.value);
+          console.log("item.orderQuantity: ", item.orderQuantity);
+
           if (typeof item.orderQuantity !== "undefined") {
             if (payload.stock >= item.orderQuantity + orderQuantity.value) {
               item.orderQuantity =
@@ -34,10 +39,6 @@ export const useCartStore = defineStore("cart_product", () => {
               toast.success(`${orderQuantity.value} ${item.name} added to cart`);
             } else {
               toast.error(`${payload.name} 재고가 부족합니다.`);
-              console.log(payload);
-              console.log(item);
-              console.log("item.idx: ", item.productIdx);
-              console.log("payload.idx: ", payload.productIdx);
               orderQuantity.value = 1;
             }
           }
