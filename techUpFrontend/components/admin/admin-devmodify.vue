@@ -238,7 +238,6 @@ const submitForm = async () => {
   });
 }
 onMounted(async () => {
-  console.log(idx.value);
   await adminStore.loadProductInfo(idx.value);
 });
 </script>

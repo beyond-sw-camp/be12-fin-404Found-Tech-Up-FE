@@ -1,6 +1,6 @@
-import { useRuntimeConfig } from "nuxt/app";
+import { navigateTo, useRuntimeConfig } from "nuxt/app";
 import { defineStore } from "pinia";
-import { onMounted, watch } from "vue";
+import { onMounted } from "vue";
 import { useRoute } from "vue-router";
 import axios from 'axios';
 
@@ -51,6 +51,42 @@ export const useAdminStore = defineStore( 'admin',() => {
     });
     productList.value = result.data.data;
     return result;
+  };
+
+  const submitProductRegisterForm = async (product, selectedFiles, ssd, ram, hdd,cpu, gpu) => {
+    // 카테고리에 맞는 스펙 데이터를 합쳐서 payload 구성
+    // 파일 업로드 요청
+    let imageUrls = [];
+    for await (let file of selectedFiles) {
+      let formdata = new FormData();
+      formdata.append("file", file);
+      const resultUrl = await axios.put('/api/productimage/upload', formdata);
+      imageUrls.push(resultUrl.data.data);
+    }
+
+    const payload = {
+      ...product,
+      ssdSpec: (product.category === 'SSD' ? ssd : {}),
+      ramSpec: (product.category === 'RAM' ? ram : {}),
+      hddSpec: (product.category === 'HDD' ? hdd : {}),
+      cpuSpec: (product.category === 'CPU' ? cpu : {}),
+      gpuSpec: (product.category === 'GPU' ? gpu : {}),
+    }
+
+    // axios.post('/api/products', payload) 등으로 서버 전송 처리
+    axios.post('/api/product/register', payload
+    ).then(async (result) => {
+      const imagePayload = {
+        productIdx: result.data.data.idx,
+        imagePath: imageUrls
+      };
+      await axios.post('/api/productimage', imagePayload);
+      alert("등록되었습니다!");
+      navigateTo('/dashboard');
+    }).catch((e) => {
+      console.log(e);
+    });
+  
   };
 
   const loadProductInfo = async (idx) => {
@@ -119,6 +155,10 @@ export const useAdminStore = defineStore( 'admin',() => {
     loadProductList,
     loadStatistics,
     loadProductInfo,
+
+    // CREATE 
+    submitProductRegisterForm,
+
     // 메타데이터
     modifyingProduct,
     // 제품 목록, 쿠폰 목록, 사용자 목록, 알림 목록록

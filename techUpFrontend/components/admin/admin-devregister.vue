@@ -146,15 +146,11 @@
 </template>
 
 <script setup>
-import { navigateTo, useRuntimeConfig } from 'nuxt/app'
+import { useRuntimeConfig } from 'nuxt/app'
 import { ref } from 'vue'
-import { useAdminStore } from '../../pinia/useAdminStore'
+import { useAdminStore } from '../../pinia/useAdminStore';
 
-
-const props = defineProps({
-  modding: Boolean,
-  productInfo: Object
-})
+const adminStore = useAdminStore();
 
 let product = ref({
   name: '',
@@ -163,7 +159,7 @@ let product = ref({
   stock: '',
   description: '',
   category: '',
-})
+});
 
 // 기존 SSD, RAM + 새로 추가된 HDD, CPU, GPU
 const ssd = ref({ ssdCapacity: '', ssdRead: '', ssdWrite: '' })
@@ -184,55 +180,11 @@ const handleImageUpload = (event) => {
   console.log(selectedFiles.value);
 }
 
-const config = useRuntimeConfig();
+// const config = useRuntimeConfig();
 
 // 폼 제출
 const submitForm = async () => {
-  // 카테고리에 맞는 스펙 데이터를 합쳐서 payload 구성
-  // 파일 업로드 요청
-  let imageUrls = [];
-  for await (let file of selectedFiles.value) {
-    let formdata = new FormData();
-    formdata.append("file", file);
-    const resultUrl = await $fetch('/productimage/upload', {
-      baseURL: config.public.apiBaseUrl,
-      method: 'PUT',
-      body: formdata
-    });
-    imageUrls.push(resultUrl.data);
-  }
-
-  const payload = {
-    ...product.value,
-    ssdSpec: (product.value.category === 'SSD' ? ssd.value : {}),
-    ramSpec: (product.value.category === 'RAM' ? ram.value : {}),
-    hddSpec: (product.value.category === 'HDD' ? hdd.value : {}),
-    cpuSpec: (product.value.category === 'CPU' ? cpu.value : {}),
-    gpuSpec: (product.value.category === 'GPU' ? gpu.value : {}),
-  }
-  console.log('등록 데이터:', payload)
-
-  // axios.post('/api/products', payload) 등으로 서버 전송 처리
-  $fetch('/product/register', {
-    baseURL: config.public.apiBaseUrl,
-    method: 'POST',
-    body: payload
-  }).then(async (result) => {
-    console.log(result);
-    const saveResult = await $fetch('/productimage', {
-      baseURL: config.public.apiBaseUrl,
-      method: 'POST',
-      body: {
-        productIdx: result.data.idx,
-        imagePath: imageUrls
-      }
-    });
-    alert("등록되었습니다!");
-    navigateTo('/dashboard');
-  }).catch((e) => {
-    console.log(e);
-  });
-
+  await adminStore.submitProductRegisterForm(product.value, selectedFiles.value, ssd.value, ram.value, hdd.value, cpu.value, gpu.value)
 }
 </script>
 
