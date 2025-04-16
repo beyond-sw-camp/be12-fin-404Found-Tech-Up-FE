@@ -44,6 +44,8 @@ export const useAdminStore = defineStore( 'admin',() => {
     ssdSpec: { ssdCapacity: '', ssdRead: '', ssdWrite: '' },
     ramSpec: { ramType: '', ramNum: '', ramSize: '', ramUsage: '' }
   });
+  let targetPreviewImages = ref([]);
+  let targetSelectedFiles = ref([]);
 
   const loadProductList = async () => {
     const result = await axios.get('/api/product/list', {
@@ -108,6 +110,8 @@ export const useAdminStore = defineStore( 'admin',() => {
       ssdSpec: result.data.data.ssdSpec ? result.data.data.ssdSpec : null,
       ramSpec: result.data.data.ramSpec ? result.data.data.ramSpec : null
     };
+
+    targetPreviewImages.value = result.data.data.images;
     console.log(targetProduct.value);
   };
 
