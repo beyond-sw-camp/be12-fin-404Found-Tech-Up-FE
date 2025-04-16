@@ -38,6 +38,7 @@
 
 <script setup>
 import { useRuntimeConfig } from 'nuxt/app';
+import { useAdminStore } from '../../pinia/useAdminStore';
 
 const props = defineProps({
   modify: Boolean,

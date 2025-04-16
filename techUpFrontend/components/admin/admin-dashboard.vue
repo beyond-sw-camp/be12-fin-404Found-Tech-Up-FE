@@ -8,30 +8,24 @@ import AnalyticsRecentOrders from '@/views/dashboard/AnalyticsRecentOrders.vue';
 import AnalyticsSalesRanking from '@/views/dashboard/AnalyticsSalesRanking.vue';
 import AnalyticsViewRanking from '@/views/dashboard/AnalyticsViewRanking.vue';
 import AnalyticsNewcomers from '../../views/dashboard/AnalyticsNewcomers.vue';
-import { useRuntimeConfig } from 'nuxt/app';
 import AnalyticsTotalOrders from '../../views/dashboard/AnalyticsTotalOrders.vue';
 import AnalyticsTotalRefunds from '../../views/dashboard/AnalyticsTotalRefunds.vue';
+import { useAdminStore } from '../../pinia/useAdminStore';
 
-const config = useRuntimeConfig();
+const adminStore = useAdminStore();
 
-const result = await $fetch("/statistics", {
-  baseURL: config.public.apiBaseUrl
-});
+console.log(adminStore.topWishList);
 
-console.log(result.data);
+let topWishList = ref(adminStore.topWishList);
 
-let topWishList = ref(result.data.topWishList.map((value) => {
-  let result = {};
-  result.abbr = value.brand;
-  result.amount = value.cw;
-}));
+watch(() => topWishList);
 
-let newComers = ref(result.data.newCustomers);
-let totalSales = ref(result.data.totalSales);
-let totalOrders = ref(result.data.totalOrders);
-let totalRefunds = ref(result.data.totalRefunds);
+let newComers = ref(adminStore.newComers);
+let totalSales = ref(adminStore.totalSales);
+let totalOrders = ref(adminStore.totalOrders);
+let totalRefunds = ref(adminStore.totalRefunds);
 
-let topSales = ref(result.data.topSales);
+let topSales = ref(adminStore.topSales);
 
 </script>
 
@@ -40,7 +34,7 @@ let topSales = ref(result.data.topSales);
     <!-- 이번 달 신규 회원수-->
     <!-- 이번 달 총 주문 수 -->
     <!-- 이번 달 총 주문 취소 수 -->
-    <VCol cols="4" md="12">
+    <VCol cols="12" md="12">
       <!-- 요약 통계(신규 회원수, 총 주문 수, 총 주문 취소 수)-->
       <VRow class="match-height">
         <VCol cols="4" md="6">
@@ -60,7 +54,7 @@ let topSales = ref(result.data.topSales);
       </VRow>
       <!-- 매출 요약 -->
       <VRow class="match-height">
-        <VCol cols="4" md="12">
+        <VCol cols="12" md="12">
           <AnalyticsMonthlyOverview />
         </VCol>
       </VRow>

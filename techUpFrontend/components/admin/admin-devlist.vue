@@ -49,19 +49,6 @@ let filteredItems = ref([]);
 let startIndex = ref(0);
 let endIndex = ref(filteredItems.length);
 
-
-const config = useRuntimeConfig();
-
-$fetch('/product/list', {
-  baseURL: config.public.apiBaseUrl,
-  method: 'GET'
-}).then((result) => {
-  console.log(result);
-  filteredItems.value = result.data;
-}).catch((e) => {
-  console.log(e);
-});
-
 const handlePagination = (data, start, end) => {
   console.log("data", data, "start", start, "end", end);
   filteredItems.value = data;

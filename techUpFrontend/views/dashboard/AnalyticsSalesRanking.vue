@@ -5,12 +5,7 @@ const props = defineProps({
   salesRank: Array
 });
 
-let salesRank = props.salesRank.map((value) => {
-  let result = {};
-  result.productIdx = value.productIdx;
-  result.productName = value.productName;
-  result.number = value.number;
-});
+let salesRank = ref(props.salesRank);
 
 </script>
 
