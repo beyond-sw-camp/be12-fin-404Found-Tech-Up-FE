@@ -2,9 +2,9 @@
   <div class="admin__address">
     <div class="tp-header-search-box"
       style="width:100%;display:inline-flex;background-color:#f8f8f8; padding-right: 2rem;">
-      <input type="text" placeholder="Search for Products..." v-model="searchText"
+      <input type="text" placeholder="Search for Products..." v-model="storeRef.findProductKeyword.value"
         style="color:black;background-color:inherit; padding-right: inherit;" />
-      <button type="submit" style="width:1rem;">
+      <button type="submit" style="width:1rem;" @click="adminStore.findProduct">
         <SvgSearch />
       </button>
     </div>
@@ -31,7 +31,8 @@
             </thead>
             <tbody>
               <!-- registered item start -->
-              <admin-device-item v-for="item in filteredItems" :key="item.id" :item="item" :registered="true" />
+              <admin-device-item v-bind="storeRef.productList" v-for="item in storeRef.productList.value" :key="item.id"
+                :item="item" :registered="true" />
               <!-- registered item end -->
             </tbody>
           </table>
@@ -39,7 +40,8 @@
       </div>
     </div>
     <div class="tp-pagination mt-30">
-      <ui-pagination :items-per-page="4" :data="filteredItems" @handle-paginate="handlePagination" />
+      <ui-pagination :items-per-page="4" v-bind="storeRef.productList" :data="storeRef.productList.value"
+        @handle-paginate="handlePagination" />
     </div>
   </div>
 </template>
@@ -51,13 +53,15 @@ import { useAdminStore } from '../../pinia/useAdminStore';
 
 const adminStore = useAdminStore();
 const storeRef = storeToRefs(adminStore);
-let filteredItems = ref(storeRef.productList);
+
+watch(storeRef.productList.value, () => { }, { deep: true });
+
 let startIndex = ref(0);
-let endIndex = ref(filteredItems.length);
+let endIndex = ref(storeRef.productList.value.length);
 
 const handlePagination = (data, start, end) => {
   console.log("data", data, "start", start, "end", end);
-  filteredItems.value = data;
+  storeRef.productList.value = data;
   startIndex.value = start;
   endIndex.value = end;
 };

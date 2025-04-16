@@ -115,6 +115,7 @@ export const useAdminStore = defineStore( 'admin',() => {
         imagePath: imageUrls
       };
       await axios.post('/api/productimage', imagePayload);
+      await loadProductList();
       alert("수정되었습니다!");
       navigateTo('/dashboard');
     }).catch((e) => {
@@ -190,6 +191,17 @@ export const useAdminStore = defineStore( 'admin',() => {
     }
   };
 
+  let findProductKeyword = ref([]);
+  const findProduct = async () => {
+    try {
+      const result = await axios.get(`/api/product/search?keyword=${findProductKeyword.value}`);
+      productList.value = result.data.data;
+      console.log(productList.value);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
   // 초기화할 것은 여기로
   onMounted(async () => {
     await loadStatistics();
@@ -213,7 +225,11 @@ export const useAdminStore = defineStore( 'admin',() => {
     deleteProduct,
     // 메타데이터
     modifyingProduct,
-    // 제품 목록, 쿠폰 목록, 사용자 목록, 알림 목록록
+
+    // 검색
+    findProduct,
+    findProductKeyword,
+    // 제품 목록, 쿠폰 목록, 사용자 목록, 알림 목록
     productList,
     couponList,
     userList,
