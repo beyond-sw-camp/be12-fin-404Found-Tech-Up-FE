@@ -2,7 +2,8 @@
   <tr>
     <!-- img -->
     <td class="tp-cart-img">
-      <nuxt-link :href="`/product-details/${item.product.productIdx}`" style="background-color: #F2F3F5;display: block;">
+      <nuxt-link :href="`/product-details/${item.product.productIdx}`"
+        style="background-color: #F2F3F5;display: block;">
         <img :src="item.product.imageUrl" alt="image" />
       </nuxt-link>
     </td>
@@ -11,7 +12,17 @@
       <nuxt-link :href="`/product-details/${item.product.productIdx}`">{{ item.product.name }}</nuxt-link>
     </td>
     <!-- price -->
-    <td class="tp-cart-price"><span>{{ formatPrice(item.product.price) }}</span></td>
+    <td class="tp-cart-price">
+      <span v-if="item.product.discount && Number(item.product.discount) > 0">
+        <span class="tp-product-details-price old-price">{{ formatPrice(item.product.price, false) }}</span>
+        <span class="new-price">
+          {{ formatPrice(item.product.price - (item.product.price * Number(item.product.discount)) / 100) }}
+        </span>
+      </span>
+      <span v-else>
+        {{ formatPrice(item.product.price) }}
+      </span>
+    </td>
 
     <td class="tp-cart-add-to-cart">
       <button @click="cartStore.addCartProduct(item.product)" type="button" class="tp-btn tp-btn-2 tp-btn-blue">
