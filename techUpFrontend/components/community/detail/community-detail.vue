@@ -1,28 +1,29 @@
 <template>
   <div v-if="board && board.idx" class="post-detail-container">
+    <!-- 제목 -->
     <div class="post-section">
       <h3 class="post-label">제목</h3>
       <p class="post-title">{{ board.boardTitle }}</p>
     </div>
 
+    <!-- 작성 정보 -->
     <div class="post-section-row">
       <div class="post-meta-block">
         <h4 class="post-label">카테고리</h4>
         <p class="post-meta-value">{{ board.boardCategory }}</p>
       </div>
-
       <div class="post-meta-block">
         <h4 class="post-label">작성자</h4>
         <p class="post-meta-value">{{ board.writer || '탈퇴한 사용자' }}</p>
       </div>
-
       <div class="post-meta-block">
         <h4 class="post-label">작성일</h4>
         <p class="post-meta-value">{{ formattedDate }}</p>
       </div>
     </div>
 
-    <div class="post-section" v-if="board.fileList && board.fileList.length">
+    <!-- 첨부파일 -->
+    <div class="post-section" v-if="board.fileList?.length">
       <h3 class="post-label">첨부파일</h3>
       <ul class="post-files">
         <li v-for="(file, i) in board.fileList" :key="i">
@@ -31,17 +32,72 @@
       </ul>
     </div>
 
+    <!-- 게시글 본문 -->
     <div class="post-section post-content" v-html="board.boardContent"></div>
 
+    <!-- 좋아요 / 싫어요 -->
     <div class="post-section post-reactions">
       <button class="btn-like" @click="handleLike">👍 {{ board.boardLikes || 0 }}</button>
       <button class="btn-unlike" @click="handleUnlike">👎 {{ board.boardUnlikes || 0 }}</button>
     </div>
 
-    <!-- 작성자 본인일 때만 수정/삭제 버튼 노출 -->
+    <!-- 수정 / 삭제 -->
     <div class="post-section post-actions">
       <button class="btn-edit" @click="goEdit">수정</button>
       <button class="btn-delete" @click="confirmDelete">삭제</button>
+    </div>
+
+    <!-- 댓글 -->
+    <div class="comment-section">
+      <h4 class="comment-label">댓글</h4>
+
+      <textarea
+        v-model="newComment"
+        placeholder="댓글을 입력하세요..."
+        class="comment-input"
+      />
+
+      <div class="comment-submit-row">
+        <button
+          class="btn-submit-comment"
+          @click="submitComment"
+          :disabled="!newComment.trim() || isSubmittingComment"
+        >
+          등록
+        </button>
+      </div>
+
+      <ul class="comment-list" v-if="commentList.length">
+        <li class="comment-item" v-for="comment in commentList" :key="comment.commentIdx">
+          <div class="comment-meta">
+            <span class="comment-writer">{{ comment.writer || '익명' }}</span>
+            <span class="comment-date">{{ formatDate(comment.createdAt) }}</span>
+          </div>
+
+          <template v-if="editingCommentIdx === comment.commentIdx">
+            <textarea
+              v-model="editedContent"
+              class="comment-input"
+              rows="3"
+              style="margin-top: 0.5rem;"
+            ></textarea>
+
+            <div class="comment-action-buttons">
+              <button class="btn-comment-edit" @click="submitEditedComment">저장</button>
+              <button class="btn-comment-delete" @click="cancelEdit">취소</button>
+            </div>
+          </template>
+
+          <template v-else>
+            <p class="comment-content">{{ comment.content }}</p>
+            <div class="comment-action-buttons">
+              <button class="btn-comment-edit" @click="editComment(comment)">수정</button>
+              <button class="btn-comment-delete" @click="deleteComment(comment.commentIdx)">삭제</button>
+            </div>
+          </template>
+        </li>
+      </ul>
+      <p v-else class="text-gray-500 text-sm mt-2">아직 댓글이 없습니다.</p>
     </div>
   </div>
 
@@ -49,17 +105,24 @@
 </template>
 
 <script setup>
-import { onMounted, computed } from 'vue';
+import { onMounted, computed, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useBoardStore } from '@/pinia/useBoardStore';
+import { useCommentStore } from '@/pinia/useCommentStore';
 import { buildS3Url } from '@/utils/useS3';
 import { format } from 'date-fns';
-
 
 const route = useRoute();
 const router = useRouter();
 const boardStore = useBoardStore();
+const commentStore = useCommentStore();
+
 const board = computed(() => boardStore.currentBoard || {});
+const commentList = computed(() => commentStore.commentList);
+const newComment = ref('');
+const isSubmittingComment = ref(false);
+const editingCommentIdx = ref(null);
+const editedContent = ref('');
 
 const formattedDate = computed(() => {
   try {
@@ -69,6 +132,13 @@ const formattedDate = computed(() => {
   }
 });
 
+const formatDate = (dateStr) => {
+  try {
+    return format(new Date(dateStr), 'yyyy-MM-dd HH:mm');
+  } catch {
+    return dateStr;
+  }
+};
 
 const fetchBoardDetail = async () => {
   const idx = route.params.idx;
@@ -76,12 +146,62 @@ const fetchBoardDetail = async () => {
   await boardStore.fetchBoardDetail(idx);
 };
 
+const fetchComments = async () => {
+  await commentStore.fetchComments(board.value.idx);
+};
+
+const submitComment = async () => {
+  try {
+    await commentStore.createComment(board.value.idx, newComment.value);
+    newComment.value = '';
+  } catch (err) {
+    alert('댓글 작성 실패');
+  }
+};
+
+const deleteComment = async (commentIdx) => {
+  if (!confirm('댓글을 삭제하시겠습니까?')) return;
+  try {
+    await commentStore.deleteComment(commentIdx, board.value.idx);
+  } catch (err) {
+    alert('댓글 삭제 실패');
+  }
+};
+
+const editComment = (comment) => {
+  editingCommentIdx.value = comment.commentIdx;
+  editedContent.value = comment.content;
+};
+
+const submitEditedComment = async () => {
+  try {
+    await commentStore.updateComment(editingCommentIdx.value, board.value.idx, editedContent.value);
+    editingCommentIdx.value = null;
+    editedContent.value = '';
+  } catch (err) {
+    alert('댓글 수정 실패');
+  }
+};
+
+const cancelEdit = () => {
+  editingCommentIdx.value = null;
+  editedContent.value = '';
+};
+
+const handleLike = async () => {
+  await boardStore.toggleLike(board.value.idx, true);
+};
+
+const handleUnlike = async () => {
+  await boardStore.toggleLike(board.value.idx, false);
+};
+
 const goEdit = () => {
   router.push(`/community/edit/${board.value.idx}`);
 };
 
 const confirmDelete = async () => {
-  if (!confirm('정말로 이 게시글을 삭제하시겠습니까?')) return;
+  if (!confirm('정말 이 게시글을 삭제하시겠습니까?')) return;
   try {
     await boardStore.deleteBoard(board.value.idx);
     alert('게시글이 삭제되었습니다.');
@@ -92,38 +212,29 @@ const confirmDelete = async () => {
   }
 };
 
-
-const handleLike = async () => {
-  await boardStore.toggleLike(board.value.idx, true);
-};
-
-const handleUnlike = async () => {
-  await boardStore.toggleLike(board.value.idx, false);
-};
-
-onMounted(fetchBoardDetail);
+onMounted(async () => {
+  await fetchBoardDetail();
+  await fetchComments();
+});
 </script>
 
-  <style scoped>
+<style scoped>
 .post-detail-container {
-  margin-top: 20px;
-  margin-bottom: 20px;
   max-width: 64rem;
-  margin: 0 auto;
+  margin: 4rem auto;
   padding: 2rem;
   background-color: #fff;
   border-radius: 0.5rem;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+  border: 1px solid #ccc;
   display: flex;
   flex-direction: column;
   gap: 2.5rem;
-  border: 1px solid #ccc; /* 전체 컨테이너 외곽선 진하게 */
 }
 
 .post-section {
-  width: 100%;
   padding-bottom: 1.2rem;
-  border-bottom: 2px solid #ccc; /* 각 구역 구분선 더 진하게 */
+  border-bottom: 2px solid #ccc;
 }
 
 .post-label {
@@ -161,7 +272,6 @@ onMounted(fetchBoardDetail);
 
 .post-content {
   line-height: 1.7;
-  padding-top: 1rem;
   min-height: 400px;
   white-space: pre-wrap;
   border: 1px solid #ccc;
@@ -171,30 +281,20 @@ onMounted(fetchBoardDetail);
 }
 
 .post-files ul {
-  margin: 0;
-  padding-left: 0; /* ✅ 패딩 제거 */
-  list-style: none; /* ✅ 기본 점 제거 */
-}
-
-.post-files ul {
-  margin: 0;
-  padding-left: 1.2rem; /* 기본 들여쓰기 유지 */
-  list-style-type: disc; /* 점 스타일 명시 */
+  padding-left: 1.2rem;
+  list-style-type: disc;
 }
 
 .post-files li {
   margin-bottom: 0.5rem;
-  line-height: 1.5;
-  word-break: break-word; /* 긴 파일명 줄바꿈 */
+  word-break: break-word;
 }
 
-.post-files li a {
+.post-files a {
   text-decoration: underline;
   color: #4a90e2;
   font-size: 0.95rem;
 }
-
-
 
 .post-actions {
   display: flex;
@@ -229,7 +329,6 @@ onMounted(fetchBoardDetail);
   justify-content: center;
   gap: 1.5rem;
   padding: 1rem 0;
-  border-top: 1px solid #eee;
   border: 2px solid #ccc;
   border-radius: 6px;
   background-color: #f9f9f9;
@@ -255,6 +354,96 @@ onMounted(fetchBoardDetail);
   background-color: #ffe6e6;
 }
 
+.comment-section {
+  margin-top: 2rem;
+}
 
-  </style>
-  
+.comment-input {
+  width: 100%;
+  min-height: 80px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 0.75rem;
+  font-size: 0.95rem;
+  resize: vertical;
+}
+
+.comment-submit-row {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 0.5rem;
+}
+
+.btn-submit-comment {
+  background-color: #4a90e2;
+  color: white;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.btn-submit-comment:disabled {
+  background-color: #aaa;
+  cursor: not-allowed;
+}
+
+.comment-list {
+  margin-top: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.comment-item {
+  padding: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  background-color: #f7f7f7;
+}
+
+.comment-meta {
+  font-size: 0.85rem;
+  color: #666;
+  margin-bottom: 0.4rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+.comment-writer {
+  font-weight: 600;
+}
+
+.comment-content {
+  font-size: 0.95rem;
+  color: #333;
+  line-height: 1.5;
+}
+.comment-action-buttons {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+  margin-top: 0.5rem;
+}
+
+.btn-comment-edit,
+.btn-comment-delete {
+  font-size: 0.8rem;
+  padding: 0.3rem 0.7rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btn-comment-edit {
+  background-color: #eee;
+  color: #333;
+}
+
+.btn-comment-delete {
+  background-color: #d9534f;
+  color: white;
+}
+
+</style>
