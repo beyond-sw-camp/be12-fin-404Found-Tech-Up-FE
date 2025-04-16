@@ -45,7 +45,11 @@
 </template>
 
 <script setup>
-let filteredItems = ref([]);
+import { useAdminStore } from '../../pinia/useAdminStore';
+
+
+const adminStore = useAdminStore();
+let filteredItems = ref(adminStore.productList);
 let startIndex = ref(0);
 let endIndex = ref(filteredItems.length);
 

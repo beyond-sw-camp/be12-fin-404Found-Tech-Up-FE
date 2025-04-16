@@ -1,21 +1,21 @@
 import { useRuntimeConfig } from "nuxt/app";
 import { defineStore } from "pinia";
-import { onMounted, watch } from "vue";
+import { onBeforeMount, onMounted, watch } from "vue";
 import axios from 'axios';
 
-export const useAdminStore = defineStore( 'admin', () => {
+export const useAdminStore = defineStore( 'admin',() => {
   // 요청-응답을 위한 config
   const config = useRuntimeConfig();
 
   // 통계 관련 데이터
-  let topWishList = ref([{abbr: "Example product", amount: 13}]);
+  let topWishList = ref([]);
   
-  let newComers = ref(2);
-  let totalSales = ref(300000);
-  let totalOrders = ref(7);
-  let totalRefunds = ref(3);
+  let newComers = ref(0);
+  let totalSales = ref(0);
+  let totalOrders = ref(0);
+  let totalRefunds = ref(0);
   
-  let topSales = ref([{productIdx:-1, productName:"example", number: 3}]);
+  let topSales = ref([]);
 
   // 제품 목록
   let productList = ref([]);
@@ -48,11 +48,10 @@ export const useAdminStore = defineStore( 'admin', () => {
     return result.data.couponList;
   };
 
-  const loadStatistics = async () => {
+  let loadStatistics = async () => {
     try{
       const result = await axios.get("/api/statistics", {
       });
-      console.log(result.data);
       if (result.data.data.topWishList.length !== 0) {
         topWishList.value = result.data.data.topWishList.map((value) => {
           let result = {};

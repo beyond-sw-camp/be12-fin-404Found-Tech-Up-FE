@@ -5,7 +5,13 @@ import { VCard, VCardItem, VCardTitle, VCardText, VBtn } from 'vuetify/component
 import { useTheme } from 'vuetify'
 import { hexToRgb } from '@layouts/utils'
 
+import { useAdminStore } from '../../pinia/useAdminStore';
+import { storeToRefs } from 'pinia';
 
+const adminStore = useAdminStore();
+const storeRef = storeToRefs(adminStore);
+
+// TODO: 아래 Props의 내용을 adminStore로 옮기기
 const props = defineProps({
   xaxis: Array,
   data: Array,

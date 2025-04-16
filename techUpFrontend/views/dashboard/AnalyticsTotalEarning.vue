@@ -1,12 +1,12 @@
 <script setup>
 import { VCard, VCardItem, VCardText, VCardTitle } from 'vuetify/components'
-import { VIcon } from 'vuetify/components'
+import { useAdminStore } from '../../pinia/useAdminStore';
+import { storeToRefs } from 'pinia';
 
-const props = defineProps({
-  totalSales: Number
-})
+const adminStore = useAdminStore();
+const storeRef = storeToRefs(adminStore);
 
-const profit = ref(props.totalSales);
+const profit = ref(storeRef.totalSales);
 </script>
 
 <template>

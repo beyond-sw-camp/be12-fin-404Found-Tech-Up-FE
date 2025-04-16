@@ -42,9 +42,11 @@
 </template>
 
 <script setup>
+import { useAdminStore } from '../../pinia/useAdminStore';
 
 
-let filteredItems = ref([]);
+const adminStore = useAdminStore();
+let filteredItems = ref(adminStore.couponList);
 let startIndex = ref(0);
 let endIndex = ref(filteredItems.length);
 

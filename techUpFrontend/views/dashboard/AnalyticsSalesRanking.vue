@@ -1,11 +1,12 @@
 <script setup>
 import { VAvatar, VCard, VCardItem, VCardText, VCardTitle, VList, VListItem, VListItemTitle } from 'vuetify/components'
 
-const props = defineProps({
-  salesRank: Array
-});
+import { useAdminStore } from '../../pinia/useAdminStore';
+import { storeToRefs } from 'pinia';
 
-let salesRank = ref(props.salesRank);
+const adminStore = useAdminStore();
+const storeRef = storeToRefs(adminStore);
+let salesRank = ref(storeRef.topSales);
 
 </script>
 

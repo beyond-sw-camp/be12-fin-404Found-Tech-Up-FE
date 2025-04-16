@@ -11,21 +11,29 @@ import AnalyticsNewcomers from '../../views/dashboard/AnalyticsNewcomers.vue';
 import AnalyticsTotalOrders from '../../views/dashboard/AnalyticsTotalOrders.vue';
 import AnalyticsTotalRefunds from '../../views/dashboard/AnalyticsTotalRefunds.vue';
 import { useAdminStore } from '../../pinia/useAdminStore';
+import { onMounted, shallowRef } from 'vue';
+import { watch } from 'vue';
+import { storeToRefs } from 'pinia';
 
-const adminStore = useAdminStore();
+let adminStore = useAdminStore();
 
-console.log(adminStore.topWishList);
+let storeRef = storeToRefs(adminStore);
 
-let topWishList = ref(adminStore.topWishList);
+console.log(storeRef.topWishList);
 
-watch(() => topWishList);
+let topWishList = ref(storeRef.topWishList);
 
-let newComers = ref(adminStore.newComers);
-let totalSales = ref(adminStore.totalSales);
-let totalOrders = ref(adminStore.totalOrders);
-let totalRefunds = ref(adminStore.totalRefunds);
+let newComers = ref(storeRef.newComers);
+let totalSales = ref(storeRef.totalSales);
+let totalOrders = ref(storeRef.totalOrders);
+let totalRefunds = ref(storeRef.totalRefunds);
 
-let topSales = ref(adminStore.topSales);
+let topSales = storeRef.topSales;
+
+onMounted(async () => {
+  await adminStore.loadStatistics();
+})
+
 
 </script>
 
@@ -38,18 +46,18 @@ let topSales = ref(adminStore.topSales);
       <!-- 요약 통계(신규 회원수, 총 주문 수, 총 주문 취소 수)-->
       <VRow class="match-height">
         <VCol cols="4" md="6">
-          <AnalyticsNewcomers :newComers="newComers" />
+          <AnalyticsNewcomers />
         </VCol>
         <VCol cols="4" md="6">
-          <AnalyticsTotalEarning :totalSales="totalSales" />
+          <AnalyticsTotalEarning />
         </VCol>
       </VRow>
       <VRow class="match-height">
         <VCol cols="4" md="6">
-          <AnalyticsTotalOrders :totalOrders="totalOrders" />
+          <AnalyticsTotalOrders />
         </VCol>
         <VCol cols="4" md="6">
-          <AnalyticsTotalRefunds :totalRefunds="totalRefunds" />
+          <AnalyticsTotalRefunds />
         </VCol>
       </VRow>
       <!-- 매출 요약 -->
@@ -78,13 +86,13 @@ let topSales = ref(adminStore.topSales);
   <!-- 판매량 상위 제품 -->
   <VRow class="match-height">
     <VCol cols="12" md="12">
-      <AnalyticsSalesRanking :salesRank="topSales" />
+      <AnalyticsSalesRanking />
     </VCol>
   </VRow>
   <!-- 위시리스트 상위 제품 -->
   <VRow class="match-height">
     <VCol cols="12" md="12">
-      <AnalyticsTopWishlist :topWishList="topWishList" />
+      <AnalyticsTopWishlist />
     </VCol>
   </VRow>
   <!-- 상위 검색 키워드 목록 -->
