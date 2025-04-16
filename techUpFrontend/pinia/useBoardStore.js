@@ -12,11 +12,23 @@ export const useBoardStore = defineStore('boardStore', {
   }),
 
   actions: {
-    async fetchBoardList({ page = 0, size = 10 } = {}) {
+    async fetchBoardList({
+      page = 0,
+      size = 10,
+      sort = 'boardCreated',
+      direction = 'desc',
+      category = null,
+      search = null,
+      type = null
+    } = {}) {
       try {
-        const response = await axios.get('/api/board/list', {
-          params: { page, size }
-        });
+        const params = { page, size, sort, direction };
+
+        if (category) params.category = category;
+        if (search) params.search = search;
+        if (type) params.type = type;
+
+        const response = await axios.get('/api/board/list', { params });
 
         if (response.data && response.data.data) {
           this.boardList = response.data.data.boardList;
@@ -116,9 +128,8 @@ export const useBoardStore = defineStore('boardStore', {
     async updateBoard(boardIdx, { boardTitle, boardContent, boardCategory, attachments = [] }) {
       try {
         const payload = { boardTitle, boardContent, boardCategory };
-        await axios.patch(`/api/board/update/${boardIdx}`, payload); // 백엔드에 patch API 필요
-    
-        // 첨부파일이 있을 경우 Presigned URL 방식으로 업로드
+        await axios.patch(`/api/board/update/${boardIdx}`, payload);
+
         if (attachments.length > 0) {
           for (const file of attachments) {
             const fileType = file.type.includes('image') ? 'image' : 'file';
@@ -129,22 +140,22 @@ export const useBoardStore = defineStore('boardStore', {
                 files_name: file.name
               }
             });
-    
+
             const { presignedUrl, finalUrl } = presignedRes.data;
-    
+
             if (!presignedUrl || !finalUrl) continue;
-    
+
             await axios.put(presignedUrl, file, {
               headers: { 'Content-Type': file.type }
             });
-    
+
             const filesPayload = {
               boardIdx: boardIdx,
               filesUrl: finalUrl,
               filesType: fileType,
               filesName: file.name
             };
-    
+
             await axios.post('/api/board/files', filesPayload);
           }
         }
@@ -153,17 +164,16 @@ export const useBoardStore = defineStore('boardStore', {
         throw error;
       }
     },
-    
 
     async deleteBoard(boardIdx) {
       try {
         await axios.delete(`/api/board/delete/${boardIdx}`);
-        this.currentBoard = null; // 상세 정보 초기화
+        this.currentBoard = null;
       } catch (error) {
         console.error('게시글 삭제 오류:', error);
         throw error;
       }
-    },    
+    },
 
     async deleteBoardFile(filesIdx) {
       try {
@@ -176,9 +186,9 @@ export const useBoardStore = defineStore('boardStore', {
 
     async toggleLike(boardIdx, likesType) {
       try {
-        const payload = { likesType }; // true = 좋아요, false = 싫어요
+        const payload = { likesType };
         await axios.post(`/api/likes/toggle/${boardIdx}`, payload);
-        await this.fetchBoardDetail(boardIdx); // 상태 업데이트
+        await this.fetchBoardDetail(boardIdx);
         console.log(`토글 완료: ${likesType ? '👍 좋아요' : '👎 싫어요'}`);
       } catch (error) {
         console.error('좋아요/싫어요 토글 오류:', error);

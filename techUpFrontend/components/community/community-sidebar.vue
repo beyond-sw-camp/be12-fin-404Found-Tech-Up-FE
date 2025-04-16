@@ -1,18 +1,24 @@
 <template>
   <div class="community-sidebar-wrapper community-sidebar-ml--24">
     <!-- 검색 -->
-    <div class="community-sidebar-widget mb-35">
-      <div class="community-sidebar-search">
-        <form action="#">
-          <div class="community-sidebar-search-input">
-            <input type="text" placeholder="검색어를 입력하세요" />
-            <button type="submit">
-              <svg-search />
-            </button>
-          </div>
-        </form>
+<div class="community-sidebar-widget mb-35">
+  <div class="community-sidebar-search">
+    <form @submit.prevent="handleSearch">
+      <div class="community-sidebar-search-combo">
+        <select v-model="searchType" class="search-type-select">
+          <option value="title">제목</option>
+          <option value="content">내용</option>
+          <option value="writer">작성자</option>
+        </select>
+        <input v-model="searchQuery" type="text" placeholder="검색어를 입력하세요" />
+        <button type="submit">
+          <svg-search />
+        </button>
       </div>
-    </div>
+    </form>
+  </div>
+</div>
+
 
     <!-- 글쓰기 버튼 -->
     <div class="community-sidebar-widget mb-35">
@@ -23,22 +29,22 @@
       </div>
     </div>
 
-    <!-- 최신 게시물 (썸네일 제거) -->
+    <!-- 최신 게시물 -->
     <div class="community-sidebar-widget mb-35">
       <h3 class="community-sidebar-widget-title">최신 게시물</h3>
       <div class="community-sidebar-widget-content">
         <div class="community-sidebar-blog-item-wrapper">
           <div
-            v-for="item in recent_post"
-            :key="item.id"
+            v-for="item in recentPost"
+            :key="item.idx"
             class="community-sidebar-blog-item d-flex flex-column"
           >
             <div class="community-sidebar-blog-meta">
-              <span>{{ item.date }}</span>
+              <span>{{ formatDate(item.boardCreated) }}</span>
             </div>
             <h3 class="community-sidebar-blog-title">
-              <nuxt-link :to="`/community-details/${item.id}`">
-                {{ item.title }}
+              <nuxt-link :to="`/community-details/${item.idx}`">
+                {{ item.boardTitle }}
               </nuxt-link>
             </h3>
           </div>
@@ -46,71 +52,142 @@
       </div>
     </div>
 
-    <!-- 카테고리 (PC 부품 업그레이드 관련) -->
-    <div class="community-sidebar-widget widget_categories mb-35">
-      <h3 class="community-sidebar-widget-title">카테고리</h3>
-      <div class="community-sidebar-widget-content">
-        <ul>
-          <li>
-            <nuxt-link to="/community">
-              CPU <span>(15)</span>
-            </nuxt-link>
-          </li>
-          <li>
-            <nuxt-link to="/community">
-              GPU <span>(10)</span>
-            </nuxt-link>
-          </li>
-          <li>
-            <nuxt-link to="/community">
-              RAM <span>(8)</span>
-            </nuxt-link>
-          </li>
-          <li>
-            <nuxt-link to="/community">
-              스토리지 <span>(12)</span>
-            </nuxt-link>
-          </li>
-          <li>
-            <nuxt-link to="/community">
-              파워/케이스 <span>(5)</span>
-            </nuxt-link>
-          </li>
-        </ul>
-      </div>
-    </div>
+    <!-- 카테고리 -->
+    <!-- 카테고리 -->
+<div class="community-sidebar-widget widget_categories mb-35">
+  <h3 class="community-sidebar-widget-title">카테고리</h3>
+  <div class="community-sidebar-widget-content">
+    <ul>
+      <li v-for="category in categories" :key="category.name">
+        <nuxt-link :to="`/community?category=${encodeURIComponent(category.name)}`">
+          {{ category.label }}
+        </nuxt-link>
+      </li>
+    </ul>
+  </div>
+</div>
 
-    <!-- 인기 태그 (PC 부품 업그레이드 관련) -->
-    <div class="community-sidebar-widget mb-35">
-      <h3 class="community-sidebar-widget-title">인기 태그</h3>
-      <div class="community-sidebar-widget-content tagcloud">
-        <a href="#">오버클럭</a>
-        <a href="#">업그레이드</a>
-        <a href="#">벤치마크</a>
-        <a href="#">DIY</a>
-        <a href="#">PC빌드</a>
-        <a href="#">튜닝</a>
-      </div>
-    </div>
   </div>
 </template>
-
 <script setup>
-import communityData from '@/data/community-data';
+import { ref, computed, onBeforeMount, watch } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import { format } from 'date-fns';
+import { useBoardStore } from '@/pinia/useBoardStore';
 
-// 최신 게시물: communityData의 상위 3개 항목 사용 (필요에 따라 조정)
-const recent_post = communityData.slice(0, 3);
+const route = useRoute();
+const router = useRouter(); // router 추가
+const boardStore = useBoardStore();
+
+// 검색어 입력 및 타입 선택 상태
+const searchQuery = ref('');
+const searchType = ref('title'); // 기본값: 제목
+
+// 최근 게시물 3개
+const recentPost = computed(() => boardStore.boardList.slice(0, 3));
+
+// 카테고리 정의
+const categories = [
+  { name: '자유', label: '자유' },
+  { name: 'Q&A', label: 'Q&A' },
+  { name: '추천', label: '추천' },
+  { name: '후기', label: '후기' }
+];
+
+// 날짜 포맷
+const formatDate = (dateStr) => {
+  try {
+    return format(new Date(dateStr), 'yyyy-MM-dd');
+  } catch {
+    return dateStr;
+  }
+};
+
+// 검색 요청 시 Vue Router 사용하여 쿼리 변경
+const handleSearch = () => {
+  if (searchQuery.value.trim()) {
+    router.push({
+      path: '/community',
+      query: {
+        ...route.query, // 기존 쿼리 유지(카테고리 등)
+        search: searchQuery.value.trim(),
+        type: searchType.value
+      }
+    });
+  }
+};
+
+// 쿼리 파라미터로 게시글 불러오기 함수
+const loadBoardList = () => {
+  if (process.client) {
+    const category = route.query.category || null;
+    const search = route.query.search || null;
+    const type = route.query.type || null;
+
+    console.log('쿼리 확인:', { category, search, type }); // 디버깅용
+
+    boardStore.fetchBoardList({
+      page: 0,
+      size: 3,
+      sort: 'boardCreated',
+      direction: 'desc',
+      category,
+      search,
+      type
+    });
+  }
+};
+
+// 라우트 쿼리 변경 감지
+watch(
+  () => route.query,
+  () => {
+    console.log('라우트 쿼리 변경 감지:', route.query);
+    loadBoardList();
+  },
+  { deep: true }
+);
+
+// 초기 마운트 시 실행
+onBeforeMount(() => {
+  loadBoardList();
+  
+  // URL에 검색어가 있으면 검색 입력란에 설정
+  if (route.query.search) {
+    searchQuery.value = route.query.search.toString();
+  }
+  if (route.query.type) {
+    searchType.value = route.query.type.toString();
+  }
+});
 </script>
+
 
 <style scoped>
 /* 커뮤니티 사이드바 래퍼 */
 .community-sidebar-wrapper {
   margin-left: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 }
 
 /* 공통 위젯 스타일 */
 .community-sidebar-widget {
-  margin-bottom: 35px;
+  background-color: #f9f9f9;
+  padding: 1rem 1.2rem;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+/* 위젯 제목 */
+.community-sidebar-widget-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid #ccc;
 }
 
 /* 검색 영역 */
@@ -126,6 +203,7 @@ const recent_post = communityData.slice(0, 3);
   padding: 8px 12px;
   border: none;
   outline: none;
+  background-color: #fff;
 }
 .community-sidebar-search-input button {
   background-color: #007bff;
@@ -139,14 +217,6 @@ const recent_post = communityData.slice(0, 3);
   background-color: #0056b3;
 }
 
-/* 위젯 제목 */
-.community-sidebar-widget-title {
-  font-size: 1.2rem;
-  font-weight: 600;
-  color: #333;
-  margin-bottom: 15px;
-}
-
 /* 글쓰기 버튼 */
 .community-write-btn {
   display: block;
@@ -155,7 +225,8 @@ const recent_post = communityData.slice(0, 3);
   background-color: #007bff;
   color: #fff;
   padding: 0.75rem 1.5rem;
-  border-radius: 0.375rem;
+  border-radius: 6px;
+  font-weight: 600;
   text-decoration: none;
   transition: background-color 0.3s ease;
 }
@@ -163,11 +234,11 @@ const recent_post = communityData.slice(0, 3);
   background-color: #0056b3;
 }
 
-/* 최신 게시물 영역 (썸네일 제거) */
+/* 최신 게시물 영역 */
 .community-sidebar-blog-item-wrapper {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 12px;
 }
 .community-sidebar-blog-item {
   display: flex;
@@ -177,7 +248,7 @@ const recent_post = communityData.slice(0, 3);
 .community-sidebar-blog-meta {
   font-size: 0.8rem;
   color: #777;
-  margin-bottom: 5px;
+  margin-bottom: 2px;
 }
 .community-sidebar-blog-title {
   font-size: 1rem;
@@ -193,7 +264,7 @@ const recent_post = communityData.slice(0, 3);
   color: #000;
 }
 
-/* 카테고리 */
+/* 카테고리 목록 */
 .community-sidebar-widget-content ul {
   list-style: none;
   padding: 0;
@@ -211,21 +282,60 @@ const recent_post = communityData.slice(0, 3);
 .community-sidebar-widget-content ul li a:hover {
   color: #0056b3;
 }
+.community-sidebar-search-combo {
+  display: flex;
+  align-items: center;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  overflow: hidden;
+  background-color: #fff;
+  height: 40px;
+}
 
-/* 인기 태그 */
-.tagcloud a {
-  display: inline-block;
-  padding: 5px 10px;
-  margin: 3px;
-  background-color: #f1f1f1;
+
+.search-type-select {
+  padding: 8px 6px;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  background-color: #fff;
+  font-size: 0.95rem;
+}
+.search-type-select {
+  padding: 0 0.75rem;
+  border: none;
+  border-right: 1px solid #d1d5db;
+  background-color: #f9f9f9;
+  font-size: 0.9rem;
+  height: 100%;
+  outline: none;
+  min-width: 70px;
+  color: #333;
+  cursor: pointer;
+  appearance: none;
+}
+
+.community-sidebar-search-combo input {
+  flex: 1;
+  padding: 0 0.75rem;
+  border: none;
+  height: 100%;
+  font-size: 0.9rem;
+  background-color: #fff;
+  outline: none;
+}
+
+.community-sidebar-search-combo button {
+  padding: 0 0.75rem;
+  height: 100%;
+  border: none;
+  background-color: transparent;
   color: #555;
-  border-radius: 3px;
-  font-size: 0.85rem;
-  text-decoration: none;
-  transition: background-color 0.3s, color 0.3s;
+  cursor: pointer;
+  transition: background-color 0.3s;
 }
-.tagcloud a:hover {
-  background-color: #007bff;
-  color: #fff;
+
+.community-sidebar-search-combo button:hover {
+  background-color: #eee;
 }
+
 </style>
