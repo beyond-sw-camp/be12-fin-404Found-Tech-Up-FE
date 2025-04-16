@@ -195,6 +195,7 @@ export const useAdminStore = defineStore( 'admin',() => {
   const findProduct = async () => {
     try {
       const result = await axios.get(`/api/product/search?keyword=${findProductKeyword.value}`);
+      productList.value = [];
       productList.value = result.data.data;
       console.log(productList.value);
     } catch (e) {
