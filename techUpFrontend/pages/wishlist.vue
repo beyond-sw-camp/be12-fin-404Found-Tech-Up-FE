@@ -11,5 +11,15 @@
 </template>
 
 <script setup>
+import { useUserStore } from '@/pinia/useUserStore';
 useSeoMeta({ title: "Wishlist Page" });
+
+definePageMeta({
+  middleware(to, from) {
+    const userStore = useUserStore();
+    if (!userStore.isLoggedIn) {
+      return navigateTo('/login');
+    }
+  }
+});
 </script>

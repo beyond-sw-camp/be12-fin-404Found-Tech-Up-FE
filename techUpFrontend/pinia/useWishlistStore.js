@@ -1,47 +1,75 @@
 import { ref, onMounted } from "vue";
 import { defineStore } from "pinia";
 import { toast } from "vue3-toastify";
+import axios from "axios";
+import { useRouter } from "vue-router";
 
 export const useWishlistStore = defineStore("wishlist_product", () => {
-  let wishlists = ref([]);
+  const router = useRouter();
+  const wishlists = ref([]);
 
-  // add_wishlist_product
-  const add_wishlist_product = (payload) => {
-    const isAdded = wishlists.value.findIndex((p) => p.idx === payload.idx);
-    if (isAdded !== -1) {
-      wishlists.value = wishlists.value.filter((p) => p.idx !== payload.idx);
-      toast.error(`${payload.name} removed from wishlist`);
-    } else {
-      wishlists.value.push(payload);
-      toast.success(`${payload.name} added to wishlist`);
+  // 백엔드로부터 위시리스트 데이터를 받아오는 함수
+  async function fetchWishlist() {
+    try {
+      const config = useRuntimeConfig();
+      const response = await axios.get("/api/wishlist", {
+        baseURL: config.public.apiBaseUrl
+      });
+      if (response.data && response.data.data) {
+        wishlists.value = Array.isArray(response.data.data)
+          ? response.data.data
+          : [];
+      } else {
+        console.error("API 응답 형식이 올바르지 않습니다.", response.data);
+        wishlists.value = [];
+      }
+    } catch (error) {
+      if (error.response && error.response.status === 401) {
+        // 로그인되지 않은 경우 로그인 페이지로 리다이렉트
+        router.push("/login");
+      } else {
+        toast.error("위시리스트 데이터를 불러오는데 실패했습니다.");
+        console.error("위시리스트 API 호출 오류:", error);
+      }
+      wishlists.value = [];
     }
-    localStorage.setItem("wishlist_products", JSON.stringify(wishlists.value));
-  };
+  }
 
-  // removeWishlist
-  const removeWishlist = (payload) => {
-    wishlists.value = wishlists.value.filter((p) => p.idx !== payload.idx);
-    toast.error(`${payload.name} removed from wishlist`);
-    localStorage.setItem("wishlist_products", JSON.stringify(wishlists.value));
-  };
-
-
-  // wishlist product initialize
-
-  const initializeWishlistProducts = () => {
-    const wishlistData = localStorage.getItem("wishlist_products");
-    if (wishlistData) {
-      wishlists.value = JSON.parse(wishlistData);
+  // 위시리스트 토글 (추가/삭제)를 백엔드 API로 호출하는 함수
+  async function toggleWishlist(productIdx) {
+    try {
+      const config = useRuntimeConfig();
+      const response = await axios.post(
+        `/api/wishlist/toggle/${productIdx}`,
+        {},
+        { baseURL: config.public.apiBaseUrl }
+      );
+      // 서버 응답에 따라 토스트 메시지를 표시 (WishlistController의 응답 참고&#8203;:contentReference[oaicite:2]{index=2}&#8203;:contentReference[oaicite:3]{index=3})
+      toast.success("위시리스트가 업데이트되었습니다.");
+      await fetchWishlist();
+    } catch (error) {
+      if (error.response && error.response.status === 401) {
+        router.push("/login");
+      } else {
+        toast.error("위시리스트 토글에 실패했습니다.");
+        console.error("위시리스트 토글 오류:", error);
+      }
     }
-  };
+  }
 
-  // mounted to update wishlist products
+  // 삭제 역시 토글 방식으로 구현 (이미 추가된 경우 토글하면 삭제되므로)
+  async function removeWishlist(payload) {
+    await toggleWishlist(payload.product.productIdx);
+  }
+
   onMounted(() => {
-    initializeWishlistProducts();
+    fetchWishlist();
   });
+
   return {
-    add_wishlist_product,
-    removeWishlist,
     wishlists,
+    fetchWishlist,
+    toggleWishlist,
+    removeWishlist,
   };
 });

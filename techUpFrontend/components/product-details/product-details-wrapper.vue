@@ -103,7 +103,7 @@
         <svg-compare-3 />
         Compare
       </button>
-      <button @click="wishlistStore.add_wishlist_product(product)" type="button" class="tp-product-details-action-sm-btn">
+      <button @click="wishlistStore.toggleWishlist(product.idx)" type="button" class="tp-product-details-action-sm-btn">
         <svg-wishlist-3 />
         Add Wishlist
       </button>
