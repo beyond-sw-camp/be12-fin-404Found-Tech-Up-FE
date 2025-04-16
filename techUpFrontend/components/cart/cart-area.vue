@@ -95,7 +95,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useCartStore } from "@/pinia/useCartStore";
 import { formatPrice } from "@/utils/index";
 
@@ -114,4 +114,8 @@ const handleShippingCost = (value) => {
     shipCost.value = value;
   }
 }
+
+onMounted(() => {
+  cartStore.fetchCartProducts();
+});
 </script>

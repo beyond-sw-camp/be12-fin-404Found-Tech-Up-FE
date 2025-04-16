@@ -171,5 +171,6 @@ const utilsStore = useUtilityStore();
 
 onMounted(() => {
   wishlistStore.fetchWishlist();
+  cartStore.fetchCartProducts();
 });
 </script>

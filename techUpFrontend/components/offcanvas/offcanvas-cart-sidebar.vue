@@ -16,29 +16,29 @@
           <cart-progress />
         </div>
         <div v-if="cartStore.cart_products.length > 0" class="cartmini__widget">
-          <div v-for="item in cartStore.cart_products" :key="item.idx" class="cartmini__widget-item">
+          <div v-for="item in cartStore.cart_products" :key="item.product.productIdx" class="cartmini__widget-item">
             <div class="cartmini__thumb">
-              <nuxt-link :href="`/product-details/${item.idx}`">
+              <nuxt-link :href="`/product-details/${item.product.productIdx}`">
                 <img :src="item.img" alt="cart-img" width="70" height="60" />
               </nuxt-link>
             </div>
             <div class="cartmini__content">
               <h5 class="cartmini__title">
-                <nuxt-link :href="`/product-details/${item.idx}`">
-                  {{ item.name }}
+                <nuxt-link :href="`/product-details/${item.product.productIdx}`">
+                  {{ item.product.name }}
                 </nuxt-link>
               </h5>
               <div class="cartmini__price-wrapper">
-                <span v-if="item.discount > 0 && item.orderQuantity" class="cartmini__price">
-                  {{ formatPrice((Number(item.price) - (Number(item.price) * Number(item.discount)) / 100) * item.orderQuantity) }}
+                <span v-if="item.product.discount > 0 && item.cartItemQuantity" class="cartmini__price">
+                  {{ formatPrice((Number(item.product.price) - (Number(item.product.price) * Number(item.product.discount)) / 100) * item.cartItemQuantity) }}
                 </span>
                 <span v-else class="cartmini__price">
-                  {{ formatPrice(item.price * (item.orderQuantity || 0)) }}
+                  {{ formatPrice(item.product.price * (item.cartItemQuantity || 0)) }}
                 </span>
-                <span class="cartmini__quantity"> x{{ item.orderQuantity }}</span>
+                <span class="cartmini__quantity"> x{{ item.cartItemQuantity }}</span>
               </div>
             </div>
-            <a @click="cartStore.removeCartProduct(item)" class="cartmini__del cursor-pointer">
+            <a @click="cartStore.removeCartProduct(item, item.cartItemIdx)" class="cartmini__del cursor-pointer">
               <i class="fa-regular fa-xmark"></i>
             </a>
           </div>
