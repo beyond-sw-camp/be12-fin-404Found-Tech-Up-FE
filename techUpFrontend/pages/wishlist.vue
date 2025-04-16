@@ -14,12 +14,15 @@
 import { useUserStore } from '@/pinia/useUserStore';
 useSeoMeta({ title: "Wishlist Page" });
 
-definePageMeta({
-  middleware(to, from) {
-    const userStore = useUserStore();
-    if (!userStore.isLoggedIn) {
-      return navigateTo('/login');
-    }
+const userStore = useUserStore();
+
+onMounted(async () => {
+  await userStore.checkAuth();
+  if(!userStore.isLoggedIn) {
+    alert('로그인 후 이용해주세요.');
+    window.location.href = '/login';
+  } else {
+    console.log('로그인 상태:', userStore.isLoggedIn);
   }
 });
 </script>
