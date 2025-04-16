@@ -30,6 +30,26 @@ export const useUserStore = defineStore('user', {
             throw error;
         }
     },
+    async sendEmail(email, issign) {
+        try {
+            const response = await axios.post('/api/user/email', { userEmail: email, isSignup: issign }, // JSON 데이터
+                { headers: { 'Content-Type': 'application/json' } }); // 헤더 설정
+            return response.data; // { success: true/false }
+        } catch (error) {
+            console.error('API 요청 중 오류 발생:', error);
+            throw error;
+        }
+    },
+    async verifyEmail(email, code) {
+        try {
+            const response = await axios.post('/api/user/verify/email', { userEmail: email, inputCode: code }, // JSON 데이터
+                { headers: { 'Content-Type': 'application/json' } }); // 헤더 설정
+            return response.data; // { success: true/false }
+        } catch (error) {
+            console.error('API 요청 중 오류 발생:', error);
+            throw error;
+        }
+    },
     async signup(user) {
         try {
             const response = await axios.post(`/api/user/signup`, user);

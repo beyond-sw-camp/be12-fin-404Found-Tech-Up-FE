@@ -6,13 +6,12 @@ import { useUserStore } from '@/pinia/useUserStore'; // useUserStore import 추�
 let showPass = ref(false);
 let showPassValid = ref(false);
 
-// let showMailValid = ref(false);
+let showMailValid = ref(false);
 let clockCounter = ref(180);
 let clockCountingString = ref(`남은 시간 ${clockCounter.value}초`);
 
 let disableValidationButton = ref(false);
 
-// let emailValidationString = ref('');
 let nicknameValidationDisabled = ref(false); // 닉네임 중복 확인 버튼 비활성화 상태 추가
 
 let timer = ref(null);
@@ -20,10 +19,12 @@ let timer = ref(null);
 const userStore = useUserStore();
 const router = useRouter();
 
+let isSignup = ref(true);
 const signupuser = ref({
   userNickname: "",
   verifyNickname: "",
   userEmail: "",
+  inputCode: "",
   userPassword: "",
   userConfirmPassword: ""
 })
@@ -41,13 +42,70 @@ const validateNickname = async () => {
       alert('사용 가능한 별명입니다.');
       signupuser.value.verifyNickname = response.data.verifyNickname; // 서버에서 받은 고유값 저장
       nicknameValidationDisabled.value = true; // 버튼 비활성화
-      console.log(signupuser.value.verifyNickname);
     } else {
       alert('중복된 별명입니다. 다른 별명을 입력해주세요.');
       signupuser.value.userNickname = ""; // 입력 필드 초기화
     }
   } catch (error) {
     console.error('닉네임 중복 확인 중 오류 발생:', error);
+    alert('오류가 발생했습니다. 다시 시도해주세요.');
+  }
+};
+
+const sendEmail = async () => {
+  const email = signupuser.value.userEmail; // 입력된 닉네임 가져오기
+  const issign = isSignup.value;
+  if (!email) {
+    alert('이메일을 입력해주세요.');
+    return;
+  }
+
+  try {
+    const response = await userStore.sendEmail(email, issign); // Pinia store의 함수 호출
+    console.log(response);
+    if (response.isSuccess) {
+      alert('이메일을 전송하였습니다.');
+      showMailValid.value = true;
+      // 타이머 설정
+      timer.value = setInterval(decreaseCounter, 1000);
+
+    } else {
+      alert('중복된 이메일입니다. 다른 별명을 입력해주세요.');
+      signupuser.value.userEmail = ""; // 입력 필드 초기화
+    }
+  } catch (error) {
+    console.error('이메일 전송 중 오류 발생:', error.response.data);
+    if (error.response.data.code === 2012) {
+      alert('가입된 이메일입니다.');
+    }
+  }
+};
+
+const verifyEmail = async () => {
+  const email = signupuser.value.userEmail; // 입력된 닉네임 가져오기
+  const code = signupuser.value.inputCode;
+  if (!code) {
+    alert('이메일 인증 코드를 입력해주세요.');
+    return;
+  }
+
+  try {
+    const response = await userStore.verifyEmail(email, code); // Pinia store의 함수 호출
+    console.log(response);
+    if (response.isSuccess) {
+      alert('이메일 인증을 완료했습니다.');
+      disableValidationButton.value = true;
+      clearInterval(timer.value);
+      clockCountingString.value = '인증되었습니다.';
+      
+
+    } else {
+      alert('잘못된 인증 코드입니다. 다시시 입력해주세요.');
+      clockCountingString.value = '인증에 실패했습니다.'
+      signupuser.value.inputCode = ""; // 입력 필드 초기화
+    }
+  } catch (error) {
+    console.error('이메일 인증 코드 확인 중 오류 발생:', error);
     alert('오류가 발생했습니다. 다시 시도해주세요.');
   }
 };
@@ -112,34 +170,6 @@ const decreaseCounter = () => {
     clockCountingString.value = `남은 시간 ${clockCounter.value}초`;
   }
 };
-
-// const sendEmailValidation = (ev) => {
-//   // axios 요청
-
-//   // 즉시 인증창 드러냄
-//   showMailValid.value = true;
-//   // 타이머 설정
-//   timer.value = setInterval(decreaseCounter, 1000);
-// };
-
-// const confirmValidation = (ev) => {
-//   // axios 요청
-
-//   // 요청이 성공이면 고유값을 저장하고 버튼 비활성화
-//   emailValidationString.value = '';
-//   disableValidationButton.value = true;
-//   clearInterval(timer.value);
-//   clockCountingString.value = '인증되었습니다.';
-
-//   // 요청이 실패하면 오류 처리, 타이머는 계속 돌림
-//   // clockCountingString.value = '인증에 실패했습니다.'
-// };
-
-// // const name = defineInputBinds('name');
-// // const email = defineInputBinds('email');
-// const emailValid = defineInputBinds('emailvalid');
-// // const password = defineInputBinds('password');
-// // const passwordValid = defineInputBinds('passwordvalid');
 </script>
 
 <template>
@@ -172,8 +202,8 @@ const decreaseCounter = () => {
         </div>
         <div class="tp-login-input" style="display:inline-flex; width:100%;">
           <input id="email" type="email" placeholder="example@mail.com" v-model="signupuser.userEmail" />
-          <button type="submit" class="tp-login-btn w-50" v-show="!showMailValid"
-            @click="sendEmailValidation">인증</button>
+          <button type="button" class="tp-login-btn w-50" v-show="!showMailValid"
+            @click="sendEmail">인증</button>
         </div>
         <err-message :msg="errors.email" />
       </div>
@@ -182,9 +212,9 @@ const decreaseCounter = () => {
           <label for="email">인증번호</label>
         </div>
         <div class="tp-login-input" style="display:inline-flex; width:100%;">
-          <input id="emailValid" type="text" placeholder="000000" v-bind="emailValid" />
-          <button type="submit" class="tp-login-btn w-50" v-show="!disableValidationButton"
-            @click="confirmValidation">확인</button>
+          <input id="emailValid" type="text" placeholder="000000" v-model="signupuser.inputCode" />
+          <button type="button" class="tp-login-btn w-50" v-show="!disableValidationButton"
+            @click="verifyEmail">확인</button>
         </div>
         <err-message :msg="errors.emailValid" />
         <div>{{ clockCountingString }}</div>
@@ -242,7 +272,7 @@ const decreaseCounter = () => {
       </div>
     </div>
     <div class="tp-login-bottom">
-      <button type="submit" class="tp-login-btn w-100" @click="signup">회원가입</button>
+      <button type="button" class="tp-login-btn w-100" @click="signup">회원가입</button>
     </div>
   </form>
 </template>
