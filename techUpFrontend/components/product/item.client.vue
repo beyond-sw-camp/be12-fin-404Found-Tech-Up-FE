@@ -123,8 +123,11 @@ const wishlistStore = useWishlistStore();
 const utilityStore = useUtilityStore();
 
 function isItemInWishlist(product) {
-  return wishlistStore.wishlists.some((prd) => prd.idx === product.idx);
+  return wishlistStore.wishlists.some(
+    (wishlistItem) => Number(wishlistItem.product.productIdx) === Number(product.idx)
+  );
 }
+
 function isItemInCart(product) {
   return cartStore.cart_products.some((prd) => prd.idx === product.idx);
 }
