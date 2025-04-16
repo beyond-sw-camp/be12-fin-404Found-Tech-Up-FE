@@ -43,6 +43,7 @@
 
 <script setup>
 
+
 let filteredItems = ref([]);
 let startIndex = ref(0);
 let endIndex = ref(filteredItems.length);
@@ -50,7 +51,7 @@ let endIndex = ref(filteredItems.length);
 const config = useRuntimeConfig();
 $fetch('/coupon', {
   baseURL: config.public.apiBaseUrl,
-  method: "GET",
+  method: 'GET'
 }).then((result) => {
   console.log(result);
   filteredItems.value = result.data.couponList;
