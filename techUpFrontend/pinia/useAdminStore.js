@@ -10,7 +10,7 @@ export const useAdminStore = defineStore( 'admin',() => {
   // 통계 관련 데이터
   let topWishList = ref([]);
   
-  let newComers = ref(0);
+  let newComers = ref(2);
   let totalSales = ref(0);
   let totalOrders = ref(0);
   let totalRefunds = ref(0);
@@ -30,8 +30,7 @@ export const useAdminStore = defineStore( 'admin',() => {
     const result = await axios.get('/api/product/list', {
       baseURL: config.public.apiBaseUrl,
     });
-    console.log(result);
-    productList.value = result;
+    productList.value = result.data.data;
     return result;
   };
 
@@ -43,8 +42,7 @@ export const useAdminStore = defineStore( 'admin',() => {
     const result = await axios.get('/api/coupon', {
       baseURL: config.public.apiBaseUrl,
     });
-    console.log(result);
-    couponList.value = result.data.couponList;
+    couponList.value = result.data.data.couponList;
     return result.data.couponList;
   };
 
@@ -75,8 +73,8 @@ export const useAdminStore = defineStore( 'admin',() => {
   // 초기화할 것은 여기로
   onMounted(async () => {
     await loadStatistics();
-    //await loadCouponList();
-    //await loadProductList();
+    await loadCouponList();
+    await loadProductList();
   });
   
   return {

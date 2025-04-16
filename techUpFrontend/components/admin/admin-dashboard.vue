@@ -10,29 +10,6 @@ import AnalyticsViewRanking from '@/views/dashboard/AnalyticsViewRanking.vue';
 import AnalyticsNewcomers from '../../views/dashboard/AnalyticsNewcomers.vue';
 import AnalyticsTotalOrders from '../../views/dashboard/AnalyticsTotalOrders.vue';
 import AnalyticsTotalRefunds from '../../views/dashboard/AnalyticsTotalRefunds.vue';
-import { useAdminStore } from '../../pinia/useAdminStore';
-import { onMounted, shallowRef } from 'vue';
-import { watch } from 'vue';
-import { storeToRefs } from 'pinia';
-
-let adminStore = useAdminStore();
-
-let storeRef = storeToRefs(adminStore);
-
-console.log(storeRef.topWishList);
-
-let topWishList = ref(storeRef.topWishList);
-
-let newComers = ref(storeRef.newComers);
-let totalSales = ref(storeRef.totalSales);
-let totalOrders = ref(storeRef.totalOrders);
-let totalRefunds = ref(storeRef.totalRefunds);
-
-let topSales = storeRef.topSales;
-
-onMounted(async () => {
-  await adminStore.loadStatistics();
-})
 
 
 </script>
