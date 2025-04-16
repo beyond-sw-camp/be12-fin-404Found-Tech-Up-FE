@@ -1,11 +1,18 @@
 import { useRuntimeConfig } from "nuxt/app";
 import { defineStore } from "pinia";
-import { onBeforeMount, onMounted, watch } from "vue";
+import { onMounted, watch } from "vue";
+import { useRoute } from "vue-router";
 import axios from 'axios';
 
 export const useAdminStore = defineStore( 'admin',() => {
   // 요청-응답을 위한 config
   const config = useRuntimeConfig();
+
+  const route = useRoute();
+  let URLPath = route.path.split("/");
+
+  let modifyingProduct = ref(false);
+  if (URLPath[1] === 'product-modify') modifyingProduct.value = true;
 
   // 통계 관련 데이터
   let topWishList = ref([]);
@@ -24,7 +31,19 @@ export const useAdminStore = defineStore( 'admin',() => {
   // 사용자 목록
   let userList = ref([]);
 
-  let targetProduct = ref({})
+  let targetProduct = ref({
+    name: '',
+    price: '',
+    brand: '',
+    stock: '',
+    description: '',
+    category: '',
+    cpuSpec: { cpuType: '', cpuCore: '', cpuThreads: '' },
+    gpuSpec: { gpuMemory: '', gpuChip: '', gpuLength: '' },
+    hddSpec: { hddCapacity: '', hddRpm: '', hddBuffer: '' },
+    ssdSpec: { ssdCapacity: '', ssdRead: '', ssdWrite: '' },
+    ramSpec: { ramType: '', ramNum: '', ramSize: '', ramUsage: '' }
+  });
 
   const loadProductList = async () => {
     const result = await axios.get('/api/product/list', {
@@ -35,7 +54,25 @@ export const useAdminStore = defineStore( 'admin',() => {
   };
 
   const loadProductInfo = async (idx) => {
+    // 기존 정보를 가져온다.
+    const result = await axios.get(`/api/product/${idx}`, {
+      baseURL: config.public.apiBaseUrl,
+    });
 
+    targetProduct.value = {
+      name: result.data.data.name,
+      price: result.data.data.price.toString(),
+      brand: result.data.data.brand,
+      stock: result.data.data.stock.toString(),
+      description: result.data.data.description,
+      category: result.data.data.category,
+      cpuSpec: result.data.data.cpuSpec ? result.data.data.cpuSpec : null,
+      gpuSpec: result.data.data.gpuSpec ? result.data.data.gpuSpec : null,
+      hddSpec: result.data.data.hddSpec ? result.data.data.hddSpec : null,
+      ssdSpec: result.data.data.ssdSpec ? result.data.data.ssdSpec : null,
+      ramSpec: result.data.data.ramSpec ? result.data.data.ramSpec : null
+    };
+    console.log(targetProduct.value);
   };
 
   const loadCouponList = async () => {
@@ -82,6 +119,8 @@ export const useAdminStore = defineStore( 'admin',() => {
     loadProductList,
     loadStatistics,
     loadProductInfo,
+    // 메타데이터
+    modifyingProduct,
     // 제품 목록, 쿠폰 목록, 사용자 목록, 알림 목록록
     productList,
     couponList,
