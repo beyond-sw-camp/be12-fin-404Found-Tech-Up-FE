@@ -1,113 +1,166 @@
-
 import { ref, onMounted, computed, watch } from "vue";
 import { defineStore } from "pinia";
 import { toast } from "vue3-toastify";
+import axios from "axios";
+import { useRouter, useRoute } from "vue-router";
 
 export const useCartStore = defineStore("cart_product", () => {
-  const route = useRoute(); // Nuxt의 useRoute는 auto-import 되거나, 필요 시 import 구문 추가
-  let cart_products = ref([]);
+  const route = useRoute();
+  const router = useRouter();
+  const cart_products = ref([]);
   let orderQuantity = ref(1);
   let cartOffcanvas = ref(false);
 
-  // add_cart_product
-  const addCartProduct = (payload) => {
-    const isExist = cart_products.value.some((i) => i.productIdx === payload.productIdx);
-    if (payload.stock <= 0) {
-      toast.error(`Out of stock ${payload.name}`);
-    } else if (!isExist) {
-      const newItem = {
-        ...payload,
-        orderQuantity: 1,
-      };
-      cart_products.value.push(newItem);
-      toast.success(`${payload.name} added to cart`);
-    } else {
-      // TODO: 수정 필요
-      cart_products.value.map((item) => {
-        if (item.productIdx === payload.productIdx) {
-          console.log("item: ", item);
-          console.log("payload: ", payload);
-          console.log("orderQuantity: ", orderQuantity.value);
-          console.log("item.orderQuantity: ", item.orderQuantity);
-
-          if (typeof item.orderQuantity !== "undefined") {
-            if (payload.stock >= item.orderQuantity + orderQuantity.value) {
-              item.orderQuantity =
-                orderQuantity.value !== 1
-                  ? orderQuantity.value + item.orderQuantity
-                  : item.orderQuantity + 1;
-              toast.success(`${orderQuantity.value} ${item.name} added to cart`);
-            } else {
-              toast.error(`${payload.name} 재고가 부족합니다.`);
-              orderQuantity.value = 1;
-            }
-          }
-        }
-        return { ...item };
+  async function fetchCartProducts() {
+    try {
+      const config = useRuntimeConfig();
+      const response = await axios.get("/api/cart", {
+        baseURL: config.public.apiBaseUrl,
       });
-    }
-    localStorage.setItem("cart_products", JSON.stringify(cart_products.value));
-  };
-
-  // quantity increment
-  const increment = () => {
-    orderQuantity.value = orderQuantity.value + 1;
-    return orderQuantity.value;
-  };
-
-  // quantity decrement
-  const decrement = () => {
-    orderQuantity.value = orderQuantity.value > 1 ? orderQuantity.value - 1 : 1;
-    return orderQuantity.value;
-  };
-
-  // quantityDecrement
-  const quantityDecrement = (payload) => {
-    cart_products.value.map((item) => {
-      if (item.idx === payload.idx) {
-        if (typeof item.orderQuantity !== "undefined") {
-          if (item.orderQuantity > 1) {
-            item.orderQuantity = item.orderQuantity - 1;
-            toast.info(`Decrement Quantity For ${item.name}`);
-          }
-        }
+      if (response.data && response.data.data) {
+        cart_products.value = Array.isArray(response.data.data)
+          ? response.data.data
+          : [];
       }
-      return { ...item };
-    });
-    localStorage.setItem("cart_products", JSON.stringify(cart_products.value));
-  };
-
-  // remove_cart_products
-  const removeCartProduct = (payload) => {
-    cart_products.value = cart_products.value.filter((p) => p.idx !== payload.idx);
-    toast.error(`${payload.name} removed from cart`);
-    localStorage.setItem("cart_products", JSON.stringify(cart_products.value));
-  };
-
-  // cart product initialize
-  const initializeCartProducts = () => {
-    const cartData = localStorage.getItem("cart_products");
-    if (cartData) {
-      cart_products.value = JSON.parse(cartData);
-    }
-  };
-
-  // clear cart
-  const clear_cart = () => {
-    const confirmMsg = window.confirm("Are you sure deleted your all cart items ?");
-    if (confirmMsg) {
+      // 예: 5005: 사용자가 로그인하지 않음
+      else if (response.data && response.data.code === 5005) {
+        cart_products.value = [];
+      } else {
+        console.error("API 응답 형식이 올바르지 않습니다.", response.data);
+        cart_products.value = [];
+      }
+    } catch (error) {
+      if (error.response && error.response.status === 401) {
+        router.push("/login");
+      } else {
+        toast.error("장바구니 데이터를 불러오는데 실패했습니다.");
+        console.error("장바구니 API 호출 오류:", error);
+      }
       cart_products.value = [];
     }
-    localStorage.setItem("cart_products", JSON.stringify(cart_products.value));
-  };
+  }
 
-  // initialOrderQuantity
-  const initialOrderQuantity = () => {
+  // 장바구니에 상품 추가 (백엔드 API 연동)
+  async function addCartProduct(payload, productIdx) {
+    try {
+      // payload.productIdx를 이용해 백엔드에 POST 요청 (요청 본문에 수량 정보 포함)
+      const config = useRuntimeConfig();
+      const requestBody = { cartItemQuantity: 1 };
+      const response = await axios.post(
+        `/api/cart/add/${productIdx}`,
+        requestBody,
+        { baseURL: config.public.apiBaseUrl }
+      );
+      if (response.data && response.data.data) {
+        toast.success(`${payload.name} added to cart`);
+        // 백엔드 응답을 반영하여 장바구니 목록 다시 불러오기
+        await fetchCartProducts();
+      }
+    } catch (error) {
+      if (error.response && error.response.status === 401) {
+        router.push("/login");
+      } else {
+        toast.error("장바구니에 상품 추가에 실패했습니다.");
+        console.error("장바구니 추가 오류:", error);
+      }
+    }
+  }
+
+  // 장바구니 항목 삭제 (백엔드 API 연동)
+  async function removeCartProduct(payload, productIdx) {
+    try {
+      const config = useRuntimeConfig();
+      const response = await axios.delete(
+        `/api/cart/delete/${productIdx}`,
+        { baseURL: config.public.apiBaseUrl }
+      );
+      if (response.data && response.data.data) {
+        toast.error(`${payload.name} removed from cart`);
+        await fetchCartProducts();
+      }
+    } catch (error) {
+      if (error.response && error.response.status === 401) {
+        router.push("/login");
+      } else {
+        toast.error("장바구니 항목 삭제에 실패했습니다.");
+        console.error("장바구니 삭제 오류:", error);
+      }
+    }
+  }
+
+  // 수량 감소
+  async function quantityDecrement(payload) {
+    try {
+      const config = useRuntimeConfig();
+      const delta = -1;
+      const response = await axios.put(
+        `/api/cart/update/${payload.productIdx}`,
+        { deltaQuantity: delta },
+        { baseURL: config.public.apiBaseUrl }
+      );
+      if (response.data && response.data.data) {
+        toast.info(`Decrement Quantity For ${payload.name}`);
+        await fetchCartProducts();
+      }
+    } catch (error) {
+      if (error.response && error.response.status === 401) {
+        router.push("/login");
+      } else {
+        toast.error("수량 감소에 실패했습니다.");
+        console.error("수량 감소 오류:", error);
+      }
+    }
+  }
+
+  // quantity increment: 같은 방식으로 구현 가능
+  async function quantityIncrement(payload) {
+    try {
+      const config = useRuntimeConfig();
+      const delta = 1;
+      const response = await axios.put(
+        `/api/cart/update/${payload.productIdx}`,
+        { deltaQuantity: delta },
+        { baseURL: config.public.apiBaseUrl }
+      );
+      if (response.data && response.data.data) {
+        toast.success(`Increment Quantity For ${payload.name}`);
+        await fetchCartProducts();
+      }
+    } catch (error) {
+      if (error.response && error.response.status === 401) {
+        router.push("/login");
+      } else {
+        toast.error("수량 증가에 실패했습니다.");
+        console.error("수량 증가 오류:", error);
+      }
+    }
+  }
+
+  // clear cart
+  async function clear_cart() {
+    const confirmMsg = window.confirm("Are you sure deleted your all cart items?");
+    if (confirmMsg) {
+      try {
+        const config = useRuntimeConfig();
+        // 백엔드에 모든 장바구니 항목 삭제 API 호출이 있다면 여기에 요청할 수도 있습니다.
+        // 일단 GET으로 현재 담긴 항목들을 삭제하는 로직 대신, 예를 들어 각 항목에 대해 반복 삭제할 수도 있지만
+        // 여기에서는 간단히 localStorage와 상태를 초기화하고 fetchCartProducts()를 호출합니다.
+        cart_products.value = [];
+        localStorage.setItem("cart_products", JSON.stringify(cart_products.value));
+        await fetchCartProducts();
+      } catch (error) {
+        toast.error("장바구니 비우기에 실패했습니다.");
+      }
+    }
+  }
+
+  // 초기 주문 수량 (1로 설정)
+  function initialOrderQuantity() {
     orderQuantity.value = 1;
     return orderQuantity.value;
-  };
+  }
 
-  // totalPriceQuantity
+  // totalPriceQuantity 계산
   const totalPriceQuantity = computed(() => {
     return cart_products.value.reduce(
       (cartTotal, cartItem) => {
@@ -124,31 +177,31 @@ export const useCartStore = defineStore("cart_product", () => {
   });
 
   // handle cartOffcanvas
-  const handleCartOffcanvas = () => {
+  function handleCartOffcanvas() {
     cartOffcanvas.value = !cartOffcanvas.value;
-  };
+  }
 
-  // set local storage product when project is mounted
-  onMounted(() => {
-    initializeCartProducts();
+  onMounted(async () => {
+    await fetchCartProducts();
   });
 
-  // when router changes then order quantity will be 1
+  // 라우터 변경 시 주문 수량 초기화
   watch(() => route.path, () => {
     orderQuantity.value = 1;
   });
+
   return {
     addCartProduct,
     cart_products,
     quantityDecrement,
+    quantityIncrement,
     removeCartProduct,
     clear_cart,
+    fetchCartProducts,
     initialOrderQuantity,
     totalPriceQuantity,
     handleCartOffcanvas,
     cartOffcanvas,
     orderQuantity,
-    increment,
-    decrement,
   };
 });

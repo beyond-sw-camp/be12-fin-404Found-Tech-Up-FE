@@ -65,10 +65,10 @@
 
         <p>{{ item.description.slice(0, 100) }}</p>
         <div class="tp-product-list-add-to-cart">
-          <button v-if="!isItemInCart(item)" @click="cartStore.addCartProduct(item)"
-            class="tp-product-list-add-to-cart-btn">Add To Cart</button>
+          <button v-if="!isItemInCart(item)" @click="cartStore.addCartProduct(item, item.idx)" type="button"
+            class="tp-product-list-add-to-cart-btn">장바구니에 추가</button>
           <nuxt-link to="/cart" v-if="isItemInCart(item)" class="tp-product-list-add-to-cart-btn">
-            View Cart
+            장바구니 보기
           </nuxt-link>
         </div>
       </div>

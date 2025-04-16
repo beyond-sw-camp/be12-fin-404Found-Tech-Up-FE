@@ -1,0 +1,52 @@
+<template>
+  <tr>
+    <!-- img -->
+    <td class="tp-cart-img">
+      <nuxt-link :href="`/product-details/${item.product.productIdx}`" style="background-color: #F2F3F5;display: block;">
+        <img :src="item.product.imageUrl" alt=""/>
+      </nuxt-link>
+    </td>
+    <!-- title -->
+    <td class="tp-cart-title">
+      <nuxt-link :href="`/product-details/${item.product.productIdx}`">{{ item.product.name }}</nuxt-link>
+    </td>
+    <!-- price -->
+    <td class="tp-cart-price">
+      <span>{{ formatPrice(item.product.price) }}</span>
+    </td>
+    <!-- quantity -->
+    <td class="tp-cart-quantity">
+      <div class="tp-product-quantity mt-10 mb-10">
+        <span class="tp-cart-minus" @click="cartStore.quantityDecrement(item.product)">
+          <svg-minus />
+        </span>
+        <input class="tp-cart-input" type="text" v-model="item.cartItemQuantity" />
+        <span class="tp-cart-plus" @click="cartStore.addCartProduct(item.product, item.product.productIdx)">
+          <svg-plus-sm />
+        </span>
+      </div>
+    </td>
+    <!-- action -->
+    <td class="tp-cart-action">
+      <button class="tp-cart-action-btn" @click="cartStore.removeCartProduct(item.product, item.cartItemIdx)">
+        <svg-remove />
+        <span>Remove</span>
+      </button>
+    </td>
+  </tr>
+</template>
+
+<script setup>
+import { useCartStore } from "@/pinia/useCartStore";
+import { formatPrice } from "@/utils/index";
+import { onMounted } from "vue";
+
+const cartStore = useCartStore();
+const props = defineProps({
+  item: Object
+});
+
+onMounted(() => {
+  console.log("cart item", props.item);
+});
+</script>

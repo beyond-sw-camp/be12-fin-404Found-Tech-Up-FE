@@ -25,14 +25,15 @@
     </td>
 
     <td class="tp-cart-add-to-cart">
-      <button @click="cartStore.addCartProduct(item.product)" type="button" class="tp-btn tp-btn-2 tp-btn-blue">
+      <button @click="cartStore.addCartProduct(item.product, item.product.productIdx)" type="button" class="tp-btn tp-btn-2 tp-btn-blue"
+        style="color: white;">
         장바구니에 추가
       </button>
     </td>
 
     <!-- action -->
     <td class="tp-cart-action">
-      <button class="tp-cart-action-btn" @click="wishlistStore.removeWishlist(item)">
+      <button class="tp-cart-action-btn" @click="wishlistStore.removeWishlist(item.product)">
         <svg-remove />
         <span>삭제하기</span>
       </button>

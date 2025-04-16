@@ -15,7 +15,7 @@
         <div class="tp-product-action-item d-flex flex-column">
           <button
             v-if="!isItemInCart(item)"
-            @click="cartStore.addCartProduct(item)"
+            @click="cartStore.addCartProduct(item, item.idx)"
             type="button"
             :class="`tp-product-action-btn tp-product-add-cart-btn ${isItemInCart(item) ? 'active' : ''}`"
           >
