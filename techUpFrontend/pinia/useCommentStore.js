@@ -39,11 +39,28 @@ export const useCommentStore = defineStore('commentStore', {
 
     async deleteComment(commentIdx, boardIdx) {
       try {
-        await axios.delete(`/api/comment/${commentIdx}`);
+        await axios.delete(`/api/comment/delete/${commentIdx}`);
         await this.fetchComments(boardIdx);
       } catch (error) {
         console.error('댓글 삭제 오류:', error);
       }
-    }
+    },
+    async updateComment(commentIdx, boardIdx, newContent) {
+        if (!newContent || !newContent.trim()) return;
+      
+        this.isSubmitting = true;
+        try {
+          await axios.patch(`/api/comment/update/${commentIdx}`, {
+            commentContent: newContent
+          });
+          await this.fetchComments(boardIdx);
+        } catch (error) {
+          console.error('댓글 수정 오류:', error);
+          throw error;
+        } finally {
+          this.isSubmitting = false;
+        }
+      }
+      
   }
 });

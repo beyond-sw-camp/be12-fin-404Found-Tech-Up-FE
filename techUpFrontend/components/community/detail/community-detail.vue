@@ -73,12 +73,28 @@
             <span class="comment-writer">{{ comment.writer || '익명' }}</span>
             <span class="comment-date">{{ formatDate(comment.createdAt) }}</span>
           </div>
-          <p class="comment-content">{{ comment.content }}</p>
-          <!-- 댓글 삭제 기능이 있을 경우 여기에 버튼 추가 가능 -->
-          <div class="comment-action-buttons">
-            <button @click="editComment(comment)" class="btn-comment-edit">수정</button>
-            <button @click="deleteComment(comment.commentIdx)" class="btn-comment-delete">삭제</button>
-          </div>
+
+          <template v-if="editingCommentIdx === comment.commentIdx">
+            <textarea
+              v-model="editedContent"
+              class="comment-input"
+              rows="3"
+              style="margin-top: 0.5rem;"
+            ></textarea>
+
+            <div class="comment-action-buttons">
+              <button class="btn-comment-edit" @click="submitEditedComment">저장</button>
+              <button class="btn-comment-delete" @click="cancelEdit">취소</button>
+            </div>
+          </template>
+
+          <template v-else>
+            <p class="comment-content">{{ comment.content }}</p>
+            <div class="comment-action-buttons">
+              <button class="btn-comment-edit" @click="editComment(comment)">수정</button>
+              <button class="btn-comment-delete" @click="deleteComment(comment.commentIdx)">삭제</button>
+            </div>
+          </template>
         </li>
       </ul>
       <p v-else class="text-gray-500 text-sm mt-2">아직 댓글이 없습니다.</p>
@@ -94,19 +110,19 @@ import { useRoute, useRouter } from 'vue-router';
 import { useBoardStore } from '@/pinia/useBoardStore';
 import { useCommentStore } from '@/pinia/useCommentStore';
 import { buildS3Url } from '@/utils/useS3';
-
 import { format } from 'date-fns';
 
 const route = useRoute();
 const router = useRouter();
 const boardStore = useBoardStore();
-
-const board = computed(() => boardStore.currentBoard || {});
-const newComment = ref('');
-const commentList = ref([]);
-const isSubmittingComment = ref(false);
 const commentStore = useCommentStore();
 
+const board = computed(() => boardStore.currentBoard || {});
+const commentList = computed(() => commentStore.commentList);
+const newComment = ref('');
+const isSubmittingComment = ref(false);
+const editingCommentIdx = ref(null);
+const editedContent = ref('');
 
 const formattedDate = computed(() => {
   try {
@@ -131,14 +147,7 @@ const fetchBoardDetail = async () => {
 };
 
 const fetchComments = async () => {
-  try {
-    const res = await commentStore.fetchComments(board.value.idx);
-    await commentStore.fetchComments(board.value.idx);
-    commentList.value = commentStore.commentList;
-  } catch (err) {
-    console.error('댓글 조회 실패:', err);
-    commentList.value = [];
-  }
+  await commentStore.fetchComments(board.value.idx);
 };
 
 const submitComment = async () => {
@@ -150,6 +159,34 @@ const submitComment = async () => {
   }
 };
 
+const deleteComment = async (commentIdx) => {
+  if (!confirm('댓글을 삭제하시겠습니까?')) return;
+  try {
+    await commentStore.deleteComment(commentIdx, board.value.idx);
+  } catch (err) {
+    alert('댓글 삭제 실패');
+  }
+};
+
+const editComment = (comment) => {
+  editingCommentIdx.value = comment.commentIdx;
+  editedContent.value = comment.content;
+};
+
+const submitEditedComment = async () => {
+  try {
+    await commentStore.updateComment(editingCommentIdx.value, board.value.idx, editedContent.value);
+    editingCommentIdx.value = null;
+    editedContent.value = '';
+  } catch (err) {
+    alert('댓글 수정 실패');
+  }
+};
+
+const cancelEdit = () => {
+  editingCommentIdx.value = null;
+  editedContent.value = '';
+};
 
 const handleLike = async () => {
   await boardStore.toggleLike(board.value.idx, true);
