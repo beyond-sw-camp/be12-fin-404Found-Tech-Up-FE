@@ -155,7 +155,7 @@ export const useAdminStore = defineStore( 'admin',() => {
     return result.data.couponList;
   };
 
-  let loadStatistics = async () => {
+  const loadStatistics = async () => {
     try{
       const result = await axios.get("/api/statistics", {
       });
@@ -179,6 +179,17 @@ export const useAdminStore = defineStore( 'admin',() => {
     
   };
 
+  const deleteProduct = async (idx) => {
+    if (confirm(`정말 제품 번호 ${idx}를 삭제할 것입니까? 구매 기록이 있거나 쿠폰이 발급된 제품은 삭제되지 않습니다.`)){
+      try{
+        await axios.delete(`/api/product/${idx}`);
+        productList.value = productList.value.filter((value) => value.idx !== idx);
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  };
+
   // 초기화할 것은 여기로
   onMounted(async () => {
     await loadStatistics();
@@ -197,6 +208,9 @@ export const useAdminStore = defineStore( 'admin',() => {
 
     // UPDATE
     submitProductModifyForm,
+
+    // DELETE
+    deleteProduct,
     // 메타데이터
     modifyingProduct,
     // 제품 목록, 쿠폰 목록, 사용자 목록, 알림 목록록
