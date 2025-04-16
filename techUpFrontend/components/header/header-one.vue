@@ -168,4 +168,8 @@ const { isSticky } = useSticky();
 const cartStore = useCartStore();
 const wishlistStore = useWishlistStore();
 const utilsStore = useUtilityStore();
+
+onMounted(() => {
+  wishlistStore.fetchWishlist();
+});
 </script>

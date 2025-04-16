@@ -20,7 +20,7 @@ export const useWishlistStore = defineStore("wishlist_product", () => {
           ? response.data.data
           : [];
       }
-      //11003: 사용자가 로그인하지 않음 
+      // 11003: 사용자가 로그인하지 않음 
       else if (response.data.code === 11003) {
         wishlists.value = [];
       } else {
