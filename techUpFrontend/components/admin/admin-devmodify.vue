@@ -179,9 +179,9 @@ const idx = ref(props.idx);
 // 이미지 파일들 및 미리보기 URL 배열
 
 const handleImageUpload = (event) => {
-  const files = event.target.files
+  const files = event.target.files;
   // 최대 5장까지만 선택 (초과 시 앞의 5개만 사용)
-  storeRef.targetSelectedFiles.value = Array.from(files).slice(0, 5)
+  storeRef.targetSelectedFiles.value = Array.from(files.concat(storeRef.targetSelectedFiles.value)).slice(0, 5);
   previewImages.value = selectedFiles.value.map(file => URL.createObjectURL(file))
   console.log(selectedFiles.value);
 }

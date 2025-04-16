@@ -52,6 +52,7 @@ export const useAdminStore = defineStore( 'admin',() => {
       baseURL: config.public.apiBaseUrl,
     });
     productList.value = result.data.data;
+    console.log(result.data.data);
     return result;
   };
 
@@ -64,8 +65,9 @@ export const useAdminStore = defineStore( 'admin',() => {
       formdata.append("file", file);
       const resultUrl = await axios.put('/api/productimage/upload', formdata);
       imageUrls.push(resultUrl.data.data);
+      
     }
-
+    console.log(imageUrls);
     const payload = {
       ...product,
       ssdSpec: (product.category === 'SSD' ? ssd : {}),
@@ -82,7 +84,7 @@ export const useAdminStore = defineStore( 'admin',() => {
         productIdx: result.data.data.idx,
         imagePath: imageUrls
       };
-      await axios.post('/api/productimage', imagePayload);
+      console.log(await axios.post('/api/productimage', imagePayload));
       alert("등록되었습니다!");
       navigateTo('/dashboard');
     }).catch((e) => {
