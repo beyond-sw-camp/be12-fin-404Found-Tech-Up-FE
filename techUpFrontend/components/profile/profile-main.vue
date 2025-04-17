@@ -2,16 +2,6 @@
 import { useUserStore } from '@/pinia/useUserStore'; // useUserStore import 추가
 import { useWishlistStore } from '@/pinia/useWishlistStore'; // 위시리스트 스토어 가져오기
 import { ref, onMounted } from 'vue';
-// import * as bootstrap from 'bootstrap';
-// import ProfileDevices from '@/components/profile/profile-devices.vue'; // SVG 컴포넌트 임포트
-
-// const switchTab = (tabId) => {
-//   const triggerEl = document.querySelector(`#${tabId}-tab`);
-//   if (triggerEl) {
-//     const tab = new bootstrap.Tab(triggerEl);
-//     tab.show();
-//   }
-// };
 
 const wishlistStore = useWishlistStore(); // 위시리스트 스토어 초기화
 const userName = ref('test'); // 사용자 이름을 저장할 ref 변수
@@ -43,13 +33,6 @@ const logout = async () => {
     }
   }
 };
-
-// 위시리스트 데이터 가져오기
-onMounted(async () => {
-  await wishlistStore.fetchWishlist(); // 위시리스트 데이터 가져오기
-  console.log(wishlistStore.wishlist);
-  valueCount.wishlistCount = wishlistStore.wishlist.length || 0; // 갯수 저장 (비어있으면 0)
-});
 </script>
 
 <template>
@@ -82,7 +65,7 @@ onMounted(async () => {
       <div class="row gx-3">
         <div class="col-md-3 col-sm-6">
           <div class="profile__main-info-item">
-            <nuxt-link to="/profile/profile-devices" class="nav-link">
+            <nuxt-link to="/wishlist" class="nav-link">
               <div class="profile__main-info-icon">
                 <span>
                   <span class="profile-icon-count profile-download">{{ valueCount.devicesCount }}</span>
@@ -95,7 +78,7 @@ onMounted(async () => {
         </div>
         <div class="col-md-3 col-sm-6">
           <div class="profile__main-info-item">
-            <nuxt-link to="/profile-orders" class="nav-link">
+            <nuxt-link to="/wishlist" class="nav-link">
               <div class="profile__main-info-icon">
                 <span>
                   <span class="profile-icon-count profile-order">{{ valueCount.ordersCount }}</span>

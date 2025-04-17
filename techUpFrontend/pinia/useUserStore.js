@@ -4,6 +4,7 @@ import axios from 'axios';
 export const useUserStore = defineStore('user', {
   state: () => ({
     isLoggedIn: null, // 로그인 상태 추가
+    userInfo: [], // 사용자 정보 추가
   }),
   actions: {
     async checkAuth() {
@@ -71,8 +72,7 @@ export const useUserStore = defineStore('user', {
     async login(user) {
         try {
             const response = await axios.post(`/api/login`, user);
-            this.isLoggedIn = true;
-            return response.data;
+            this.userInfo = response.data.data; // 사용자 정보 저장
         } catch (error) {
             console.error("Login error", error.response ? error.response.data : error.message);
             throw error;
@@ -88,5 +88,15 @@ export const useUserStore = defineStore('user', {
             throw error;
         }
     },
+    async myinfo() {
+        try {
+          const response = await axios.get('/api/user/mypage'); // 사용자 정보 API 호출
+          this.userInfo = response.data.data; // 상태 업데이트
+          console.log('사용자 정보:', this.userInfo);
+        } catch (error) {
+          console.error('사용자 정보 가져오기 실패:', error);
+          throw error; // 에러를 호출한 곳으로 전달
+        }
+      },
   },
 });
