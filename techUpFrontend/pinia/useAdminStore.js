@@ -34,9 +34,6 @@ export const useAdminStore = defineStore( 'admin',() => {
   let productList = ref([]);
   let findProductKeyword = ref('');
   let productStorageList = ref([]);
-  // 쿠폰 목록
-  let couponList = ref([]);
-  let couponStorageList = ref([]);
   
   // 특정 제품 정보(수정 전용)
   let targetProduct = ref({
@@ -54,6 +51,15 @@ export const useAdminStore = defineStore( 'admin',() => {
   });
   let targetPreviewImages = ref([]);
   let targetSelectedFiles = ref([]);
+
+  
+
+  // 쿠폰 목록
+  let couponList = ref([]);
+  let couponStorageList = ref([]);
+
+  // 쿠폰 검색용
+  let findCouponKeyword = ref('');
 
   // 특정 쿠폰 정보(수정 전용)
   let targetCoupon = ref({
@@ -74,11 +80,19 @@ export const useAdminStore = defineStore( 'admin',() => {
   let orderStorageList = ref([]);
   let orderList = ref([]);
 
+  // 알림 관련 
+  let notificationStorageList = ref([]);
+  let notificationList = ref([]);
 
   // ------------------------------------------------
   // ---------------- actions -----------------------
   // ------------------------------------------------
 
+  // -------------------- 알림 -------------------------
+
+  const sliceNotificationList = () => {
+
+  };
 
   // ------------------ 사용자 정보 -------------------------
 
@@ -348,6 +362,19 @@ export const useAdminStore = defineStore( 'admin',() => {
     couponList.value = couponStorageList.value.slice(start, end);
   }
 
+  const findCoupon = async () => {
+    try {
+      const result = await axios.get(`/api/coupon/search?keyword=${findCouponKeyword.value}`);
+      couponStorageList.value = [];
+      couponList.value = [];
+      couponStorageList.value = result.data.data.couponList;
+      couponList.value = result.data.data.couponList.slice(0, PAGENATION_SIZE);
+      console.log(result.data);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   // ---------------------------------
   // ====== 초기화할 것은 여기로 ======
   onMounted(async () => {
@@ -383,11 +410,14 @@ export const useAdminStore = defineStore( 'admin',() => {
     findProductKeyword,
     findUsers,
     findUserKeyword,
+    findCoupon,
+    findCouponKeyword,
     // 제품 목록, 쿠폰 목록, 사용자 목록, 알림 목록
     productStorageList,
     couponStorageList,
     userStorageList,
     orderStorageList,
+    notificationStorageList,
     // notificationList,
     // 제품 수정용 데이터
     targetProduct,
@@ -407,9 +437,11 @@ export const useAdminStore = defineStore( 'admin',() => {
     sliceCouponList,
     sliceUserList,
     sliceOrderList,
+    sliceNotificationList,
     productList,
     couponList,
     userList,
     orderList,
+    notificationList
   };
 });
