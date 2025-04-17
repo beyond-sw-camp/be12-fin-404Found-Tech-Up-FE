@@ -93,6 +93,11 @@ import { onMounted, ref } from 'vue';
 import { useCartStore } from "@/pinia/useCartStore";
 import { formatPrice } from "@/utils/index";
 
+const props = defineProps({
+  full_width: { type: Boolean, default: false },
+  shop_1600: { type: Boolean, default: false },
+})
+
 const cartStore = useCartStore();
 let couponCode = ref('');
 
