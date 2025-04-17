@@ -40,7 +40,7 @@
       </div>
     </div>
     <div class="tp-pagination mt-30">
-      <ui-pagination :items-per-page="4" :data="storeRef.productStorageList.value"
+      <ui-pagination :items-per-page="adminStore.PAGENATION_SIZE" :data="storeRef.productStorageList.value"
         @handle-paginate="handlePagination" />
     </div>
   </div>
@@ -55,7 +55,7 @@ const adminStore = useAdminStore();
 const storeRef = storeToRefs(adminStore);
 
 let startIndex = ref(0);
-let endIndex = ref(3);
+let endIndex = ref(adminStore.PAGENATION_SIZE);
 
 const searchProduct = async () => {
   await adminStore.findProduct();

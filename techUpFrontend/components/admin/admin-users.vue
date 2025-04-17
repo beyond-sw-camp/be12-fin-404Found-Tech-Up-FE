@@ -14,72 +14,30 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <th scope="row"> #115</th>
-          <td data-info="title">홍길동</td>
-          <td data-info="email">exampl5@example.com</td>
-          <td data-info="posts">1</td>
-          <td data-info="reviews">1</td>
-          <td><a href="#" class="tp-btn">주문 내역</a></td>
-          <td><a href="#" class="tp-btn">쿠폰 발행</a></td>
-          <td><a href="#" class="tp-btn">회원 정보</a></td>
-        </tr>
-        <tr>
-          <th scope="row"> #114</th>
-          <td data-info="title">김정엽</td>
-          <td data-info="email">exampl4@example.com</td>
-          <td data-info="posts">1</td>
-          <td data-info="reviews">1</td>
-          <td><a href="#" class="tp-btn">주문 내역</a></td>
-          <td><a href="#" class="tp-btn">쿠폰 발행</a></td>
-          <td><a href="#" class="tp-btn">회원 정보</a></td>
-        </tr>
-        <tr>
-          <th scope="row"> #113</th>
-          <td data-info="title">김무성</td>
-          <td data-info="email">exampl3@example.com</td>
-          <td data-info="posts">1</td>
-          <td data-info="reviews">1</td>
-          <td><a href="#" class="tp-btn">주문 내역</a></td>
-          <td><a href="#" class="tp-btn">쿠폰 발행</a></td>
-          <td><a href="#" class="tp-btn">회원 정보</a></td>
-        </tr>
-        <tr>
-          <th scope="row"> #112</th>
-          <td data-info="title">오건하</td>
-          <td data-info="email">exampl2@example.com</td>
-          <td data-info="posts">1</td>
-          <td data-info="reviews">1</td>
-          <td><a href="#" class="tp-btn">주문 내역</a></td>
-          <td><a href="#" class="tp-btn">쿠폰 발행</a></td>
-          <td><a href="#" class="tp-btn">회원 정보</a></td>
-        </tr>
-        <tr>
-          <th scope="row"> #111</th>
-          <td data-info="title">황경윤</td>
-          <td data-info="email">exampl1@example.com</td>
-          <td data-info="posts">1</td>
-          <td data-info="reviews">1</td>
-          <td><a href="#" class="tp-btn">주문 내역</a></td>
-          <td><a href="#" class="tp-btn">쿠폰 발행</a></td>
-          <td><a href="#" class="tp-btn">회원 정보</a></td>
-        </tr>
+        <admin-user-item v-for="item in storeRef.userList.value" :key="item.userNickname" :item="item" />
       </tbody>
     </table>
     <div class="tp-pagination mt-30">
-      <ui-pagination :items-per-page="4" :data="filteredItems" @handle-paginate="handlePagination" />
+      <ui-pagination :items-per-page="adminStore.PAGENATION_SIZE" :data="storeRef.userStorageList.value"
+        @handle-paginate="handlePagination" />
     </div>
   </div>
 </template>
 
 <script setup>
-let filteredItems = ref([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
+import { storeToRefs } from 'pinia';
+import { useAdminStore } from '../../pinia/useAdminStore';
+
+
+const adminStore = useAdminStore();
+const storeRef = storeToRefs(adminStore);
+
 let startIndex = ref(0);
-let endIndex = ref(filteredItems.length);
+let endIndex = ref(adminStore.PAGENATION_SIZE);
 
 const handlePagination = (data, start, end) => {
   console.log("data", data, "start", start, "end", end);
-  filteredItems.value = data;
+  adminStore.sliceUserList(start, end);
   startIndex.value = start;
   endIndex.value = end;
 };

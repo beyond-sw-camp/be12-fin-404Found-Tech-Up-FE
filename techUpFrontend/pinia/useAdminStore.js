@@ -17,6 +17,9 @@ export const useAdminStore = defineStore( 'admin',() => {
   let modifyingCoupon = ref(false);
   if (URLPath[1] === 'coupon-modify') modifyingCoupon.value = true;
 
+  // 상수
+  const PAGENATION_SIZE = 4;
+
   // 통계 관련 데이터
   let topWishList = ref([]);
   
@@ -34,8 +37,7 @@ export const useAdminStore = defineStore( 'admin',() => {
   // 쿠폰 목록
   let couponList = ref([]);
   let couponStorageList = ref([]);
-  // 사용자 목록
-  let userList = ref([]);
+  
   // 특정 제품 정보(수정 전용)
   let targetProduct = ref({
     name: '',
@@ -60,16 +62,38 @@ export const useAdminStore = defineStore( 'admin',() => {
     expiryDate: '',
     productIdx: '',
   })
+
+  // 사용자 목록
+  let userStorageList = ref([]);
+  let userList = ref([]);
+
+
   // ------------------------------------------------
   // ---------------- actions -----------------------
   // ------------------------------------------------
+
+  const loadUserInfo = async () => {
+    // 기존 정보를 가져온다.
+    const result = await axios.get('/api/user/alluser', {
+      baseURL: config.public.apiBaseUrl,
+    });
+    userStorageList.value = result.data.data;
+    userList.value = userStorageList.value.slice(0, PAGENATION_SIZE);
+  }
+
+
+  const sliceUserList = (start, end) => {
+    userList.value = userStorageList.value.slice(start, end);
+  }
+
+  // --------------- 제품 관련 ----------------------
 
   const loadProductList = async () => {
     const result = await axios.get('/api/product/list', {
       baseURL: config.public.apiBaseUrl,
     });
     productStorageList.value = result.data.data;
-    productList.value = result.data.data.slice(0, 4);
+    productList.value = result.data.data.slice(0, PAGENATION_SIZE);
     console.log(result.data.data);
     return result;
   };
@@ -194,7 +218,7 @@ export const useAdminStore = defineStore( 'admin',() => {
     if (confirm(`정말 제품 번호 ${idx}를 삭제할 것입니까? 구매 기록이 있거나 쿠폰이 발급된 제품은 삭제되지 않습니다.`)){
       try{
         await axios.delete(`/api/product/${idx}`);
-        productList.value = productStorageList.value.filter((value) => value.idx !== idx).slice(0,4);
+        productList.value = productStorageList.value.filter((value) => value.idx !== idx).slice(0,PAGENATION_SIZE);
       } catch (e) {
         console.log(e);
       }
@@ -207,7 +231,7 @@ export const useAdminStore = defineStore( 'admin',() => {
       productStorageList = [];
       productList.value = [];
       productStorageList.value = result.data.data;
-      productList.value = result.data.data.slice(0, 4);
+      productList.value = result.data.data.slice(0, PAGENATION_SIZE);
       console.log(productStorageList.value);
     } catch (e) {
       console.log(e);
@@ -223,7 +247,7 @@ export const useAdminStore = defineStore( 'admin',() => {
     const result = await axios.get('/api/coupon', {
       baseURL: config.public.apiBaseUrl,
     });
-    couponList.value = result.data.data.couponList.slice(0, 4);
+    couponList.value = result.data.data.couponList.slice(0, PAGENATION_SIZE);
     couponStorageList.value = result.data.data.couponList;
     return result.data.couponList;
   };
@@ -281,7 +305,7 @@ export const useAdminStore = defineStore( 'admin',() => {
     if (confirm(`정말 쿠폰 ${idx}을 삭제할 것입니까? 사용한 사용자가 있는 쿠폰은 삭제되지 않습니다.`)){
       try{
         await axios.delete(`/api/coupon/delete?idx=${idx}`);
-        couponList.value = couponStorageList.value.filter((value) => value.couponIdx !== idx).slice(0,4);
+        couponList.value = couponStorageList.value.filter((value) => value.couponIdx !== idx).slice(0,PAGENATION_SIZE);
       } catch (e) {
         console.log(e);
       }
@@ -297,6 +321,7 @@ export const useAdminStore = defineStore( 'admin',() => {
     await loadStatistics();
     await loadCouponList();
     await loadProductList();
+    await loadUserInfo();
   });
   
   return {
@@ -305,7 +330,7 @@ export const useAdminStore = defineStore( 'admin',() => {
     loadStatistics,
     loadProductInfo,
     loadCouponInfo,
-
+    loadUserInfo,
     // CREATE 
     submitProductRegisterForm,
     submitCouponRegisterForm,
@@ -323,9 +348,10 @@ export const useAdminStore = defineStore( 'admin',() => {
     findProduct,
     findProductKeyword,
     // 제품 목록, 쿠폰 목록, 사용자 목록, 알림 목록
-    productList,
-    couponList,
-    userList,
+    productStorageList,
+    couponStorageList,
+    userStorageList,
+    // notificationList,
     // 제품 수정용 데이터
     targetProduct,
     // 통계
@@ -338,10 +364,13 @@ export const useAdminStore = defineStore( 'admin',() => {
     // 쿠폰 수정용 데이터
     targetCoupon,
 
-    // 페이지네이션
+    // 페이지네이션 관련
+    PAGENATION_SIZE,
     sliceProductList,
     sliceCouponList,
-    productStorageList,
-    couponStorageList,
+    sliceUserList,
+    productList,
+    couponList,
+    userList,
   };
 });
