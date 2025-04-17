@@ -4,7 +4,7 @@
       <div class="cartmini__top-wrapper">
         <div class="cartmini__top p-relative">
           <div class="cartmini__top-title">
-            <h4>Shopping cart</h4>
+            <h4>장바구니</h4>
           </div>
           <div class="cartmini__close">
             <button @click="cartStore.handleCartOffcanvas" type="button" class="cartmini__close-btn cartmini-close-btn">
@@ -52,15 +52,15 @@
       </div>
       <div v-if="cartStore.cart_products.length > 0" class="cartmini__checkout">
         <div class="cartmini__checkout-title mb-30">
-          <h4>Subtotal:</h4>
+          <h4>소계:</h4>
           <span>{{ formatPrice(cartStore.totalPriceQuantity.total) }}</span>
         </div>
         <div class="cartmini__checkout-btn">
           <nuxt-link href="/cart" @click="cartStore.handleCartOffcanvas" class="tp-btn mb-10 w-100">
-            view cart
+            장바구니로 가기
           </nuxt-link>
           <nuxt-link href="/checkout" @click="cartStore.handleCartOffcanvas" class="tp-btn tp-btn-border w-100">
-            checkout
+            주문하기
           </nuxt-link>
         </div>
       </div>

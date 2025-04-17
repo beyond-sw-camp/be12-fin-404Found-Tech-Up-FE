@@ -34,7 +34,7 @@
                 </div>
                 <div class="col-xl-6 col-md-4">
                   <div class="tp-cart-update text-md-end">
-                    <button @click="cartStore.clear_cart()" type="button" class="tp-cart-update-btn">Clear Cart</button>
+                    <button @click="cartStore.clear_cart()" type="button" class="tp-cart-update-btn">장바구니 비우기</button>
                   </div>
                 </div>
               </div>

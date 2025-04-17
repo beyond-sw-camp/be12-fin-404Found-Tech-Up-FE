@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- breadcrumb start -->
-    <breadcrumb-4 title="Shopping Cart" subtitle="Shopping Cart" />
+    <breadcrumb-4 title="장바구니" subtitle="Shopping Cart" />
     <!-- breadcrumb end -->
 
     <!-- cart area start -->
