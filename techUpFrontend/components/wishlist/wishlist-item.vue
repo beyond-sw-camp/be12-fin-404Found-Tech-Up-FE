@@ -35,7 +35,7 @@
     <td class="tp-cart-action">
       <button class="tp-cart-action-btn" @click="wishlistStore.removeWishlist(item.product)">
         <svg-remove />
-        <span>삭제하기</span>
+        <span> 삭제하기</span>
       </button>
     </td>
   </tr>

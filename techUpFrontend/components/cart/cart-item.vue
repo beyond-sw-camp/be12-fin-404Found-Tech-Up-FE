@@ -39,7 +39,7 @@
     <td class="tp-cart-action">
       <button class="tp-cart-action-btn" @click="cartStore.removeCartProduct(item, item.cartItemIdx)">
         <svg-remove />
-        <span>Remove</span>
+        <span> 삭제하기</span>
       </button>
     </td>
   </tr>

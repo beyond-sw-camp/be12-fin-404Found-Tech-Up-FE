@@ -180,11 +180,18 @@ export const useCartStore = defineStore("cart_product", () => {
   const totalPriceQuantity = computed(() => {
     return cart_products.value.reduce(
       (acc, cartItem) => {
-        const unitPrice = cartItem.product.price;            
-        const qty       = cartItem.cartItemQuantity || 0;
+        let unitPrice = 0;
+        // 할인 가격이 있는 경우
+        if (cartItem.product.discount && cartItem.product.discount > 0) {
+          unitPrice = cartItem.product.price - (cartItem.product.price * Number(cartItem.product.discount)) / 100;
+        } 
+        else {
+          unitPrice = cartItem.product.price;
+        }
+        const qty = cartItem.cartItemQuantity || 0;
 
         acc.quantity += qty;
-        acc.total    += unitPrice * qty;
+        acc.total += unitPrice * qty;
         return acc;
       },
       { total: 0, quantity: 0 }
