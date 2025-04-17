@@ -56,9 +56,22 @@ export const useCartStore = defineStore("cart_product", () => {
         // 백엔드 응답을 반영하여 장바구니 목록 다시 불러오기
         await fetchCartProducts();
       }
+      // 5005: 사용자가 로그인하지 않음 
+      else if (response.data && response.data.code === 5005) {
+        cart_products.value = [];
+        alert('로그인 후 이용해주세요.');
+        window.location.href = '/login';
+      }
     } catch (error) {
+      const res = error.response;
+
       if (error.response && error.response.status === 401) {
         router.push("/login");
+      }
+      // 5002: 재고가 부족한 경우
+      else if (res?.data?.code === 5002) {
+        toast.error("재고가 부족합니다.");
+        return;
       } else {
         toast.error("장바구니에 상품 추가에 실패했습니다.");
         console.error("장바구니 추가 오류:", error);
@@ -75,7 +88,7 @@ export const useCartStore = defineStore("cart_product", () => {
         { baseURL: config.public.apiBaseUrl }
       );
       if (response.data && response.data.data) {
-        toast.error(`${payload.name} removed from cart`);
+        toast.error(`${payload.product.name} removed from cart`);
         await fetchCartProducts();
       }
     } catch (error) {

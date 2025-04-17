@@ -12,9 +12,9 @@
                 <table>
                     <thead>
                       <tr>
-                        <th colspan="2" class="tp-cart-header-product">Product</th>
-                        <th class="tp-cart-header-price">Price</th>
-                        <th class="tp-cart-header-quantity">Quantity</th>
+                        <th colspan="2" class="tp-cart-header-product">제품명</th>
+                        <th class="tp-cart-header-price">금액</th>
+                        <th class="tp-cart-header-quantity">수량</th>
                         <th></th>
                       </tr>
                     </thead>
