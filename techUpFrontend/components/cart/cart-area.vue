@@ -27,17 +27,9 @@
             </div>
             <div class="tp-cart-bottom mr-30">
               <div class="row align-items-end">
-                <div class="col-xl-6 col-md-8">
-                  <div class="tp-cart-coupon">
-                    <form @submit.prevent="handleCouponSubmit">
-                      <div class="tp-cart-coupon-input-box">
-                        <label>Coupon Code:</label>
-                        <div class="tp-cart-coupon-input d-flex align-items-center">
-                          <input type="text" placeholder="Enter Coupon Code" v-model="couponCode">
-                          <button type="submit">Apply</button>
-                        </div>
-                      </div>
-                    </form>
+                <div class="col-xl-6 col-md-4">
+                  <div class="tp-cart-update">
+                    <nuxt-link href="/shop" class="tp-cart-update-btn">계속 쇼핑하기</nuxt-link>
                   </div>
                 </div>
                 <div class="col-xl-6 col-md-4">
