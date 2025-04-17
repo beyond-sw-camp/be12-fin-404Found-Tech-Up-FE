@@ -50,6 +50,15 @@ export const useUserStore = defineStore('user', {
             throw error;
         }
     },
+    async editPwd(user) {
+        try {
+            const response = await axios.post(`/api/user/edit/password`, user);
+            return response.data;
+        } catch (error) {
+            console.error("Signup error", error.response ? error.response.data : error.message);
+            throw error;
+        }
+    },
     async signup(user) {
         try {
             const response = await axios.post(`/api/user/signup`, user);
