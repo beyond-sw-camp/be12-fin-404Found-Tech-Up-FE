@@ -112,7 +112,7 @@ export const useCartStore = defineStore("cart_product", () => {
         { baseURL: config.public.apiBaseUrl }
       );
       if (response.data && response.data.data) {
-        toast.info(`Decrement Quantity For ${payload.name}`);
+        toast.info(`장바구니 수량 감소: ${payload.name}`);
         await fetchCartProducts();
       }
     } catch (error) {
@@ -155,12 +155,15 @@ export const useCartStore = defineStore("cart_product", () => {
     if (confirmMsg) {
       try {
         const config = useRuntimeConfig();
-        // 백엔드에 모든 장바구니 항목 삭제 API 호출이 있다면 여기에 요청할 수도 있습니다.
-        // 일단 GET으로 현재 담긴 항목들을 삭제하는 로직 대신, 예를 들어 각 항목에 대해 반복 삭제할 수도 있지만
-        // 여기에서는 간단히 localStorage와 상태를 초기화하고 fetchCartProducts()를 호출합니다.
-        cart_products.value = [];
-        localStorage.setItem("cart_products", JSON.stringify(cart_products.value));
-        await fetchCartProducts();
+        const response = await axios.delete(
+          `/api/cart/clear`,
+          { baseURL: config.public.apiBaseUrl }
+        );
+        if (response.data && response.data.data) {
+          cart_products.value = [];
+          toast.error(`장바구니를 비웠습니다.`);
+          await fetchCartProducts();
+        }
       } catch (error) {
         toast.error("장바구니 비우기에 실패했습니다.");
       }

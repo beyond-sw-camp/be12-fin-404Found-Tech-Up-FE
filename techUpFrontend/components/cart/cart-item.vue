@@ -15,9 +15,9 @@
     <td class="tp-cart-price">
       <span v-if="item.product.discount && Number(item.product.discount) > 0">
         <span class="tp-product-details-price old-price">{{ formatPrice(item.product.price, false) }}</span>
-        <span class="new-price">
+        <div class="new-price">
           {{ formatPrice(item.product.price - (item.product.price * Number(item.product.discount)) / 100) }}
-        </span>
+        </div>
       </span>
       <span v-else>
         {{ formatPrice(item.product.price) }}
