@@ -146,7 +146,6 @@
 </template>
 
 <script setup>
-import { useRuntimeConfig } from 'nuxt/app'
 import { ref } from 'vue'
 import { useAdminStore } from '../../pinia/useAdminStore';
 

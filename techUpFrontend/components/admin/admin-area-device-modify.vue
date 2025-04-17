@@ -38,10 +38,4 @@
 
 <script setup>
 
-const props = defineProps({
-  idx: Number
-})
-
-const idx = ref(props.idx);
-
 </script>

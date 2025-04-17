@@ -14,6 +14,9 @@ export const useAdminStore = defineStore( 'admin',() => {
   let modifyingProduct = ref(false);
   if (URLPath[1] === 'product-modify') modifyingProduct.value = true;
 
+  let modifyingCoupon = ref(false);
+  if (URLPath[1] === 'coupon-modify') modifyingCoupon.value = true;
+
   // 통계 관련 데이터
   let topWishList = ref([]);
   
@@ -24,13 +27,14 @@ export const useAdminStore = defineStore( 'admin',() => {
   
   let topSales = ref([]);
 
-  // 제품 목록
+  // 제품 목록 및 검색
   let productList = ref([]);
+  let findProductKeyword = ref([]);
   // 쿠폰 목록
   let couponList = ref([]);
   // 사용자 목록
   let userList = ref([]);
-
+  // 특정 제품 정보(수정 전용)
   let targetProduct = ref({
     name: '',
     price: '',
@@ -46,6 +50,17 @@ export const useAdminStore = defineStore( 'admin',() => {
   });
   let targetPreviewImages = ref([]);
   let targetSelectedFiles = ref([]);
+
+  // 특정 쿠폰 정보(수정 전용)
+  let targetCoupon = ref({
+    couponName: '',
+    discount: '',
+    expiryDate: '',
+    productIdx: '',
+  })
+  // ------------------------------------------------
+  // ---------------- actions -----------------------
+  // ------------------------------------------------
 
   const loadProductList = async () => {
     const result = await axios.get('/api/product/list', {
@@ -148,14 +163,6 @@ export const useAdminStore = defineStore( 'admin',() => {
     console.log(targetProduct.value);
   };
 
-  const loadCouponList = async () => {
-    const result = await axios.get('/api/coupon', {
-      baseURL: config.public.apiBaseUrl,
-    });
-    couponList.value = result.data.data.couponList;
-    return result.data.couponList;
-  };
-
   const loadStatistics = async () => {
     try{
       const result = await axios.get("/api/statistics", {
@@ -191,7 +198,6 @@ export const useAdminStore = defineStore( 'admin',() => {
     }
   };
 
-  let findProductKeyword = ref([]);
   const findProduct = async () => {
     try {
       const result = await axios.get(`/api/product/search?keyword=${findProductKeyword.value}`);
@@ -201,9 +207,46 @@ export const useAdminStore = defineStore( 'admin',() => {
     } catch (e) {
       console.log(e);
     }
+  };
+  // --------------- 쿠폰 관련 액션 -------------------
+
+  const loadCouponList = async () => {
+    const result = await axios.get('/api/coupon', {
+      baseURL: config.public.apiBaseUrl,
+    });
+    couponList.value = result.data.data.couponList;
+    return result.data.couponList;
+  };
+
+  const loadCouponInfo = async (idx) => {
+    try {
+      const result = await axios.get(`/api/coupon/details/${idx}`);
+      targetCoupon.value.couponName = result.data.data.couponIdx;
+      targetCoupon.value.discount=result.data.data.couponDiscountRate;
+      targetCoupon.value.expiryDate=result.data.data.couponValidDate;
+      targetCoupon.value.productIdx=result.data.data.productIdx;
+    } catch (e) {
+      console.log(e);
+    }
   }
 
-  // 초기화할 것은 여기로
+  const submitCouponModifyForm = async () => {
+    // 실제 서버로 전송할 payload
+    const payload = {
+      ...targetCoupon.value,
+    }
+    console.log('수정할 쿠폰 데이터:', payload);
+    // 여기서 axios.post('/api/coupons', payload).then(...)
+    const result = await axios.post(`/api/coupon/update/${route.params.idx}`, payload, {
+      baseURL: config.public.apiBaseUrl,
+    });
+    console.log(result.data.data);
+    alert("쿠폰이 수정되었습니다!");
+    navigateTo('/dashboard');
+  }
+
+  // ---------------------------------
+  // ====== 초기화할 것은 여기로 ======
   onMounted(async () => {
     await loadStatistics();
     await loadCouponList();
@@ -215,17 +258,19 @@ export const useAdminStore = defineStore( 'admin',() => {
     loadProductList,
     loadStatistics,
     loadProductInfo,
+    loadCouponInfo,
 
     // CREATE 
     submitProductRegisterForm,
 
     // UPDATE
     submitProductModifyForm,
-
+    submitCouponModifyForm,
     // DELETE
     deleteProduct,
     // 메타데이터
     modifyingProduct,
+    modifyingCoupon,
 
     // 검색
     findProduct,
@@ -243,5 +288,7 @@ export const useAdminStore = defineStore( 'admin',() => {
     totalOrders,
     totalRefunds,
     topSales,
+    // 쿠폰 수정용 데이터
+    targetcoupon,
   };
 });
