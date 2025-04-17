@@ -3,7 +3,11 @@ import { useForm } from "vee-validate";
 import * as yup from "yup";
 import { useUserStore } from '@/pinia/useUserStore'; // useUserStore import 추가
 
+let showPass = ref(false);
+let showPassValid = ref(false);
+
 let showMailValid = ref(false);
+let showPwdValid = ref(false);
 let clockCounter = ref(180);
 let clockCountingString = ref(`남은 시간 ${clockCounter.value}초`);
 
@@ -38,15 +42,14 @@ const sendEmail = async () => {
       showMailValid.value = true;
       // 타이머 설정
       timer.value = setInterval(decreaseCounter, 1000);
-
-    } else {
-      alert('중복된 이메일입니다. 다른 별명을 입력해주세요.');
-      user.value.userEmail = ""; // 입력 필드 초기화
     }
   } catch (error) {
     console.error('이메일 전송 중 오류 발생:', error.response.data);
-    if (error.response.data.code === 2011) {
-      alert('가입되지 않은 이메일입니다.');
+    if (error.response.data.code) {
+      alert(error.response.data.message);
+    } else {
+      // 네트워크 에러 또는 서버와의 연결 문제
+      alert("서버와 연결할 수 없습니다. 다시 시도해주세요.");
     }
   }
 };
@@ -67,16 +70,38 @@ const verifyEmail = async () => {
       disableValidationButton.value = true;
       clearInterval(timer.value);
       clockCountingString.value = '인증되었습니다.';
-      
-
-    } else {
-      alert('잘못된 인증 코드입니다. 다시시 입력해주세요.');
-      clockCountingString.value = '인증에 실패했습니다.'
-      user.value.inputCode = ""; // 입력 필드 초기화
-    }
+      showPwdValid.value = true;
+    } 
   } catch (error) {
-    console.error('이메일 인증 코드 확인 중 오류 발생:', error);
-    alert('오류가 발생했습니다. 다시 시도해주세요.');
+    console.error('이메일 전송 중 오류 발생:', error.response.data);
+    if (error.response.data.code) {
+      alert(error.response.data.message);
+    } else {
+      // 네트워크 에러 또는 서버와의 연결 문제
+      alert("서버와 연결할 수 없습니다. 다시 시도해주세요.");
+    }
+  }
+};
+
+const editPwd = async () => {
+  console.log(user.value);
+
+  if (user.value.userPassword !== user.value.userConfirmPassword) {
+    alert("비밀번호가 일치하지 않습니다.");
+  }
+  try {
+    const response = await userStore.editPwd(user.value);
+    console.log("success:", response);
+    alert('비밀번호 변경이 완료되었습니다.');
+    router.push('/login'); // 회원가입 성공 시 /login 경로로 이동
+  } catch (error) {
+    console.error('이메일 전송 중 오류 발생:', error.response.data);
+    if (error.response.data.code) {
+      alert(error.response.data.message);
+    } else {
+      // 네트워크 에러 또는 서버와의 연결 문제
+      alert("서버와 연결할 수 없습니다. 다시 시도해주세요.");
+    }
   }
 };
 
@@ -89,6 +114,14 @@ const decreaseCounter = () => {
     clockCounter.value -= 1;
     clockCountingString.value = `남은 시간 ${clockCounter.value}초`;
   }
+};
+
+const togglePasswordVisibility = () => {
+  showPass.value = !showPass.value;
+};
+
+const togglePasswordValidVisibility = () => {
+  showPassValid.value = !showPassValid.value;
 };
 
 const { errors, handleSubmit, defineInputBinds, resetForm } =
@@ -142,10 +175,61 @@ const onSubmit = handleSubmit((values) => {
                       <label for="code">인증 코드</label>
                     </div>
                   </div>
+                  <err-message :msg="errors.emailValid" />
+                  <div>{{ clockCountingString }}</div>
+                </div>
+                <div v-if="showPwdValid" class="tp-login-input-box">
+                  <div class="p-relative">
+                    <div class="tp-login-input">
+                      <input id="tp_password" :type="showPass ? 'text' : 'password'" name="password"
+                        placeholder="최소 8자, 영어 소문자 및 숫자 혼합" v-model="user.userPassword" />
+                    </div>
+                    <div class="tp-login-input-eye" id="password-show-toggle">
+
+                      <span class="open-eye" @click="togglePasswordVisibility">
+                        <template v-if="showPass">
+                          <svg-open-eye />
+                        </template>
+                        <template v-else>
+                          <svg-close-eye />
+                        </template>
+                      </span>
+
+                    </div>
+                    <div class="tp-login-input-title">
+                      <label for="tp_password">비밀번호</label>
+                    </div>
+                  </div>
+                  <err-message :msg="errors.password" />
+                </div>
+                <div v-if="showPwdValid" class="tp-login-input-box">
+                  <div class="p-relative">
+                    <div class="tp-login-input">
+                      <input id="tp_password" :type="showPassValid ? 'text' : 'password'" name="password"
+                        placeholder="최소 8자, 비밀번호와 같음" v-model="user.userConfirmPassword" />
+                    </div>
+                    <div class="tp-login-input-eye" id="password-show-toggle">
+
+                      <span class="open-eye" @click="togglePasswordValidVisibility">
+                        <template v-if="showPassValid">
+                          <svg-open-eye />
+                        </template>
+                        <template v-else>
+                          <svg-close-eye />
+                        </template>
+                      </span>
+
+                    </div>
+                    <div class="tp-login-input-title">
+                      <label for="tp_password">비밀번호 확인</label>
+                    </div>
+                  </div>
+                  <err-message :msg="errors.passwordValid" />
                 </div>
                 <div class="tp-login-bottom mb-15">
-                  <button v-if="!showMailValid" type="button" class="tp-login-btn w-100" @click="sendEmail">메일 보내기</button>
-                  <button v-else type="button" class="tp-login-btn w-100" @click="verifyEmail">인증 확인</button>
+                  <button v-if="!showMailValid && !showPwdValid" type="button" class="tp-login-btn w-100" @click="sendEmail">메일 보내기</button>
+                  <button v-if="showMailValid && !showPwdValid" type="button" class="tp-login-btn w-100" @click="verifyEmail">인증 확인</button>
+                  <button v-if="showMailValid && showPwdValid" type="button" class="tp-login-btn w-100" @click="editPwd">비밀번호 변경</button>
                 </div>
                 <div class="tp-login-suggetions d-sm-flex align-items-center justify-content-center">
                   <div class="tp-login-forgot">

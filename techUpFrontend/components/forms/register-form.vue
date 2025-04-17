@@ -68,15 +68,14 @@ const sendEmail = async () => {
       showMailValid.value = true;
       // 타이머 설정
       timer.value = setInterval(decreaseCounter, 1000);
-
-    } else {
-      alert('중복된 이메일입니다. 다른 별명을 입력해주세요.');
-      signupuser.value.userEmail = ""; // 입력 필드 초기화
     }
   } catch (error) {
     console.error('이메일 전송 중 오류 발생:', error.response.data);
-    if (error.response.data.code === 2012) {
-      alert('가입된 이메일입니다.');
+    if (error.response.data.code) {
+      alert(error.response.data.message);
+    } else {
+      // 네트워크 에러 또는 서버와의 연결 문제
+      alert("서버와 연결할 수 없습니다. 다시 시도해주세요.");
     }
   }
 };
@@ -97,16 +96,15 @@ const verifyEmail = async () => {
       disableValidationButton.value = true;
       clearInterval(timer.value);
       clockCountingString.value = '인증되었습니다.';
-      
-
-    } else {
-      alert('잘못된 인증 코드입니다. 다시시 입력해주세요.');
-      clockCountingString.value = '인증에 실패했습니다.'
-      signupuser.value.inputCode = ""; // 입력 필드 초기화
     }
   } catch (error) {
-    console.error('이메일 인증 코드 확인 중 오류 발생:', error);
-    alert('오류가 발생했습니다. 다시 시도해주세요.');
+    console.error('이메일 전송 중 오류 발생:', error.response.data);
+    if (error.response.data.code) {
+      alert(error.response.data.message);
+    } else {
+      // 네트워크 에러 또는 서버와의 연결 문제
+      alert("서버와 연결할 수 없습니다. 다시 시도해주세요.");
+    }
   }
 };
 
@@ -127,9 +125,9 @@ const signup = async () => {
     alert('회원가입이 완료되었습니다.');
     router.push('/login'); // 회원가입 성공 시 /login 경로로 이동
   } catch (error) {
-    if (error.response) {
-      // 서버에서 반환한 에러 메시지 처리
-      alert(error.response.data.errorMessage);
+    console.error('이메일 전송 중 오류 발생:', error.response.data);
+    if (error.response.data.code) {
+      alert(error.response.data.message);
     } else {
       // 네트워크 에러 또는 서버와의 연결 문제
       alert("서버와 연결할 수 없습니다. 다시 시도해주세요.");
