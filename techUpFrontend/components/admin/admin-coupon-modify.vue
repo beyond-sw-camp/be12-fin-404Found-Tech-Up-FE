@@ -1,43 +1,44 @@
 <template>
   <div class="form-container">
-    <h2 class="form-title">전체 사용자 대상 쿠폰 등록</h2>
+    <h2 class="form-title">쿠폰 수정</h2>
     <form @submit.prevent="submitForm" class="space-y-6">
       <!-- 쿠폰 이름 -->
       <div class="form-group">
         <label class="form-label">쿠폰 이름</label>
-        <input v-model="coupon.couponName" type="text" class="form-input" placeholder="예) 봄맞이 할인 쿠폰" required />
+        <input v-model="storeRef.targetCoupon.value.couponName" type="text" class="form-input"
+          placeholder="예) 봄맞이 할인 쿠폰" required />
       </div>
 
       <!-- 할인율 -->
       <div class="form-group">
         <label class="form-label">할인율(%)</label>
-        <input v-model="coupon.discount" type="number" step="1" class="form-input" placeholder="예) 10" required />
+        <input v-model="storeRef.targetCoupon.value.discount" type="number" step="1" class="form-input"
+          placeholder="예) 10" required />
       </div>
 
       <!-- 유효 기간 -->
       <div class="form-group">
         <label class="form-label">유효 기간</label>
-        <input v-model="coupon.expiryDate" type="date" class="form-input" required />
+        <input v-model="storeRef.targetCoupon.value.expiryDate" type="date" class="form-input" required />
       </div>
 
       <!-- 연관 상품 (product_idx) -->
       <div class="form-group">
         <label class="form-label">연관 상품 (product_idx)</label>
-        <input v-model="coupon.productIdx" type="number" class="form-input" placeholder="예) 101" required />
+        <input v-model="storeRef.targetCoupon.value.productIdx" type="number" class="form-input" placeholder="예) 101"
+          required />
       </div>
 
-      <button type="submit" class="btn-submit">쿠폰 등록</button>
+      <button type="submit" class="btn-submit">쿠폰 수정</button>
     </form>
   </div>
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue'
+import { ref } from 'vue';
 import { useAdminStore } from '../../pinia/useAdminStore';
 import { storeToRefs } from 'pinia';
 
-const adminStore = useAdminStore();
-const storeRef = storeToRefs(adminStore);
 /**
  * coupon 테이블 구조:
  *  - coupon_idx (PK, AUTO_INCREMENT)
@@ -46,22 +47,22 @@ const storeRef = storeToRefs(adminStore);
  *  - coupon_valid_date (DATETIME)
  *  - product_idx (INT, FK)
  */
-let coupon = ref({
-  couponName: '',
-  discount: '',
-  expiryDate: '',
-  productIdx: '',
+
+const props = defineProps({
+  idx: Number
 })
+const idx = ref(props.idx);
+
+const adminStore = useAdminStore();
+const storeRef = storeToRefs(adminStore);
 
 const submitForm = async () => {
-  await adminStore.submitCouponRegisterForm(coupon.value);
+  await adminStore.submitCouponModifyForm();
 }
 
-onMounted(() => {
-  coupon.value.productIdx = storeRef.couponProduct.value;
-})
-
-
+onMounted(async () => {
+  await adminStore.loadCouponInfo(idx.value);
+});
 </script>
 
 <style scoped>

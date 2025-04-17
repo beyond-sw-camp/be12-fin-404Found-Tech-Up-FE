@@ -2,9 +2,9 @@
   <div class="admin__address">
     <div class="tp-header-search-box"
       style="width:100%;display:inline-flex;background-color:#f8f8f8; padding-right: 2rem;">
-      <input type="text" placeholder="Search for Products..." v-model="searchText"
+      <input type="text" placeholder="Search for Coupon..." v-model="storeRef.findCouponKeyword.value"
         style="color:black;background-color:inherit; padding-right: inherit;" />
-      <button type="submit" style="width:1rem;">
+      <button type="submit" style="width:1rem;" @click="searchCoupon">
         <SvgSearch />
       </button>
     </div>
@@ -28,7 +28,7 @@
             </thead>
             <tbody>
               <!-- wishlist item start -->
-              <coupon-item-admin v-for="item in filteredItems" :key="item.id" :item="item" />
+              <coupon-item-admin v-for="item in storeRef.couponList.value" :key="item.couponName" :item="item" />
               <!-- wishlist item end -->
             </tbody>
           </table>
@@ -36,7 +36,8 @@
       </div>
     </div>
     <div class="tp-pagination mt-30">
-      <ui-pagination :items-per-page="4" :data="filteredItems" @handle-paginate="handlePagination" />
+      <ui-pagination :items-per-page="adminStore.PAGENATION_SIZE" :data="storeRef.couponStorageList.value"
+        @handle-paginate="handlePagination" />
     </div>
   </div>
 </template>
@@ -47,14 +48,17 @@ import { useAdminStore } from '../../pinia/useAdminStore';
 
 const adminStore = useAdminStore();
 const storeRef = storeToRefs(adminStore);
-let filteredItems = ref(storeRef.couponList);
 let startIndex = ref(0);
-let endIndex = ref(filteredItems.length);
+let endIndex = ref(adminStore.PAGENATION_SIZE);
+
+const searchCoupon = async () => {
+  await adminStore.findCoupon();
+}
 
 
 const handlePagination = (data, start, end) => {
-  console.log("data", data, "start", start, "end", end);
-  filteredItems.value = data;
+  //console.log("data", data, "start", start, "end", end);
+  adminStore.sliceCouponList(start, end);
   startIndex.value = start;
   endIndex.value = end;
 };

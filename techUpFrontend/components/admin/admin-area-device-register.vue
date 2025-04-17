@@ -25,7 +25,7 @@
               <div class="tab-content" id="dashboard-tabContent">
                 <div class="tab-pane fade show active" id="nav-dashboard" role="tabpanel"
                   aria-labelledby="nav-dashboard-tab">
-                  <admin-devregister :modding="modding" :idx="idx" />
+                  <admin-devregister />
                 </div>
               </div>
             </div>
@@ -37,13 +37,5 @@
 </template>
 
 <script setup>
-
-const props = defineProps({
-  modify: Boolean,
-  idx: Number
-})
-
-const modding = ref(props.modify);
-const idx = ref(props.idx);
 
 </script>

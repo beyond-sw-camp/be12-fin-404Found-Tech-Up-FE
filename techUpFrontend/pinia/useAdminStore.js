@@ -14,6 +14,12 @@ export const useAdminStore = defineStore( 'admin',() => {
   let modifyingProduct = ref(false);
   if (URLPath[1] === 'product-modify') modifyingProduct.value = true;
 
+  let modifyingCoupon = ref(false);
+  if (URLPath[1] === 'coupon-modify') modifyingCoupon.value = true;
+
+  // 상수
+  const PAGENATION_SIZE = 4;
+
   // 통계 관련 데이터
   let topWishList = ref([]);
   
@@ -24,13 +30,12 @@ export const useAdminStore = defineStore( 'admin',() => {
   
   let topSales = ref([]);
 
-  // 제품 목록
+  // 제품 목록 및 검색
   let productList = ref([]);
-  // 쿠폰 목록
-  let couponList = ref([]);
-  // 사용자 목록
-  let userList = ref([]);
-
+  let findProductKeyword = ref('');
+  let productStorageList = ref([]);
+  
+  // 특정 제품 정보(수정 전용)
   let targetProduct = ref({
     name: '',
     price: '',
@@ -47,12 +52,97 @@ export const useAdminStore = defineStore( 'admin',() => {
   let targetPreviewImages = ref([]);
   let targetSelectedFiles = ref([]);
 
+  
+
+  // 쿠폰 목록
+  let couponList = ref([]);
+  let couponStorageList = ref([]);
+
+  // 쿠폰 검색용
+  let findCouponKeyword = ref('');
+
+  // 특정 쿠폰 정보(수정 전용)
+  let targetCoupon = ref({
+    couponName: '',
+    discount: '',
+    expiryDate: '',
+    productIdx: '',
+  })
+  let couponProduct = ref('');
+
+  // 사용자 목록
+  let userStorageList = ref([]);
+  let userList = ref([]);
+  // 사용자 검색
+  let findUserKeyword = ref('');
+
+  // 사용자 주문 내역 관련
+  let orderStorageList = ref([]);
+  let orderList = ref([]);
+
+  // 알림 관련 
+  let notificationStorageList = ref([]);
+  let notificationList = ref([]);
+
+  // ------------------------------------------------
+  // ---------------- actions -----------------------
+  // ------------------------------------------------
+
+  // -------------------- 알림 -------------------------
+
+  const sliceNotificationList = () => {
+
+  };
+
+  // ------------------ 사용자 정보 -------------------------
+
+  const loadUserInfo = async () => {
+    // 기존 정보를 가져온다.
+    const result = await axios.get('/api/user/alluser', {
+      baseURL: config.public.apiBaseUrl,
+    });
+    userStorageList.value = result.data.data;
+    userList.value = userStorageList.value.slice(0, PAGENATION_SIZE);
+  };
+
+  
+  const findUsers = async () => {
+    try {
+      const result = await axios.get(`/api/user/finduser?keyword=${findUserKeyword.value}`);
+      userStorageList = [];
+      userList.value = [];
+      userStorageList.value = result.data.data;
+      userList.value = result.data.data.slice(0, PAGENATION_SIZE);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const sliceUserList = (start, end) => {
+    userList.value = userStorageList.value.slice(start, end);
+  };
+
+  const loadUserOrder = async (userIdx) => {
+    const result = await axios.get(`/api/order/orderlist/${userIdx}`, {
+      baseURL: config.public.apiBaseUrl,
+    });
+    orderStorageList.value = result.data.data;
+    orderList.value = orderStorageList.value.slice(0, PAGENATION_SIZE);
+  };
+
+  const sliceOrderList = (start, end) => {
+    orderList.value = orderStorageList.value.slice(start, end);
+  };
+
+  // --------------- 제품 관련 ----------------------
+
   const loadProductList = async () => {
     const result = await axios.get('/api/product/list', {
       baseURL: config.public.apiBaseUrl,
     });
-    productList.value = result.data.data;
-    console.log(result.data.data);
+    productStorageList.value = result.data.data;
+    productList.value = result.data.data.slice(0, PAGENATION_SIZE);
+    // console.log(result.data.data);
     return result;
   };
 
@@ -84,7 +174,7 @@ export const useAdminStore = defineStore( 'admin',() => {
         productIdx: result.data.data.idx,
         imagePath: imageUrls
       };
-      console.log(await axios.post('/api/productimage', imagePayload));
+      await axios.post('/api/productimage', imagePayload);
       alert("등록되었습니다!");
       navigateTo('/dashboard');
     }).catch((e) => {
@@ -148,14 +238,6 @@ export const useAdminStore = defineStore( 'admin',() => {
     console.log(targetProduct.value);
   };
 
-  const loadCouponList = async () => {
-    const result = await axios.get('/api/coupon', {
-      baseURL: config.public.apiBaseUrl,
-    });
-    couponList.value = result.data.data.couponList;
-    return result.data.couponList;
-  };
-
   const loadStatistics = async () => {
     try{
       const result = await axios.get("/api/statistics", {
@@ -184,30 +266,122 @@ export const useAdminStore = defineStore( 'admin',() => {
     if (confirm(`정말 제품 번호 ${idx}를 삭제할 것입니까? 구매 기록이 있거나 쿠폰이 발급된 제품은 삭제되지 않습니다.`)){
       try{
         await axios.delete(`/api/product/${idx}`);
-        productList.value = productList.value.filter((value) => value.idx !== idx);
+        productList.value = productStorageList.value.filter((value) => value.idx !== idx).slice(0,PAGENATION_SIZE);
       } catch (e) {
         console.log(e);
       }
     }
   };
 
-  let findProductKeyword = ref([]);
   const findProduct = async () => {
     try {
       const result = await axios.get(`/api/product/search?keyword=${findProductKeyword.value}`);
+      productStorageList = [];
       productList.value = [];
-      productList.value = result.data.data;
-      console.log(productList.value);
+      productStorageList.value = result.data.data;
+      productList.value = result.data.data.slice(0, PAGENATION_SIZE);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const sliceProductList = (start, end) => {
+    productList.value = productStorageList.value.slice(start, end);
+  }
+  // --------------- 쿠폰 관련 액션 -------------------
+
+  const loadCouponList = async () => {
+    const result = await axios.get('/api/coupon', {
+      baseURL: config.public.apiBaseUrl,
+    });
+    couponList.value = result.data.data.couponList.slice(0, PAGENATION_SIZE);
+    couponStorageList.value = result.data.data.couponList;
+    return result.data.couponList;
+  };
+
+  const loadCouponInfo = async (idx) => {
+    try {
+      const result = await axios.get(`/api/coupon/details/${idx}`);
+      targetCoupon.value.couponName = result.data.data.couponName;
+      targetCoupon.value.discount=result.data.data.couponDiscountRate;
+      targetCoupon.value.productIdx=result.data.data.productIdx;
+      const resultDate = result.data.data.couponValidDate.toString().split('T')[0].split('-');
+      targetCoupon.value.expiryDate= `${resultDate[0]}-${resultDate[1]}-${resultDate[2]}`;
     } catch (e) {
       console.log(e);
     }
   }
 
-  // 초기화할 것은 여기로
+  const submitCouponRegisterForm = async (coupon) => {
+    // 실제 서버로 전송할 payload
+    const payload = {
+      ...coupon,
+    };
+    console.log('등록 데이터:', payload)
+    // 여기서 axios.post('/api/coupons', payload).then(...)
+    $fetch('/api/coupon/issueall', {
+      baseURL: config.public.apiBaseUrl,
+      method: 'POST',
+      body: payload,
+    }).then(async (result) => {
+      console.log(result.data);
+      alert("등록되었습니다!");
+      navigateTo('/dashboard');
+    }).catch((e) => {
+      alert("등록 실패: " + e);
+    });
+  };
+
+  const submitCouponModifyForm = async () => {
+    // 실제 서버로 전송할 payload
+    const payload = {
+      ...targetCoupon.value,
+    }
+    console.log('수정할 쿠폰 데이터:', payload);
+    // 여기서 axios.post('/api/coupons', payload).then(...)
+    const result = await axios.put(`/api/coupon/update/${route.params.idx}`, payload, {
+      baseURL: config.public.apiBaseUrl,
+    });
+    console.log(result.data.data);
+    alert("쿠폰이 수정되었습니다!");
+    await loadCouponList();
+    navigateTo('/dashboard');
+  };
+
+  const deleteCoupon = async (idx) => {
+    if (confirm(`정말 쿠폰 ${idx}을 삭제할 것입니까? 사용한 사용자가 있는 쿠폰은 삭제되지 않습니다.`)){
+      try{
+        await axios.delete(`/api/coupon/delete?idx=${idx}`);
+        couponList.value = couponStorageList.value.filter((value) => value.couponIdx !== idx).slice(0,PAGENATION_SIZE);
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  };
+  const sliceCouponList = (start, end) => {
+    couponList.value = couponStorageList.value.slice(start, end);
+  }
+
+  const findCoupon = async () => {
+    try {
+      const result = await axios.get(`/api/coupon/search?keyword=${findCouponKeyword.value}`);
+      couponStorageList.value = [];
+      couponList.value = [];
+      couponStorageList.value = result.data.data.couponList;
+      couponList.value = result.data.data.couponList.slice(0, PAGENATION_SIZE);
+      console.log(result.data);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  // ---------------------------------
+  // ====== 초기화할 것은 여기로 ======
   onMounted(async () => {
     await loadStatistics();
     await loadCouponList();
     await loadProductList();
+    await loadUserInfo();
   });
   
   return {
@@ -215,25 +389,36 @@ export const useAdminStore = defineStore( 'admin',() => {
     loadProductList,
     loadStatistics,
     loadProductInfo,
-
+    loadCouponInfo,
+    loadUserInfo,
+    loadUserOrder,
     // CREATE 
     submitProductRegisterForm,
-
+    submitCouponRegisterForm,
     // UPDATE
     submitProductModifyForm,
-
+    submitCouponModifyForm,
     // DELETE
     deleteProduct,
+    deleteCoupon,
     // 메타데이터
     modifyingProduct,
+    modifyingCoupon,
 
     // 검색
     findProduct,
     findProductKeyword,
+    findUsers,
+    findUserKeyword,
+    findCoupon,
+    findCouponKeyword,
     // 제품 목록, 쿠폰 목록, 사용자 목록, 알림 목록
-    productList,
-    couponList,
-    userList,
+    productStorageList,
+    couponStorageList,
+    userStorageList,
+    orderStorageList,
+    notificationStorageList,
+    // notificationList,
     // 제품 수정용 데이터
     targetProduct,
     // 통계
@@ -243,5 +428,20 @@ export const useAdminStore = defineStore( 'admin',() => {
     totalOrders,
     totalRefunds,
     topSales,
+    // 쿠폰 수정용 데이터
+    targetCoupon,
+    couponProduct,
+    // 페이지네이션 관련
+    PAGENATION_SIZE,
+    sliceProductList,
+    sliceCouponList,
+    sliceUserList,
+    sliceOrderList,
+    sliceNotificationList,
+    productList,
+    couponList,
+    userList,
+    orderList,
+    notificationList
   };
 });
