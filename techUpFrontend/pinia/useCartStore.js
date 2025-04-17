@@ -179,14 +179,13 @@ export const useCartStore = defineStore("cart_product", () => {
   // totalPriceQuantity 계산
   const totalPriceQuantity = computed(() => {
     return cart_products.value.reduce(
-      (cartTotal, cartItem) => {
-        const { price, orderQuantity } = cartItem;
-        if (typeof orderQuantity !== "undefined") {
-          const itemTotal = price * orderQuantity;
-          cartTotal.quantity += orderQuantity;
-          cartTotal.total += itemTotal;
-        }
-        return cartTotal;
+      (acc, cartItem) => {
+        const unitPrice = cartItem.product.price;            
+        const qty       = cartItem.cartItemQuantity || 0;
+
+        acc.quantity += qty;
+        acc.total    += unitPrice * qty;
+        return acc;
       },
       { total: 0, quantity: 0 }
     );
