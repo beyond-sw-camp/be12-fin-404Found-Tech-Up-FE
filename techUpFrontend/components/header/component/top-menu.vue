@@ -1,8 +1,12 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
 import { useUserStore } from '@/pinia/useUserStore'; // Pinia 스토어 가져오기
+import { useCartStore } from "@/pinia/useCartStore";
+import { useWishlistStore } from '@/pinia/useWishlistStore';
 
 const userStore = useUserStore(); // 스토어 초기화
+const cartStore = useCartStore();
+const wishlistStore = useWishlistStore();
 const router = useRouter();
 
 let isActive = ref<string>('')
@@ -20,6 +24,8 @@ const handleActive = (type: string) => {
 const handleLogout = async () => {
   try {
     const response = await userStore.logout();
+    cartStore.fetchCartProducts();
+    wishlistStore.fetchWishlist();
     console.log("Logout success:", response);
     alert('로그아웃이 완료되었습니다.');
     router.push('/login');
