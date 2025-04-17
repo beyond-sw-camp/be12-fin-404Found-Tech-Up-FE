@@ -37,7 +37,7 @@
     </td>
     <!-- action -->
     <td class="tp-cart-action">
-      <button class="tp-cart-action-btn" @click="cartStore.removeCartProduct(item.product, item.cartItemIdx)">
+      <button class="tp-cart-action-btn" @click="cartStore.removeCartProduct(item, item.cartItemIdx)">
         <svg-remove />
         <span>Remove</span>
       </button>
