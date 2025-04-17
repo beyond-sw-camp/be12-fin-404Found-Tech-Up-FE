@@ -33,13 +33,13 @@
       </div>
     </div>
 
-    <!-- 최신 게시물 -->
+    <!-- 최신 게시물 (순수 최신 3개) -->
     <div class="community-sidebar-widget mb-35">
       <h3 class="community-sidebar-widget-title">최신 게시물</h3>
       <div class="community-sidebar-widget-content">
         <div class="community-sidebar-blog-item-wrapper">
           <div
-            v-for="item in recentPost"
+            v-for="item in recentPosts"
             :key="item.idx"
             class="community-sidebar-blog-item d-flex flex-column"
           >
@@ -75,21 +75,20 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import axios from 'axios';
 import { format } from 'date-fns';
-import { useBoardStore } from '@/pinia/useBoardStore';
 
 const route = useRoute();
 const router = useRouter();
-const boardStore = useBoardStore();
 
-// URL에 있는 값으로 초기화
+// 검색어/타입 초기화
 const searchQuery = ref(route.query.search?.toString() || '');
 const searchType  = ref(route.query.type?.toString()   || 'title');
 
-// 최근 3개 게시물
-const recentPost = computed(() => boardStore.boardList.slice(0, 3));
+// 순수 최신 3개 게시물 보관
+const recentPosts = ref([]);
 
 // 카테고리 목록
 const categories = [
@@ -99,16 +98,15 @@ const categories = [
   { name: '후기',  label: '후기' }
 ];
 
-// 날짜 포맷 함수
-const formatDate = (dateStr) => {
+// 날짜 포맷
+const formatDate = dateStr => {
   try { return format(new Date(dateStr), 'yyyy-MM-dd'); }
   catch { return dateStr; }
 };
 
-// 검색 시 URL 쿼리만 업데이트
+// 검색 핸들러: URL 쿼리만 업데이트
 const handleSearch = () => {
   if (!searchQuery.value.trim()) return;
-
   router.push({
     path: '/community',
     query: {
@@ -119,6 +117,23 @@ const handleSearch = () => {
     }
   });
 };
+
+// 마운트 시 필터 없이 최신 3개만 호출
+onMounted(async () => {
+  try {
+    const { data } = await axios.get('/api/board/list', {
+      params: {
+        page: 0,
+        size: 3,
+        sort: 'boardCreated',
+        direction: 'desc'
+      }
+    });
+    recentPosts.value = data.data.boardList || [];
+  } catch (e) {
+    console.error('최신 게시물 조회 실패', e);
+  }
+});
 </script>
 
 <style scoped>

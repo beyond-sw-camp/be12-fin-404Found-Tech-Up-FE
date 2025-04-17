@@ -18,31 +18,39 @@ export const useBoardStore = defineStore('boardStore', {
       sort = 'boardCreated',
       direction = 'desc',
       category = null,
-      search = null,
-      type = null
+      search   = null,
+      type     = null
     } = {}) {
       try {
         const params = { page, size, sort, direction };
-
         if (category) params.category = category;
-        if (search) params.search = search;
-        if (type) params.type = type;
+        if (search)   params.search   = search;
+        if (type)     params.type     = type;
 
-        const response = await axios.get('/api/board/list', { params });
-
-        if (response.data && response.data.data) {
-          this.boardList = response.data.data.boardList;
-          this.totalElements = response.data.data.totalElements;
+        const { data } = await axios.get('/api/board/list', { params });
+        if (data?.data) {
+          this.boardList     = data.data.boardList;
+          this.totalElements = data.data.totalElements;
         } else {
-          console.error('응답 형식 오류:', response.data);
-          this.boardList = [];
+          this.boardList     = [];
           this.totalElements = 0;
         }
-      } catch (error) {
-        console.error('게시글 목록 조회 오류:', error);
-        this.boardList = [];
+      } catch (e) {
+        console.error('게시글 목록 조회 오류:', e);
+        this.boardList     = [];
         this.totalElements = 0;
       }
+    },
+
+    // 새로 추가한 정렬용 액션들
+    async fetchLatest(params = {}) {
+      return this.fetchBoardList({ ...params, sort: 'boardCreated', direction: 'desc' });
+    },
+    async fetchPopular(params = {}) {
+      return this.fetchBoardList({ ...params, sort: 'boardLikes', direction: 'desc' });
+    },
+    async fetchByComments(params = {}) {
+      return this.fetchBoardList({ ...params, sort: 'boardComments', direction: 'desc' });
     },
 
     async fetchBoardDetail(boardIdx) {
