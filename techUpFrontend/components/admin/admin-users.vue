@@ -1,5 +1,13 @@
 <template>
   <div class="admin__user table-responsive">
+    <div class="tp-header-search-box"
+      style="width:100%;display:inline-flex;background-color:#f8f8f8; padding-right: 2rem;">
+      <input type="text" placeholder="Search for Users..." v-model="storeRef.findUserKeyword.value"
+        style="color:black;background-color:inherit; padding-right: inherit;" />
+      <button type="submit" style="width:1rem;" @click="searchUsers">
+        <SvgSearch />
+      </button>
+    </div>
     <table class="table">
       <thead>
         <tr>
@@ -34,6 +42,10 @@ const storeRef = storeToRefs(adminStore);
 
 let startIndex = ref(0);
 let endIndex = ref(adminStore.PAGENATION_SIZE);
+
+const searchUsers = async () => {
+  await adminStore.findUsers();
+}
 
 const handlePagination = (data, start, end) => {
   console.log("data", data, "start", start, "end", end);

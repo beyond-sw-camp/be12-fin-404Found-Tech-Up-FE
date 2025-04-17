@@ -32,7 +32,7 @@ export const useAdminStore = defineStore( 'admin',() => {
 
   // 제품 목록 및 검색
   let productList = ref([]);
-  let findProductKeyword = ref([]);
+  let findProductKeyword = ref('');
   let productStorageList = ref([]);
   // 쿠폰 목록
   let couponList = ref([]);
@@ -66,7 +66,8 @@ export const useAdminStore = defineStore( 'admin',() => {
   // 사용자 목록
   let userStorageList = ref([]);
   let userList = ref([]);
-
+  // 사용자 검색
+  let findUserKeyword = ref('');
 
   // ------------------------------------------------
   // ---------------- actions -----------------------
@@ -79,8 +80,20 @@ export const useAdminStore = defineStore( 'admin',() => {
     });
     userStorageList.value = result.data.data;
     userList.value = userStorageList.value.slice(0, PAGENATION_SIZE);
-  }
+  };
 
+  
+  const findUsers = async () => {
+    try {
+      const result = await axios.get(`/api/user/finduser?keyword=${findUserKeyword.value}`);
+      userStorageList = [];
+      userList.value = [];
+      userStorageList.value = result.data.data;
+      userList.value = result.data.data.slice(0, PAGENATION_SIZE);
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   const sliceUserList = (start, end) => {
     userList.value = userStorageList.value.slice(start, end);
@@ -126,7 +139,7 @@ export const useAdminStore = defineStore( 'admin',() => {
         productIdx: result.data.data.idx,
         imagePath: imageUrls
       };
-      console.log(await axios.post('/api/productimage', imagePayload));
+      await axios.post('/api/productimage', imagePayload);
       alert("등록되었습니다!");
       navigateTo('/dashboard');
     }).catch((e) => {
@@ -232,7 +245,6 @@ export const useAdminStore = defineStore( 'admin',() => {
       productList.value = [];
       productStorageList.value = result.data.data;
       productList.value = result.data.data.slice(0, PAGENATION_SIZE);
-      console.log(productStorageList.value);
     } catch (e) {
       console.log(e);
     }
@@ -347,6 +359,8 @@ export const useAdminStore = defineStore( 'admin',() => {
     // 검색
     findProduct,
     findProductKeyword,
+    findUsers,
+    findUserKeyword,
     // 제품 목록, 쿠폰 목록, 사용자 목록, 알림 목록
     productStorageList,
     couponStorageList,
