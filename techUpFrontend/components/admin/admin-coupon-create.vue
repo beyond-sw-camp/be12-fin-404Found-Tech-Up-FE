@@ -51,29 +51,10 @@ let coupon = ref({
   productIdx: '',
 })
 
-const config = useRuntimeConfig();
-
 const adminStore = useAdminStore();
 
-const submitForm = () => {
-  // 실제 서버로 전송할 payload
-  const payload = {
-    ...coupon.value,
-  };
-  console.log('등록 데이터:', payload)
-  // 여기서 axios.post('/api/coupons', payload).then(...)
-  $fetch('/coupon/issueall', {
-    baseURL: config.public.apiBaseUrl,
-    method: 'POST',
-    body: payload,
-  }).then(async (result) => {
-    console.log(result.data);
-    alert("등록되었습니다!");
-    navigateTo('/dashboard');
-  }).catch((e) => {
-    alert("등록 실패: " + e);
-  });
-
+const submitForm = async () => {
+  await adminStore.submitCouponRegisterForm(coupon.value);
 }
 </script>
 

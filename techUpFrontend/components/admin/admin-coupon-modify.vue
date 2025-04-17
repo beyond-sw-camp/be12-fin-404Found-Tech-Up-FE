@@ -29,12 +29,13 @@
           required />
       </div>
 
-      <button type="submit" class="btn-submit">쿠폰 등록</button>
+      <button type="submit" class="btn-submit">쿠폰 수정</button>
     </form>
   </div>
 </template>
 
 <script setup>
+import { ref } from 'vue';
 import { useAdminStore } from '../../pinia/useAdminStore';
 import { storeToRefs } from 'pinia';
 
@@ -47,12 +48,21 @@ import { storeToRefs } from 'pinia';
  *  - product_idx (INT, FK)
  */
 
+const props = defineProps({
+  idx: Number
+})
+const idx = ref(props.idx);
+
 const adminStore = useAdminStore();
 const storeRef = storeToRefs(adminStore);
 
 const submitForm = async () => {
   await adminStore.submitCouponModifyForm();
 }
+
+onMounted(async () => {
+  await adminStore.loadCouponInfo(idx.value);
+});
 </script>
 
 <style scoped>

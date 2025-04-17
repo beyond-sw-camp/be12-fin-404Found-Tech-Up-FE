@@ -221,14 +221,35 @@ export const useAdminStore = defineStore( 'admin',() => {
   const loadCouponInfo = async (idx) => {
     try {
       const result = await axios.get(`/api/coupon/details/${idx}`);
-      targetCoupon.value.couponName = result.data.data.couponIdx;
+      targetCoupon.value.couponName = result.data.data.couponName;
       targetCoupon.value.discount=result.data.data.couponDiscountRate;
-      targetCoupon.value.expiryDate=result.data.data.couponValidDate;
       targetCoupon.value.productIdx=result.data.data.productIdx;
+      const resultDate = result.data.data.couponValidDate.toString().split('T')[0].split('-');
+      targetCoupon.value.expiryDate= `${resultDate[0]}-${resultDate[1]}-${resultDate[2]}`;
     } catch (e) {
       console.log(e);
     }
   }
+
+  const submitCouponRegisterForm = async (coupon) => {
+    // 실제 서버로 전송할 payload
+    const payload = {
+      ...coupon,
+    };
+    console.log('등록 데이터:', payload)
+    // 여기서 axios.post('/api/coupons', payload).then(...)
+    $fetch('/api/coupon/issueall', {
+      baseURL: config.public.apiBaseUrl,
+      method: 'POST',
+      body: payload,
+    }).then(async (result) => {
+      console.log(result.data);
+      alert("등록되었습니다!");
+      navigateTo('/dashboard');
+    }).catch((e) => {
+      alert("등록 실패: " + e);
+    });
+  };
 
   const submitCouponModifyForm = async () => {
     // 실제 서버로 전송할 payload
@@ -237,13 +258,26 @@ export const useAdminStore = defineStore( 'admin',() => {
     }
     console.log('수정할 쿠폰 데이터:', payload);
     // 여기서 axios.post('/api/coupons', payload).then(...)
-    const result = await axios.post(`/api/coupon/update/${route.params.idx}`, payload, {
+    const result = await axios.put(`/api/coupon/update/${route.params.idx}`, payload, {
       baseURL: config.public.apiBaseUrl,
     });
     console.log(result.data.data);
     alert("쿠폰이 수정되었습니다!");
+    await loadCouponList();
     navigateTo('/dashboard');
-  }
+  };
+
+  const deleteCoupon = async (idx) => {
+    if (confirm(`정말 쿠폰 ${idx}을 삭제할 것입니까? 사용한 사용자가 있는 쿠폰은 삭제되지 않습니다.`)){
+      try{
+        await axios.delete(`/api/coupon/delete?idx=${idx}`);
+        couponList.value = couponList.value.filter((value) => value.couponIdx !== idx);
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  };
+
 
   // ---------------------------------
   // ====== 초기화할 것은 여기로 ======
@@ -262,12 +296,13 @@ export const useAdminStore = defineStore( 'admin',() => {
 
     // CREATE 
     submitProductRegisterForm,
-
+    submitCouponRegisterForm,
     // UPDATE
     submitProductModifyForm,
     submitCouponModifyForm,
     // DELETE
     deleteProduct,
+    deleteCoupon,
     // 메타데이터
     modifyingProduct,
     modifyingCoupon,
@@ -289,6 +324,6 @@ export const useAdminStore = defineStore( 'admin',() => {
     totalRefunds,
     topSales,
     // 쿠폰 수정용 데이터
-    targetcoupon,
+    targetCoupon,
   };
 });

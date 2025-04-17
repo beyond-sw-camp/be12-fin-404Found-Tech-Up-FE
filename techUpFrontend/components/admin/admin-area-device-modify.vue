@@ -37,5 +37,11 @@
 </template>
 
 <script setup>
+import { ref } from 'vue';
+const props = defineProps({
+  idx: Number
+})
+
+const idx = ref(props.idx);
 
 </script>

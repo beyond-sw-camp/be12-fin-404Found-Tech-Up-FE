@@ -5,6 +5,7 @@
       <nuxt-link :href="`/product-details/${item.idx}`" style="background-color: #F2F3F5;display: block;">
         <img :src="item.images[0]" alt="image" />
       </nuxt-link>
+      {{ item.idx }}
     </td>
     <!-- title -->
     <td class="tp-cart-title">
