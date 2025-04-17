@@ -75,7 +75,7 @@ export const useCartStore = defineStore("cart_product", () => {
         { baseURL: config.public.apiBaseUrl }
       );
       if (response.data && response.data.data) {
-        toast.error(`${payload.name} removed from cart`);
+        toast.error(`${payload.product.name} removed from cart`);
         await fetchCartProducts();
       }
     } catch (error) {
