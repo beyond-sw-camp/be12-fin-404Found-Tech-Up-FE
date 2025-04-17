@@ -10,13 +10,14 @@
         </li>
 
         <!-- item list -->
-        <li
-          v-for="item in cartStore.cart_products"
-          :key="item.idx"
-          class="tp-order-info-list-desc"
-        >
-          <p>{{ item.name }} <span> x {{ item.orderQuantity }}</span></p>
-          <span>{{ formatPrice(item.price) }}</span>
+        <li v-for="item in cartStore.cart_products" :key="item.product.productIdx" class="tp-order-info-list-desc">
+          <p>{{ item.product.name }} <span> x {{ item.cartItemQuantity }}</span></p>
+          <span>{{ formatPrice(
+            (item.product.discount > 0
+              ? item.product.price * (1 - item.product.discount / 100)
+              : item.product.price
+            ) * item.cartItemQuantity
+          ) }}</span>
         </li>
 
         <!-- subtotal -->

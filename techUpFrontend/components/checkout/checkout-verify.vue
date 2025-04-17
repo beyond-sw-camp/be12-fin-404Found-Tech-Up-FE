@@ -1,27 +1,5 @@
 <template>
   <div class="tp-checkout-verify">
-    <!-- 로그인 안내 -->
-    <div class="tp-checkout-verify-item">
-      <p class="tp-checkout-verify-reveal">
-        이미 계정이 있으신가요?
-        <button
-          @click="openLogin = !openLogin"
-          type="button"
-          class="tp-checkout-login-form-reveal-btn"
-        >
-          로그인하기
-        </button>
-      </p>
-
-      <div
-        v-if="openLogin"
-        id="tpReturnCustomerLoginForm"
-        class="tp-return-customer"
-      >
-        <forms-login-form />
-      </div>
-    </div>
-
     <!-- 쿠폰 입력 안내 -->
     <div class="tp-checkout-verify-item">
       <p class="tp-checkout-verify-reveal">
