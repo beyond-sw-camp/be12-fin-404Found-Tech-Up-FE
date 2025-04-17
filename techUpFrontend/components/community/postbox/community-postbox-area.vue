@@ -5,33 +5,30 @@
         <!-- 게시글 리스트 -->
         <div class="col-xl-9 col-lg-8">
           <div class="tp-postbox-wrapper pr-50">
-            <!-- 데이터가 없을 경우 메시지 표시 -->
             <div v-if="paginatedItems.length === 0" class="alert alert-warning">
               표시할 게시글이 없습니다.
             </div>
-            
-            <!-- 각 아이템 렌더링 -->
+
             <community-postbox-item
               v-for="(post, i) in paginatedItems"
               :key="post.idx || i"
               :item="post"
             />
-            
-            <!-- 페이지네이션 -->
+
             <div class="tp-blog-pagination mt-50" v-if="totalElements > 0">
               <div class="tp-pagination">
                 <ui-pagination2
-  :data="boardStore.boardList" 
-  :totalItems="totalElements"
-  :itemsPerPage="size"
-  :initialPage="currentPage"  
-  @handlePaginate="onPageChange"
-/>
+                  :data="boardStore.boardList"
+                  :totalItems="totalElements"
+                  :itemsPerPage="size"
+                  :initialPage="currentPage"
+                  @handlePaginate="onPageChange"
+                />
               </div>
             </div>
           </div>
         </div>
-        
+
         <!-- 사이드바 -->
         <div class="col-xl-3 col-lg-4">
           <community-sidebar />
@@ -42,62 +39,67 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed, watch } from 'vue';
+import { ref, computed, onMounted, watch } from 'vue';
+import { useRoute } from 'vue-router';
 import { useBoardStore } from '@/pinia/useBoardStore';
 
+const route      = useRoute();
 const boardStore = useBoardStore();
 
+// 페이징 상태 (1-based)
 const currentPage = ref(1);
-const size = ref(10);
+const size        = ref(10);
 
-// 전체 게시글 수 - API 응답에서 가져옴
-const totalElements = computed(() => {
-  // API 응답에 있는 totalElements 사용
-  const total = boardStore.totalElements;
-  console.log('계산된 totalElements:', total);
-  
-  // 안전 장치: 값이 없거나 유효하지 않으면 boardList 길이 사용
-  if (!total || total <= 0) {
-    return boardStore.boardList.length;
-  }
-  
-  return total;
-});
+// 전체 게시글 수
+const totalElements = computed(() => boardStore.totalElements || 0);
 
-// 현재 페이지의 게시글 목록
-// 현재 페이지의 게시글 목록
-const paginatedItems = computed(() => {
-  if (!Array.isArray(boardStore.boardList) || boardStore.boardList.length === 0) {
-    return [];
-  }
-  
-  console.log(`현재 페이지: ${currentPage.value}, 전체 데이터: ${boardStore.boardList.length}개`);
-  
-  // 페이지 계산 (0 인덱스가 아닌 1 인덱스 기준)
-  const startIndex = (currentPage.value - 1) * size.value;
-  const endIndex = Math.min(startIndex + size.value, boardStore.boardList.length);
-  
-  console.log(`계산된 인덱스 범위: ${startIndex} ~ ${endIndex}`);
-  const items = boardStore.boardList.slice(startIndex, endIndex);
-  console.log(`현재 페이지 아이템 수: ${items.length}개`);
-  
-  return items;
-});
+// 현재 페이지 아이템 (이미 fetch된 전체 리스트 사용)
+const paginatedItems = computed(() => boardStore.boardList);
 
-// 페이지 변경 처리
-const onPageChange = async (newPage) => {
-  const pageParam = newPage - 1; // 1-based → 0-based
-  await boardStore.fetchBoardList({ page: pageParam, size: size.value });
-  window.scroll(0, 0);
+// 쿼리 변경 감지 → 한 곳에서만 fetchBoardList 호출
+const loadBoardList = async () => {
+  const page     = route.query.page   ? Number(route.query.page)   : 0;
+  const category = route.query.category?.toString() || null;
+  const search   = route.query.search  ?.toString() || null;
+  const type     = route.query.type    ?.toString() || null;
+
+  await boardStore.fetchBoardList({
+    page,
+    size: size.value,
+    sort: 'boardCreated',
+    direction: 'desc',
+    category,
+    search,
+    type
+  });
+
+  currentPage.value = page + 1;
 };
 
+// 초기 로드 및 이후 쿼리 변경 모두 처리
+onMounted(loadBoardList);
+watch(() => route.query, loadBoardList, { deep: true });
 
-onMounted(async () => {
-  console.log('컴포넌트 마운트됨');
-  await boardStore.fetchBoardList();
-  console.log(`초기 데이터 로드 완료: ${boardStore.boardList.length}개`);
-  console.log(`totalElements: ${boardStore.totalElements}, totalPages: ${Math.ceil(boardStore.totalElements / size.value)}`);
-});
+// 페이지 버튼 클릭 시
+const onPageChange = async (newPage) => {
+  const page     = newPage - 1;
+  const category = route.query.category?.toString() || null;
+  const search   = route.query.search  ?.toString() || null;
+  const type     = route.query.type    ?.toString() || null;
+
+  await boardStore.fetchBoardList({
+    page,
+    size: size.value,
+    sort: 'boardCreated',
+    direction: 'desc',
+    category,
+    search,
+    type
+  });
+
+  currentPage.value = newPage;
+  window.scrollTo(0, 0);
+};
 </script>
 
 <style scoped>

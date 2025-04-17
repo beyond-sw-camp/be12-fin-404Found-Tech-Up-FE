@@ -1,24 +1,28 @@
+<!-- CommunitySidebar.vue -->
 <template>
   <div class="community-sidebar-wrapper community-sidebar-ml--24">
     <!-- 검색 -->
-<div class="community-sidebar-widget mb-35">
-  <div class="community-sidebar-search">
-    <form @submit.prevent="handleSearch">
-      <div class="community-sidebar-search-combo">
-        <select v-model="searchType" class="search-type-select">
-          <option value="title">제목</option>
-          <option value="content">내용</option>
-          <option value="writer">작성자</option>
-        </select>
-        <input v-model="searchQuery" type="text" placeholder="검색어를 입력하세요" />
-        <button type="submit">
-          <svg-search />
-        </button>
+    <div class="community-sidebar-widget mb-35">
+      <div class="community-sidebar-search">
+        <form @submit.prevent="handleSearch">
+          <div class="community-sidebar-search-combo">
+            <select v-model="searchType" class="search-type-select">
+              <option value="title">제목</option>
+              <option value="content">내용</option>
+              <option value="writer">작성자</option>
+            </select>
+            <input
+              v-model="searchQuery"
+              type="text"
+              placeholder="검색어를 입력하세요"
+            />
+            <button type="submit">
+              <svg-search />
+            </button>
+          </div>
+        </form>
       </div>
-    </form>
-  </div>
-</div>
-
+    </div>
 
     <!-- 글쓰기 버튼 -->
     <div class="community-sidebar-widget mb-35">
@@ -53,118 +57,71 @@
     </div>
 
     <!-- 카테고리 -->
-    <!-- 카테고리 -->
-<div class="community-sidebar-widget widget_categories mb-35">
-  <h3 class="community-sidebar-widget-title">카테고리</h3>
-  <div class="community-sidebar-widget-content">
-    <ul>
-      <li v-for="category in categories" :key="category.name">
-        <nuxt-link :to="`/community?category=${encodeURIComponent(category.name)}`">
-          {{ category.label }}
-        </nuxt-link>
-      </li>
-    </ul>
-  </div>
-</div>
-
+    <div class="community-sidebar-widget widget_categories mb-35">
+      <h3 class="community-sidebar-widget-title">카테고리</h3>
+      <div class="community-sidebar-widget-content">
+        <ul>
+          <li v-for="category in categories" :key="category.name">
+            <nuxt-link
+              :to="`/community?category=${encodeURIComponent(category.name)}`"
+            >
+              {{ category.label }}
+            </nuxt-link>
+          </li>
+        </ul>
+      </div>
+    </div>
   </div>
 </template>
+
 <script setup>
-import { ref, computed, onBeforeMount, watch } from 'vue';
+import { ref, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { format } from 'date-fns';
 import { useBoardStore } from '@/pinia/useBoardStore';
 
 const route = useRoute();
-const router = useRouter(); // router 추가
+const router = useRouter();
 const boardStore = useBoardStore();
 
-// 검색어 입력 및 타입 선택 상태
-const searchQuery = ref('');
-const searchType = ref('title'); // 기본값: 제목
+// URL에 있는 값으로 초기화
+const searchQuery = ref(route.query.search?.toString() || '');
+const searchType  = ref(route.query.type?.toString()   || 'title');
 
-// 최근 게시물 3개
+// 최근 3개 게시물
 const recentPost = computed(() => boardStore.boardList.slice(0, 3));
 
-// 카테고리 정의
+// 카테고리 목록
 const categories = [
   { name: '자유', label: '자유' },
-  { name: 'Q&A', label: 'Q&A' },
-  { name: '추천', label: '추천' },
-  { name: '후기', label: '후기' }
+  { name: 'Q&A',  label: 'Q&A' },
+  { name: '추천',  label: '추천' },
+  { name: '후기',  label: '후기' }
 ];
 
-// 날짜 포맷
+// 날짜 포맷 함수
 const formatDate = (dateStr) => {
-  try {
-    return format(new Date(dateStr), 'yyyy-MM-dd');
-  } catch {
-    return dateStr;
-  }
+  try { return format(new Date(dateStr), 'yyyy-MM-dd'); }
+  catch { return dateStr; }
 };
 
-// 검색 요청 시 Vue Router 사용하여 쿼리 변경
+// 검색 시 URL 쿼리만 업데이트
 const handleSearch = () => {
-  if (searchQuery.value.trim()) {
-    router.push({
-      path: '/community',
-      query: {
-        ...route.query, // 기존 쿼리 유지(카테고리 등)
-        search: searchQuery.value.trim(),
-        type: searchType.value
-      }
-    });
-  }
+  if (!searchQuery.value.trim()) return;
+
+  router.push({
+    path: '/community',
+    query: {
+      ...route.query,
+      search: searchQuery.value.trim(),
+      type:   searchType.value,
+      page:   0
+    }
+  });
 };
-
-// 쿼리 파라미터로 게시글 불러오기 함수
-const loadBoardList = () => {
-  if (process.client) {
-    const category = route.query.category || null;
-    const search = route.query.search || null;
-    const type = route.query.type || null;
-
-    console.log('쿼리 확인:', { category, search, type }); // 디버깅용
-
-    boardStore.fetchBoardList({
-      page: 0,
-      size: 3,
-      sort: 'boardCreated',
-      direction: 'desc',
-      category,
-      search,
-      type
-    });
-  }
-};
-
-// 라우트 쿼리 변경 감지
-watch(
-  () => route.query,
-  () => {
-    console.log('라우트 쿼리 변경 감지:', route.query);
-    loadBoardList();
-  },
-  { deep: true }
-);
-
-// 초기 마운트 시 실행
-onBeforeMount(() => {
-  loadBoardList();
-  
-  // URL에 검색어가 있으면 검색 입력란에 설정
-  if (route.query.search) {
-    searchQuery.value = route.query.search.toString();
-  }
-  if (route.query.type) {
-    searchType.value = route.query.type.toString();
-  }
-});
 </script>
 
-
 <style scoped>
-/* 커뮤니티 사이드바 래퍼 */
 .community-sidebar-wrapper {
   margin-left: 24px;
   display: flex;
@@ -172,7 +129,6 @@ onBeforeMount(() => {
   gap: 1.5rem;
 }
 
-/* 공통 위젯 스타일 */
 .community-sidebar-widget {
   background-color: #f9f9f9;
   padding: 1rem 1.2rem;
@@ -180,7 +136,6 @@ onBeforeMount(() => {
   border: 1px solid #ddd;
 }
 
-/* 위젯 제목 */
 .community-sidebar-widget-title {
   font-size: 1.1rem;
   font-weight: 700;
@@ -190,34 +145,53 @@ onBeforeMount(() => {
   border-bottom: 1px solid #ccc;
 }
 
-/* 검색 영역 */
-.community-sidebar-search-input {
+.community-sidebar-search-combo {
   display: flex;
   align-items: center;
   border: 1px solid #d1d5db;
-  border-radius: 4px;
+  border-radius: 6px;
   overflow: hidden;
-}
-.community-sidebar-search-input input {
-  flex: 1;
-  padding: 8px 12px;
-  border: none;
-  outline: none;
   background-color: #fff;
+  height: 40px;
 }
-.community-sidebar-search-input button {
-  background-color: #007bff;
-  color: #fff;
+
+.search-type-select {
+  padding: 0 0.75rem;
   border: none;
-  padding: 8px 12px;
+  border-right: 1px solid #d1d5db;
+  background-color: #f9f9f9;
+  font-size: 0.9rem;
+  height: 100%;
+  outline: none;
+  min-width: 70px;
+  color: #333;
+  cursor: pointer;
+  appearance: none;
+}
+
+.community-sidebar-search-combo input {
+  flex: 1;
+  padding: 0 0.75rem;
+  border: none;
+  height: 100%;
+  font-size: 0.9rem;
+  background-color: #fff;
+  outline: none;
+}
+
+.community-sidebar-search-combo button {
+  padding: 0 0.75rem;
+  height: 100%;
+  border: none;
+  background-color: transparent;
+  color: #555;
   cursor: pointer;
   transition: background-color 0.3s;
 }
-.community-sidebar-search-input button:hover {
-  background-color: #0056b3;
+.community-sidebar-search-combo button:hover {
+  background-color: #eee;
 }
 
-/* 글쓰기 버튼 */
 .community-write-btn {
   display: block;
   width: 100%;
@@ -282,60 +256,4 @@ onBeforeMount(() => {
 .community-sidebar-widget-content ul li a:hover {
   color: #0056b3;
 }
-.community-sidebar-search-combo {
-  display: flex;
-  align-items: center;
-  border: 1px solid #d1d5db;
-  border-radius: 6px;
-  overflow: hidden;
-  background-color: #fff;
-  height: 40px;
-}
-
-
-.search-type-select {
-  padding: 8px 6px;
-  border: 1px solid #d1d5db;
-  border-radius: 4px;
-  background-color: #fff;
-  font-size: 0.95rem;
-}
-.search-type-select {
-  padding: 0 0.75rem;
-  border: none;
-  border-right: 1px solid #d1d5db;
-  background-color: #f9f9f9;
-  font-size: 0.9rem;
-  height: 100%;
-  outline: none;
-  min-width: 70px;
-  color: #333;
-  cursor: pointer;
-  appearance: none;
-}
-
-.community-sidebar-search-combo input {
-  flex: 1;
-  padding: 0 0.75rem;
-  border: none;
-  height: 100%;
-  font-size: 0.9rem;
-  background-color: #fff;
-  outline: none;
-}
-
-.community-sidebar-search-combo button {
-  padding: 0 0.75rem;
-  height: 100%;
-  border: none;
-  background-color: transparent;
-  color: #555;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.community-sidebar-search-combo button:hover {
-  background-color: #eee;
-}
-
 </style>
