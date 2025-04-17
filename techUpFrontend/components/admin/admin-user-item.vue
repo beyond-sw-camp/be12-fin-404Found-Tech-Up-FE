@@ -5,7 +5,7 @@
     <td data-info="email">{{ item.userEmail }}</td>
     <td data-info="posts">{{ item.userPosts }}</td>
     <td data-info="reviews">{{ item.userReviews }}</td>
-    <td><a href="#" class="tp-btn">주문 내역</a></td>
+    <td><nuxt-link :href="`/userorder/${item.userIdx}`" class="tp-btn">주문 내역</nuxt-link></td>
     <td><a href="#" class="tp-btn">쿠폰 발행</a></td>
     <td><a href="#" class="tp-btn">회원 정보</a></td>
   </tr>

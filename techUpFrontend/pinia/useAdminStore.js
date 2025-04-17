@@ -62,6 +62,7 @@ export const useAdminStore = defineStore( 'admin',() => {
     expiryDate: '',
     productIdx: '',
   })
+  let couponProduct = ref('');
 
   // 사용자 목록
   let userStorageList = ref([]);
@@ -69,9 +70,17 @@ export const useAdminStore = defineStore( 'admin',() => {
   // 사용자 검색
   let findUserKeyword = ref('');
 
+  // 사용자 주문 내역 관련
+  let orderStorageList = ref([]);
+  let orderList = ref([]);
+
+
   // ------------------------------------------------
   // ---------------- actions -----------------------
   // ------------------------------------------------
+
+
+  // ------------------ 사용자 정보 -------------------------
 
   const loadUserInfo = async () => {
     // 기존 정보를 가져온다.
@@ -97,7 +106,19 @@ export const useAdminStore = defineStore( 'admin',() => {
 
   const sliceUserList = (start, end) => {
     userList.value = userStorageList.value.slice(start, end);
-  }
+  };
+
+  const loadUserOrder = async (userIdx) => {
+    const result = await axios.get(`/api/order/orderlist/${userIdx}`, {
+      baseURL: config.public.apiBaseUrl,
+    });
+    orderStorageList.value = result.data.data;
+    orderList.value = orderStorageList.value.slice(0, PAGENATION_SIZE);
+  };
+
+  const sliceOrderList = (start, end) => {
+    orderList.value = orderStorageList.value.slice(start, end);
+  };
 
   // --------------- 제품 관련 ----------------------
 
@@ -107,7 +128,7 @@ export const useAdminStore = defineStore( 'admin',() => {
     });
     productStorageList.value = result.data.data;
     productList.value = result.data.data.slice(0, PAGENATION_SIZE);
-    console.log(result.data.data);
+    // console.log(result.data.data);
     return result;
   };
 
@@ -343,6 +364,7 @@ export const useAdminStore = defineStore( 'admin',() => {
     loadProductInfo,
     loadCouponInfo,
     loadUserInfo,
+    loadUserOrder,
     // CREATE 
     submitProductRegisterForm,
     submitCouponRegisterForm,
@@ -365,6 +387,7 @@ export const useAdminStore = defineStore( 'admin',() => {
     productStorageList,
     couponStorageList,
     userStorageList,
+    orderStorageList,
     // notificationList,
     // 제품 수정용 데이터
     targetProduct,
@@ -377,14 +400,16 @@ export const useAdminStore = defineStore( 'admin',() => {
     topSales,
     // 쿠폰 수정용 데이터
     targetCoupon,
-
+    couponProduct,
     // 페이지네이션 관련
     PAGENATION_SIZE,
     sliceProductList,
     sliceCouponList,
     sliceUserList,
+    sliceOrderList,
     productList,
     couponList,
     userList,
+    orderList,
   };
 });

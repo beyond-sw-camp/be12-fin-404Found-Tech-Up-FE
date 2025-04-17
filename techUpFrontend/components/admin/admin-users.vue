@@ -48,7 +48,7 @@ const searchUsers = async () => {
 }
 
 const handlePagination = (data, start, end) => {
-  console.log("data", data, "start", start, "end", end);
+  //console.log("data", data, "start", start, "end", end);
   adminStore.sliceUserList(start, end);
   startIndex.value = start;
   endIndex.value = end;

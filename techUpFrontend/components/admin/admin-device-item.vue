@@ -22,8 +22,8 @@
 
     <!-- action -->
     <td class="tp-cart-add-to-cart">
-      <button class="device-register tp-btn-2" @click="">
-        <span>발급</span>
+      <button class="device-register tp-btn-2" @click="issueCoupon(item.idx)">
+        <nuxt-link href="/coupon-register"><span>발급</span></nuxt-link>
       </button>
     </td>
     <td class="tp-cart-add-to-cart">
@@ -50,6 +50,10 @@ const props = defineProps({ item: Object });
 const item = props.item;
 
 const adminStore = useAdminStore();
+
+const issueCoupon = (idx) => {
+  adminStore.couponProduct = idx.toString();
+}
 
 </script>
 

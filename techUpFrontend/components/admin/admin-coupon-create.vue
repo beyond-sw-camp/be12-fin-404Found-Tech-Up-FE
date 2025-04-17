@@ -1,6 +1,6 @@
 <template>
   <div class="form-container">
-    <h2 class="form-title">쿠폰 등록</h2>
+    <h2 class="form-title">전체 사용자 대상 쿠폰 등록</h2>
     <form @submit.prevent="submitForm" class="space-y-6">
       <!-- 쿠폰 이름 -->
       <div class="form-group">
@@ -32,10 +32,12 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useAdminStore } from '../../pinia/useAdminStore';
-import { navigateTo } from 'nuxt/app';
+import { storeToRefs } from 'pinia';
 
+const adminStore = useAdminStore();
+const storeRef = storeToRefs(adminStore);
 /**
  * coupon 테이블 구조:
  *  - coupon_idx (PK, AUTO_INCREMENT)
@@ -51,11 +53,15 @@ let coupon = ref({
   productIdx: '',
 })
 
-const adminStore = useAdminStore();
-
 const submitForm = async () => {
   await adminStore.submitCouponRegisterForm(coupon.value);
 }
+
+onMounted(() => {
+  coupon.value.productIdx = storeRef.couponProduct.value;
+})
+
+
 </script>
 
 <style scoped>

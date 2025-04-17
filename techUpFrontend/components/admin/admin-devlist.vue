@@ -62,7 +62,7 @@ const searchProduct = async () => {
 }
 
 const handlePagination = (data, start, end) => {
-  console.log("data", data, "start", start, "end", end);
+  // console.log("data", data, "start", start, "end", end);
   adminStore.sliceProductList(start, end);
   startIndex.value = start;
   endIndex.value = end;

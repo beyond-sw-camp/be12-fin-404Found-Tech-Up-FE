@@ -2,7 +2,7 @@
   <div class="admin__address">
     <div class="tp-header-search-box"
       style="width:100%;display:inline-flex;background-color:#f8f8f8; padding-right: 2rem;">
-      <input type="text" placeholder="Search for Products..." v-model="searchText"
+      <input type="text" placeholder="Search for Coupon..." v-model="searchText"
         style="color:black;background-color:inherit; padding-right: inherit;" />
       <button type="submit" style="width:1rem;">
         <SvgSearch />
@@ -53,7 +53,7 @@ let endIndex = ref(filteredItems.length);
 
 
 const handlePagination = (data, start, end) => {
-  console.log("data", data, "start", start, "end", end);
+  //console.log("data", data, "start", start, "end", end);
   adminStore.sliceCouponList(start, end);
   startIndex.value = start;
   endIndex.value = end;

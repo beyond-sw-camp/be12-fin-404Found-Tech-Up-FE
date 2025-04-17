@@ -49,7 +49,7 @@ let startIndex = ref(0);
 let endIndex = ref(filteredItems.length);
 
 const handlePagination = (data, start, end) => {
-  console.log("data", data, "start", start, "end", end);
+  // console.log("data", data, "start", start, "end", end);
   filteredItems.value = data;
   startIndex.value = start;
   endIndex.value = end;
