@@ -47,14 +47,14 @@ import { useAdminStore } from '../../pinia/useAdminStore';
 
 const adminStore = useAdminStore();
 const storeRef = storeToRefs(adminStore);
-let filteredItems = ref(storeRef.couponList);
+let filteredItems = ref(storeRef.couponStorageList);
 let startIndex = ref(0);
 let endIndex = ref(filteredItems.length);
 
 
 const handlePagination = (data, start, end) => {
   console.log("data", data, "start", start, "end", end);
-  filteredItems.value = data;
+  adminStore.sliceCouponList(start, end);
   startIndex.value = start;
   endIndex.value = end;
 };

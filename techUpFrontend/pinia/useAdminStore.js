@@ -30,8 +30,10 @@ export const useAdminStore = defineStore( 'admin',() => {
   // 제품 목록 및 검색
   let productList = ref([]);
   let findProductKeyword = ref([]);
+  let productStorageList = ref([]);
   // 쿠폰 목록
   let couponList = ref([]);
+  let couponStorageList = ref([]);
   // 사용자 목록
   let userList = ref([]);
   // 특정 제품 정보(수정 전용)
@@ -66,7 +68,8 @@ export const useAdminStore = defineStore( 'admin',() => {
     const result = await axios.get('/api/product/list', {
       baseURL: config.public.apiBaseUrl,
     });
-    productList.value = result.data.data;
+    productStorageList.value = result.data.data;
+    productList.value = result.data.data.slice(0, 4);
     console.log(result.data.data);
     return result;
   };
@@ -191,7 +194,7 @@ export const useAdminStore = defineStore( 'admin',() => {
     if (confirm(`정말 제품 번호 ${idx}를 삭제할 것입니까? 구매 기록이 있거나 쿠폰이 발급된 제품은 삭제되지 않습니다.`)){
       try{
         await axios.delete(`/api/product/${idx}`);
-        productList.value = productList.value.filter((value) => value.idx !== idx);
+        productList.value = productStorageList.value.filter((value) => value.idx !== idx).slice(0,4);
       } catch (e) {
         console.log(e);
       }
@@ -201,20 +204,27 @@ export const useAdminStore = defineStore( 'admin',() => {
   const findProduct = async () => {
     try {
       const result = await axios.get(`/api/product/search?keyword=${findProductKeyword.value}`);
+      productStorageList = [];
       productList.value = [];
-      productList.value = result.data.data;
-      console.log(productList.value);
+      productStorageList.value = result.data.data;
+      productList.value = result.data.data.slice(0, 4);
+      console.log(productStorageList.value);
     } catch (e) {
       console.log(e);
     }
   };
+
+  const sliceProductList = (start, end) => {
+    productList.value = productStorageList.value.slice(start, end);
+  }
   // --------------- 쿠폰 관련 액션 -------------------
 
   const loadCouponList = async () => {
     const result = await axios.get('/api/coupon', {
       baseURL: config.public.apiBaseUrl,
     });
-    couponList.value = result.data.data.couponList;
+    couponList.value = result.data.data.couponList.slice(0, 4);
+    couponStorageList.value = result.data.data.couponList;
     return result.data.couponList;
   };
 
@@ -271,13 +281,15 @@ export const useAdminStore = defineStore( 'admin',() => {
     if (confirm(`정말 쿠폰 ${idx}을 삭제할 것입니까? 사용한 사용자가 있는 쿠폰은 삭제되지 않습니다.`)){
       try{
         await axios.delete(`/api/coupon/delete?idx=${idx}`);
-        couponList.value = couponList.value.filter((value) => value.couponIdx !== idx);
+        couponList.value = couponStorageList.value.filter((value) => value.couponIdx !== idx).slice(0,4);
       } catch (e) {
         console.log(e);
       }
     }
   };
-
+  const sliceCouponList = (start, end) => {
+    couponList.value = couponStorageList.value.slice(start, end);
+  }
 
   // ---------------------------------
   // ====== 초기화할 것은 여기로 ======
@@ -325,5 +337,11 @@ export const useAdminStore = defineStore( 'admin',() => {
     topSales,
     // 쿠폰 수정용 데이터
     targetCoupon,
+
+    // 페이지네이션
+    sliceProductList,
+    sliceCouponList,
+    productStorageList,
+    couponStorageList,
   };
 });
