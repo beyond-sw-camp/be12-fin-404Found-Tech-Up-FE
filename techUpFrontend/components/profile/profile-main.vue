@@ -1,5 +1,28 @@
 <script setup>
 import { useUserStore } from '@/pinia/useUserStore'; // useUserStore import 추가
+import { useWishlistStore } from '@/pinia/useWishlistStore'; // 위시리스트 스토어 가져오기
+import { ref, onMounted } from 'vue';
+// import * as bootstrap from 'bootstrap';
+// import ProfileDevices from '@/components/profile/profile-devices.vue'; // SVG 컴포넌트 임포트
+
+// const switchTab = (tabId) => {
+//   const triggerEl = document.querySelector(`#${tabId}-tab`);
+//   if (triggerEl) {
+//     const tab = new bootstrap.Tab(triggerEl);
+//     tab.show();
+//   }
+// };
+
+const wishlistStore = useWishlistStore(); // 위시리스트 스토어 초기화
+const userName = ref('test'); // 사용자 이름을 저장할 ref 변수
+const valueCount = ref({
+  alarmsCount: 0,
+  devicesCount: 0,
+  ordersCount: 0,
+  wishlistCount: 0,
+  couponsCount: 0
+})
+
 
 const userStore = useUserStore();
 const router = useRouter();
@@ -20,6 +43,13 @@ const logout = async () => {
     }
   }
 };
+
+// 위시리스트 데이터 가져오기
+onMounted(async () => {
+  await wishlistStore.fetchWishlist(); // 위시리스트 데이터 가져오기
+  console.log(wishlistStore.wishlist);
+  valueCount.wishlistCount = wishlistStore.wishlist.length || 0; // 갯수 저장 (비어있으면 0)
+});
 </script>
 
 <template>
@@ -28,16 +58,16 @@ const logout = async () => {
       <div class="row align-items-center">
         <div class="col-md-6">
           <div class="profile__main-inner d-flex flex-wrap align-items-center">
-            <div class="profile__main-thumb">
+            <!-- <div class="profile__main-thumb">
               <img src="/img/users/user-10.jpg" alt="">
               <div class="profile__main-thumb-edit">
                 <input id="profile-thumb-input" class="profile-img-popup" type="file">
                 <label for="profile-thumb-input"><i class="fa-light fa-camera"></i></label>
               </div>
-            </div>
+            </div> -->
             <div class="profile__main-content">
-              <h4 class="profile__main-title">환영합니다, 홍길동님!</h4>
-              <p>당신에게 <span>08</span>개 알림이 있습니다</p>
+              <h4 class="profile__main-title">환영합니다, <span>{{ userName }}</span>님!</h4>
+              <p>당신에게 <span>{{ valueCount.alarmsCount }}</span>개 알림이 있습니다</p>
             </div>
           </div>
         </div>
@@ -52,45 +82,53 @@ const logout = async () => {
       <div class="row gx-3">
         <div class="col-md-3 col-sm-6">
           <div class="profile__main-info-item">
-            <div class="profile__main-info-icon">
-              <span>
-                <span class="profile-icon-count profile-download">2</span>
-                <svg-download />
-              </span>
-            </div>
+            <nuxt-link to="/profile/profile-devices" class="nav-link">
+              <div class="profile__main-info-icon">
+                <span>
+                  <span class="profile-icon-count profile-download">{{ valueCount.devicesCount }}</span>
+                  <svg-download />
+                </span>
+              </div>
+            </nuxt-link>
             <h4 class="profile__main-info-title">내 기기 보기</h4>
           </div>
         </div>
         <div class="col-md-3 col-sm-6">
           <div class="profile__main-info-item">
-            <div class="profile__main-info-icon">
-              <span>
-                <span class="profile-icon-count profile-order">5</span>
-                <svg-orders />
-              </span>
-            </div>
+            <nuxt-link to="/profile-orders" class="nav-link">
+              <div class="profile__main-info-icon">
+                <span>
+                  <span class="profile-icon-count profile-order">{{ valueCount.ordersCount }}</span>
+                  <svg-orders />
+                </span>
+              </div>
+            </nuxt-link> 
             <h4 class="profile__main-info-title">주문</h4>
           </div>
         </div>
         <div class="col-md-3 col-sm-6">
           <div class="profile__main-info-item">
-            <div class="profile__main-info-icon">
-              <span>
-                <span class="profile-icon-count profile-wishlist">10</span>
-                <svg-wishlist-2 />
-              </span>
-            </div>
+            <nuxt-link to="/wishlist" class="nav-link"> 
+              <div class="profile__main-info-icon">
+                <span>
+                  <span class="profile-icon-count profile-wishlist">{{ wishlistStore.wishlists.length }}</span>
+                  <svg-wishlist-2 />
+                </span>
+              </div>
+            </nuxt-link>
             <h4 class="profile__main-info-title">위시리스트</h4>
           </div>
         </div>
         <div class="col-md-3 col-sm-6">
           <div class="profile__main-info-item">
-            <div class="profile__main-info-icon">
-              <span>
-                <span class="profile-icon-count profile-wishlist">07</span>
-                <svg-gift-box />
-              </span>
-            </div>
+            <nuxt-link to="/coupons" class="nav-link">
+              <div class="profile__main-info-icon">
+                <span>
+                  <span class="profile-icon-count profile-wishlist">{{ valueCount.couponsCount }}</span>
+                  <svg-gift-box />
+                </span>
+              </div>
+            </nuxt-link>
             <h4 class="profile__main-info-title">쿠폰함</h4>
           </div>
         </div>
