@@ -72,7 +72,7 @@ export const useUserStore = defineStore('user', {
     async login(user) {
         try {
             const response = await axios.post(`/api/login`, user);
-            this.userInfo = response.data.data; // 사용자 정보 저장
+            return response.data;
         } catch (error) {
             console.error("Login error", error.response ? error.response.data : error.message);
             throw error;
@@ -97,6 +97,15 @@ export const useUserStore = defineStore('user', {
           console.error('사용자 정보 가져오기 실패:', error);
           throw error; // 에러를 호출한 곳으로 전달
         }
-      },
+    },
+    async updateProfile(userInfo) {
+        try {
+            const response = await axios.post(`/api/user/updateprofile`, userInfo);
+            return response.data;
+        } catch (error) {
+            console.error("updateProfile error", error.response ? error.response.data : error.message);
+            throw error;
+        }
+    },
   },
 });

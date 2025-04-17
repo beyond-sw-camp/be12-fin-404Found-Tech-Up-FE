@@ -3,6 +3,39 @@ import { useUserStore } from '@/pinia/useUserStore'; // useUserStore import 추�
 
 const userStore = useUserStore();
 
+const updateuser = ref({
+  userPhone: "",
+  userAddress: ""
+})
+
+const userUpdate = async () => {
+  console.log(userStore.userInfo);
+  updateuser.value.userPhone = userStore.userInfo.userPhone;
+  updateuser.value.userAddress = userStore.userInfo.userAddress;
+  if (updateuser.value.userPhone === "") {
+    alert("전화 번호를 입력해주세요.");
+    return;
+  }
+
+  if (updateuser.value.userAddress === "") {
+    alert("주소를 입력해주세요.");
+    return;
+  }
+  try {
+    const response = await userStore.updateProfile(updateuser.value);
+    console.log("success:", response);
+    alert('회원정보 수정이 완료되었습니다.');
+  } catch (error) {
+    console.error('회원정보 수정 중 오류 발생:', error.response.data);
+    if (error.response.data.code) {
+      alert(error.response.data.message);
+    } else {
+      // 네트워크 에러 또는 서버와의 연결 문제
+      alert("서버와 연결할 수 없습니다. 다시 시도해주세요.");
+    }
+  }
+};
+
 const changeHandler = (e: { value: string; text: string }, index: number) => {
   console.log(e);
 };
@@ -17,13 +50,12 @@ onMounted(async () => {
     console.log(userStore.userInfo); // 사용자 정보 출력
   } catch (error) {
     console.error('사용자 정보를 가져오는 중 오류 발생:', error);
-    alert('사용자 정보를 가져오는 데 실패했습니다. 다시 시도해주세요.');
   }
 });
 </script>
 
 <template>
-  <form @submit.prevent="handleSubmit">
+  <form v-if="userStore.userInfo" @submit.prevent="handleSubmit">
     <div class="row">
       <div class="col-xxl-6 col-md-6">
         <div class="profile__input-box">
@@ -77,7 +109,8 @@ onMounted(async () => {
           <div class="profile__input">
             <input
               type="text"
-              :value="userStore.userInfo?.userPhone"
+              placeholder="Enter your phone number"
+              v-model="userStore.userInfo.userPhone"
             />
             <span>
               <svg-phone-2 />
@@ -101,7 +134,8 @@ onMounted(async () => {
           <div class="profile__input">
             <input
               type="text"
-              :value="userStore.userInfo?.userAddress"
+              placeholder="Enter your address"
+              v-model="userStore.userInfo.userAddress"
             />
             <span>
               <svg-address />
