@@ -11,7 +11,7 @@
   </template>
   
   <script setup>
-  useSeoMeta({ title: "Checkout Page" });
+  useSeoMeta({ title: "주문하기" });
   </script>
   
   
