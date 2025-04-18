@@ -17,6 +17,9 @@ export const useAdminStore = defineStore( 'admin',() => {
   let modifyingCoupon = ref(false);
   if (URLPath[1] === 'coupon-modify') modifyingCoupon.value = true;
 
+  let modifyingNotification = ref(false);
+  if (URLPath[1] === 'notification-modify') modifyingNotification.value = true;
+
   // 상수
   const PAGENATION_SIZE = 4;
 
@@ -83,6 +86,10 @@ export const useAdminStore = defineStore( 'admin',() => {
   // 알림 관련 
   let notificationStorageList = ref([]);
   let notificationList = ref([]);
+  let targetNotification = ref({
+    notiTitle: '',
+    notiContent: '',
+  });
 
   // ------------------------------------------------
   // ---------------- actions -----------------------
@@ -90,8 +97,48 @@ export const useAdminStore = defineStore( 'admin',() => {
 
   // -------------------- 알림 -------------------------
 
-  const sliceNotificationList = () => {
+  const loadNotificationList = async () => {
+    try {
+      const result = await axios.get('/api/notification/all');
+      console.log(result.data);
+      notificationStorageList.value = [];
+      notificationList.value = [];
+      notificationStorageList.value = result.data.data;
+      notificationList.value = result.data.data.slice(0, PAGENATION_SIZE);
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
+  const submitNotificationRegisterForm = async (notice) => {
+    const payload = {
+      ...notice,
+    };
+    console.log('알림 등록 데이터:', payload)
+    // 여기서 axios.post('/api/coupons', payload).then(...)
+    axios.post('/api/notification/all', payload, {
+      baseURL: config.public.apiBaseUrl
+    }).then(async (result) => {
+      alert("알림 공지가 등록되었습니다!");
+      navigateTo('/dashboard');
+    }).catch((e) => {
+      alert("등록 실패: " + e);
+    });
+  };
+
+  const sliceNotificationList = (start, end) => {
+    notificationList.value = notificationStorageList.value.slice(start, end);
+  };
+
+  const deleteNotification = async (idx) => {
+    if (confirm(`정말 이벤트 ${idx}번을 삭제할 것입니까?`)){
+      try{
+        await axios.delete(`/api/notification/all?idx=${idx}`);
+        notificationList.value = notificationStorageList.value.filter((value) => value.idx !== idx).slice(0,PAGENATION_SIZE);
+      } catch (e) {
+        console.log(e);
+      }
+    }
   };
 
   // ------------------ 사용자 정보 -------------------------
@@ -382,11 +429,13 @@ export const useAdminStore = defineStore( 'admin',() => {
     await loadCouponList();
     await loadProductList();
     await loadUserInfo();
+    await loadNotificationList();
   });
   
   return {
     loadCouponList,
     loadProductList,
+    loadNotificationList,
     loadStatistics,
     loadProductInfo,
     loadCouponInfo,
@@ -395,16 +444,17 @@ export const useAdminStore = defineStore( 'admin',() => {
     // CREATE 
     submitProductRegisterForm,
     submitCouponRegisterForm,
+    submitNotificationRegisterForm,
     // UPDATE
     submitProductModifyForm,
     submitCouponModifyForm,
     // DELETE
     deleteProduct,
     deleteCoupon,
+    deleteNotification,
     // 메타데이터
     modifyingProduct,
     modifyingCoupon,
-
     // 검색
     findProduct,
     findProductKeyword,
@@ -431,6 +481,7 @@ export const useAdminStore = defineStore( 'admin',() => {
     // 쿠폰 수정용 데이터
     targetCoupon,
     couponProduct,
+
     // 페이지네이션 관련
     PAGENATION_SIZE,
     sliceProductList,
