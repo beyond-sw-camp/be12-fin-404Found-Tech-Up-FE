@@ -2,6 +2,11 @@
   <div class="form-container">
     <h2 class="form-title">전체 사용자 대상 쿠폰 등록</h2>
     <form @submit.prevent="submitForm" class="space-y-6">
+
+      <div :v-show="onlyForUser" class="form-group">
+        <label class="form-label">발급 대상 사용자</label>
+        <p>{{ idx }}</p>
+      </div>
       <!-- 쿠폰 이름 -->
       <div class="form-group">
         <label class="form-label">쿠폰 이름</label>
@@ -32,9 +37,16 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref } from 'vue';
 import { useAdminStore } from '../../pinia/useAdminStore';
 import { storeToRefs } from 'pinia';
+
+
+import { useRoute } from 'vue-router';
+const route = useRoute();
+
+const idx = ref(route.params.idx);
+const onlyForUser = ref(idx.value ? true : false);
 
 const adminStore = useAdminStore();
 const storeRef = storeToRefs(adminStore);
@@ -54,7 +66,7 @@ let coupon = ref({
 })
 
 const submitForm = async () => {
-  await adminStore.submitCouponRegisterForm(coupon.value);
+  await adminStore.submitCouponRegisterForm(coupon.value, idx.value);
 };
 
 </script>
