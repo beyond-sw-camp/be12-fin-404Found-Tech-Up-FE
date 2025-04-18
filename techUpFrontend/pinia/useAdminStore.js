@@ -430,15 +430,8 @@ export const useAdminStore = defineStore( 'admin',() => {
     };
     console.log('이벤트 등록 데이터:', payload)
     // 여기서 axios.post('/api/coupons', payload).then(...)
-    try {
-      const result = await axios.post('/api/coupon/events', payload, {
-        baseURL: config.public.apiBaseUrl,
-      });
-      
-    } catch (e) {
-      alert(e);
-      return;
-    }
+
+    const result = await axios.post('/api/coupon/events', payload );
     alert("이벤트가 등록되었습니다!");
     await loadCouponList();
     navigateTo('/dashboard');
@@ -452,14 +445,7 @@ export const useAdminStore = defineStore( 'admin',() => {
     console.log('수정할 쿠폰 데이터:', payload);
     // 여기서 axios.put()
     // post를 하면 이벤트 쿠폰 발행이므로 혼동하지 말 것
-    try {
-      const result = await axios.put(`/api/coupon/events/${route.params.idx}`, payload, { 
-        baseURL: config.public.apiBaseUrl,
-      });
-    } catch (e) {
-      alert(e);
-      return;
-    }
+    const result = await axios.put(`/api/coupon/events/${route.params.idx}`, payload);
     alert("이벤트가 수정되었습니다!");
     await loadCouponList();
     navigateTo('/dashboard');

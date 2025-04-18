@@ -52,10 +52,10 @@ const storeRef = storeToRefs(adminStore);
  *  - product_idx (INT, FK)
  */
 let event = ref({
-  couponName: '',
-  discount: '',
-  expiryDate: '',
   productIdx: '',
+  discount: '',
+  couponName: '',
+  expiryDate: '',
   quantity: '',
 })
 
