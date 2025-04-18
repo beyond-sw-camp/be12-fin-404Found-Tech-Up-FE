@@ -9,14 +9,9 @@
           <SvgSearch />
         </button>
       </div>
-      <div class="ml-2" style="text-align:right;display:inline-flex;justify-content: right;">
+      <div class="ml-50" style="text-align:right;display:inline-flex;justify-content: right;">
         <button class="tp-btn-2" style="color:white;">
           <nuxt-link href="/notification-register">전체 알림 등록</nuxt-link>
-        </button>
-      </div>
-      <div class="ml-2" style="text-align:right;display:inline-flex;justify-content: right;">
-        <button class="tp-btn-2" style="color:white;">
-          <nuxt-link href="/event-register">쿠폰 이벤트 등록</nuxt-link>
         </button>
       </div>
     </span>

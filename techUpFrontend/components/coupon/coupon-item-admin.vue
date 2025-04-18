@@ -7,7 +7,7 @@
     <td><nuxt-link :href="`/coupon-modify/${item.couponIdx}`" class="tp-logout-btn"
         style="font-size:small">변경</nuxt-link>
     </td>
-    <td><button class="device-register tp-btn-2" @click="adminStore.deleteCoupon(item.couponIdx)">
+    <td><button class="device-register tp-btn-2" @click="deleteItem">
         <span>삭제</span>
       </button>
     </td>
@@ -22,5 +22,13 @@ const props = defineProps({ item: Object });
 const item = props.item;
 
 const adminStore = useAdminStore();
+
+const deleteItem = () => {
+  if (item.quantity) {
+    adminStore.deleteEvents(item.couponIdx);
+  } else {
+    adminStore.deleteCoupon(item.couponIdx);
+  }
+}
 
 </script>

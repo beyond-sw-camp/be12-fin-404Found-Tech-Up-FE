@@ -107,5 +107,13 @@ export const useUserStore = defineStore('user', {
             throw error;
         }
     },
+    async issueEventCoupon(eventIdx) {
+        try {
+            await axios.get(`/api/coupon/events/${eventIdx}`);
+            return;
+        } catch (e) {
+            alert("쿠폰 발급에 실패했습니다");
+        }
+    },
   },
 });

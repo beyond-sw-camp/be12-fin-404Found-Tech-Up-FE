@@ -9,8 +9,11 @@
       </button>
     </div>
     <div style="text-align:right;">
-      <button class="tp-btn-2" style="color:white;">
+      <button class="tp-btn-2 mr-10" style="color:white;">
         <nuxt-link href="/coupon-register">쿠폰 등록</nuxt-link>
+      </button>
+      <button class="tp-btn-2" style="color:white;">
+        <nuxt-link href="/event-register">쿠폰 이벤트 등록</nuxt-link>
       </button>
     </div>
     <div class="row">

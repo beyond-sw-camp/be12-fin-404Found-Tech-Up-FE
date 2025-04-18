@@ -5,25 +5,30 @@
       <!-- 쿠폰 이름 -->
       <div class="form-group">
         <label class="form-label">쿠폰 이름</label>
-        <input v-model="coupon.couponName" type="text" class="form-input" placeholder="예) 봄맞이 할인 쿠폰" required />
+        <input v-model="event.couponName" type="text" class="form-input" placeholder="예) 봄맞이 할인 쿠폰" required />
       </div>
 
       <!-- 할인율 -->
       <div class="form-group">
         <label class="form-label">할인율(%)</label>
-        <input v-model="coupon.discount" type="number" step="1" class="form-input" placeholder="예) 10" required />
+        <input v-model="event.discount" type="number" step="1" class="form-input" placeholder="예) 10" required />
       </div>
 
       <!-- 유효 기간 -->
       <div class="form-group">
         <label class="form-label">유효 기간</label>
-        <input v-model="coupon.expiryDate" type="date" class="form-input" required />
+        <input v-model="event.expiryDate" type="date" class="form-input" required />
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">발급 수량</label>
+        <input v-model="event.quantity" type="number" step="1" class="form-input" placeholder="예) 100" required />
       </div>
 
       <!-- 연관 상품 (product_idx) -->
       <div class="form-group">
         <label class="form-label">연관 상품 (product_idx)</label>
-        <input v-model="coupon.productIdx" type="number" class="form-input" placeholder="예) 101" required />
+        <input v-model="event.productIdx" type="number" class="form-input" placeholder="예) 101" required />
       </div>
 
       <button type="submit" class="btn-submit">쿠폰 등록</button>
@@ -46,16 +51,17 @@ const storeRef = storeToRefs(adminStore);
  *  - coupon_valid_date (DATETIME)
  *  - product_idx (INT, FK)
  */
-let coupon = ref({
+let event = ref({
   couponName: '',
   discount: '',
   expiryDate: '',
   productIdx: '',
+  quantity: '',
 })
 
 const submitForm = async () => {
-  await adminStore.submitCouponRegisterForm(coupon.value);
-};
+  await adminStore.submitEventRegisterForm(event.value);
+}
 
 </script>
 
