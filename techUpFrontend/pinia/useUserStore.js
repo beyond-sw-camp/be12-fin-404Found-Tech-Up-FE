@@ -107,5 +107,15 @@ export const useUserStore = defineStore('user', {
             throw error;
         }
     },
+    async deleteAccount() {
+        try {
+            const response = await axios.delete('/api/user/delete');
+            console.log("계정 삭제 성공:", response.data);
+            return response.data;
+        } catch (error) {
+            console.error("delete error", error.response ? error.response.data : error.message);
+            throw error;
+        }
+    },
   },
 });
