@@ -64,6 +64,9 @@ export default defineNuxtConfig({
   },
 
   vite: {
+    define: {
+      global: 'window', 
+    },
     ssr: {
       noExternal: ['vuetify']
     },
