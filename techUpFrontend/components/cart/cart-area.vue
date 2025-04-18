@@ -55,7 +55,7 @@
                     <h4>총합</h4>
                   </li>
                   <!-- items -->
-                  <li v-for="item in cartStore.cart_products" :key="item.productIdx"
+                  <li v-for="item in cartStore.cart_products" :key="item.product.productIdx"
                     class="tp-order-info-list-desc d-flex justify-content-between">
                     <p>{{ item.product.name }} <span>× {{ item.cartItemQuantity }}</span></p>
                     <span>{{ formatPrice(
@@ -92,6 +92,11 @@
 import { onMounted, ref } from 'vue';
 import { useCartStore } from "@/pinia/useCartStore";
 import { formatPrice } from "@/utils/index";
+
+const props = defineProps({
+  full_width: { type: Boolean, default: false },
+  shop_1600: { type: Boolean, default: false },
+})
 
 const cartStore = useCartStore();
 let couponCode = ref('');
