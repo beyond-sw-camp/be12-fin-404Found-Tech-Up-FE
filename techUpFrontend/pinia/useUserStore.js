@@ -56,7 +56,16 @@ export const useUserStore = defineStore('user', {
             const response = await axios.post(`/api/user/edit/password`, user);
             return response.data;
         } catch (error) {
-            console.error("Signup error", error.response ? error.response.data : error.message);
+            console.error("editPwd error", error.response ? error.response.data : error.message);
+            throw error;
+        }
+    },
+    async updatePwd(userInfo) {
+        try {
+            const response = await axios.post(`/api/user/update/password`, userInfo);
+            return response.data;
+        } catch (error) {
+            console.error("updatePwd error", error.response ? error.response.data : error.message);
             throw error;
         }
     },
