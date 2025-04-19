@@ -19,6 +19,16 @@ const valueCount = ref({
 const userStore = useUserStore();
 const router = useRouter();
 
+// 탭 전환 함수 추가
+const switchTab = (tabId) => {
+  // Bootstrap 탭 활성화
+  const tabElement = document.getElementById(tabId);
+  if (tabElement) {
+    const tab = new bootstrap.Tab(tabElement);
+    tab.show();
+  }
+};
+
 const logout = async () => {
   try {
     const response = await userStore.logout();
@@ -67,27 +77,27 @@ const logout = async () => {
       <div class="row gx-3">
         <div class="col-md-3 col-sm-6">
           <div class="profile__main-info-item">
-            <nuxt-link to="/wishlist" class="nav-link">
+            <a href="#" class="nav-link" @click.prevent="switchTab('nav-devices-tab')">
               <div class="profile__main-info-icon">
                 <span>
                   <span class="profile-icon-count profile-download">{{ deviceStore.registerList.length }}</span>
                   <svg-download />
                 </span>
               </div>
-            </nuxt-link>
+            </a>
             <h4 class="profile__main-info-title">내 기기 보기</h4>
           </div>
         </div>
         <div class="col-md-3 col-sm-6">
           <div class="profile__main-info-item">
-            <nuxt-link to="/wishlist" class="nav-link">
+            <a href="#" class="nav-link" @click.prevent="switchTab('nav-order-tab')">
               <div class="profile__main-info-icon">
                 <span>
                   <span class="profile-icon-count profile-order">{{ valueCount.ordersCount }}</span>
                   <svg-orders />
                 </span>
               </div>
-            </nuxt-link> 
+            </a> 
             <h4 class="profile__main-info-title">주문</h4>
           </div>
         </div>
