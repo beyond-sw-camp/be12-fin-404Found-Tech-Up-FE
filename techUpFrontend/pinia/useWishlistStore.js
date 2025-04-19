@@ -20,7 +20,7 @@ export const useWishlistStore = defineStore("wishlist_product", () => {
           ? response.data.data
           : [];
       }
-      //11003: 사용자가 로그인하지 않음 
+      // 11003: 사용자가 로그인하지 않음 
       else if (response.data.code === 11003) {
         wishlists.value = [];
       } else {
@@ -68,8 +68,8 @@ export const useWishlistStore = defineStore("wishlist_product", () => {
   }
 
   // 삭제 역시 토글 방식으로 구현 (이미 추가된 경우 토글하면 삭제되므로)
-  async function removeWishlist(payload) {
-    await toggleWishlist(payload.product.productIdx);
+  async function removeWishlist(product) {
+    await toggleWishlist(product.productIdx);
   }
 
   onMounted(() => {

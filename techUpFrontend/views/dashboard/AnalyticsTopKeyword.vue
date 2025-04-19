@@ -1,10 +1,12 @@
 <script setup>
 import { VAvatar, VCard, VCardItem, VCardText, VCardTitle, VIcon, VList, VListItem, VListItemSubtitle, VListItemTitle } from 'vuetify/components'
+import { useAdminStore } from '../../pinia/useAdminStore';
+import { storeToRefs } from 'pinia';
 
-const props = defineProps({
-  topKeywords: []
-});
-let topKeywords = [];
+const adminStore = useAdminStore();
+const storeRef = storeToRefs(adminStore);
+
+let topKeywords = ref([]);
 
 /*
 let topKeywords = props.topKeywords.map((value) => {

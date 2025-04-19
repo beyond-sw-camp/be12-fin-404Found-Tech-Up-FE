@@ -1,10 +1,10 @@
 <template>
   <div>
     <template v-if="cartStore.totalPriceQuantity.total < freeShippingThreshold">
-      <p>{{ `Add $${remainingAmount.toFixed(2)} more to qualify for free shipping` }}</p>
+      <p>{{ `${remainingAmount.toFixed(2)} 원 더 주문하고 무료 배송` }}</p>
     </template>
     <template v-else>
-      <p>You are eligible for free shipping</p>
+      <p>배달비 무료!</p>
     </template>
 
     <div class="progress">

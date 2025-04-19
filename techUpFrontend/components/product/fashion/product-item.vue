@@ -13,7 +13,7 @@
       <!-- product action -->
       <div class="tp-product-action-2 tp-product-action-blackStyle">
         <div class="tp-product-action-item-2 d-flex flex-column">
-          <button v-if="!isItemInCart(item)" @click="cartStore.addCartProduct(item)" type="button"
+          <button v-if="!isItemInCart(item)" @click="cartStore.addCartProduct(item, item.idx)" type="button"
             :class="`tp-product-action-btn-2 tp-product-add-cart-btn ${isItemInCart(item) ? 'active' : ''}`">
             <svg-add-cart />
             <span class="tp-product-tooltip tp-product-tooltip-right">Add to Cart</span>

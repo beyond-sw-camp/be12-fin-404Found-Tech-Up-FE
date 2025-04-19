@@ -88,7 +88,7 @@
           </div>
         </div>
         <div class="tp-product-details-add-to-cart mb-15 w-100">
-          <button @click="cartStore.addCartProduct(product)" class="tp-product-details-add-to-cart-btn w-100">
+          <button @click="cartStore.addCartProduct(product, product.idx)" class="tp-product-details-add-to-cart-btn w-100">
             Add To Cart
           </button>
         </div>

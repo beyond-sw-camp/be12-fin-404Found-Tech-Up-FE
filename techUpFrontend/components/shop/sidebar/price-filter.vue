@@ -13,7 +13,7 @@
           $0 - $0
         </span>
         <button @click="handlePrice" class="tp-shop-widget-filter-btn" type="button">
-          Filter
+          가격대 검색
         </button>
       </div>
     </div>

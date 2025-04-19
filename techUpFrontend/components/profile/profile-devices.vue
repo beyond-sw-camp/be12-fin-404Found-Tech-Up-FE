@@ -21,14 +21,15 @@
             <table style="text-align:center;">
               <thead>
                 <tr>
-                  <th colspan="2" class="tp-cart-header-product" style="width:50%;">제품</th>
-                  <th style="width:25%;">카테고리</th>
-                  <th style="width:25%;">등록</th>
+                  <th colspan="2" class="tp-cart-header-product" style="width:30%;">제품</th>
+                  <th style="width:20%;">카테고리</th>
+                  <th style="width:30%;">제품 설명</th>
+                  <th style="width:20%;">등록</th>
                 </tr>
               </thead>
               <tbody>
                 <!-- wishlist item start -->
-                <device-item v-for="item in deviceStore.deviceList" :key="item.id" :item="item" :registered="false" />
+                <device-item v-for="item in deviceStore.deviceList" :key="item.idx" :item="item" :registered="false" />
                 <!-- wishlist item end -->
               </tbody>
             </table>
@@ -53,14 +54,14 @@
             <table style="text-align:center;">
               <thead>
                 <tr>
-                  <th colspan="2" class="tp-cart-header-product" style="width:50%;">제품</th>
-                  <th style="width:25%;">카테고리</th>
-                  <th style="width:25%;">등록 해제</th>
-                </tr>
+                  <th colspan="2" class="tp-cart-header-product" style="width:35%;">제품</th>
+                  <th style="width:15%;">카테고리</th>
+                  <th style="width:30%;">제품 설명</th>
+                  <th style="width:20%;">등록</th>                </tr>
               </thead>
               <tbody>
                 <!-- wishlist item start -->
-                <device-item v-for="item in deviceStore.registerList" :key="item.id" :item="item" :registered="true" />
+                <device-item v-for="item in deviceStore.registerList" :key="item.idx" :item="item" :registered="true" />
                 <!-- wishlist item end -->
               </tbody>
             </table>
@@ -72,9 +73,8 @@
 </template>
 
 <script setup>
-import product_data from '@/data/product-data';
 import { useDeviceStore } from '../../pinia/useDeviceStore';
-import { watch } from 'vue';
+import { ref, watch, onMounted } from 'vue';
 
 let searchText = ref('');
 let foundResult = ref(false);
@@ -82,31 +82,23 @@ let hasDevices = ref(false);
 
 const deviceStore = useDeviceStore();
 
-watch(deviceStore.registerList, (value) => {
-  if (value.length === 0) {
-    hasDevices.value = false;
-  } else {
-    hasDevices.value = true;
-  }
-}, { deep: true });
-watch(deviceStore.deviceList, (value) => {
-  if (value.length === 0) {
-    foundResult.value = false;
-  } else {
-    foundResult.value = true;
-  }
-}, { deep: true });
-watch(hasDevices);
-watch(foundResult);
+// 검색어 변경 시 검색 실행
+watch(searchText, async (newValue) => {
+  await deviceStore.fetchDeviceList(newValue);
+});
 
-onMounted(() => {
-  // GET 요청으로 내가 등록한 기기 목록 받아오기
+onMounted(async () => {
+  // 페이지 로드 시 데이터 가져오기
+  await deviceStore.fetchMyDevices();
+  await deviceStore.fetchDeviceList();
 
-  // 임시로 항목 띄우는 용도
-  // product_data.forEach((value) => deviceStore.registerList.push(value));
-  // product_data.forEach((value) => deviceStore.deviceList.push(value));
+    // 데이터 가져온 후 상태 업데이트
+    hasDevices.value = deviceStore.registerList.length > 0;
+  foundResult.value = deviceStore.deviceList.length > 0;
+
+  console.log('onMounted - hasDevices:', hasDevices.value);
+  console.log('onMounted - foundResult:', foundResult.value);
 })
-
 </script>
 
 <style scoped>

@@ -8,30 +8,9 @@ import AnalyticsRecentOrders from '@/views/dashboard/AnalyticsRecentOrders.vue';
 import AnalyticsSalesRanking from '@/views/dashboard/AnalyticsSalesRanking.vue';
 import AnalyticsViewRanking from '@/views/dashboard/AnalyticsViewRanking.vue';
 import AnalyticsNewcomers from '../../views/dashboard/AnalyticsNewcomers.vue';
-import { useRuntimeConfig } from 'nuxt/app';
 import AnalyticsTotalOrders from '../../views/dashboard/AnalyticsTotalOrders.vue';
 import AnalyticsTotalRefunds from '../../views/dashboard/AnalyticsTotalRefunds.vue';
 
-const config = useRuntimeConfig();
-
-const result = await $fetch("/statistics", {
-  baseURL: config.public.apiBaseUrl
-});
-
-console.log(result.data);
-
-let topWishList = ref(result.data.topWishList.map((value) => {
-  let result = {};
-  result.abbr = value.brand;
-  result.amount = value.cw;
-}));
-
-let newComers = ref(result.data.newCustomers);
-let totalSales = ref(result.data.totalSales);
-let totalOrders = ref(result.data.totalOrders);
-let totalRefunds = ref(result.data.totalRefunds);
-
-let topSales = ref(result.data.topSales);
 
 </script>
 
@@ -40,27 +19,27 @@ let topSales = ref(result.data.topSales);
     <!-- 이번 달 신규 회원수-->
     <!-- 이번 달 총 주문 수 -->
     <!-- 이번 달 총 주문 취소 수 -->
-    <VCol cols="4" md="12">
+    <VCol cols="12" md="12">
       <!-- 요약 통계(신규 회원수, 총 주문 수, 총 주문 취소 수)-->
       <VRow class="match-height">
         <VCol cols="4" md="6">
-          <AnalyticsNewcomers :newComers="newComers" />
+          <AnalyticsNewcomers />
         </VCol>
         <VCol cols="4" md="6">
-          <AnalyticsTotalEarning :totalSales="totalSales" />
+          <AnalyticsTotalEarning />
         </VCol>
       </VRow>
       <VRow class="match-height">
         <VCol cols="4" md="6">
-          <AnalyticsTotalOrders :totalOrders="totalOrders" />
+          <AnalyticsTotalOrders />
         </VCol>
         <VCol cols="4" md="6">
-          <AnalyticsTotalRefunds :totalRefunds="totalRefunds" />
+          <AnalyticsTotalRefunds />
         </VCol>
       </VRow>
       <!-- 매출 요약 -->
       <VRow class="match-height">
-        <VCol cols="4" md="12">
+        <VCol cols="12" md="12">
           <AnalyticsMonthlyOverview />
         </VCol>
       </VRow>
@@ -84,13 +63,13 @@ let topSales = ref(result.data.topSales);
   <!-- 판매량 상위 제품 -->
   <VRow class="match-height">
     <VCol cols="12" md="12">
-      <AnalyticsSalesRanking :salesRank="topSales" />
+      <AnalyticsSalesRanking />
     </VCol>
   </VRow>
   <!-- 위시리스트 상위 제품 -->
   <VRow class="match-height">
     <VCol cols="12" md="12">
-      <AnalyticsTopWishlist :topWishList="topWishList" />
+      <AnalyticsTopWishlist />
     </VCol>
   </VRow>
   <!-- 상위 검색 키워드 목록 -->
