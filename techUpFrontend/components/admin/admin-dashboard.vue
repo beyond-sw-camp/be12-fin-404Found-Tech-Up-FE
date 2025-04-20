@@ -53,13 +53,6 @@ import AnalyticsTotalRefunds from '../../views/dashboard/AnalyticsTotalRefunds.v
 
 
   </VRow>
-  <!-- 조회수 상위 제품 -->
-  <!-- TODO -->
-  <VRow class="match-height">
-    <VCol cols="12" md="12">
-      <AnalyticsViewRanking />
-    </VCol>
-  </VRow>
   <!-- 판매량 상위 제품 -->
   <VRow class="match-height">
     <VCol cols="12" md="12">
@@ -70,13 +63,6 @@ import AnalyticsTotalRefunds from '../../views/dashboard/AnalyticsTotalRefunds.v
   <VRow class="match-height">
     <VCol cols="12" md="12">
       <AnalyticsTopWishlist />
-    </VCol>
-  </VRow>
-  <!-- 상위 검색 키워드 목록 -->
-  <!-- TODO -->
-  <VRow class="match-height">
-    <VCol cols="12" md="12">
-      <AnalyticsTopKeyword />
     </VCol>
   </VRow>
   <!-- 기존 컴포넌트 메모용 -->

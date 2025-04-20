@@ -25,7 +25,7 @@
               <div class="tab-content" id="dashboard-tabContent">
                 <div class="tab-pane fade show active" id="nav-dashboard" role="tabpanel"
                   aria-labelledby="nav-dashboard-tab">
-                  <admin-coupon-create />
+                  <admin-event-modify :idx="idx" />
                 </div>
               </div>
             </div>
@@ -37,4 +37,11 @@
 </template>
 
 <script setup>
+import { ref } from 'vue';
+const props = defineProps({
+  idx: Number
+})
+
+const idx = ref(props.idx);
+
 </script>

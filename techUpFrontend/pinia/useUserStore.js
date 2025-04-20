@@ -116,6 +116,15 @@ export const useUserStore = defineStore('user', {
             throw error;
         }
     },
+    async issueEventCoupon(eventIdx) {
+        try {
+            await axios.get(`/api/coupon/events/${eventIdx}`);
+            return;
+        } catch (e) {
+            alert("쿠폰 발급에 실패했습니다");
+        }
+    },
+    
     async deleteAccount() {
         try {
             const response = await axios.delete('/api/user/delete');
@@ -124,6 +133,7 @@ export const useUserStore = defineStore('user', {
         } catch (error) {
             console.error("delete error", error.response ? error.response.data : error.message);
             throw error;
+
         }
     },
   },

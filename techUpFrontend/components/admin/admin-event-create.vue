@@ -2,33 +2,33 @@
   <div class="form-container">
     <h2 class="form-title">전체 사용자 대상 쿠폰 등록</h2>
     <form @submit.prevent="submitForm" class="space-y-6">
-
-      <div :v-show="onlyForUser" class="form-group">
-        <label class="form-label">발급 대상 사용자</label>
-        <p>{{ idx }}</p>
-      </div>
       <!-- 쿠폰 이름 -->
       <div class="form-group">
         <label class="form-label">쿠폰 이름</label>
-        <input v-model="coupon.couponName" type="text" class="form-input" placeholder="예) 봄맞이 할인 쿠폰" required />
+        <input v-model="event.couponName" type="text" class="form-input" placeholder="예) 봄맞이 할인 쿠폰" required />
       </div>
 
       <!-- 할인율 -->
       <div class="form-group">
         <label class="form-label">할인율(%)</label>
-        <input v-model="coupon.discount" type="number" step="1" class="form-input" placeholder="예) 10" required />
+        <input v-model="event.discount" type="number" step="1" class="form-input" placeholder="예) 10" required />
       </div>
 
       <!-- 유효 기간 -->
       <div class="form-group">
         <label class="form-label">유효 기간</label>
-        <input v-model="coupon.expiryDate" type="date" class="form-input" required />
+        <input v-model="event.expiryDate" type="date" class="form-input" required />
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">발급 수량</label>
+        <input v-model="event.quantity" type="number" step="1" class="form-input" placeholder="예) 100" required />
       </div>
 
       <!-- 연관 상품 (product_idx) -->
       <div class="form-group">
         <label class="form-label">연관 상품 (product_idx)</label>
-        <input v-model="coupon.productIdx" type="number" class="form-input" placeholder="예) 101" required />
+        <input v-model="event.productIdx" type="number" class="form-input" placeholder="예) 101" required />
       </div>
 
       <button type="submit" class="btn-submit">쿠폰 등록</button>
@@ -37,16 +37,9 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref } from 'vue'
 import { useAdminStore } from '../../pinia/useAdminStore';
 import { storeToRefs } from 'pinia';
-
-
-import { useRoute } from 'vue-router';
-const route = useRoute();
-
-const idx = ref(route.params.idx);
-const onlyForUser = ref(idx.value ? true : false);
 
 const adminStore = useAdminStore();
 const storeRef = storeToRefs(adminStore);
@@ -58,16 +51,17 @@ const storeRef = storeToRefs(adminStore);
  *  - coupon_valid_date (DATETIME)
  *  - product_idx (INT, FK)
  */
-let coupon = ref({
-  couponName: '',
-  discount: '',
-  expiryDate: '',
+let event = ref({
   productIdx: '',
+  discount: '',
+  couponName: '',
+  expiryDate: '',
+  quantity: '',
 })
 
 const submitForm = async () => {
-  await adminStore.submitCouponRegisterForm(coupon.value, idx.value);
-};
+  await adminStore.submitEventRegisterForm(event.value);
+}
 
 </script>
 
