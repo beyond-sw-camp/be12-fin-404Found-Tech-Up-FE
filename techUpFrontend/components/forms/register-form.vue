@@ -185,10 +185,15 @@ const decreaseCounter = () => {
             v-model="signupuser.userNickname"
             :disabled="nicknameValidationDisabled"
           />
-          <button
+          <button v-if = "!nicknameValidationDisabled"
             type="button"
             class="tp-login-btn w-50"
             @click="validateNickname"
+            :disabled="nicknameValidationDisabled"
+          >중복 확인</button>
+          <button v-else
+            type="button"
+            class="tp-login-btn-closed w-50"
             :disabled="nicknameValidationDisabled"
           >중복 확인</button>
         </div>
@@ -211,8 +216,10 @@ const decreaseCounter = () => {
         </div>
         <div class="tp-login-input" style="display:inline-flex; width:100%;">
           <input id="emailValid" type="text" placeholder="000000" v-model="signupuser.inputCode" />
-          <button type="button" class="tp-login-btn w-50" v-show="!disableValidationButton"
+          <button v-if="!disableValidationButton" type="button" class="tp-login-btn w-50" :disabled="disableValidationButton"
             @click="verifyEmail">확인</button>
+          <button v-else type="button" class="tp-login-btn-closed w-50" :disabled="disableValidationButton"
+            >확인</button>
         </div>
         <err-message :msg="errors.emailValid" />
         <div>{{ clockCountingString }}</div>
@@ -274,3 +281,27 @@ const decreaseCounter = () => {
     </div>
   </form>
 </template>
+
+<style scoped lang="scss">
+.tp-login-btn {
+  font-weight: 500;
+  font-size: 16px;
+  color: var(--tp-common-white);
+  background-color: var(--tp-theme-primary);
+  padding: 14px 30px;
+  text-align: center;
+  display: inline-block;
+}
+.tp-login-btn:hover {
+  background-color: #2762af;
+}
+.tp-login-btn-closed {
+  font-weight: 500;
+  font-size: 16px;
+  color: var(--tp-common-white);
+  background-color: #505965;
+  padding: 14px 30px;
+  text-align: center;
+  display: inline-block;
+}
+</style>

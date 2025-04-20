@@ -1,41 +1,86 @@
 <template>
-    <section class="tp-checkout-area pb-120" style="background-color: #EFF1F5;">
-      <div class="container">
-        <div v-if="cartStore.cart_products.length === 0" class="text-center pt-50">
-          <h3 class="py-2">장바구니에 담긴 상품이 없습니다</h3>
-          <nuxt-link href="/shop" class="tp-checkout-btn">
-            쇼핑 계속하기
-          </nuxt-link>
-        </div>
-        <div v-else class="row">
+  <section class="tp-checkout-area pb-120" style="background-color: #EFF1F5;">
+    <div class="container">
+      <div v-if="cartStore.cart_products.length === 0" class="text-center pt-50">
+        <h3 class="py-2">장바구니에 담긴 상품이 없습니다</h3>
+        <nuxt-link href="/shop" class="tp-checkout-btn">
+          쇼핑 계속하기
+        </nuxt-link>
+      </div>
+      <div v-else class="row">
+        <!-- 전체를 <form> 으로 감싸고 @submit.prevent 로 처리 -->
+        <form @submit.prevent="submitOrder" class="row w-100">
           <div class="col-xl-7 col-lg-7">
-            <!-- 체크아웃 확인 영역 -->
+            <!-- 쿠폰 사용 검증 컴포넌트 -->
             <checkout-verify />
           </div>
-  
-          <!-- 결제 정보 입력 폼 -->
-          <form>
-            <div class="row">
-              <div class="col-lg-7">
-                <div class="tp-checkout-bill-area">
-                  <h3 class="tp-checkout-bill-title">결제자 정보</h3>
-                  <checkout-billing />
-                </div>
-              </div>
-              <div class="col-lg-5">
-                <!-- 주문 요약 및 결제 -->
-                <checkout-order />
-              </div>
-            </div>
-          </form>
-        </div>
+
+          <div class="col-lg-7">
+            <h3 class="tp-checkout-bill-title">결제자 정보</h3>
+            <!-- emit :update:billing => onBillingUpdate -->
+            <checkout-billing @update:billing="onBillingUpdate" />
+          </div>
+
+          <div class="col-lg-5">
+            <h3 class="tp-checkout-place-title">주문 내역</h3>
+            <!-- emit :update:shipping => onShippingUpdate -->
+            <checkout-order @update:shipping="onShippingUpdate" @update:agree="agree = $event" @update:payment="paymentMethod = $event"/>
+          </div>
+        </form>
       </div>
-    </section>
-  </template>
-  
-  <script setup>
-  import { useCartStore } from '@/pinia/useCartStore'
-  
-  const cartStore = useCartStore()
-  </script>
-  
+    </div>
+  </section>
+</template>
+
+<script setup>
+import { ref } from 'vue';
+import { useCartStore } from '@/pinia/useCartStore';
+import { toast } from 'vue3-toastify';
+
+const cartStore = useCartStore();
+
+const billingData = ref({
+  recipientName: '',
+  address: '',
+  postalCode: '',
+  addressDetail: '',
+  phone: '',
+  email: '',
+  memo: ''
+});
+const agree = ref(false);
+const shippingMethodSelected = ref('flat_rate');
+const paymentMethod = ref('');
+
+function onBillingUpdate(payload) {
+  billingData.value = payload;
+}
+
+function onShippingUpdate(method) {
+  shippingMethodSelected.value = method;
+  let cost = 0;
+  if (method === 'flat_rate') cost = 20;
+  else if (method === 'local_pickup') cost = 25;
+  cartStore.shipCost = cost;
+}
+
+async function submitOrder() {
+  if (!billingData.value.recipientName || !billingData.value.phone || !billingData.value.address) {
+    toast.error('주문자 정보를 모두 입력해주세요.');
+    return;
+  }
+  if (!shippingMethodSelected.value) {
+    toast.error('배송 방법을 선택해주세요.');
+    return;
+  }
+  if (!paymentMethod.value) {
+    toast.error('결제 방법을 선택해주세요.');
+    return;
+  }
+  if (!agree.value) {
+    toast.error('사이트 이용 약관에 동의해주세요.');
+    return;
+  }
+  await cartStore.order(billingData.value, shippingMethodSelected.value, paymentMethod.value);
+}
+</script>

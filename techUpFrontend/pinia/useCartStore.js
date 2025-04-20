@@ -170,6 +170,54 @@ export const useCartStore = defineStore("cart_product", () => {
     }
   }
 
+  // 주문하기
+  async function order(form, shippingMethod, paymentMethod) {
+    if (cart_products.value.length === 0) {
+      toast.error("장바구니에 상품이 없습니다.");
+      return;
+    }
+    
+    const items = cart_products.value.map((item) => ({
+      productIdx: item.product.productIdx,
+      orderDetailQuantity: item.cartItemQuantity,
+      orderDetailPrice: item.product.price - (item.product.price * Number(item.product.discount)) / 100,
+    }));
+
+    const payload = {
+      ...form,
+      shippingMethod,
+      paymentMethod,
+      items: items,
+    };
+
+    try {
+      // 주문 생성 API 호출
+      const config = useRuntimeConfig();
+      const res = await axios.post(
+        '/api/order',
+        payload,
+        { baseURL: config.public.apiBaseUrl }
+      );
+      // 주문 생성 성공 시
+      if (res.data && res.data.data) {
+        const orderIdx = res.data.data.orderIdx;
+        // 주문 생성 후 결제 API 호출
+        const payConfig = useRuntimeConfig();
+        const payRes = await axios.post(
+          `/api/order/payment/${orderIdx}`,
+          { baseURL: payConfig.public.apiBaseUrl }
+        );
+      }
+      // 결제 완료 페이지로 이동
+      if (payRes.data && payRes.data.data) {
+        router.push(`/order/payment/${orderIdx}`);
+      }
+    } catch (err) {
+      console.error('주문 실패', err);
+      alert('주문 생성에 실패했습니다.');
+    }
+  }
+
   // 초기 주문 수량 (1로 설정)
   function initialOrderQuantity() {
     orderQuantity.value = 1;
@@ -219,6 +267,7 @@ export const useCartStore = defineStore("cart_product", () => {
     quantityIncrement,
     removeCartProduct,
     clear_cart,
+    order,
     fetchCartProducts,
     initialOrderQuantity,
     totalPriceQuantity,

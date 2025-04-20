@@ -56,7 +56,16 @@ export const useUserStore = defineStore('user', {
             const response = await axios.post(`/api/user/edit/password`, user);
             return response.data;
         } catch (error) {
-            console.error("Signup error", error.response ? error.response.data : error.message);
+            console.error("editPwd error", error.response ? error.response.data : error.message);
+            throw error;
+        }
+    },
+    async updatePwd(userInfo) {
+        try {
+            const response = await axios.post(`/api/user/update/password`, userInfo);
+            return response.data;
+        } catch (error) {
+            console.error("updatePwd error", error.response ? error.response.data : error.message);
             throw error;
         }
     },
@@ -113,6 +122,18 @@ export const useUserStore = defineStore('user', {
             return;
         } catch (e) {
             alert("쿠폰 발급에 실패했습니다");
+        }
+    },
+    
+    async deleteAccount() {
+        try {
+            const response = await axios.delete('/api/user/delete');
+            console.log("계정 삭제 성공:", response.data);
+            return response.data;
+        } catch (error) {
+            console.error("delete error", error.response ? error.response.data : error.message);
+            throw error;
+
         }
     },
   },

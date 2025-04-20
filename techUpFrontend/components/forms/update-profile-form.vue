@@ -2,6 +2,7 @@
 import { useUserStore } from '@/pinia/useUserStore'; // useUserStore import 추가
 
 const userStore = useUserStore();
+const router = useRouter();
 
 const updateuser = ref({
   userPhone: "",
@@ -32,6 +33,25 @@ const userUpdate = async () => {
     } else {
       // 네트워크 에러 또는 서버와의 연결 문제
       alert("서버와 연결할 수 없습니다. 다시 시도해주세요.");
+    }
+  }
+};
+
+const deleteAccount = async () => {
+  if (confirm('정말로 회원 탈퇴를 진행하시겠습니까?')) {
+    try {
+      const response = await userStore.deleteAccount(); // 회원 탈퇴 API 호출
+      console.log('회원 탈퇴 성공:', response);
+      alert('회원 탈퇴가 완료되었습니다.');
+      router.push('/login'); // 탈퇴 성공 시 /login 경로로 이동
+    } catch (error) {
+      console.error('회원 탈퇴 중 오류 발생:', error.response.data);
+    if (error.response.data.code) {
+      alert(error.response.data.message);
+    } else {
+      // 네트워크 에러 또는 서버와의 연결 문제
+      alert("서버와 연결할 수 없습니다. 다시 시도해주세요.");
+    }
     }
   }
 };
@@ -151,11 +171,42 @@ onMounted(async () => {
           </div>
         </div>
       </div> -->
-      <div class="col-xxl-12">
+      <div class="col-xxl-12 d-flex justify-content-between align-items-center">
         <div class="profile__btn">
           <button type="button" class="tp-btn" @click="userUpdate">프로필 바꾸기</button>
+        </div>
+        <div class="profile__btn">
+          <button type="button" class="tp-btn tp-btn-red" @click="deleteAccount">회원 탈퇴하기</button>
         </div>
       </div>
     </div>
   </form>
 </template>
+
+<style scoped>
+.tp-btn {
+  background-color: var(--tp-theme-primary);
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.tp-btn:hover {
+  background-color: #2762af;
+}
+
+.tp-btn-red {
+  background-color: #ff4d4f;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.tp-btn-red:hover {
+  background-color: #d9363e;
+}
+</style>

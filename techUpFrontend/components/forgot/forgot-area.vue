@@ -244,3 +244,18 @@ const onSubmit = handleSubmit((values) => {
     </div>
   </section>
 </template>
+
+<style scoped lang="scss">
+.tp-login-btn {
+  font-weight: 500;
+  font-size: 16px;
+  color: var(--tp-common-white);
+  background-color: var(--tp-theme-primary);
+  padding: 14px 30px;
+  text-align: center;
+  display: inline-block;
+}
+.tp-login-btn:hover {
+  background-color: #2762af;
+}
+</style>

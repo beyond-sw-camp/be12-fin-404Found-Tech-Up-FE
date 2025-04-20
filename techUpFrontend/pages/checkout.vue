@@ -1,7 +1,7 @@
 <template>
     <div>
         <!-- breadcrumb start -->
-        <breadcrumb-4 title="Checkout" subtitle="Checkout" :bg_clr="true"/>
+        <breadcrumb-4 title="주문" subtitle="주문" :bg_clr="true"/>
         <!-- breadcrumb end -->
   
         <!-- checkout area start -->
@@ -11,7 +11,7 @@
   </template>
   
   <script setup>
-  useSeoMeta({ title: "Checkout Page" });
+  useSeoMeta({ title: "주문하기" });
   </script>
   
   

@@ -10,17 +10,16 @@
     <td class="tp-cart-title">
       <nuxt-link :href="`/product-details/${item.idx}`">{{ item.name }}</nuxt-link>
     </td>
-    <!-- price -->
+    <!-- category -->
     <td class="tp-cart-category"><span>{{ item.category }}</span></td>
-
+    <!-- category -->
+    <td class="tp-cart-category"><span>{{ item.description }}</span></td>
     <!-- action -->
     <td class="tp-cart-add-to-cart">
-      <button class="device-register tp-btn-2" v-if="!registered" @click="deviceStore.addDeviceToList(item)">
-        <svg-next-arrow />
+      <button class="device-register tp-btn" v-if="!registered" @click="deviceStore.addDeviceToList(item.idx)">
         <span>등록하기</span>
       </button>
-      <button class="device-register tp-btn-2" v-else @click="deviceStore.removeDeviceFromList(item)">
-        <svg-left-arrow />
+      <button class="device-register tp-btn" v-else @click="deviceStore.removeDeviceFromList(item.idx)">
         <span>등록 해제</span>
       </button>
     </td>
@@ -39,5 +38,17 @@ const props = defineProps({ item: Object, registered: Boolean });
 <style scoped>
 .device-register {
   color: aliceblue;
+}
+.tp-btn {
+  background-color: var(--tp-theme-primary);
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.tp-btn:hover {
+  background-color: #2762af;
 }
 </style>
