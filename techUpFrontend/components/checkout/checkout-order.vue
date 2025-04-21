@@ -40,7 +40,7 @@
         <!-- total -->
         <li class="tp-order-info-list-total d-flex justify-content-between">
           <span>총 주문 금액</span>
-          <span>{{ formatPrice(cartStore.totalPriceQuantity.total + shippingCost) }}</span>
+          <span>{{ formatPrice(cartStore.totalPriceQuantity.total + cartStore.shipCost) }}</span>
         </li>
       </ul>
     </div>
@@ -105,11 +105,6 @@ const shippingOptions = [
   { value: 'local_pickup', label: '매장 수령:', cost: 25 },
   { value: 'free_shipping', label: '무료 배송', cost: 0 },
 ]
-
-const shippingCost = computed(() => {
-  const opt = shippingOptions.find(o => o.value === shippingMethodLocal.value)
-  return opt ? opt.cost : 0
-})
 
 const agreeLocal = ref(props.agree)
 watch(agreeLocal, v => emit('update:agree', v))

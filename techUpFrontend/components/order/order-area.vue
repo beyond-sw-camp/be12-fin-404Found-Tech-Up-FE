@@ -28,7 +28,7 @@
                   <div class="col-sm-6">
                     <div class="tp-order-details-item">
                       <h4>Payment Method:</h4>
-                      <!-- <p>{{ order?.paymentMethod }}</p> -->
+                      <p>{{ order?.paymentMethod }}</p>
                     </div>
                   </div>
                 </div>
@@ -68,14 +68,13 @@
                   </li>
 
                   <!-- shipping -->
-                  <!-- shipping -->
                   <li class="tp-order-info-list-shipping">
                     <span>Shipping</span>
                     <div class="tp-order-info-list-shipping-item d-flex flex-column align-items-end">
                       <span>
                         <label>
-                          <!-- {{ order?.shippingMethod }}:
-                          <span>{{ formatPrice(order?.shippingCost) }}</span> -->
+                          {{ order?.shippingMethod }}:
+                          <span>{{ formatPrice(order?.shipCost) }}</span>
                         </label>
                       </span>
                     </div>
@@ -84,8 +83,7 @@
                   <!-- total -->
                   <li class="tp-order-info-list-total">
                     <span>Total</span>
-                    <!-- <span>{{ formatPrice(order?.orderTotalPrice + order?.shippingCost) }}</span> -->
-                    <span>{{ formatPrice(order?.orderTotalPrice) }}</span>
+                    <span>{{ formatPrice(order?.orderTotalPrice + order?.shipCost) }}</span>
                   </li>
                 </ul>
               </div>
