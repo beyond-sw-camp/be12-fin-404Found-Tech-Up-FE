@@ -68,16 +68,15 @@
                   </li>
 
                   <!-- shipping -->
-                  <li class="tp-order-info-list-shipping">
+                  <li class="tp-order-info-list-subtotal">
                     <span>Shipping</span>
-                    <div class="tp-order-info-list-shipping-item d-flex flex-column align-items-end">
+                    
                       <span>
                         <label>
                           {{ order?.shippingMethod }}:
                           <span>{{ formatPrice(order?.shipCost) }}</span>
                         </label>
                       </span>
-                    </div>
                   </li>
 
                   <!-- total -->

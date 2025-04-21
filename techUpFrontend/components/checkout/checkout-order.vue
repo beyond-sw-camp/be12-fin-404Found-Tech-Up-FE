@@ -101,8 +101,8 @@ const shippingMethodLocal = ref(props.shippingMethod)
 watch(shippingMethodLocal, val => emit('update:shipping', val))
 
 const shippingOptions = [
-  { value: 'flat_rate', label: '일반 배송:', cost: 20 },
-  { value: 'local_pickup', label: '매장 수령:', cost: 25 },
+  { value: 'flat_rate', label: '일반 배송:', cost: 3000 },
+  { value: 'local_pickup', label: '매장 수령:', cost: 1500 },
   { value: 'free_shipping', label: '무료 배송', cost: 0 },
 ]
 

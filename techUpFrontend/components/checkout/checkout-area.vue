@@ -59,8 +59,8 @@ function onBillingUpdate(payload) {
 function onShippingUpdate(method) {
   shippingMethodSelected.value = method;
   let cost = 0;
-  if (method === 'flat_rate') cost = 20;
-  else if (method === 'local_pickup') cost = 25;
+  if (method === 'flat_rate') cost = 3000;
+  else if (method === 'local_pickup') cost = 1500;
   cartStore.shipCost = cost;
 }
 
