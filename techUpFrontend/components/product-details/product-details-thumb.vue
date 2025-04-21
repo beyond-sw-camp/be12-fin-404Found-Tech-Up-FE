@@ -3,19 +3,19 @@
     <nav>
       <div class="nav nav-tabs flex-sm-column" id="productDetailsNavThumb" role="tablist">
         <button
-          v-for="(item, i) in product.imageURLs"
+          v-for="(image, i) in product.images"
           :key="i"
-          @click="productStore.handleImageActive(item.img)"
-          :class="`nav-link ${item.img === productStore.activeImg ? 'active' : ''}`"
+          @click="productStore.handleImageActive(image)"
+          :class="`nav-link ${image === productBackStore.activeImg ? 'active' : ''}`"
         >
-          <img :src="item.img" alt="nav-img" />
+          <img :src="image" alt="nav-img" />
         </button>
       </div>
     </nav>
     <div class="tab-content m-img" id="productDetailsNavContent">
       <div>
         <div class="tp-product-details-nav-main-thumb" style="background-color: #f5f6f8">
-          <img :src="productStore.activeImg" alt="prd-image" />
+          <img :src="productBackStore.activeImg" alt="prd-image" />
           <div v-if="product.videoId" class="tp-product-details-thumb-video">
             <a @click="utilsStore.playVideo(product.videoId)" class="tp-product-details-thumb-video-btn cursor-pointer popup-video">
               <i class="fas fa-play"></i>
@@ -32,13 +32,13 @@
 </template>
 
 <script setup>
-import { useProductStore } from "@/pinia/useProductStore";
+import { useProductBackStore } from "@/pinia/useProductBackStore";
 import { useUtilityStore } from "@/pinia/useUtilityStore";
 
 const props = defineProps({
   product: Object
 });
 
-const productStore = useProductStore();
+const productBackStore = useProductBackStore();
 const utilsStore = useUtilityStore();
 </script>
