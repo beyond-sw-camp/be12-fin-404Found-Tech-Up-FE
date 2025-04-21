@@ -11,6 +11,7 @@ export const useCartStore = defineStore("cart_product", () => {
   const cart_products = ref([]);
   let orderQuantity = ref(1);
   let cartOffcanvas = ref(false);
+  let shipCost = ref(0);
 
   async function fetchCartProducts() {
     try {
@@ -189,6 +190,7 @@ export const useCartStore = defineStore("cart_product", () => {
       ...form,
       shippingMethod,
       paymentMethod,
+      shipCost: shipCost.value,
       items: items,
     };
 
@@ -206,9 +208,10 @@ export const useCartStore = defineStore("cart_product", () => {
         const orderIdx = res.data.data.orderIdx;
         const storeId = res.data.data.storeId;
         const channelKey = res.data.data.channelKey;
-        // TODO: 배송비 추가 필요
-        const orderTotal = items.reduce((sum, i) =>
+        let orderTotal = items.reduce((sum, i) =>
           sum + i.orderDetailPrice * i.orderDetailQuantity, 0)
+        // 배송비 추가
+        orderTotal += shipCost.value;
         // 주문 생성 후 결제 API 호출
         const payConfig = useRuntimeConfig();
         const orderName = items.length < 2 ? items[0].productName + ' ' + items[0].orderDetailQuantity + '개' : items[0].productName + ' 외 ' + (items.length - 1) + '개 품목';
@@ -307,5 +310,6 @@ export const useCartStore = defineStore("cart_product", () => {
     handleCartOffcanvas,
     cartOffcanvas,
     orderQuantity,
+    shipCost,
   };
 });
