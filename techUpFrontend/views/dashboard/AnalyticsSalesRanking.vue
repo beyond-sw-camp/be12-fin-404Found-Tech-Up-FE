@@ -6,7 +6,7 @@ import { storeToRefs } from 'pinia';
 
 const adminStore = useAdminStore();
 const storeRef = storeToRefs(adminStore);
-let salesRank = ref(storeRef.topSales);
+console.log(storeRef.topSales.value)
 
 </script>
 
@@ -18,7 +18,7 @@ let salesRank = ref(storeRef.topSales);
 
     <VCardText>
       <VList class="card-list">
-        <VListItem v-for="data in salesRank" :key="data.abbr">
+        <VListItem v-for="data in storeRef.topSales.value" :key="data.productIdx">
           <template #prepend>
             <VAvatar :color="data.color" variant="tonal" size="40">
               {{ data.title }}
@@ -31,9 +31,7 @@ let salesRank = ref(storeRef.topSales);
             </h6>
           </VListItemTitle>
           <template #append>
-            <VAvatar :color="data.color" variant="tonal" size="40">
-              {{ data.number }}
-            </VAvatar>
+            {{ data.number }}
           </template>
         </VListItem>
       </VList>

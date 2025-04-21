@@ -1,3 +1,28 @@
+<script setup>
+import { useAdminStore } from '../../pinia/useAdminStore';
+
+const props = defineProps({ item: Object });
+
+const item = ref(props.item);
+const adminStore = useAdminStore();
+
+console.log(item.value);
+
+let title = ref('');
+let quantity = ref(0);
+let done = ref(false);
+
+let titleData = item.value.orderDetails.reduce((prev, value) => prev + 1, -1);
+
+title.value = `${item.value.orderDetails[0].orderDetailName}` + (titleData > 0 ? ` 외 ${titleData.toString()}건 ` : '');
+quantity.value = item.value.orderDetails.reduce((prev, value) => {
+  prev += value.orderDetailQuantity;
+}, 0);
+
+done.value = item.value.orderStatus === "PAID" ? false : true;
+
+
+</script>
 <template>
   <tr>
     <th scope="row"> #{{ item.orderIdx }}</th>
@@ -14,29 +39,3 @@
     </td>
   </tr>
 </template>
-<script setup>
-import { useAdminStore } from '../../pinia/useAdminStore';
-
-const props = defineProps({ item: Object });
-
-const item = ref(props.item);
-const adminStore = useAdminStore();
-
-let title = ref('');
-let quantity = ref(0);
-let done = ref(false);
-
-let titleData = props.orderDetails.reduce((prev, value) => {
-  if (prev == null) prev = value.orderDetailName;
-  count += 1;
-}, { main: null, count: -1 });
-
-title.value = `${titleData.main}` + (titleData.count > 0 ? ` 외 ${titleData.count.toString()}건 ` : '');
-quantity.value = props.orderDetails.reduce((prev, value) => {
-  prev += value.orderDetailQuantity;
-}, 0);
-
-done.value = props.orderStatus === pending ? false : true;
-
-
-</script>

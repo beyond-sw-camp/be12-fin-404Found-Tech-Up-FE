@@ -14,7 +14,7 @@
         </tr>
       </thead>
       <tbody>
-        <admin-user-item v-for="item in storeRef.orderList.value" :key="item.orderDate" :item="item" />
+        <admin-order-item v-for="item in storeRef.orderList.value" :key="item.orderDate" :item="item" />
       </tbody>
     </table>
     <div class="tp-pagination mt-30">

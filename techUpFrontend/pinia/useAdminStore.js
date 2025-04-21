@@ -291,15 +291,7 @@ export const useAdminStore = defineStore( 'admin',() => {
     try{
       const result = await axios.get("/api/statistics", {
       });
-      if (result.data.data.topWishList.length !== 0) {
-        topWishList.value = result.data.data.topWishList.map((value) => {
-          let result = {};
-          result.abbr = value.brand;
-          result.amount = value.cw;
-        });
-      } else {
-        topWishList.value = [];
-      }
+      topWishList.value = result.data.data.topWishList;
       newComers.value = result.data.data.newCustomers;
       totalSales.value = result.data.data.totalSales;
       totalOrders.value = result.data.data.totalOrders;
