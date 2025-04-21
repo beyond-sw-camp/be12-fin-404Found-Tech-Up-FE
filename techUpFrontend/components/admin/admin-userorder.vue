@@ -1,16 +1,16 @@
 <template>
   <div class="admin__user table-responsive">
-    <table class="table">
+    <table>
       <thead>
         <tr>
-          <th scope="col">번호</th>
-          <th scope="col">주문한 제품들</th>
-          <th scope="col">주문 시각</th>
-          <th scope="col">주문량</th>
-          <th scope="col">총 가격</th>
-          <th scope="col">상세</th>
-          <th scope="col">주문 취소/환불</th>
-          <th scope="col">처리 완료</th>
+          <th scope="col" style="font-size:x-small;width:10%">번호</th>
+          <th scope="col" style="font-size:x-small;width:25%">제품</th>
+          <th scope="col" style="font-size:x-small;width:10%">주문 시각</th>
+          <th scope="col" style="font-size:x-small;width:15%">총량</th>
+          <th scope="col" style="font-size:x-small;width:15%">총 가격</th>
+          <th scope="col" style="font-size:x-small;width:10%">상세</th>
+          <th scope="col" style="font-size:x-small;width:10%">취소<br>/환불</th>
+          <th scope="col" style="font-size:x-small;width:10%">처리 완료</th>
         </tr>
       </thead>
       <tbody>

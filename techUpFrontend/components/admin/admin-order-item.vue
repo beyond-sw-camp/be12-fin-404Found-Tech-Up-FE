@@ -17,6 +17,7 @@ let titleData = item.value.orderDetails.reduce((prev, value) => prev + 1, -1);
 title.value = `${item.value.orderDetails[0].orderDetailName}` + (titleData > 0 ? ` 외 ${titleData.toString()}건 ` : '');
 quantity.value = item.value.orderDetails.reduce((prev, value) => {
   prev += value.orderDetailQuantity;
+  return prev;
 }, 0);
 
 done.value = item.value.orderStatus === "PAID" ? false : true;
@@ -30,12 +31,14 @@ done.value = item.value.orderStatus === "PAID" ? false : true;
     <td data-info="date">{{ item.orderDate }}</td>
     <td data-info="quantity">{{ quantity }}</td>
     <td data-info="totalPrice">{{ item.orderTotalPrice }}</td>
-    <td><a href="#" class="tp-btn">상세 내역</a></td>
-    <td><a v-if="!done" href="#" class="tp-btn">취소/환불</a>
-      <div>-</div>
+    <td><a href="#" class="tp-btn" style="font-weight:bold;font-size:smaller;">상세 내역</a></td>
+    <td><a v-if="!done" href="#" class="tp-btn"
+        style="font-weight:bold;font-size:smaller;background-color: red;">취소/환불</a>
+      <div v-else>-</div>
     </td>
-    <td><a v-if="!done" href="#" class="tp-btn">처리하기</a>
-      <div>-</div>
+    <td><a v-if="!done" href="#" class="tp-btn"
+        style="font-weight:bold;font-size:smaller;background-color:green;">처리하기</a>
+      <div v-else>-</div>
     </td>
   </tr>
 </template>
