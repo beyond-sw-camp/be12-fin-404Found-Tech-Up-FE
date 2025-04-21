@@ -83,6 +83,7 @@ export const useAdminStore = defineStore( 'admin',() => {
   // 사용자 주문 내역 관련
   let orderStorageList = ref([]);
   let orderList = ref([]);
+  let orderDetailList = ref([]);
 
   // 알림 관련 
   let notificationStorageList = ref([]);
@@ -92,10 +93,19 @@ export const useAdminStore = defineStore( 'admin',() => {
     notiContent: '',
   });
 
+
+  let orderDetailOffcanvas = ref(false);
+
   // ------------------------------------------------
   // ---------------- actions -----------------------
   // ------------------------------------------------
 
+  const handleOrderDetailOffcanvas = (item) => {
+    if (!orderDetailOffcanvas.value) orderDetailList.value = item;
+    orderDetailOffcanvas.value = !orderDetailOffcanvas.value;
+  };
+
+  
   // -------------------- 알림 -------------------------
 
   const loadNotificationList = async () => {
@@ -554,6 +564,11 @@ export const useAdminStore = defineStore( 'admin',() => {
     couponList,
     userList,
     orderList,
-    notificationList
+    orderDetailList,
+    notificationList,
+
+    // 주문 상세보기 페이지
+    orderDetailOffcanvas,
+    handleOrderDetailOffcanvas,
   };
 });

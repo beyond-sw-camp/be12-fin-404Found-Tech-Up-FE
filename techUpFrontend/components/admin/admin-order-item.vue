@@ -22,6 +22,9 @@ quantity.value = item.value.orderDetails.reduce((prev, value) => {
 
 done.value = item.value.orderStatus === "PAID" ? false : true;
 
+const handleOffCanvas = (item) => {
+  adminStore.handleOrderDetailOffcanvas(item.orderDetails);
+};
 
 </script>
 <template>
@@ -31,7 +34,9 @@ done.value = item.value.orderStatus === "PAID" ? false : true;
     <td data-info="date">{{ item.orderDate }}</td>
     <td data-info="quantity">{{ quantity }}</td>
     <td data-info="totalPrice">{{ item.orderTotalPrice }}</td>
-    <td><a href="#" class="tp-btn" style="font-weight:bold;font-size:smaller;">상세 내역</a></td>
+    <td data-info="status">{{ item.orderStatus }}</td>
+    <td><button @click="handleOffCanvas(item)" class="tp-btn" style="font-weight:bold;font-size:smaller;">상세
+        내역</button></td>
     <td><a v-if="!done" href="#" class="tp-btn"
         style="font-weight:bold;font-size:smaller;background-color: red;">취소/환불</a>
       <div v-else>-</div>

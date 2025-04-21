@@ -34,6 +34,9 @@
       </div>
     </div>
   </section>
+  <!-- admin order detail viewer start -->
+  <admin-offcanvas-order-details />
+  <!-- admin order detail viewer end-->
 </template>
 
 <script setup>

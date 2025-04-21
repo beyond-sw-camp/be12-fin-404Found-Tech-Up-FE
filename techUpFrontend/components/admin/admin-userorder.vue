@@ -8,6 +8,7 @@
           <th scope="col" style="font-size:x-small;width:10%">주문 시각</th>
           <th scope="col" style="font-size:x-small;width:15%">총량</th>
           <th scope="col" style="font-size:x-small;width:15%">총 가격</th>
+          <th scope="col" style="font-size:x-small;width:10%">현재 상태</th>
           <th scope="col" style="font-size:x-small;width:10%">상세</th>
           <th scope="col" style="font-size:x-small;width:10%">취소<br>/환불</th>
           <th scope="col" style="font-size:x-small;width:10%">처리 완료</th>
