@@ -237,6 +237,12 @@ export const useCartStore = defineStore("cart_product", () => {
             { paymentId: payRes.paymentId },
             { baseURL: config.public.apiBaseUrl }
           );
+
+          if (res.data && res.data.data) {
+            // 결제 성공
+            toast.success("주문이 완료되었습니다.");
+            router.push(`/order/${orderIdx}`); 
+          }
         }
       }
     } catch (err) {
