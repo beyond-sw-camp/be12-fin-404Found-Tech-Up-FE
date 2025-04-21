@@ -3,6 +3,7 @@ import { defineStore } from "pinia";
 import { toast } from "vue3-toastify";
 import axios from "axios";
 import { useRouter, useRoute } from "vue-router";
+import * as PortOne from '@portone/browser-sdk/v2'
 
 export const useCartStore = defineStore("cart_product", () => {
   const route = useRoute();
@@ -193,6 +194,7 @@ export const useCartStore = defineStore("cart_product", () => {
     try {
       // 주문 생성 API 호출
       const config = useRuntimeConfig();
+
       const res = await axios.post(
         '/api/order',
         payload,
@@ -201,16 +203,39 @@ export const useCartStore = defineStore("cart_product", () => {
       // 주문 생성 성공 시
       if (res.data && res.data.data) {
         const orderIdx = res.data.data.orderIdx;
+        const storeId = res.data.data.storeId;
+        const channelKey = res.data.data.channelKey;
+        // TODO: 배송비 추가 필요
+        const orderTotal  = items.reduce((sum, i) => 
+          sum + i.orderDetailPrice * i.orderDetailQuantity, 0)
         // 주문 생성 후 결제 API 호출
         const payConfig = useRuntimeConfig();
-        const payRes = await axios.post(
-          `/api/order/payment/${orderIdx}`,
-          { baseURL: payConfig.public.apiBaseUrl }
-        );
-      }
-      // 결제 완료 페이지로 이동
-      if (payRes.data && payRes.data.data) {
-        router.push(`/order/payment/${orderIdx}`);
+
+        const payRes = await PortOne.requestPayment({
+          //storeId: Constants.PORTONE_STOREID,
+          storeId: storeId,
+          // 채널 키 설정
+          channelKey: channelKey,
+          paymentId:  `order-${orderIdx}-${Date.now()}`, 
+          orderName:  `${items[0].productIdx} 외 ${items.length - 1}`, 
+          totalAmount: orderTotal,
+          currency:   "CURRENCY_KRW",
+          payMethod:  paymentMethod
+        });
+
+        if (payRes.code) {
+          // SDK-level error
+          toast.error(payRes.message)
+          return
+        }
+        // 결제 검증
+        if (payRes.data) {
+          const res = await axios.post(
+            `/api/order/verify/${orderIdx}`,
+            { paymentId: payRes.paymentId },
+            { baseURL: config.public.apiBaseUrl }
+          );
+        }
       }
     } catch (err) {
       console.error('주문 실패', err);
