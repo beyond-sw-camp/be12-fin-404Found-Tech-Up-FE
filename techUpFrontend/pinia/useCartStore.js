@@ -177,8 +177,9 @@ export const useCartStore = defineStore("cart_product", () => {
       toast.error("장바구니에 상품이 없습니다.");
       return;
     }
-    
+
     const items = cart_products.value.map((item) => ({
+      productName: item.product.name,
       productIdx: item.product.productIdx,
       orderDetailQuantity: item.cartItemQuantity,
       orderDetailPrice: item.product.price - (item.product.price * Number(item.product.discount)) / 100,
@@ -206,21 +207,22 @@ export const useCartStore = defineStore("cart_product", () => {
         const storeId = res.data.data.storeId;
         const channelKey = res.data.data.channelKey;
         // TODO: 배송비 추가 필요
-        const orderTotal  = items.reduce((sum, i) => 
+        const orderTotal = items.reduce((sum, i) =>
           sum + i.orderDetailPrice * i.orderDetailQuantity, 0)
         // 주문 생성 후 결제 API 호출
         const payConfig = useRuntimeConfig();
+        const orderName = items.length < 2 ? items[0].productName + ' ' + items[0].orderDetailQuantity + '개' : items[0].productName + ' 외 ' + (items.length - 1) + '개 품목';
 
         const payRes = await PortOne.requestPayment({
           //storeId: Constants.PORTONE_STOREID,
           storeId: storeId,
           // 채널 키 설정
           channelKey: channelKey,
-          paymentId:  `order-${orderIdx}-${Date.now()}`, 
-          orderName:  `${items[0].productIdx} 외 ${items.length - 1}`, 
+          paymentId: `order-${orderIdx}-${Date.now()}` + crypto.randomUUID(),
+          orderName: orderName,
           totalAmount: orderTotal,
-          currency:   "CURRENCY_KRW",
-          payMethod:  paymentMethod
+          currency: "CURRENCY_KRW",
+          payMethod: paymentMethod
         });
 
         if (payRes.code) {
@@ -229,7 +231,7 @@ export const useCartStore = defineStore("cart_product", () => {
           return
         }
         // 결제 검증
-        if (payRes.data) {
+        if (payRes.txId) {
           const res = await axios.post(
             `/api/order/verify/${orderIdx}`,
             { paymentId: payRes.paymentId },
@@ -257,7 +259,7 @@ export const useCartStore = defineStore("cart_product", () => {
         // 할인 가격이 있는 경우
         if (cartItem.product.discount && cartItem.product.discount > 0) {
           unitPrice = cartItem.product.price - (cartItem.product.price * Number(cartItem.product.discount)) / 100;
-        } 
+        }
         else {
           unitPrice = cartItem.product.price;
         }
