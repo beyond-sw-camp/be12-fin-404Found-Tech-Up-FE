@@ -28,7 +28,7 @@
                   <div class="col-sm-6">
                     <div class="tp-order-details-item">
                       <h4>Payment Method:</h4>
-                      <p>{{ order?.paymentMethod }}</p>
+                      <p>{{ order?.paymentMethod === 'EASY_PAY' ? '카카오페이' : '신용 카드' }}</p>
                     </div>
                   </div>
                 </div>
@@ -54,10 +54,10 @@
                     <span>{{ formatPrice(
                       // TODO:할인율 표시하기기
                       // (d.product.discount > 0
-                      //   ? d.product.orderDetailPrice * (1 - d.product.discount / 100)
-                      //   : d.product.orderDetailPrice
+                      // ? d.product.orderDetailPrice * (1 - d.product.discount / 100)
+                      // : d.product.orderDetailPrice
                       // )
-                       d.orderDetailPrice * d.orderDetailQuantity
+                      d.orderDetailPrice * d.orderDetailQuantity
                     ) }}</span>
                   </li>
 
@@ -70,13 +70,16 @@
                   <!-- shipping -->
                   <li class="tp-order-info-list-subtotal">
                     <span>Shipping</span>
-                    
-                      <span>
-                        <label>
-                          {{ order?.shippingMethod }}:
-                          <span>{{ formatPrice(order?.shipCost) }}</span>
-                        </label>
-                      </span>
+                    <span>
+                      <label>
+                        {{
+                          order?.shippingMethod === 'local_pickup' ? '반값 택배' :
+                            order?.shippingMethod === 'flat_rate' ? '일반 택배' :
+                              '무료'
+                        }}:
+                        <span>{{ formatPrice(order?.shipCost) }}</span>
+                      </label>
+                    </span>
                   </li>
 
                   <!-- total -->
