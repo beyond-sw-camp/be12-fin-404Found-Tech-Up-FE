@@ -2,7 +2,7 @@
   <div :class="`tp-product-item-2 ${spacing ? 'mb-40' : ''}`">
     <div class="tp-product-thumb-2 p-relative z-index-1 fix w-img" style="background-color: #f2f3f5">
       <nuxt-link :href="`/product-details/${item.idx}`">
-        <img :src="item.img" alt="product-image" />
+        <img :src="item.images" alt="product-image" />
       </nuxt-link>
 
       <!-- product badge -->
