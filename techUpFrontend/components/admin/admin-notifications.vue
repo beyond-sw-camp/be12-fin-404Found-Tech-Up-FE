@@ -52,11 +52,13 @@ import { useAdminStore } from '../../pinia/useAdminStore';
 const adminStore = useAdminStore();
 const storeRef = storeToRefs(adminStore);
 
+let searchText = ref("");
+
 let startIndex = ref(0);
 let endIndex = ref(adminStore.PAGENATION_SIZE);
 
 const searchNotification = async () => {
-  await adminStore.findNotification();
+  await adminStore.findNotification(searchText.value);
 }
 
 const handlePagination = (data, start, end) => {
