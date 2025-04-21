@@ -37,12 +37,12 @@ const handleOffCanvas = (item) => {
     <td data-info="status">{{ item.orderStatus }}</td>
     <td><button @click="handleOffCanvas(item)" class="tp-btn" style="font-weight:bold;font-size:smaller;">상세
         내역</button></td>
-    <td><a v-if="!done" href="#" class="tp-btn"
-        style="font-weight:bold;font-size:smaller;background-color: red;">취소/환불</a>
+    <td><button v-if="!done" href="#" class="tp-btn" style="font-weight:bold;font-size:smaller;background-color: red;"
+        @click="adminStore.cancelOrder(item.orderIdx)">취소/환불</button>
       <div v-else>-</div>
     </td>
-    <td><a v-if="!done" href="#" class="tp-btn"
-        style="font-weight:bold;font-size:smaller;background-color:green;">처리하기</a>
+    <td><button v-if="!done" href="#" class="tp-btn"
+        style="font-weight:bold;font-size:smaller;background-color:green;">처리하기</button>
       <div v-else>-</div>
     </td>
   </tr>

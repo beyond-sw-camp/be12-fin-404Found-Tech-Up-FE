@@ -204,7 +204,7 @@ export const useAdminStore = defineStore( 'admin',() => {
     const payload = {
       ...notice,
     };
-    console.log('알림 등록 데이터:', payload)
+    // console.log('알림 등록 데이터:', payload)
     // 여기서 axios.post('/api/coupons', payload).then(...)
     axios.post('/api/notification/all', payload, {
       baseURL: config.public.apiBaseUrl
@@ -332,7 +332,7 @@ export const useAdminStore = defineStore( 'admin',() => {
     const payload = {
       ...targetProduct.value
     }
-    console.log(payload);
+    // console.log(payload);
     // axios.post('/api/products', payload) 등으로 서버 전송 처리
     axios.put(`/api/product/update/${route.params.idx}`, payload
     ).then(async (result) => {
@@ -568,8 +568,16 @@ export const useAdminStore = defineStore( 'admin',() => {
     }
   };
 
-  const updateProfitChart = () => {
 
+  const cancelOrder = async (idx) => {
+    if (confirm(`정말 주문 번호 ${idx}을 삭제할 것입니까? 이 조치는 되돌릴 수 없습니다.`)){
+      try{
+        await axios.post(`/api/order/cancel/${idx}`);
+        orderList.value = orderStorageList.value.filter((value) => value.orderIdx !== idx).slice(0,PAGENATION_SIZE);
+      } catch (e) {
+        console.log(e);
+      }
+    }
   };
 
   // ---------------------------------
@@ -656,5 +664,7 @@ export const useAdminStore = defineStore( 'admin',() => {
     // 주문 상세보기 페이지
     orderDetailOffcanvas,
     handleOrderDetailOffcanvas,
+
+    cancelOrder,
   };
 });
