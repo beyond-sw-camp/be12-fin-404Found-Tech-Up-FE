@@ -5,15 +5,15 @@
     <!-- about area end -->
 
     <!-- counter area start -->
-    <counter-area />
+    <!-- <counter-area /> -->
     <!-- counter area end -->
 
     <!-- history area start -->
-    <history-area />
+    <!-- <history-area /> -->
     <!-- history area end -->
 
     <!-- work area start -->
-    <work-area />
+    <!-- <work-area /> -->
     <!-- work area end -->
 
     <!-- author area start -->
