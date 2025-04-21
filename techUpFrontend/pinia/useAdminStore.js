@@ -3,6 +3,8 @@ import { defineStore } from "pinia";
 import { onMounted } from "vue";
 import { useRoute } from "vue-router";
 import axios from 'axios';
+import { useTheme } from "vuetify";
+import { hexToRgb } from '@layouts/utils'
 
 export const useAdminStore = defineStore( 'admin',() => {
   // 요청-응답을 위한 config
@@ -32,6 +34,83 @@ export const useAdminStore = defineStore( 'admin',() => {
   let totalRefunds = ref(0);
   
   let topSales = ref([]);
+
+  const vuetifyTheme = useTheme();
+  let incomeGraph = ref([{data:[]}]);
+  let graphOptions = computed(() => {
+    const currentTheme = ref(vuetifyTheme.current.value.colors)
+    const variableTheme = ref(vuetifyTheme.current.value.variables)
+    const disabledColor = `rgba(${hexToRgb(currentTheme.value['on-surface'])},${variableTheme.value['disabled-opacity']})`
+    const borderColor = `rgba(${hexToRgb(String(variableTheme.value['border-color']))},${variableTheme.value['border-opacity']})`
+  
+    return {
+      chart: {
+        offsetY: -10,
+        offsetX: -15,
+        parentHeightOffset: 0,
+        toolbar: { show: false },
+      },
+      plotOptions: {
+        bar: {
+          borderRadius: 6,
+          distributed: true,
+          columnWidth: '30%',
+        },
+      },
+      stroke: {
+        width: 2,
+        colors: [currentTheme.value.surface],
+      },
+      legend: { show: false },
+      grid: {
+        borderColor,
+        strokeDashArray: 7,
+        xaxis: { lines: { show: false } },
+      },
+      dataLabels: { enabled: false },
+      colors: [
+        currentTheme.value['track-bg'],
+        currentTheme.value['track-bg'],
+        currentTheme.value['track-bg'],
+        'rgba(var(--v-theme-primary),1)',
+        currentTheme.value['track-bg'],
+        currentTheme.value['track-bg'],
+      ],
+      states: {
+        hover: { filter: { type: 'none' } },
+        active: { filter: { type: 'none' } },
+      },
+      xaxis: {
+        categories: ['2개월 전', '지난 달', '이번 달'],
+        tickPlacement: 'on',
+        labels: { show: false },
+        crosshairs: { opacity: 0 },
+        axisTicks: { show: false },
+        axisBorder: { show: false },
+      },
+      yaxis: {
+        show: true,
+        tickAmount: 4,
+        labels: {
+          style: {
+            colors: disabledColor,
+            fontSize: '13px',
+          },
+          formatter: value => `${value > 9999 ? `${(value / 10000).toFixed(0)}` : value}만`,
+        },
+      },
+      responsive: [
+        {
+          breakpoint: 1560,
+          options: { plotOptions: { bar: { columnWidth: '35%' } } },
+        },
+        {
+          breakpoint: 1380,
+          options: { plotOptions: { bar: { columnWidth: '45%' } } },
+        },
+      ],
+    }
+  });
 
   // 제품 목록 및 검색
   let productList = ref([]);
@@ -83,6 +162,7 @@ export const useAdminStore = defineStore( 'admin',() => {
   // 사용자 주문 내역 관련
   let orderStorageList = ref([]);
   let orderList = ref([]);
+  let orderDetailList = ref([]);
 
   // 알림 관련 
   let notificationStorageList = ref([]);
@@ -92,16 +172,25 @@ export const useAdminStore = defineStore( 'admin',() => {
     notiContent: '',
   });
 
+
+  let orderDetailOffcanvas = ref(false);
+
   // ------------------------------------------------
   // ---------------- actions -----------------------
   // ------------------------------------------------
 
+  const handleOrderDetailOffcanvas = (item) => {
+    if (!orderDetailOffcanvas.value) orderDetailList.value = item;
+    orderDetailOffcanvas.value = !orderDetailOffcanvas.value;
+  };
+
+  
   // -------------------- 알림 -------------------------
 
   const loadNotificationList = async () => {
     try {
       const result = await axios.get('/api/notification/all');
-      console.log(result.data);
+      // console.log(result.data);
       notificationStorageList.value = [];
       notificationList.value = [];
       notificationStorageList.value = result.data.data;
@@ -204,9 +293,7 @@ export const useAdminStore = defineStore( 'admin',() => {
       formdata.append("file", file);
       const resultUrl = await axios.put('/api/productimage/upload', formdata);
       imageUrls.push(resultUrl.data.data);
-      
     }
-    console.log(imageUrls);
     const payload = {
       ...product,
       ssdSpec: (product.category === 'SSD' ? ssd : {}),
@@ -291,20 +378,15 @@ export const useAdminStore = defineStore( 'admin',() => {
     try{
       const result = await axios.get("/api/statistics", {
       });
-      if (result.data.data.topWishList.length !== 0) {
-        topWishList.value = result.data.data.topWishList.map((value) => {
-          let result = {};
-          result.abbr = value.brand;
-          result.amount = value.cw;
-        });
-      } else {
-        topWishList.value = [];
-      }
+      topWishList.value = result.data.data.topWishList;
       newComers.value = result.data.data.newCustomers;
       totalSales.value = result.data.data.totalSales;
       totalOrders.value = result.data.data.totalOrders;
       totalRefunds.value = result.data.data.totalRefunds;
       topSales.value = result.data.data.topSales;
+      // 그래프 갱신 
+      incomeGraph.value = [{data:result.data.data.incomeData}];
+
     } catch (e) {
       console.log(e);
     }
@@ -486,6 +568,10 @@ export const useAdminStore = defineStore( 'admin',() => {
     }
   };
 
+  const updateProfitChart = () => {
+
+  };
+
   // ---------------------------------
   // ====== 초기화할 것은 여기로 ======
   onMounted(async () => {
@@ -545,6 +631,8 @@ export const useAdminStore = defineStore( 'admin',() => {
     totalOrders,
     totalRefunds,
     topSales,
+    incomeGraph,
+    graphOptions,
     // 쿠폰 수정용 데이터
     targetCoupon,
     couponProduct,
@@ -562,6 +650,11 @@ export const useAdminStore = defineStore( 'admin',() => {
     couponList,
     userList,
     orderList,
-    notificationList
+    orderDetailList,
+    notificationList,
+
+    // 주문 상세보기 페이지
+    orderDetailOffcanvas,
+    handleOrderDetailOffcanvas,
   };
 });
