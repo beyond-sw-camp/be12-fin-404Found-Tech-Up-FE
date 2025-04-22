@@ -570,7 +570,7 @@ export const useAdminStore = defineStore( 'admin',() => {
 
 
   const cancelOrder = async (idx) => {
-    if (confirm(`정말 주문 번호 ${idx}을 삭제할 것입니까? 이 조치는 되돌릴 수 없습니다.`)){
+    if (confirm(`정말 주문 번호 ${idx}을 취소할 것입니까? 이 조치는 되돌릴 수 없습니다.`)){
       try{
         await axios.post(`/api/order/cancel/${idx}`);
         // TODO: 사용자 정보 다시 불러오기
