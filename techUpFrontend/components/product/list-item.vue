@@ -2,7 +2,7 @@
   <div class="tp-product-list-item d-md-flex">
     <div class="tp-product-list-thumb p-relative fix">
       <nuxt-link :href="`/product-details/${item.idx}`" style="height: 310px;background-color: #f2f3f5;">
-        <img :src="item.img" alt="product-img" />
+        <img :src="item.images[0]" alt="product-img" />
         <div class="tp-product-badge">
           <span v-if="item.stock <= 0" class="product-hot">out-of-stock</span>
         </div>

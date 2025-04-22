@@ -3,6 +3,7 @@ import { defineStore } from "pinia";
 import { toast } from "vue3-toastify";
 import axios from "axios";
 import { useRouter, useRoute } from "vue-router";
+import * as PortOne from '@portone/browser-sdk/v2'
 
 export const useCartStore = defineStore("cart_product", () => {
   const route = useRoute();
@@ -10,6 +11,7 @@ export const useCartStore = defineStore("cart_product", () => {
   const cart_products = ref([]);
   let orderQuantity = ref(1);
   let cartOffcanvas = ref(false);
+  let shipCost = ref(0);
 
   async function fetchCartProducts() {
     try {
@@ -176,8 +178,9 @@ export const useCartStore = defineStore("cart_product", () => {
       toast.error("장바구니에 상품이 없습니다.");
       return;
     }
-    
+
     const items = cart_products.value.map((item) => ({
+      productName: item.product.name,
       productIdx: item.product.productIdx,
       orderDetailQuantity: item.cartItemQuantity,
       orderDetailPrice: item.product.price - (item.product.price * Number(item.product.discount)) / 100,
@@ -187,12 +190,14 @@ export const useCartStore = defineStore("cart_product", () => {
       ...form,
       shippingMethod,
       paymentMethod,
+      shipCost: shipCost.value,
       items: items,
     };
 
     try {
       // 주문 생성 API 호출
       const config = useRuntimeConfig();
+
       const res = await axios.post(
         '/api/order',
         payload,
@@ -201,16 +206,47 @@ export const useCartStore = defineStore("cart_product", () => {
       // 주문 생성 성공 시
       if (res.data && res.data.data) {
         const orderIdx = res.data.data.orderIdx;
+        const storeId = res.data.data.storeId;
+        const channelKey = res.data.data.channelKey;
+        let orderTotal = items.reduce((sum, i) =>
+          sum + i.orderDetailPrice * i.orderDetailQuantity, 0)
+        // 배송비 추가
+        orderTotal += shipCost.value;
         // 주문 생성 후 결제 API 호출
         const payConfig = useRuntimeConfig();
-        const payRes = await axios.post(
-          `/api/order/payment/${orderIdx}`,
-          { baseURL: payConfig.public.apiBaseUrl }
-        );
-      }
-      // 결제 완료 페이지로 이동
-      if (payRes.data && payRes.data.data) {
-        router.push(`/order/payment/${orderIdx}`);
+        const orderName = items.length < 2 ? items[0].productName + ' ' + items[0].orderDetailQuantity + '개' : items[0].productName + ' 외 ' + (items.length - 1) + '개 품목';
+
+        const payRes = await PortOne.requestPayment({
+          //storeId: Constants.PORTONE_STOREID,
+          storeId: storeId,
+          // 채널 키 설정
+          channelKey: channelKey,
+          paymentId: `order-${orderIdx}-${Date.now()}` + crypto.randomUUID(),
+          orderName: orderName,
+          totalAmount: orderTotal,
+          currency: "CURRENCY_KRW",
+          payMethod: paymentMethod
+        });
+
+        if (payRes.code) {
+          // SDK-level error
+          toast.error(payRes.message)
+          return
+        }
+        // 결제 검증
+        if (payRes.txId) {
+          const res = await axios.post(
+            `/api/order/verify/${orderIdx}`,
+            { paymentId: payRes.paymentId },
+            { baseURL: config.public.apiBaseUrl }
+          );
+
+          if (res.data && res.data.data) {
+            // 결제 성공
+            toast.success("주문이 완료되었습니다.");
+            router.push(`/order/${orderIdx}`); 
+          }
+        }
       }
     } catch (err) {
       console.error('주문 실패', err);
@@ -232,7 +268,7 @@ export const useCartStore = defineStore("cart_product", () => {
         // 할인 가격이 있는 경우
         if (cartItem.product.discount && cartItem.product.discount > 0) {
           unitPrice = cartItem.product.price - (cartItem.product.price * Number(cartItem.product.discount)) / 100;
-        } 
+        }
         else {
           unitPrice = cartItem.product.price;
         }
@@ -274,5 +310,6 @@ export const useCartStore = defineStore("cart_product", () => {
     handleCartOffcanvas,
     cartOffcanvas,
     orderQuantity,
+    shipCost,
   };
 });

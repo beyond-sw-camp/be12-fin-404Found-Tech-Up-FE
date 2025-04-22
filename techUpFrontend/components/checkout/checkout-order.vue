@@ -40,7 +40,7 @@
         <!-- total -->
         <li class="tp-order-info-list-total d-flex justify-content-between">
           <span>총 주문 금액</span>
-          <span>{{ formatPrice(cartStore.totalPriceQuantity.total + shippingCost) }}</span>
+          <span>{{ formatPrice(cartStore.totalPriceQuantity.total + cartStore.shipCost) }}</span>
         </li>
       </ul>
     </div>
@@ -59,11 +59,11 @@
       </div>
 
       <div class="tp-checkout-payment-item">
-        <input type="radio" id="kakaopay" name="payment" />
-        <label @click="handlePayment('kakaopay')" for="kakaopay">
+        <input type="radio" id="EASY_PAY" name="payment" />
+        <label @click="handlePayment('EASY_PAY')" for="EASY_PAY">
           카카오 페이
         </label>
-        <div v-if="payment_name === 'kakaopay'" class="tp-checkout-payment-desc cheque-payment">
+        <div v-if="payment_name === 'EASY_PAY'" class="tp-checkout-payment-desc cheque-payment">
           <p>
             카카오페이를 통한 결제를 지원합니다.
           </p>
@@ -105,11 +105,6 @@ const shippingOptions = [
   { value: 'local_pickup', label: '매장 수령:', cost: 25 },
   { value: 'free_shipping', label: '무료 배송', cost: 0 },
 ]
-
-const shippingCost = computed(() => {
-  const opt = shippingOptions.find(o => o.value === shippingMethodLocal.value)
-  return opt ? opt.cost : 0
-})
 
 const agreeLocal = ref(props.agree)
 watch(agreeLocal, v => emit('update:agree', v))
