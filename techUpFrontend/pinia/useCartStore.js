@@ -34,10 +34,7 @@ export const useCartStore = defineStore("cart_product", () => {
     } catch (error) {
       if (error.response && error.response.status === 401) {
         router.push("/login");
-      } else {
-        toast.error("장바구니 데이터를 불러오는데 실패했습니다.");
-        console.error("장바구니 API 호출 오류:", error);
-      }
+      } 
       cart_products.value = [];
     }
   }

@@ -31,7 +31,7 @@ export const useWishlistStore = defineStore("wishlist_product", () => {
       if (error.response && error.response.status === 401) {
         // 로그인되지 않은 경우 로그인 페이지로 리다이렉트
         router.push("/login");
-      } else {
+      } else if(error.response) {
         toast.error("위시리스트 데이터를 불러오는데 실패했습니다.");
         console.error("위시리스트 API 호출 오류:", error);
       }
