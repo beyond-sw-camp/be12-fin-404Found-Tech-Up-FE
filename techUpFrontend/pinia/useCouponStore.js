@@ -21,6 +21,12 @@ export const useCouponStore = defineStore("coupon", () => {
   };
 
   const issueMyCoupon = async (eventIdx) => {
+    try {
+      await axios.get(`/api/coupon/events/${eventIdx}`);
+      alert("발급되었습니다!");
+    } catch (e) {
+      alert("발급에 실패했습니다!");
+    }
     
   };
 
