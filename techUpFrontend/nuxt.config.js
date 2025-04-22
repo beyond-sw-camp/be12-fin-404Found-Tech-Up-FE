@@ -1,6 +1,6 @@
+import { defineNuxtConfig } from 'nuxt/config'
 import { fileURLToPath } from 'node:url'
 
-// https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   modules: [
     [
@@ -14,11 +14,14 @@ export default defineNuxtConfig({
     ],
   ],
 
-  //npm run generate를 위한 설정
+  plugins: [
+    { src: '~/plugins/ws.client.js', mode: 'client' },
+  ],
+
   nitro: {
     devProxy: {
       '/api': {
-        target: 'http://localhost:8080', // 프록시 대상 URL
+        target: 'http://localhost:8080',
         changeOrigin: true,
         prependPath: true,
       },
@@ -49,15 +52,18 @@ export default defineNuxtConfig({
     }
   },
 
-  devtools: { enabled: true },
+  devtools: {
+    enabled: true
+  },
+
   app: {
     head: {
-      title: "Tech Up",
+      title: 'Tech Up',
       charset: 'utf-8',
       viewport: 'width=device-width, initial-scale=1',
       script: [
         {
-          src: "https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+          src: 'https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js'
         }
       ]
     }
@@ -65,7 +71,7 @@ export default defineNuxtConfig({
 
   vite: {
     define: {
-      global: 'window', 
+      global: 'window',
     },
     ssr: {
       noExternal: ['vuetify']
@@ -83,23 +89,21 @@ export default defineNuxtConfig({
     css: {
       preprocessorOptions: {
         scss: {
-          silenceDeprecations: ["legacy-js-api"]
+          silenceDeprecations: ['legacy-js-api']
         }
       }
     }
   },
-
 
   css: [
     '@core/scss/template/index.scss',
     '@styles/styles.scss',
     '@/plugins/iconify/icons.css',
     '@layouts/styles/index.scss',
-    "@/assets/css/font-awesome-pro.css",
-    "@/assets/css/flaticon_techup.css",
-    "@/assets/scss/main.scss"
+    '@/assets/css/font-awesome-pro.css',
+    '@/assets/css/flaticon_techup.css',
+    '@/assets/scss/main.scss'
   ],
 
-  compatibilityDate: "2025-01-27"
-
-});
+  compatibilityDate: '2025-01-27'
+})
