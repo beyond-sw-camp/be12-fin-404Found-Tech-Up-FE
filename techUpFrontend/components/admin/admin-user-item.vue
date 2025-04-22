@@ -1,6 +1,6 @@
 <template>
   <tr>
-    <th scope="row"> #{{ item.orderIdx }}</th>
+    <th scope="row"> #{{ item.userIdx }}</th>
     <td data-info="title">{{ item.userNickname }}</td>
     <td data-info="email">{{ item.userEmail }}</td>
     <td data-info="posts">{{ item.userPosts }}</td>

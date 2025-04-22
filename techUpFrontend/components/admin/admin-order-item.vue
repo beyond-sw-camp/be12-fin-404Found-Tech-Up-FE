@@ -1,7 +1,9 @@
 <script setup>
 import { useAdminStore } from '../../pinia/useAdminStore';
 
-const props = defineProps({ item: Object });
+const props = defineProps({
+  item: Object,
+});
 
 const item = ref(props.item);
 const adminStore = useAdminStore();
@@ -20,10 +22,17 @@ quantity.value = item.value.orderDetails.reduce((prev, value) => {
   return prev;
 }, 0);
 
-done.value = item.value.orderStatus === "PAID" ? false : true;
+done.value = (item.value.orderStatus === "PAID" || item.value.orderStatus === "PLACED" || item.value.orderStatus === "UNPAID") ? false : true;
 
 const handleOffCanvas = (item) => {
   adminStore.handleOrderDetailOffcanvas(item.orderDetails);
+};
+
+let status = ref(item.value.orderStatus);
+
+const cancelOrder = async () => {
+  done.value = await adminStore.cancelOrder(item.value.orderIdx);
+  if (done.value) status.value = "CANCELED";
 };
 
 </script>
@@ -34,15 +43,15 @@ const handleOffCanvas = (item) => {
     <td data-info="date">{{ item.orderDate }}</td>
     <td data-info="quantity">{{ quantity }}</td>
     <td data-info="totalPrice">{{ item.orderTotalPrice }}</td>
-    <td data-info="status">{{ item.orderStatus }}</td>
+    <td data-info="status">{{ status }}</td>
     <td><button @click="handleOffCanvas(item)" class="tp-btn" style="font-weight:bold;font-size:smaller;">상세
         내역</button></td>
-    <td><a v-if="!done" href="#" class="tp-btn"
-        style="font-weight:bold;font-size:smaller;background-color: red;">취소/환불</a>
+    <td><button v-if="item.orderStatus === 'REFUND_REQUESTED'" href="#" class="tp-btn"
+        style="font-weight:bold;font-size:smaller;background-color: yellow;" @click="cancelOrder">취소하기</button>
       <div v-else>-</div>
     </td>
-    <td><a v-if="!done" href="#" class="tp-btn"
-        style="font-weight:bold;font-size:smaller;background-color:green;">처리하기</a>
+    <td><button v-if="!done" href="#" class="tp-btn"
+        style="font-weight:bold;font-size:smaller;background-color:green;">완료하기</button>
       <div v-else>-</div>
     </td>
   </tr>
