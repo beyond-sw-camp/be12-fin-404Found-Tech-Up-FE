@@ -31,9 +31,8 @@ const handleOffCanvas = (item) => {
 let status = ref(item.value.orderStatus);
 
 const cancelOrder = async () => {
-  await adminStore.cancelOrder(item.value.orderIdx);
-  done.value = true;
-  status.value = "CANCELED";
+  done.value = await adminStore.cancelOrder(item.value.orderIdx);
+  if (done.value) status.value = "CANCELED";
 };
 
 </script>
@@ -47,12 +46,12 @@ const cancelOrder = async () => {
     <td data-info="status">{{ status }}</td>
     <td><button @click="handleOffCanvas(item)" class="tp-btn" style="font-weight:bold;font-size:smaller;">상세
         내역</button></td>
-    <td><button v-if="!done" href="#" class="tp-btn" style="font-weight:bold;font-size:smaller;background-color: red;"
-        @click="cancelOrder">취소/환불</button>
+    <td><button v-if="item.orderStatus === 'REFUND_REQUESTED'" href="#" class="tp-btn"
+        style="font-weight:bold;font-size:smaller;background-color: yellow;" @click="cancelOrder">취소하기</button>
       <div v-else>-</div>
     </td>
     <td><button v-if="!done" href="#" class="tp-btn"
-        style="font-weight:bold;font-size:smaller;background-color:green;">처리하기</button>
+        style="font-weight:bold;font-size:smaller;background-color:green;">완료하기</button>
       <div v-else>-</div>
     </td>
   </tr>
