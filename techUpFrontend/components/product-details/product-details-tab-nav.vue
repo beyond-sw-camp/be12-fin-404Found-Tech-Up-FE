@@ -90,8 +90,7 @@
                 <div class="tp-product-details-review-list pr-110">
                   <h3 class="tp-product-details-review-title">Rating & Review</h3>
                   <div v-if="reviews && reviews.length > 0">
-                    <div v-for="(item, i) in props.reviews" :key="i"
-                      class="tp-product-details-review-avater d-flex align-items-start">
+                    <div v-for="item in pagedReviews" :key="item.reviewIdx" class="tp-product-details-review-avater d-flex align-items-start">
                       <div class="tp-product-details-review-avater-thumb">
                         <a href="#">
                           <img :src="item.user" alt="user">
@@ -116,6 +115,17 @@
                   <div v-else>
                     <h5>No Reviews Found</h5>
                   </div>
+                  <!-- pagination controls -->
+                  <div class="d-flex justify-content-between align-items-center mt-4">
+                    <button class="btn btn-sm btn-outline-secondary" :disabled="currentPage === 1" @click="goPrev">
+                      <img src="/img/icon/half-arrow-left.svg" alt="logo">
+                    </button>
+                    <span>Page {{ currentPage }} of {{ totalPages }} &mdash; {{ props.reviews.length }} total</span>
+                    <button class="btn btn-sm btn-outline-secondary" :disabled="currentPage === totalPages"
+                      @click="goNext">
+                      <img src="/img/icon/half-arrow-right.svg" alt="logo">
+                    </button>
+                  </div>
                 </div>
               </div>
             </div> <!-- end col -->
@@ -135,7 +145,7 @@
 </template>
 
 <script setup>
-import { onMounted } from 'vue';
+import { onMounted, ref, computed } from 'vue';
 import { useRuntimeConfig } from '#imports'
 
 const handleActiveMarker = (event) => {
@@ -162,4 +172,24 @@ onMounted(() => {
     marker.style.width = nav_active.offsetWidth + "px";
   }
 });
+
+const currentPage = ref(1)
+// 페이지당 리뷰는 5개씩 보여준다.
+const pageSize = ref(5)
+
+const totalPages = computed(() =>
+  Math.ceil(props.reviews.length / pageSize.value)
+)
+
+const pagedReviews = computed(() => {
+  const start = (currentPage.value - 1) * pageSize.value
+  return props.reviews.slice(start, start + pageSize.value)
+})
+
+function goPrev() {
+  if (currentPage.value > 1) currentPage.value--
+}
+function goNext() {
+  if (currentPage.value < totalPages.value) currentPage.value++
+}
 </script>
