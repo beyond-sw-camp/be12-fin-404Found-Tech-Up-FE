@@ -3,42 +3,104 @@
     <table class="table">
       <thead>
         <tr>
-          <th scope="col">주문 번호</th>
-          <th scope="col">주문 제품</th>
-          <th scope="col">상태</th>
-          <th scope="col">상세 정보</th>
+          <th>주문 번호</th>
+          <th>주문 제품</th>
+          <th>상태</th>
+          <th>상세 정보</th>
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <th scope="row"> #2245</th>
-          <td data-info="title">GTX 1650 외 1건</td>
-          <td data-info="status pending">진행 중</td>
-          <td><a href="#" class="tp-logout-btn">영수증</a></td>
+        <tr
+          v-for="order in paginatedOrders"
+          :key="order.orderIdx"
+        >
+          <td>{{ order.orderIdx }}</td>
+          <td>
+            <ul class="mb-0 ps-3">
+              <li
+                v-for="detail in order.orderDetails"
+                :key="detail.orderDetailIdx"
+              >
+                {{ detail.orderDetailName }} × {{ detail.orderDetailQuantity }}
+              </li>
+            </ul>
+          </td>
+          <td>{{ order.orderStatus }}</td>
+          <td>
+            <button class="btn btn-link p-0" @click="goDetail(order.orderIdx)">
+              보기
+            </button>
+          </td>
         </tr>
-        <tr>
-          <th scope="row"> #2220</th>
-          <td data-info="title">HP PC 외 1건</td>
-          <td data-info="status reply">취소함</td>
-          <td><a href="#" class="tp-logout-btn">영수증</a></td>
-        </tr>
-        <tr>
-          <th scope="row"> #2125</th>
-          <td data-info="title">RTX 4070 Ti 외 2건</td>
-          <td data-info="status done">배송 중</td>
-          <td><a href="#" class="tp-logout-btn">영수증</a></td>
-        </tr>
-        <tr>
-          <th scope="row"> #2124</th>
-          <td data-info="title">삼성 DDR4-3200 16GB x 2</td>
-          <td data-info="status hold">배송 완료</td>
-          <td><a href="#" class="tp-logout-btn">영수증</a></td>
+
+        <tr v-if="filteredOrders.length === 0">
+          <td colspan="4" class="text-center py-4">
+            결제된 주문이 없습니다.
+          </td>
         </tr>
       </tbody>
     </table>
+
+    <!-- pagination -->
+    <nav v-if="totalPages > 1" class="mt-3">
+      <ul class="pagination justify-content-center mb-0">
+        <li
+          class="page-item"
+          :class="{ disabled: page === 1 }"
+          @click="page > 1 && page--"
+        >
+          <a class="page-link">Previous</a>
+        </li>
+        <li
+          v-for="n in totalPages"
+          :key="n"
+          class="page-item"
+          :class="{ active: page === n }"
+          @click="page = n"
+        >
+          <a class="page-link">{{ n }}</a>
+        </li>
+        <li
+          class="page-item"
+          :class="{ disabled: page === totalPages }"
+          @click="page < totalPages && page++"
+        >
+          <a class="page-link">Next</a>
+        </li>
+      </ul>
+    </nav>
   </div>
 </template>
 
 <script setup>
+import { ref, computed, onMounted } from 'vue'
+import { useUserOrderStore } from '@/pinia/useUserOrderStore'
+import { useRouter } from 'vue-router'
 
+const router = useRouter()
+const store  = useUserOrderStore()
+
+const page     = ref(1)
+const pageSize = 5
+
+onMounted(() => {
+  store.fetchMyOrderList()
+})
+
+const filteredOrders = computed(() =>
+  store.orderList.filter(o => o.orderStatus === 'PAID' || o.orderStatus === 'CANCELLED' || o.orderStatus === 'REFUND_REQUESTED')
+)
+
+const totalPages = computed(() =>
+  Math.ceil(filteredOrders.value.length / pageSize)
+)
+
+const paginatedOrders = computed(() => {
+  const start = (page.value - 1) * pageSize
+  return filteredOrders.value.slice(start, start + pageSize)
+})
+
+function goDetail(orderIdx) {
+  router.push(`/order/${orderIdx}`)
+}
 </script>

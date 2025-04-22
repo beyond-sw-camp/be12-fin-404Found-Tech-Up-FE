@@ -5,7 +5,7 @@
     <!-- breadcrumb end -->
 
     <!-- order area start -->
-    <OrderArea v-if="order" :order="order" />
+    <OrderArea v-if="order" :order="order" @refund="onRefund"/>
     <!-- order area end -->
     <div v-else class="text-center py-10">
       주문 정보를 불러오는 중…
@@ -15,10 +15,10 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import { useRoute }      from 'vue-router'
-import axios              from 'axios'
+import { useRoute }       from 'vue-router'
+import axios               from 'axios'
 import { useRuntimeConfig } from '#imports'
-import OrderArea          from '@/components/order/order-area.vue'
+import OrderArea           from '@/components/order/order-area.vue'
 
 const route   = useRoute()
 const orderId = route.params.orderId
@@ -38,4 +38,20 @@ onMounted(async () => {
     console.error('주문 상세 조회 실패', e)
   }
 })
+
+async function onRefund(orderIdx) {
+  try {
+    const res = await axios.post(
+      `/api/order/refund/${orderIdx}`,
+      {},  
+      { baseURL: config.public.apiBaseUrl }
+    )
+   
+    if (res.data?.data) {
+      order.value.orderStatus = res.data.data.orderStatus
+    }
+  } catch (err) {
+    console.error('환불 요청 실패', err)
+  }
+}
 </script>

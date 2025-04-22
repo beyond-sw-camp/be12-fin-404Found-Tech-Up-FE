@@ -28,7 +28,7 @@
                   <div class="col-sm-6">
                     <div class="tp-order-details-item">
                       <h4>Payment Method:</h4>
-                      <p>{{ order?.paymentMethod }}</p>
+                      <p>{{ order?.paymentMethod === 'EASY_PAY' ? '카카오페이' : '신용 카드' }}</p>
                     </div>
                   </div>
                 </div>
@@ -54,10 +54,10 @@
                     <span>{{ formatPrice(
                       // TODO:할인율 표시하기기
                       // (d.product.discount > 0
-                      //   ? d.product.orderDetailPrice * (1 - d.product.discount / 100)
-                      //   : d.product.orderDetailPrice
+                      // ? d.product.orderDetailPrice * (1 - d.product.discount / 100)
+                      // : d.product.orderDetailPrice
                       // )
-                       d.orderDetailPrice * d.orderDetailQuantity
+                      d.orderDetailPrice * d.orderDetailQuantity
                     ) }}</span>
                   </li>
 
@@ -68,16 +68,18 @@
                   </li>
 
                   <!-- shipping -->
-                  <li class="tp-order-info-list-shipping">
+                  <li class="tp-order-info-list-subtotal">
                     <span>Shipping</span>
-                    <div class="tp-order-info-list-shipping-item d-flex flex-column align-items-end">
-                      <span>
-                        <label>
-                          {{ order?.shippingMethod }}:
-                          <span>{{ formatPrice(order?.shipCost) }}</span>
-                        </label>
-                      </span>
-                    </div>
+                    <span>
+                      <label>
+                        {{
+                          order?.shippingMethod === 'local_pickup' ? '반값 택배' :
+                            order?.shippingMethod === 'flat_rate' ? '일반 택배' :
+                              '무료'
+                        }}:
+                        <span>{{ formatPrice(order?.shipCost) }}</span>
+                      </label>
+                    </span>
                   </li>
 
                   <!-- total -->
@@ -86,6 +88,11 @@
                     <span>{{ formatPrice(order?.orderTotalPrice + order?.shipCost) }}</span>
                   </li>
                 </ul>
+              </div>
+              <div class="d-flex justify-content-end mt-4">
+                <button class="tp-btn tp-btn-border tp-btn-border-sm" @click="handleRefund">
+                  환불
+                </button>
               </div>
             </div>
           </div>
@@ -104,4 +111,10 @@ const props = defineProps({
     required: true
   }
 })
+
+const emit = defineEmits(['refund'])
+
+function handleRefund() {
+  emit('refund', props.order.orderIdx)
+}
 </script>

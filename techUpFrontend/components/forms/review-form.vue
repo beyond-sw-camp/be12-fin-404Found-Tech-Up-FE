@@ -1,76 +1,46 @@
 <template>
-  <form @submit="onSubmit">
-    <div class="tp-product-details-review-form-rating d-flex align-items-center">
-      <p>Your Rating :</p>
-      <div class="tp-product-details-review-form-rating-icon d-flex align-items-center">
-        <span><i class="fa-solid fa-star"></i></span>
-        <span><i class="fa-solid fa-star"></i></span>
-        <span><i class="fa-solid fa-star"></i></span>
-        <span><i class="fa-solid fa-star"></i></span>
-        <span><i class="fa-solid fa-star"></i></span>
-      </div>
-    </div>
-    <div class="tp-product-details-review-input-wrapper">
-      <div class="tp-product-details-review-input-box">
-        <div class="tp-product-details-review-input">
-          <Field name="message" v-slot="{ field }">
-            <textarea v-bind="field" id="message" name="message" placeholder="Write your message here..."></textarea>
-          </Field>
-        </div>
-        <div class="tp-product-details-review-input-title">
-          <label for="message">Write Review</label>
-        </div>
-        <err-message :msg="errors.message" />
-      </div>
-      <div class="tp-product-details-review-input-box">
-        <div class="tp-product-details-review-input">
-          <input name="name" id="name" type="text" placeholder="Shahnewaz Sakil" v-bind="name" />
-        </div>
-        <div class="tp-product-details-review-input-title">
-          <label for="name">Your Name</label>
-        </div>
-        <err-message :msg="errors.name" />
-      </div>
-      <div class="tp-product-details-review-input-box">
-        <div class="tp-product-details-review-input">
-          <input name="email" id="email" type="email" placeholder="techup2025@gmail.com" v-bind="email" />
-        </div>
-        <div class="tp-product-details-review-input-title">
-          <label for="email">Your Email</label>
-        </div>
-        <err-message :msg="errors.email" />
-      </div>
-    </div>
-    <div class="tp-product-details-review-suggetions mb-20">
-      <div class="tp-product-details-review-remeber">
-        <input id="remeber" type="checkbox" />
-        <label for="remeber">Save my name, email, and website in this browser for the next time I comment.
-        </label>
-      </div>
-    </div>
-    <div class="tp-product-details-review-btn-wrapper">
-      <button type="submit" class="tp-product-details-review-btn">Submit</button>
-    </div>
+  <form @submit.prevent="submitReview">
+    <!-- star‐rating control bound to form.reviewRating -->
+    <select v-model="form.reviewRating">
+      <option v-for="n in 5" :key="n" :value="n">{{n}}★</option>
+    </select>
+
+    <textarea
+      v-model="form.reviewContent"
+      placeholder="Write your review here…"
+      required
+    />
+
+    <button type="submit" class="tp-btn tp-btn-primary mt-3 white-bg">
+      리뷰 작성
+    </button>
   </form>
 </template>
 
 <script setup>
-import { useForm, Field } from 'vee-validate';
-import * as yup from 'yup';
+import { defineProps, defineEmits, reactive } from 'vue'
+import { useReviewStore } from '@/pinia/useReviewStore'
 
-const { errors, handleSubmit, defineInputBinds, resetForm } = useForm({
-  validationSchema: yup.object({
-    name: yup.string().required().label("Name"),
-    email: yup.string().required().email().label("Email"),
-    message: yup.string().required().label("Message")
-  }),
-});
+const props = defineProps({
+  productIdx: { type: Number, required: true }
+})
+const emit = defineEmits(['submitted'])
 
-const onSubmit = handleSubmit(values => {
-  alert(JSON.stringify(values, null, 2));
-  resetForm();
-});
+const reviewStore = useReviewStore()
 
-const name = defineInputBinds('name');
-const email = defineInputBinds('email');
+const form = reactive({
+  reviewRating: 5,
+  reviewContent: '',
+  reviewImg: ''
+})
+
+async function submitReview() {
+  try {
+    const dto = await reviewStore.createReview(props.productIdx, form)
+    emit('submitted', dto)
+    form.reviewRating  = 5
+    form.reviewContent = ''
+    form.reviewImg     = ''
+  } catch {}
+}
 </script>
