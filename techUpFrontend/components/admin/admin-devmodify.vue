@@ -151,8 +151,15 @@
         <label class="form-label">이미지 업로드 (최대 5장)</label>
         <input type="file" accept="image/*" multiple @change="handleImageUpload" class="form-input" />
         <!-- 미리보기 영역 -->
-        <div class="preview-container" v-if="previewImages.length">
-          <img v-for="(img, index) in previewImages" :key="index" :src="img" alt="이미지 미리보기" class="preview-image" />
+        <div class="preview-container" v-if="storeRef.targetPreviewImages.value.length">
+          <img v-for="(img, index) in storeRef.targetPreviewImages.value" :key="index" :src="img" alt="이미지 미리보기"
+            class="preview-image" />
+        </div>
+        <p>기존 이미지</p><br>
+        <div class="preview-container" v-if="storeRef.existingFilePath.value.length">
+          <div v-for="(img, index) in storeRef.existingFilePath.value" :key="index">
+            <img :src="img" alt="이미지 미리보기" class="preview-image" />
+          </div>
         </div>
       </div>
 
@@ -171,8 +178,6 @@ import { storeToRefs } from 'pinia';
 const adminStore = useAdminStore();
 const storeRef = storeToRefs(adminStore);
 
-const previewImages = ref([]);
-
 const props = defineProps({
   idx: Number
 })
@@ -183,11 +188,12 @@ const idx = ref(props.idx);
 const handleImageUpload = (event) => {
   const files = event.target.files;
   // 최대 5장까지만 선택 (초과 시 앞의 5개만 사용)
-  storeRef.targetSelectedFiles.value = Array.from(files.concat(storeRef.targetSelectedFiles.value)).slice(0, 5);
-  previewImages.value = storeRef.targetSelectedFiles.value.map(file => URL.createObjectURL(file))
+  storeRef.uploadTarget.value = Array.from(files).slice(0, 5);
+  storeRef.targetPreviewImages.value = storeRef.uploadTarget.value.map(file => URL.createObjectURL(file));
 }
-
-const config = useRuntimeConfig();
+const deleteExistingImage = (idx) => {
+  adminStore.existingFilePath.slice(idx, 1);
+}
 
 // 폼 제출
 const submitForm = async () => {

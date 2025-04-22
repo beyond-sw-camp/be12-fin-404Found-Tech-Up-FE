@@ -28,7 +28,7 @@ export const useAdminStore = defineStore( 'admin',() => {
   // 통계 관련 데이터
   let topWishList = ref([]);
   
-  let newComers = ref(2);
+  let newComers = ref(0);
   let totalSales = ref(0);
   let totalOrders = ref(0);
   let totalRefunds = ref(0);
@@ -132,9 +132,8 @@ export const useAdminStore = defineStore( 'admin',() => {
     ramSpec: { ramType: '', ramNum: '', ramSize: '', ramUsage: '' }
   });
   let targetPreviewImages = ref([]);
-  let targetSelectedFiles = ref([]);
-
-  
+  let existingFilePath = ref([]);
+  let uploadTarget = ref([]);  
 
   // 쿠폰 목록
   let couponList = ref([]);
@@ -323,9 +322,9 @@ export const useAdminStore = defineStore( 'admin',() => {
     // 카테고리에 맞는 스펙 데이터를 합쳐서 payload 구성
     // 파일 업로드 요청
     let imageUrls = [];
-    for await (let file of targetSelectedFiles.value) {
+    for (let i = existingFilePath.value.length; i < uploadTarget.value.length; i++) {
       let formdata = new FormData();
-      formdata.append("file", file);
+      formdata.append("file", uploadTarget.value[i-existingFilePath.value.length]);
       const resultUrl = await axios.put('/api/productimage/upload', formdata);
       imageUrls.push(resultUrl.data.data);
     }
@@ -369,9 +368,8 @@ export const useAdminStore = defineStore( 'admin',() => {
       ssdSpec: result.data.data.ssdSpec ? result.data.data.ssdSpec : null,
       ramSpec: result.data.data.ramSpec ? result.data.data.ramSpec : null
     };
-
-    targetPreviewImages.value = result.data.data.images;
-    console.log(targetProduct.value);
+    existingFilePath.value = result.data.data.images;
+    //console.log(targetProduct.value);
   };
 
   const loadStatistics = async () => {
@@ -634,6 +632,9 @@ export const useAdminStore = defineStore( 'admin',() => {
     // notificationList,
     // 제품 수정용 데이터
     targetProduct,
+    existingFilePath,
+    targetPreviewImages,
+    uploadTarget,
     // 통계
     topWishList,
     newComers,

@@ -27,12 +27,11 @@ export const useCouponStore = defineStore("coupon", () => {
     } catch (e) {
       alert("발급에 실패했습니다!");
     }
-    
   };
 
   onMounted(async ()=> {
     await loadEventList();
-  })
+  });
 
   return {
     loadEventList,
