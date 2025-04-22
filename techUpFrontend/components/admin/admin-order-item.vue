@@ -22,7 +22,7 @@ quantity.value = item.value.orderDetails.reduce((prev, value) => {
   return prev;
 }, 0);
 
-done.value = (item.value.orderStatus === "PAID" || item.value.orderStatus === "PLACED") ? false : true;
+done.value = (item.value.orderStatus === "PAID" || item.value.orderStatus === "PLACED" || item.value.orderStatus === "UNPAID") ? false : true;
 
 const handleOffCanvas = (item) => {
   adminStore.handleOrderDetailOffcanvas(item.orderDetails);

@@ -434,9 +434,11 @@ export const useAdminStore = defineStore( 'admin',() => {
   const loadCouponInfo = async (idx) => {
     try {
       const result = await axios.get(`/api/coupon/details/${idx}`);
+      // console.log(result.data);
       targetCoupon.value.couponName = result.data.data.couponName;
       targetCoupon.value.discount=result.data.data.couponDiscountRate;
       targetCoupon.value.productIdx=result.data.data.productIdx;
+      targetCoupon.value.quantity=result.data.data.couponStock;
       const resultDate = result.data.data.couponValidDate.toString().split('T')[0].split('-');
       targetCoupon.value.expiryDate= `${resultDate[0]}-${resultDate[1]}-${resultDate[2]}`;
     } catch (e) {
