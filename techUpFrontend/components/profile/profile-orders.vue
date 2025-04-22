@@ -88,7 +88,7 @@ onMounted(() => {
 })
 
 const filteredOrders = computed(() =>
-  store.orderList.filter(o => o.orderStatus === 'PAID')
+  store.orderList.filter(o => o.orderStatus === 'PAID' || o.orderStatus === 'CANCELLED' || o.orderStatus === 'REFUND_REQUESTED')
 )
 
 const totalPages = computed(() =>

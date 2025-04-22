@@ -89,6 +89,11 @@
                   </li>
                 </ul>
               </div>
+              <div class="d-flex justify-content-end mt-4">
+                <button class="tp-btn tp-btn-border tp-btn-border-sm" @click="handleRefund">
+                  환불
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -106,4 +111,10 @@ const props = defineProps({
     required: true
   }
 })
+
+const emit = defineEmits(['refund'])
+
+function handleRefund() {
+  emit('refund', props.order.orderIdx)
+}
 </script>
