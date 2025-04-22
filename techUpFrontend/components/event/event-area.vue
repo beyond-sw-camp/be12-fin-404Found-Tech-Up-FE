@@ -5,11 +5,11 @@
       <div class="row">
         <div class="col-xxl-12">
           <div class="breadcrumb__content p-relative z-index-1">
-            <h3 class="breadcrumb__title">최고의 혜택을 받으세요!</h3>
+            <h2 class="breadcrumb__title">진행 중인 선착순 쿠폰 이벤트</h2>
+            <h4>최고의 혜택을 받으세요!</h4>
             <div class="breadcrumb__list">
               <span><nuxt-link href="/">Home</nuxt-link></span>
               <span><nuxt-link href="/coupons">내 쿠폰 보기</nuxt-link></span>
-              <span>진행 중인 선착순 쿠폰 이벤트</span>
             </div>
           </div>
         </div>

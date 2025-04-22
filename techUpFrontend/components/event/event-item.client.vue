@@ -15,7 +15,7 @@
     <div class="tp-coupon-item-right pl-20">
       <div class="tp-coupon-status mb-10 d-flex align-items-center">
         <h4>
-          쿠폰 정보
+          쿠폰 정보:
         </h4>
         <div class="tp-coupon-info-details">
           <span>
@@ -23,7 +23,7 @@
           </span>
           <div class="tp-coupon-info-tooltip transition-3">
             <p>
-              * 이 쿠폰은
+              * 발급한 쿠폰은
               <span class="text-capitalize">{{ productName }}</span> 제품에 적용됩니다.
             </p>
           </div>

@@ -3,8 +3,6 @@ import axios from 'axios';
 // import useUserStore from './useUserStore.js';
 import { onMounted } from 'vue';
 
-// const userStore = useUserStore();
-
 export const useCouponStore = defineStore("coupon", () => {
   let myCoupons = ref([]);
   let eventsList = ref([]);
@@ -12,14 +10,14 @@ export const useCouponStore = defineStore("coupon", () => {
   
   const loadEventList = async () => {
     const result = await axios.get("/api/coupon/events");
-    console.log(result.data);
+    // console.log(result.data);
     eventsList.value = result.data.data.couponList;
   };
 
   const loadMyCouponList = async () => {
-    //const userInfo = await userStore.myinfo();
-    //console.log(userStore.userInfo);
-    // const userIdx = userStore.userInfo.userIdx;
+    const result = await axios.get("/api/usercoupon/mycoupon");
+    console.log(result.data);
+    myCoupons.value = result.data.data;
   };
 
   const issueMyCoupon = async (eventIdx) => {
@@ -27,7 +25,6 @@ export const useCouponStore = defineStore("coupon", () => {
   };
 
   onMounted(async ()=> {
-    await loadMyCouponList();
     await loadEventList();
   })
 
