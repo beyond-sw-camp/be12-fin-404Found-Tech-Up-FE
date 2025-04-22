@@ -7,6 +7,7 @@ export const useUserStore = defineStore('user', {
     isLoggedIn: null,
     userInfo: [],
     user: null,
+    alarmEnabled: false,
   }),
   actions: {
     async checkAuth() {
@@ -158,5 +159,41 @@ export const useUserStore = defineStore('user', {
         throw error;
       }
     },
+
+    async fetchAlarmEnabled() {
+      try {
+        const resp = await axios.get('/api/user/alarm', { withCredentials: true })
+        // BaseResponse<data> 구조를 풀어줍니다
+        const alarm = resp.data?.data?.alarmEnabled
+        if (typeof alarm === 'boolean') {
+          this.alarmEnabled = alarm
+          return alarm
+        }
+        console.warn('알람 설정 데이터가 없습니다', resp.data)
+        return null
+      } catch (e) {
+        console.error('fetchAlarmEnabled 오류:', e)
+        return null
+      }
+    },
+
+    // ——————————————
+    // 서버에 알림 설정(on/off) 반영
+    async setAlarmEnabled(enabled) {
+      try {
+        console.log('알림 설정 클릭');
+        await axios.patch(
+          '/api/user/alarm',
+          { alarmEnabled: enabled },
+          { withCredentials: true }
+        )
+        this.alarmEnabled = enabled
+        return true
+      } catch (e) {
+        console.error('setAlarmEnabled 오류:', e)
+        return false
+      }
+    },
+
   },
 });

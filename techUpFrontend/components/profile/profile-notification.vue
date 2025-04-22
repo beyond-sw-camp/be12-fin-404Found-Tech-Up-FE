@@ -45,10 +45,11 @@
           type="checkbox"
           role="switch"
           id="post"
-          checked
+          :checked="userStore.alarmEnabled"
+          @change="onToggle"
         />
         <label class="form-check-label" for="post">
-          사용자 맞춤 알림
+          알림 설정
         </label>
       </div>
     </div>
@@ -65,10 +66,12 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import { useNotificationStore } from '@/pinia/useNotificationStore'
+import { useUserStore } from '@/pinia/useUserStore'
 import NotificationModal from '@/components/notification/NotificationModal.vue'
 import UiPagination2 from '@/components/ui/pagination2.vue'
 
 const store       = useNotificationStore()
+const userStore   = useUserStore()
 const filter      = ref('전체')
 const selected    = ref(null)
 const currentPage = ref(1)
@@ -98,8 +101,16 @@ function formatDate(dt) {
   return new Date(dt).toLocaleString('ko-KR')
 }
 
-onMounted(() => {
-  store.fetchNotifications(0, store.size)
+// 토글 클릭 핸들러
+async function onToggle() {
+  await userStore.setAlarmEnabled(!userStore.alarmEnabled)
+}
+
+onMounted(async () => {
+  // 초기 알림 설정 상태 불러오기
+  await userStore.fetchAlarmEnabled()
+  // 첫 페이지 알림 목록 불러오기
+  await store.fetchNotifications(0, store.size)
   currentPage.value = 1
 })
 </script>
