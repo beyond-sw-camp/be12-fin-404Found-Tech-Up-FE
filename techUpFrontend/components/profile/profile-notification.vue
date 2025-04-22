@@ -1,38 +1,152 @@
 <template>
-  <div class="profile__notification">
-    <div class="profile__notification-top mb-30">
-      <h3 class="profile__notification-title">내 활동 알림</h3>
-      <p>테크업에서 소개하는 새로운 제품, 맞춤형 추천 알림, 쿠폰 알림, 재고 알림을 받아보세요</p>
+  <div class="notification-list">
+    <!-- 탭 -->
+    <div class="tabs mb-4">
+      <button
+        v-for="type in ['전체','읽음','안읽음']"
+        :key="type"
+        :class="{ active: filter === type }"
+        @click="filter = type"
+      >{{ type }}</button>
     </div>
-    <div class="profile__notification-wrapper">
-      <div class="profile__notification-item mb-20">
-        <div class="form-check form-switch d-flex align-items-center">
-          <input class="form-check-input" type="checkbox" role="switch" id="like" checked>
-          <label class="form-check-label" for="like">재고 소진 알림</label>
-        </div>
-      </div>
-      <div class="profile__notification-item mb-20">
-        <div class="form-check form-switch d-flex align-items-center">
-          <input class="form-check-input" type="checkbox" role="switch" id="post" checked>
-          <label class="form-check-label" for="post">사용자 맞춤 알림</label>
-        </div>
-      </div>
-      <div class="profile__notification-item mb-20">
-        <div class="form-check form-switch d-flex align-items-center">
-          <input class="form-check-input" type="checkbox" role="switch" id="new" checked>
-          <label class="form-check-label" for="new">신규 제품 알림</label>
-        </div>
-      </div>
-      <div class="profile__notification-item mb-20">
-        <div class="form-check form-switch d-flex align-items-center">
-          <input class="form-check-input" type="checkbox" role="switch" id="new" checked>
-          <label class="form-check-label" for="new">쿠폰 알림</label>
-        </div>
+
+    <!-- 알림 리스트 -->
+    <div v-if="filteredNotifications.length">
+      <div
+        v-for="n in filteredNotifications"
+        :key="n.id"
+        class="notification-item"
+        :class="{ read: n.read }"
+        @click="openDetail(n)"
+      >
+        <h4>{{ n.title }}</h4>
+        <small>{{ formatDate(n.createdAt) }}</small>
       </div>
     </div>
+    <div v-else class="empty">알림이 없습니다.</div>
+
+    <!-- 페이지네이션 -->
+    <div class="tp-blog-pagination">
+      <div class="tp-pagination">
+        <ui-pagination2
+          :totalItems="store.totalElements"
+          :itemsPerPage="store.size"
+          :initialPage="currentPage"
+          @handlePaginate="onPageChange"
+        />
+      </div>
+    </div>
+
+    <!-- 사용자 맞춤 알림 토글 -->
+    <div class="toggle-switch">
+      <div class="form-check form-switch d-flex align-items-center">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          role="switch"
+          id="post"
+          checked
+        />
+        <label class="form-check-label" for="post">
+          사용자 맞춤 알림
+        </label>
+      </div>
+    </div>
+
+    <!-- 상세 모달 -->
+    <notification-modal
+      v-if="selected"
+      :notification="selected"
+      @close="clearSelection"
+    />
   </div>
 </template>
 
 <script setup>
+import { ref, computed, onMounted } from 'vue'
+import { useNotificationStore } from '@/pinia/useNotificationStore'
+import NotificationModal from '@/components/notification/NotificationModal.vue'
+import UiPagination2 from '@/components/ui/pagination2.vue'
 
+const store       = useNotificationStore()
+const filter      = ref('전체')
+const selected    = ref(null)
+const currentPage = ref(1)
+
+const filteredNotifications = computed(() => {
+  if (filter.value === '읽음')    return store.notifications.filter(n => n.read)
+  if (filter.value === '안읽음') return store.notifications.filter(n => !n.read)
+  return store.notifications
+})
+
+function onPageChange(newPage) {
+  const pageParam = newPage - 1
+  store.fetchNotifications(pageParam, store.size)
+  currentPage.value = newPage
+  window.scrollTo(0, 0)
+}
+
+function openDetail(n) {
+  selected.value = n
+}
+
+function clearSelection() {
+  selected.value = null
+}
+
+function formatDate(dt) {
+  return new Date(dt).toLocaleString('ko-KR')
+}
+
+onMounted(() => {
+  store.fetchNotifications(0, store.size)
+  currentPage.value = 1
+})
 </script>
+
+<style scoped>
+.tabs {
+  display: flex;
+  gap: 1rem;
+}
+.tabs button.active {
+  font-weight: bold;
+  border-bottom: 2px solid black;
+}
+
+.notification-item {
+  padding: 1rem;
+  border-bottom: 1px solid #ddd;
+  cursor: pointer;
+}
+.notification-item.read {
+  opacity: 0.6;
+}
+
+.empty {
+  text-align: center;
+  color: #999;
+}
+
+/* 페이지네이션 중앙 정렬 */
+.tp-blog-pagination {
+  display: flex;
+  justify-content: center;
+  margin: 2rem 0;
+}
+
+/* Optional: 페이지네이션 내부 ul 간격 조정 */
+.tp-blog-pagination .tp-pagination ul {
+  display: flex;
+  gap: 0.5rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.toggle-switch {
+  margin-bottom: 2rem;
+  display: flex;
+  justify-content: center;
+}
+</style>
