@@ -64,25 +64,18 @@
                   <h3 class="tp-product-details-review-number-title">Customer reviews</h3>
                   <div class="tp-product-details-review-summery d-flex align-items-center">
                     <div class="tp-product-details-review-summery-value">
-                      <span>4.5</span>
+                      <span>{{ averageRating }}</span>
                     </div>
                     <div class="tp-product-details-review-summery-rating d-flex align-items-center">
-                      <span><i class="fa-solid fa-star"></i></span>
-                      <span><i class="fa-solid fa-star"></i></span>
-                      <span><i class="fa-solid fa-star"></i></span>
-                      <span><i class="fa-solid fa-star"></i></span>
-                      <span><i class="fa-solid fa-star"></i></span>
-                      <p>({{ reviews?.length }} Reviews)</p>
+                      <span v-for="n in Math.round(averageRating)" :key="n">
+                        <i class="fa-solid fa-star"></i>
+                      </span>
+                      <p>({{ totalReviews }} Reviews)</p>
                     </div>
                   </div>
                   <div class="tp-product-details-review-rating-list">
-                    <!-- rating item -->
-                    <product-details-rating-item :star="5" width="82" />
-                    <product-details-rating-item :star="4" width="30" />
-                    <product-details-rating-item :star="3" width="15" />
-                    <product-details-rating-item :star="2" width="6" />
-                    <product-details-rating-item :star="1" width="10" />
-                    <!-- end rating item -->
+                    <product-details-rating-item v-for="s in [5, 4, 3, 2, 1]" :key="s" :star="s"
+                      :width="ratingPercent(s)" />
                   </div>
                 </div>
 
@@ -90,7 +83,8 @@
                 <div class="tp-product-details-review-list pr-110">
                   <h3 class="tp-product-details-review-title">Rating & Review</h3>
                   <div v-if="reviews && reviews.length > 0">
-                    <div v-for="item in pagedReviews" :key="item.reviewIdx" class="tp-product-details-review-avater d-flex align-items-start">
+                    <div v-for="item in pagedReviews" :key="item.reviewIdx"
+                      class="tp-product-details-review-avater d-flex align-items-start">
                       <div class="tp-product-details-review-avater-thumb">
                         <a href="#">
                           <img :src="item.user" alt="user">
@@ -173,6 +167,7 @@ onMounted(() => {
   }
 });
 
+// ---------------------페이지네이션 관련----------------------------------
 const currentPage = ref(1)
 // 페이지당 리뷰는 5개씩 보여준다.
 const pageSize = ref(5)
@@ -191,5 +186,20 @@ function goPrev() {
 }
 function goNext() {
   if (currentPage.value < totalPages.value) currentPage.value++
+}
+
+// ---------------------별점 평균균 관련----------------------------------
+const totalReviews = computed(() => props.reviews.length)
+
+const averageRating = computed(() => {
+  if (totalReviews.value === 0) return '0.0'
+  const sum = props.reviews.reduce((acc, r) => acc + r.reviewRating, 0)
+  return (sum / totalReviews.value).toFixed(1)
+})
+
+function ratingPercent(star) {
+  if (totalReviews.value === 0) return '0'
+  const count = props.reviews.filter(r => r.reviewRating === star).length
+  return ((count / totalReviews.value) * 100).toFixed(0)
 }
 </script>
