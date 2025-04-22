@@ -59,7 +59,7 @@
           <div class="row">
             <!-- left 8 columns: just the review list + pagination -->
             <div class="col-lg-8">
-              <h3 class="tp-product-details-review-title mb-4">Rating & Review</h3>
+              <h3 class="tp-product-details-review-title mb-4">다른 사용자들의 리뷰</h3>
               <div class="tp-product-details-review-list pr-110">
                 <div v-if="pagedReviews.length">
                   <div v-for="item in pagedReviews" :key="item.reviewIdx"
@@ -110,7 +110,7 @@
             <!-- right 4 columns: summary up top, write‐form below -->
             <div class="col-lg-4">
               <div class="tp-product-details-review-statics mb-5">
-                <h3 class="tp-product-details-review-number-title">Customer reviews</h3>
+                <h3 class="tp-product-details-review-number-title">리뷰 통계</h3>
                 <div class="tp-product-details-review-summery d-flex align-items-center mb-3">
                   <div class="tp-product-details-review-summery-value me-3">
                     <span class="h1">{{ averageRating }}</span>
