@@ -2,7 +2,7 @@
   <div class="tp-shop-sidebar mr-10">
     <!-- filter -->
     <div class="tp-shop-widget mb-35">
-      <h3 class="tp-shop-widget-title no-border">Price Filter</h3>
+      <h3 class="tp-shop-widget-title no-border">가격대 검색</h3>
       <!-- price filter start -->
       <shop-sidebar-price-filter />
       <!-- price filter end -->
@@ -10,7 +10,7 @@
 
     <!-- status -->
     <div class="tp-shop-widget mb-50">
-      <h3 class="tp-shop-widget-title">Product Status</h3>
+      <h3 class="tp-shop-widget-title">이벤트별 검색</h3>
       <!-- filter status start -->
       <shop-sidebar-filter-status />
       <!-- filter status end -->
@@ -18,7 +18,7 @@
 
     <!-- categories -->
     <div class="tp-shop-widget mb-50">
-      <h3 class="tp-shop-widget-title">Categories</h3>
+      <h3 class="tp-shop-widget-title">카테고리</h3>
       <!-- filter categories start -->
       <shop-sidebar-filter-categories />
       <!-- filter categories end -->
@@ -26,7 +26,7 @@
 
     <!-- product rating -->
     <div class="tp-shop-widget mb-50">
-      <h3 class="tp-shop-widget-title">Top Rated Products</h3>
+      <h3 class="tp-shop-widget-title">추천 제품</h3>
       <!-- filter top-product start -->
       <shop-sidebar-top-product />
       <!-- filter top-product end -->
@@ -34,7 +34,7 @@
 
     <!-- brand -->
     <div class="tp-shop-widget mb-50">
-      <h3 class="tp-shop-widget-title">Popular Brands</h3>
+      <h3 class="tp-shop-widget-title">인기 제품</h3>
       <!-- filter brand start -->
       <shop-sidebar-filter-brand />
       <!-- filter brand end -->

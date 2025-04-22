@@ -181,7 +181,11 @@ const { isSticky } = useSticky();
 const cartStore = useCartStore();
 const wishlistStore = useWishlistStore();
 const utilsStore = useUtilityStore();
+
 onMounted(() => {
-  notificationStore.fetchUnreadCount()
-})
+  wishlistStore.fetchWishlist();
+  cartStore.fetchCartProducts();
+  notificationStore.fetchUnreadCount();
+});
+
 </script>

@@ -88,7 +88,7 @@
           </div>
         </div>
         <div class="tp-product-details-add-to-cart mb-15 w-100">
-          <button @click="cartStore.addCartProduct(product)" class="tp-product-details-add-to-cart-btn w-100">
+          <button @click="cartStore.addCartProduct(product, product.idx)" class="tp-product-details-add-to-cart-btn w-100">
             Add To Cart
           </button>
         </div>
@@ -103,7 +103,7 @@
         <svg-compare-3 />
         Compare
       </button>
-      <button @click="wishlistStore.add_wishlist_product(product)" type="button" class="tp-product-details-action-sm-btn">
+      <button @click="wishlistStore.toggleWishlist(product.idx)" type="button" class="tp-product-details-action-sm-btn">
         <svg-wishlist-3 />
         Add Wishlist
       </button>

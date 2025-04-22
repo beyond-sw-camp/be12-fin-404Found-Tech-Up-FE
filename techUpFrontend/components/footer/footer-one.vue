@@ -43,9 +43,9 @@
                 <h4 class="tp-footer-widget-title">정보</h4>
                 <div class="tp-footer-widget-content">
                   <ul>
-                    <li><a href="#">소개</a></li>
-                    <li><a href="#">개인정보처리방침</a></li>
-                    <li><a href="#">약관 </a></li>
+                    <li><nuxt-link href="/about">소개</nuxt-link></li>
+                    <li><nuxt-link href="/privacy">개인정보처리방침</nuxt-link></li>
+                    <!-- <li><a href="#">약관 </a></li> -->
                   </ul>
                 </div>
               </div>

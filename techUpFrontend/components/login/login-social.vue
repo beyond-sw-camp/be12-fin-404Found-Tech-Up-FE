@@ -9,11 +9,7 @@ const kakaoLogin = async () => {
   try {
     const Auth_url = '/api/oauth2/authorization/kakao';
     window.location.href = Auth_url;
-    console.log("Login success:", response);
-    alert('로그인이 완료되었습니다.');
     router.push('/'); // 로그인 성공 시 메인 페이지 경로로 이동
-
-    // const response = await userStore.social();
   } catch (error) {
     console.error('카카오 로그인 에러:', error);
   }

@@ -1,16 +1,12 @@
 <script setup>
 import { VAvatar, VCard, VCardItem, VCardText, VCardTitle, VList, VListItem, VListItemTitle } from 'vuetify/components'
 
-const props = defineProps({
-  salesRank: Array
-});
+import { useAdminStore } from '../../pinia/useAdminStore';
+import { storeToRefs } from 'pinia';
 
-let salesRank = props.salesRank.map((value) => {
-  let result = {};
-  result.productIdx = value.productIdx;
-  result.productName = value.productName;
-  result.number = value.number;
-});
+const adminStore = useAdminStore();
+const storeRef = storeToRefs(adminStore);
+console.log(storeRef.topSales.value)
 
 </script>
 
@@ -22,7 +18,7 @@ let salesRank = props.salesRank.map((value) => {
 
     <VCardText>
       <VList class="card-list">
-        <VListItem v-for="data in salesRank" :key="data.abbr">
+        <VListItem v-for="data in storeRef.topSales.value" :key="data.productIdx">
           <template #prepend>
             <VAvatar :color="data.color" variant="tonal" size="40">
               {{ data.title }}
@@ -35,9 +31,7 @@ let salesRank = props.salesRank.map((value) => {
             </h6>
           </VListItemTitle>
           <template #append>
-            <VAvatar :color="data.color" variant="tonal" size="40">
-              {{ data.number }}
-            </VAvatar>
+            {{ data.number }}
           </template>
         </VListItem>
       </VList>

@@ -18,8 +18,8 @@ export const useProductBackStore = defineStore("productDetail", () => {
       // 백엔드 응답 구조에 맞춰 아래 조건문을 수정 (예: response.data.data 또는 response.data.result)
       if (response.data && response.data.data) {
         product.value = response.data.data
-        if (product.value.img) {
-          activeImg.value = product.value.img
+        if (product.value.images) {
+          activeImg.value = product.value.images[0]
         }
       } else {
         console.error("API 응답 형식이 올바르지 않습니다.", response.data)

@@ -1,16 +1,12 @@
 <script setup>
 import { VAvatar, VCard, VCardItem, VCardText, VCardTitle, VIcon, VList, VListItem, VListItemSubtitle, VListItemTitle } from 'vuetify/components'
+import { useAdminStore } from '../../pinia/useAdminStore';
+import { storeToRefs } from 'pinia';
 
-const props = defineProps({
-  topWishList: []
-});
+const adminStore = useAdminStore();
+const storeRef = storeToRefs(adminStore);
 
-
-let topWishList = props.topWishList.map((value) => {
-  let result = {};
-  result.abbr = value.brand;
-  result.amount = value.cw;
-});
+let topWishList = ref(storeRef.topWishList);
 
 </script>
 
@@ -24,17 +20,15 @@ let topWishList = props.topWishList.map((value) => {
     <VCardText>
       <VList class="card-list">
         <VListItem v-for="data in topWishList" :key="data.abbr">
-          <template #prepend>
-            <VAvatar :color="data.color" variant="tonal" size="40">
-              {{ data.abbr }}
-            </VAvatar>
-          </template>
-
           <VListItemTitle class="mb-1 d-flex align-center">
             <h6 class="text-h6">
-              {{ data.amount }}
+              {{ data.brand }}
+
             </h6>
           </VListItemTitle>
+          <template #append>
+            {{ data.cw }}
+          </template>
         </VListItem>
       </VList>
     </VCardText>

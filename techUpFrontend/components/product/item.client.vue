@@ -15,7 +15,7 @@
         <div class="tp-product-action-item d-flex flex-column">
           <button
             v-if="!isItemInCart(item)"
-            @click="cartStore.addCartProduct(item)"
+            @click="cartStore.addCartProduct(item, item.idx)"
             type="button"
             :class="`tp-product-action-btn tp-product-add-cart-btn ${isItemInCart(item) ? 'active' : ''}`"
           >
@@ -123,8 +123,11 @@ const wishlistStore = useWishlistStore();
 const utilityStore = useUtilityStore();
 
 function isItemInWishlist(product) {
-  return wishlistStore.wishlists.some((prd) => prd.idx === product.idx);
+  return wishlistStore.wishlists.some(
+    (wishlistItem) => Number(wishlistItem.product.productIdx) === Number(product.idx)
+  );
 }
+
 function isItemInCart(product) {
   return cartStore.cart_products.some((prd) => prd.idx === product.idx);
 }

@@ -57,7 +57,7 @@
                     <th>장바구니</th>
                     <td v-for="item in compareStore.compare_items" :key="item.idx">
                       <div class="tp-compare-add-to-cart">
-                        <button @click="cartStore.addCartProduct(item)" type="button" class="tp-btn">장바구니 담기</button>
+                        <button @click="cartStore.addCartProduct(item, item.idx)" type="button" class="tp-btn">장바구니 담기</button>
                       </div>
                     </td>
                   </tr>

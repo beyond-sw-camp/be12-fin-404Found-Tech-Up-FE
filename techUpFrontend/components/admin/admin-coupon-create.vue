@@ -1,7 +1,12 @@
 <template>
   <div class="form-container">
-    <h2 class="form-title">쿠폰 등록</h2>
+    <h2 class="form-title">전체 사용자 대상 쿠폰 등록</h2>
     <form @submit.prevent="submitForm" class="space-y-6">
+
+      <div :v-show="onlyForUser" class="form-group">
+        <label class="form-label">발급 대상 사용자</label>
+        <p>{{ idx }}</p>
+      </div>
       <!-- 쿠폰 이름 -->
       <div class="form-group">
         <label class="form-label">쿠폰 이름</label>
@@ -32,10 +37,19 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref } from 'vue';
 import { useAdminStore } from '../../pinia/useAdminStore';
-import { navigateTo } from 'nuxt/app';
+import { storeToRefs } from 'pinia';
 
+
+import { useRoute } from 'vue-router';
+const route = useRoute();
+
+const idx = ref(route.params.idx);
+const onlyForUser = ref(idx.value ? true : false);
+
+const adminStore = useAdminStore();
+const storeRef = storeToRefs(adminStore);
 /**
  * coupon 테이블 구조:
  *  - coupon_idx (PK, AUTO_INCREMENT)
@@ -51,30 +65,10 @@ let coupon = ref({
   productIdx: '',
 })
 
-const config = useRuntimeConfig();
+const submitForm = async () => {
+  await adminStore.submitCouponRegisterForm(coupon.value, idx.value);
+};
 
-const adminStore = useAdminStore();
-
-const submitForm = () => {
-  // 실제 서버로 전송할 payload
-  const payload = {
-    ...coupon.value,
-  }
-  console.log('등록 데이터:', payload)
-  // 여기서 axios.post('/api/coupons', payload).then(...)
-  $fetch('/coupon/issueall', {
-    baseURL: config.public.apiBaseUrl,
-    method: 'POST',
-    body: payload,
-  }).then(async (result) => {
-    console.log(result.data);
-    alert("등록되었습니다!");
-    navigateTo('/dashboard');
-  }).catch((e) => {
-    alert("등록 실패: " + e);
-  });
-
-}
 </script>
 
 <style scoped>

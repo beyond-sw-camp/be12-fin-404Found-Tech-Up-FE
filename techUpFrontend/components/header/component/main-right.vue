@@ -37,10 +37,8 @@
       <!-- 장바구니 -->
       <div class="tp-header-action-item">
         <button @click="cartStore.handleCartOffcanvas" type="button" class="tp-header-action-btn cartmini-open-btn">
-          <SvgCartBag />
-          <span class="tp-header-action-badge">
-            {{ cartStore.cart_products.length }}
-          </span>
+          <svg-cart-bag />
+          <span class="tp-header-action-badge">{{ cartStore.totalPriceQuantity.quantity }}</span>
         </button>
       </div>
 

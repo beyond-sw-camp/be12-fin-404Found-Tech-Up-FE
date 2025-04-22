@@ -1,12 +1,13 @@
 <script setup>
-import { useFetch } from 'nuxt/app';
 import { VAvatar, VCard, VCardItem, VCardText, VCardTitle, VIcon, VList, VListItem, VListItemSubtitle, VListItemTitle } from 'vuetify/components'
 
-const props = defineProps({
-  topViews: []
-})
+import { useAdminStore } from '../../pinia/useAdminStore';
+import { storeToRefs } from 'pinia';
 
-let topViews = [];
+const adminStore = useAdminStore();
+const storeRef = storeToRefs(adminStore);
+
+let topViews = ref([]);
 
 /*
 let topViews = props.topViews.map((value) => {
