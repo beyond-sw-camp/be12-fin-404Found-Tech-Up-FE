@@ -1,5 +1,5 @@
 <template>
-  <div class="admin__user table-responsive">
+  <div v-if="userStore.isLoggedIn" class="admin__user table-responsive">
     <table>
       <thead>
         <tr>
@@ -28,6 +28,8 @@
 <script setup>
 import { storeToRefs } from 'pinia';
 import { useAdminStore } from '../../pinia/useAdminStore';
+import { useUserStore } from '../../pinia/useUserStore';
+const userStore = useUserStore();
 
 const adminStore = useAdminStore();
 const storeRef = storeToRefs(adminStore);

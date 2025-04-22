@@ -1,7 +1,7 @@
 <template>
   <section class="admin__area pt-120 pb-120">
     <div class="container">
-      <div class="admin__inner p-relative">
+      <div v-if="userStore.isLoggedIn" class="admin__inner p-relative">
         <!--
         <div class="admin__shape">
           <img class="profile__shape-1" src="/img/login/laptop.png" alt="">
@@ -68,5 +68,6 @@
 </template>
 
 <script setup>
-
+import { useUserStore } from '../../pinia/useUserStore';
+const userStore = useUserStore();
 </script>
