@@ -35,10 +35,6 @@
 </template>
 
 <script>
-import category_data from "@/data/category-data";
-
-const category_items = category_data.filter((c) => c.productType === "fashion");
-
 const router = useRouter();
 // handle parent
 const handleParentCategory = (value) => {

@@ -91,24 +91,36 @@ import { ref, watch, computed } from 'vue'
 import { useCartStore } from '@/pinia/useCartStore'
 
 const props = defineProps({
-  shippingMethod: { type: String, default: 'flat_rate' },
+  shippingMethod: { type: String },
   agree: { type: Boolean, default: false }
 })
 const emit = defineEmits(['update:shipping', 'update:agree', 'update:payment'])
 const cartStore = useCartStore()
 
-const shippingMethodLocal = ref(props.shippingMethod)
+const defaultShipping = computed(() =>
+  cartStore.totalPriceQuantity.total < 50000
+    ? 'flat_rate'
+    : 'free_shipping'
+)
+
+const shippingMethodLocal = ref(
+  props.shippingMethod ?? defaultShipping.value
+)
 watch(shippingMethodLocal, val => emit('update:shipping', val))
 
 const shippingOptions = computed(() => {
-  const base = [
-    { value: 'flat_rate',      label: '일반 배송:', cost: 3000 },
-    { value: 'local_pickup',   label: '매장 수령:', cost: 1500 },
+  const total = cartStore.totalPriceQuantity.total
+  const all = [
+    { value: 'flat_rate',     label: '일반 배송:', cost: 3000 },
+    { value: 'local_pickup',  label: '매장 수령:', cost: 1500 },
+    { value: 'free_shipping', label: '무료 배송', cost: 0    },
   ]
-  if (cartStore.totalPriceQuantity.total > 50000) {
-    base.push({ value: 'free_shipping', label: '무료 배송', cost: 0 })
+
+  if (total < 50000) {
+    return all.filter(o => o.value !== 'free_shipping')
   }
-  return base
+
+  return all.filter(o => o.value !== 'flat_rate')
 })
 
 const agreeLocal = ref(props.agree)
