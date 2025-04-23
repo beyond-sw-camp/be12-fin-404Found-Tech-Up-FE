@@ -68,7 +68,7 @@ export const useProductFilterBackStore = defineStore("product_filter", () => {
   // products 배열을 기반으로 최대 제품 가격 계산
   const maxProductPrice = computed(() => {
     if (products.value && products.value.length > 0) {
-      return Math.max(...products.value.map((p) => p.price));
+      return Math.max(...products.value.map((p) => p.price - (p.price * p.discount / 100)));
     }
     return 0;
   });
@@ -98,8 +98,8 @@ export const useProductFilterBackStore = defineStore("product_filter", () => {
     if (route.query.minPrice && route.query.maxPrice) {
       filtered = filtered.filter(
         (p) =>
-          p.price >= Number(route.query.minPrice) &&
-          p.price <= Number(route.query.maxPrice)
+          p.price - (p.price * p.discount / 100) >= Number(route.query.minPrice) &&
+        p.price - (p.price * p.discount / 100) <= Number(route.query.maxPrice)
       );
     }
     // Status filter (예: on-sale 또는 in-stock)
