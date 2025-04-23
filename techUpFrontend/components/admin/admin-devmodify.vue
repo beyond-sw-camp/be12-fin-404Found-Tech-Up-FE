@@ -47,42 +47,42 @@
         <div class="form-group">
           <label class="form-label">상세 카테고리</label>
           <input v-model="storeRef.targetProduct.value.ssdSpec.productCategory" type="text" class="form-input"
-            placeholder="56, 512, 1024" required />
+            placeholder="" required />
         </div>
         <div class="form-group">
           <label class="form-label">폼팩터</label>
-          <input v-model="storeRef.targetProduct.value.ssdSpec.formFactor" type="text" class="form-input"
-            placeholder="56, 512, 1024" required />
+          <input v-model="storeRef.targetProduct.value.ssdSpec.formFactor" type="text" class="form-input" placeholder=""
+            required />
         </div>
         <div class="form-group">
           <label class="form-label">인터페이스 </label>
           <input v-model="storeRef.targetProduct.value.ssdSpec.interfaceType" type="text" class="form-input"
-            placeholder="56, 512, 1024" required />
+            placeholder="" required />
         </div>
         <div class="form-group">
           <label class="form-label">프로토콜</label>
-          <input v-model="storeRef.targetProduct.value.ssdSpec.protocol" type="text" class="form-input"
-            placeholder="56, 512, 1024" required />
+          <input v-model="storeRef.targetProduct.value.ssdSpec.protocol" type="text" class="form-input" placeholder=""
+            required />
         </div>
         <div class="form-group">
           <label class="form-label">SSD 용량 (GB)</label>
           <input v-model="storeRef.targetProduct.value.ssdSpec.ssdCapacity" type="number" class="form-input"
-            placeholder="56, 512, 1024" required />
+            placeholder="" required />
         </div>
         <div class="form-group">
           <label class="form-label">메모리 타입</label>
-          <input v-model="storeRef.targetProduct.value.ssdSpec.memoryType" type="text" class="form-input"
-            placeholder="56, 512, 1024" required />
+          <input v-model="storeRef.targetProduct.value.ssdSpec.memoryType" type="text" class="form-input" placeholder=""
+            required />
         </div>
         <div class="form-group">
           <label class="form-label">낸드 구조</label>
           <input v-model="storeRef.targetProduct.value.ssdSpec.nandStructure" type="text" class="form-input"
-            placeholder="56, 512, 1024" required />
+            placeholder="" required />
         </div>
         <div class="form-group">
           <label class="form-label">SSD 컨트롤러</label>
-          <input v-model="storeRef.targetProduct.value.ssdSpec.controller" type="text" class="form-input"
-            placeholder="56, 512, 1024" required />
+          <input v-model="storeRef.targetProduct.value.ssdSpec.controller" type="text" class="form-input" placeholder=""
+            required />
         </div>
         <div class="form-group">
           <label class="form-label">읽기 속도(MB/s)</label>
@@ -96,48 +96,48 @@
         </div>
         <div class="form-group">
           <label class="form-label">MTBF</label>
-          <input v-model="storeRef.targetProduct.value.ssdSpec.mtbf" type="text" class="form-input"
-            placeholder="56, 512, 1024" required />
+          <input v-model="storeRef.targetProduct.value.ssdSpec.mtbf" type="text" class="form-input" placeholder=""
+            required />
         </div>
         <div class="form-group">
           <label class="form-label">TBW</label>
-          <input v-model="storeRef.targetProduct.value.ssdSpec.tbw" type="text" class="form-input"
-            placeholder="56, 512, 1024" required />
+          <input v-model="storeRef.targetProduct.value.ssdSpec.tbw" type="text" class="form-input" placeholder=""
+            required />
         </div>
         <div class="form-group">
           <label class="form-label">히트싱크</label>
           <input v-model="storeRef.targetProduct.value.ssdSpec.nvmeHeatsink" type="text" class="form-input"
-            placeholder="56, 512, 1024" required />
+            placeholder="" required />
         </div>
         <div class="form-group">
           <label class="form-label">너비</label>
-          <input v-model="storeRef.targetProduct.value.ssdSpec.width" type="text" class="form-input"
-            placeholder="56, 512, 1024" required />
+          <input v-model="storeRef.targetProduct.value.ssdSpec.width" type="text" class="form-input" placeholder=""
+            required />
         </div>
         <div class="form-group">
           <label class="form-label">높이</label>
-          <input v-model="storeRef.targetProduct.value.ssdSpec.height" type="text" class="form-input"
-            placeholder="56, 512, 1024" required />
+          <input v-model="storeRef.targetProduct.value.ssdSpec.height" type="text" class="form-input" placeholder=""
+            required />
         </div>
         <div class="form-group">
           <label class="form-label">두께</label>
-          <input v-model="storeRef.targetProduct.value.ssdSpec.thickness" type="text" class="form-input"
-            placeholder="56, 512, 1024" required />
+          <input v-model="storeRef.targetProduct.value.ssdSpec.thickness" type="text" class="form-input" placeholder=""
+            required />
         </div>
         <div class="form-group">
           <label class="form-label">무게</label>
-          <input v-model="storeRef.targetProduct.value.ssdSpec.weight" type="text" class="form-input"
-            placeholder="56, 512, 1024" required />
+          <input v-model="storeRef.targetProduct.value.ssdSpec.weight" type="text" class="form-input" placeholder=""
+            required />
         </div>
         <div class="form-group">
           <label class="form-label">등록년</label>
-          <input v-model="storeRef.targetProduct.value.ssdSpec.registYear" type="text" class="form-input"
-            placeholder="56, 512, 1024" required />
+          <input v-model="storeRef.targetProduct.value.ssdSpec.registYear" type="text" class="form-input" placeholder=""
+            required />
         </div>
         <div class="form-group">
           <label class="form-label">등록월</label>
           <input v-model="storeRef.targetProduct.value.ssdSpec.registMonth" type="text" class="form-input"
-            placeholder="56, 512, 1024" required />
+            placeholder="" required />
         </div>
       </div>
 
@@ -224,7 +224,7 @@
         <div class="form-group">
           <label class="form-label">HDD 용량 (GB)</label>
           <input v-model="storeRef.targetProduct.value.hddSpec.hddCapacity" type="number" class="form-input"
-            placeholder="56, 512, 1024" required />
+            placeholder="" required />
         </div>
         <div class="form-group">
           <label class="form-label">인터페이스</label>

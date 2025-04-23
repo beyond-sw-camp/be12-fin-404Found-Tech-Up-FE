@@ -46,36 +46,35 @@
         <h3 class="spec-title">SSD 스펙</h3>
         <div class="form-group">
           <label class="form-label">상세 카테고리</label>
-          <input v-model="ssd.productCategory" type="text" class="form-input" placeholder="ex) 256, 512, 1024"
-            required />
+          <input v-model="ssd.productCategory" type="text" class="form-input" placeholder="" required />
         </div>
         <div class="form-group">
           <label class="form-label">폼팩터</label>
-          <input v-model="ssd.formFactor" type="text" class="form-input" placeholder="ex) 256, 512, 1024" required />
+          <input v-model="ssd.formFactor" type="text" class="form-input" placeholder="" required />
         </div>
         <div class="form-group">
           <label class="form-label">인터페이스 </label>
-          <input v-model="ssd.interfaceType" type="text" class="form-input" placeholder="ex) 256, 512, 1024" required />
+          <input v-model="ssd.interfaceType" type="text" class="form-input" placeholder="" required />
         </div>
         <div class="form-group">
           <label class="form-label">프로토콜</label>
-          <input v-model="ssd.protocol" type="text" class="form-input" placeholder="ex) 256, 512, 1024" required />
+          <input v-model="ssd.protocol" type="text" class="form-input" placeholder="" required />
         </div>
         <div class="form-group">
           <label class="form-label">SSD 용량 (GB)</label>
-          <input v-model="ssd.ssdCapacity" type="number" class="form-input" placeholder="ex) 256, 512, 1024" required />
+          <input v-model="ssd.ssdCapacity" type="number" class="form-input" placeholder="" required />
         </div>
         <div class="form-group">
           <label class="form-label">메모리 타입</label>
-          <input v-model="ssd.memoryType" type="text" class="form-input" placeholder="ex) 256, 512, 1024" required />
+          <input v-model="ssd.memoryType" type="text" class="form-input" placeholder="" required />
         </div>
         <div class="form-group">
           <label class="form-label">낸드 구조</label>
-          <input v-model="ssd.nandStructure" type="text" class="form-input" placeholder="ex) 256, 512, 1024" required />
+          <input v-model="ssd.nandStructure" type="text" class="form-input" placeholder="" required />
         </div>
         <div class="form-group">
           <label class="form-label">SSD 컨트롤러</label>
-          <input v-model="ssd.controller" type="text" class="form-input" placeholder="ex) 256, 512, 1024" required />
+          <input v-model="ssd.controller" type="text" class="form-input" placeholder="" required />
         </div>
         <div class="form-group">
           <label class="form-label">읽기 속도(MB/s)</label>
@@ -87,39 +86,39 @@
         </div>
         <div class="form-group">
           <label class="form-label">MTBF</label>
-          <input v-model="ssd.mtbf" type="text" class="form-input" placeholder="ex) 256, 512, 1024" required />
+          <input v-model="ssd.mtbf" type="text" class="form-input" placeholder="" required />
         </div>
         <div class="form-group">
           <label class="form-label">TBW</label>
-          <input v-model="ssd.tbw" type="text" class="form-input" placeholder="ex) 256, 512, 1024" required />
+          <input v-model="ssd.tbw" type="text" class="form-input" placeholder="" required />
         </div>
         <div class="form-group">
           <label class="form-label">히트싱크</label>
-          <input v-model="ssd.nvmeHeatsink" type="text" class="form-input" placeholder="ex) 256, 512, 1024" required />
+          <input v-model="ssd.nvmeHeatsink" type="text" class="form-input" placeholder="" required />
         </div>
         <div class="form-group">
           <label class="form-label">너비</label>
-          <input v-model="ssd.width" type="text" class="form-input" placeholder="ex) 256, 512, 1024" required />
+          <input v-model="ssd.width" type="text" class="form-input" placeholder="" required />
         </div>
         <div class="form-group">
           <label class="form-label">높이</label>
-          <input v-model="ssd.height" type="text" class="form-input" placeholder="ex) 256, 512, 1024" required />
+          <input v-model="ssd.height" type="text" class="form-input" placeholder="" required />
         </div>
         <div class="form-group">
           <label class="form-label">두께</label>
-          <input v-model="ssd.thickness" type="text" class="form-input" placeholder="ex) 256, 512, 1024" required />
+          <input v-model="ssd.thickness" type="text" class="form-input" placeholder="" required />
         </div>
         <div class="form-group">
           <label class="form-label">무게</label>
-          <input v-model="ssd.weight" type="text" class="form-input" placeholder="ex) 256, 512, 1024" required />
+          <input v-model="ssd.weight" type="text" class="form-input" placeholder="" required />
         </div>
         <div class="form-group">
           <label class="form-label">등록년</label>
-          <input v-model="ssd.registYear" type="text" class="form-input" placeholder="ex) 256, 512, 1024" required />
+          <input v-model="ssd.registYear" type="text" class="form-input" placeholder="" required />
         </div>
         <div class="form-group">
           <label class="form-label">등록월</label>
-          <input v-model="ssd.registMonth" type="text" class="form-input" placeholder="ex) 256, 512, 1024" required />
+          <input v-model="ssd.registMonth" type="text" class="form-input" placeholder="" required />
         </div>
       </div>
 
@@ -132,48 +131,48 @@
         </div>
         <div class="form-group">
           <label class="form-label">상세 카테고리</label>
-          <input v-model="ram.productCategory" type="text" class="form-input" placeholder="ex) DDR4" required />
+          <input v-model="ram.productCategory" type="text" class="form-input" placeholder="" required />
         </div>
         <div class="form-group">
           <label class="form-label">메모리 스펙 </label>
-          <input v-model="ram.memorySpec" type="text" class="form-input" placeholder="ex) DDR4" required />
+          <input v-model="ram.memorySpec" type="text" class="form-input" placeholder="" required />
         </div>
         <div class="form-group">
           <label class="form-label">RAM 용량</label>
-          <input v-model="ram.ramSize" type="number" class="form-input" placeholder="ex) 2" required />
+          <input v-model="ram.ramSize" type="number" class="form-input" placeholder="" required />
         </div>
         <div class="form-group">
           <label class="form-label">유효 작동 클럭(MHz)</label>
-          <input v-model="ram.operatingClock" type="number" class="form-input" placeholder="ex) DDR4" required />
+          <input v-model="ram.operatingClock" type="number" class="form-input" placeholder="" required />
         </div>
         <div class="form-group">
           <label class="form-label">RAM 타이밍</label>
-          <input v-model="ram.ramTiming" type="text" class="form-input" placeholder="ex) DDR4" required />
+          <input v-model="ram.ramTiming" type="text" class="form-input" placeholder="" required />
         </div>
         <div class="form-group">
           <label class="form-label">작동 전압</label>
-          <input v-model="ram.operatingVoltage" type="number" class="form-input" placeholder="ex) DDR4" required />
+          <input v-model="ram.operatingVoltage" type="number" class="form-input" placeholder="" required />
         </div>
         <div class="form-group">
           <label class="form-label">RAM 개수</label>
-          <input v-model="ram.ramNum" type="number" class="form-input" placeholder="ex) 2" required />
+          <input v-model="ram.ramNum" type="number" class="form-input" placeholder="" required />
         </div>
         <div class="form-group">
           <label class="form-label">히트싱크 유무</label>
-          <input v-model="ram.heatsink" type="text" class="form-input" placeholder="ex) DDR4" required />
+          <input v-model="ram.heatsink" type="text" class="form-input" placeholder="" required />
         </div>
         <div class="form-group">
           <label class="form-label">모듈 높이(mm)</label>
-          <input v-model="ram.height" type="text" class="form-input" placeholder="ex) DDR4" required />
+          <input v-model="ram.height" type="text" class="form-input" placeholder="" required />
         </div>
 
         <div class="form-group">
           <label class="form-label">등록년</label>
-          <input v-model="ram.registYear" type="text" class="form-input" placeholder="ex) DDR4" required />
+          <input v-model="ram.registYear" type="text" class="form-input" placeholder="" required />
         </div>
         <div class="form-group">
           <label class="form-label">등록월</label>
-          <input v-model="ram.registMonth" type="text" class="form-input" placeholder="ex) 2" required />
+          <input v-model="ram.registMonth" type="text" class="form-input" placeholder="" required />
         </div>
       </div>
 
@@ -182,20 +181,20 @@
         <h3 class="spec-title">HDD 스펙</h3>
         <div class="form-group">
           <label class="form-label">상세 분류</label>
-          <input v-model="hdd.productCategory" type="text" class="form-input" placeholder="ex) 2" required />
+          <input v-model="hdd.productCategory" type="text" class="form-input" placeholder="" required />
         </div>
         <div class="form-group">
           <label class="form-label">크기 규격(인치)</label>
-          <input v-model="hdd.diskSize" type="text" class="form-input" placeholder="ex) 2" required />
+          <input v-model="hdd.diskSize" type="text" class="form-input" placeholder="" required />
         </div>
 
         <div class="form-group">
           <label class="form-label">HDD 용량 (GB)</label>
-          <input v-model="hdd.hddCapacity" type="number" class="form-input" placeholder="ex) 256, 512, 1024" required />
+          <input v-model="hdd.hddCapacity" type="number" class="form-input" placeholder="" required />
         </div>
         <div class="form-group">
           <label class="form-label">인터페이스</label>
-          <input v-model="ram.interfaceType" type="text" class="form-input" placeholder="ex) 2" required />
+          <input v-model="ram.interfaceType" type="text" class="form-input" placeholder="" required />
         </div>
         <div class="form-group">
           <label class="form-label">HDD 회전 속도 (RPM)</label>
@@ -207,31 +206,31 @@
         </div>
         <div class="form-group">
           <label class="form-label">전송 속도</label>
-          <input v-model="hdd.transferSpeed" type="text" class="form-input" placeholder="ex) 2" required />
+          <input v-model="hdd.transferSpeed" type="text" class="form-input" placeholder="" required />
         </div>
         <div class="form-group">
           <label class="form-label">기록 방법</label>
-          <input v-model="hdd.recordingMethod" type="text" class="form-input" placeholder="ex) 2" required />
+          <input v-model="hdd.recordingMethod" type="text" class="form-input" placeholder="" required />
         </div>
         <div class="form-group">
           <label class="form-label">두께 </label>
-          <input v-model="hdd.thickness" type="text" class="form-input" placeholder="ex) 2" required />
+          <input v-model="hdd.thickness" type="text" class="form-input" placeholder="" required />
         </div>
         <div class="form-group">
           <label class="form-label">워크로드</label>
-          <input v-model="hdd.workload" type="text" class="form-input" placeholder="ex) 2" required />
+          <input v-model="hdd.workload" type="text" class="form-input" placeholder="" required />
         </div>
         <div class="form-group">
           <label class="form-label">소음(dB)</label>
-          <input v-model="hdd.noise" type="text" class="form-input" placeholder="ex) 2" required />
+          <input v-model="hdd.noise" type="text" class="form-input" placeholder="" required />
         </div>
         <div class="form-group">
           <label class="form-label">등록년</label>
-          <input v-model="hdd.registYear" type="text" class="form-input" placeholder="ex) 2" required />
+          <input v-model="hdd.registYear" type="text" class="form-input" placeholder="" required />
         </div>
         <div class="form-group">
           <label class="form-label">등록월</label>
-          <input v-model="hdd.registMonth" type="text" class="form-input" placeholder="ex) 2" required />
+          <input v-model="hdd.registMonth" type="text" class="form-input" placeholder="" required />
         </div>
       </div>
 
@@ -240,15 +239,15 @@
         <h3 class="spec-title">CPU 스펙</h3>
         <div class="form-group">
           <label class="form-label">(AMD의 경우) CPU 종류, 인텔은 공란</label>
-          <input v-model="cpu.amdCpuType" type="text" class="form-input" placeholder="ex) 코어i7, 라이젠5" required />
+          <input v-model="cpu.amdCpuType" type="text" class="form-input" placeholder="" required />
         </div>
         <div class="form-group">
           <label class="form-label">소켓</label>
-          <input v-model="cpu.socketType" type="text" class="form-input" placeholder="ex) 코어i7, 라이젠5" required />
+          <input v-model="cpu.socketType" type="text" class="form-input" placeholder="" required />
         </div>
         <div class="form-group">
           <label class="form-label">코어 수</label>
-          <input v-model="cpu.coreCount" type="number" class="form-input" placeholder="ex) 2, 4, 6, 24" required />
+          <input v-model="cpu.coreCount" type="number" class="form-input" placeholder=", 4, 6, 24" required />
         </div>
         <div class="form-group">
           <label class="form-label">스레드 수</label>
@@ -256,76 +255,75 @@
         </div>
         <div class="form-group">
           <label class="form-label">내장 그래픽</label>
-          <input v-model="cpu.builtInGraphic" type="text" class="form-input" placeholder="ex) 코어i7, 라이젠5" required />
+          <input v-model="cpu.builtInGraphic" type="text" class="form-input" placeholder="" required />
         </div>
         <div class="form-group">
           <label class="form-label">제조 공정 </label>
-          <input v-model="cpu.manufactoringProcess" type="text" class="form-input" placeholder="ex) 코어i7, 라이젠5"
-            required />
+          <input v-model="cpu.manufactoringProcess" type="text" class="form-input" placeholder="" required />
         </div>
         <div class="form-group">
           <label class="form-label">기본 클럭(GHz) </label>
-          <input v-model="cpu.baseClock" type="number" class="form-input" placeholder="ex) 코어i7, 라이젠5" required />
+          <input v-model="cpu.baseClock" type="number" class="form-input" placeholder="" required />
         </div>
         <div class="form-group">
           <label class="form-label">최대 클럭(GHz)</label>
-          <input v-model="cpu.maxClock" type="number" class="form-input" placeholder="ex) 코어i7, 라이젠5" required />
+          <input v-model="cpu.maxClock" type="number" class="form-input" placeholder="" required />
         </div>
         <div class="form-group">
           <label class="form-label">L2 캐시 크기(KB)</label>
-          <input v-model="cpu.l2Cache" type="number" class="form-input" placeholder="ex) 코어i7, 라이젠5" required />
+          <input v-model="cpu.l2Cache" type="number" class="form-input" placeholder="" required />
         </div>
         <div class="form-group">
           <label class="form-label">L3 캐시 크기 (MB)</label>
-          <input v-model="cpu.l3Cache" type="number" class="form-input" placeholder="ex) 코어i7, 라이젠5" required />
+          <input v-model="cpu.l3Cache" type="number" class="form-input" placeholder="" required />
         </div>
         <div class="form-group">
           <label class="form-label">호환 운영체제 </label>
-          <input v-model="cpu.operateSystem" type="text" class="form-input" placeholder="ex) 코어i7, 라이젠5" required />
+          <input v-model="cpu.operateSystem" type="text" class="form-input" placeholder="" required />
         </div>
         <div class="form-group">
           <label class="form-label">TDP(W)</label>
-          <input v-model="cpu.tdp" type="number" class="form-input" placeholder="ex) 코어i7, 라이젠5" required />
+          <input v-model="cpu.tdp" type="number" class="form-input" placeholder="" required />
         </div>
         <div class="form-group">
           <label class="form-label">PPT(W)</label>
-          <input v-model="cpu.ppt" type="number" class="form-input" placeholder="ex) 코어i7, 라이젠5" required />
+          <input v-model="cpu.ppt" type="number" class="form-input" placeholder="" required />
         </div>
         <div class="form-group">
           <label class="form-label">PCIe 버전 </label>
-          <input v-model="cpu.pcieVer" type="text" class="form-input" placeholder="ex) 코어i7, 라이젠5" required />
+          <input v-model="cpu.pcieVer" type="text" class="form-input" placeholder="" required />
         </div>
         <div class="form-group">
           <label class="form-label">최대 PCIe 레인 수 </label>
-          <input v-model="cpu.maxPcie" type="numbers" class="form-input" placeholder="ex) 코어i7, 라이젠5" required />
+          <input v-model="cpu.maxPcie" type="numbers" class="form-input" placeholder="" required />
         </div>
         <div class="form-group">
           <label class="form-label">최대 지원 램 용량(GB)</label>
-          <input v-model="cpu.maxMemorySize" type="number" class="form-input" placeholder="ex) 코어i7, 라이젠5" required />
+          <input v-model="cpu.maxMemorySize" type="number" class="form-input" placeholder="" required />
         </div>
         <div class="form-group">
           <label class="form-label">최대 지원 메모리 클럭(MHz)</label>
-          <input v-model="cpu.memoryClock" type="number" class="form-input" placeholder="ex) 코어i7, 라이젠5" required />
+          <input v-model="cpu.memoryClock" type="number" class="form-input" placeholder="" required />
         </div>
         <div class="form-group">
           <label class="form-label">메모리 채널 수 </label>
-          <input v-model="cpu.memoryChannel" type="number" class="form-input" placeholder="ex) 코어i7, 라이젠5" required />
+          <input v-model="cpu.memoryChannel" type="number" class="form-input" placeholder="" required />
         </div>
         <div class="form-group">
           <label class="form-label">포장 형태 </label>
-          <input v-model="cpu.pakageType" type="text" class="form-input" placeholder="ex) 코어i7, 라이젠5" required />
+          <input v-model="cpu.pakageType" type="text" class="form-input" placeholder="" required />
         </div>
         <div class="form-group">
           <label class="form-label">권장 쿨러 높이</label>
-          <input v-model="cpu.cooler" type="text" class="form-input" placeholder="ex) 코어i7, 라이젠5" required />
+          <input v-model="cpu.cooler" type="text" class="form-input" placeholder="" required />
         </div>
         <div class="form-group">
           <label class="form-label">등록년</label>
-          <input v-model="cpu.registYear" type="text" class="form-input" placeholder="ex) 코어i7, 라이젠5" required />
+          <input v-model="cpu.registYear" type="text" class="form-input" placeholder="" required />
         </div>
         <div class="form-group">
           <label class="form-label">등록월 </label>
-          <input v-model="cpu.registMonth" type="text" class="form-input" placeholder="ex) 코어i7, 라이젠5" required />
+          <input v-model="cpu.registMonth" type="text" class="form-input" placeholder="" required />
         </div>
       </div>
 
@@ -334,32 +332,27 @@
         <h3 class="spec-title">GPU 스펙</h3>
         <div class="form-group">
           <label class="form-label">칩셋 제조사</label>
-          <input v-model="gpu.chipsetManufacturer" type="text" class="form-input" placeholder="ex) RTX 5090, RTX 5070"
-            required />
+          <input v-model="gpu.chipsetManufacturer" type="text" class="form-input" placeholder="" required />
         </div>
         <div class="form-group">
           <label class="form-label">시리즈</label>
-          <input v-model="gpu.productSeries" type="text" class="form-input" placeholder="ex) RTX 5090, RTX 5070"
-            required />
+          <input v-model="gpu.productSeries" type="text" class="form-input" placeholder="" required />
         </div>
         <div class="form-group">
           <label class="form-label">제조 공정</label>
-          <input v-model="gpu.gpuManufacturingProcess" type="text" class="form-input"
-            placeholder="ex) RTX 5090, RTX 5070" required />
+          <input v-model="gpu.gpuManufacturingProcess" type="text" class="form-input" placeholder="" required />
         </div>
         <div class="form-group">
           <label class="form-label">인터페이스</label>
-          <input v-model="gpu.interfaceType" type="text" class="form-input" placeholder="ex) RTX 5090, RTX 5070"
-            required />
+          <input v-model="gpu.interfaceType" type="text" class="form-input" placeholder="" required />
         </div>
         <div class="form-group">
           <label class="form-label">권장파워용량(W)</label>
-          <input v-model="gpu.recommendedPowerCapacity" type="number" class="form-input"
-            placeholder="ex) RTX 5090, RTX 5070" required />
+          <input v-model="gpu.recommendedPowerCapacity" type="number" class="form-input" placeholder="" required />
         </div>
         <div class="form-group">
           <label class="form-label">파워 커넥터</label>
-          <input v-model="gpu.powerPort" type="text" class="form-input" placeholder="ex) RTX 5090, RTX 5070" required />
+          <input v-model="gpu.powerPort" type="text" class="form-input" placeholder="" required />
         </div>
         <div class="form-group">
           <label class="form-label">길이 (mm)</label>
@@ -367,23 +360,19 @@
         </div>
         <div class="form-group">
           <label class="form-label">부스트 클럭(MHz)</label>
-          <input v-model="gpu.boostClock" type="number" class="form-input" placeholder="ex) RTX 5090, RTX 5070"
-            required />
+          <input v-model="gpu.boostClock" type="number" class="form-input" placeholder="" required />
         </div>
         <div class="form-group">
           <label class="form-label">streamProcessor 수</label>
-          <input v-model="gpu.streamProcessor" type="number" class="form-input" placeholder="ex) RTX 5090, RTX 5070"
-            required />
+          <input v-model="gpu.streamProcessor" type="number" class="form-input" placeholder="" required />
         </div>
         <div class="form-group">
           <label class="form-label">메모리 타입 </label>
-          <input v-model="gpu.memoryType" type="text" class="form-input" placeholder="ex) RTX 5090, RTX 5070"
-            required />
+          <input v-model="gpu.memoryType" type="text" class="form-input" placeholder="" required />
         </div>
         <div class="form-group">
           <label class="form-label">메모리 클럭 </label>
-          <input v-model="gpu.memoryClock" type="text" class="form-input" placeholder="ex) RTX 5090, RTX 5070"
-            required />
+          <input v-model="gpu.memoryClock" type="text" class="form-input" placeholder="" required />
         </div>
         <div class="form-group">
           <label class="form-label">메모리 용량 (GB)</label>
@@ -391,41 +380,35 @@
         </div>
         <div class="form-group">
           <label class="form-label">메모리 버스 </label>
-          <input v-model="gpu.memoryBus" type="text" class="form-input" placeholder="ex) RTX 5090, RTX 5070" required />
+          <input v-model="gpu.memoryBus" type="text" class="form-input" placeholder="" required />
         </div>
         <div class="form-group">
           <label class="form-label">HDMI 버전 </label>
-          <input v-model="gpu.hdmi" type="text" class="form-input" placeholder="ex) RTX 5090, RTX 5070" required />
+          <input v-model="gpu.hdmi" type="text" class="form-input" placeholder="" required />
         </div>
         <div class="form-group">
           <label class="form-label">DisplayPort 버전 </label>
-          <input v-model="gpu.displayPort" type="text" class="form-input" placeholder="ex) RTX 5090, RTX 5070"
-            required />
+          <input v-model="gpu.displayPort" type="text" class="form-input" placeholder="" required />
         </div>
         <div class="form-group">
           <label class="form-label">모니터 수 지원 </label>
-          <input v-model="gpu.monitorSupport" type="number" class="form-input" placeholder="ex) RTX 5090, RTX 5070"
-            required />
+          <input v-model="gpu.monitorSupport" type="number" class="form-input" placeholder="" required />
         </div>
         <div class="form-group">
           <label class="form-label">팬 수</label>
-          <input v-model="gpu.fanCount" type="number" class="form-input" placeholder="ex) RTX 5090, RTX 5070"
-            required />
+          <input v-model="gpu.fanCount" type="number" class="form-input" placeholder="" required />
         </div>
         <div class="form-group">
           <label class="form-label">두께(mm)</label>
-          <input v-model="gpu.thickness" type="number" class="form-input" placeholder="ex) RTX 5090, RTX 5070"
-            required />
+          <input v-model="gpu.thickness" type="number" class="form-input" placeholder="" required />
         </div>
         <div class="form-group">
           <label class="form-label">등록년</label>
-          <input v-model="gpu.registYear" type="text" class="form-input" placeholder="ex) RTX 5090, RTX 5070"
-            required />
+          <input v-model="gpu.registYear" type="text" class="form-input" placeholder="" required />
         </div>
         <div class="form-group">
           <label class="form-label">등록월</label>
-          <input v-model="gpu.registMonth" type="text" class="form-input" placeholder="ex) RTX 5090, RTX 5070"
-            required />
+          <input v-model="gpu.registMonth" type="text" class="form-input" placeholder="" required />
         </div>
 
       </div>
