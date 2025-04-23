@@ -49,7 +49,7 @@ import { storeToRefs } from 'pinia';
 export default {
   setup() {
     const active_tab = ref('New');
-    const tabs = ["New", "Featured"];
+    const tabs = [];
 
     const handleActiveTab = (tab) => {
       active_tab.value = tab;

@@ -21,7 +21,7 @@ export const useMainStore= defineStore("main", () => {
     const result = await axios.get("/api/product/list");
     newProducts.value = result.data.data.sort((a, b) => b.idx - a.idx).slice(0, 3).map((value) => {
       let result = {};
-      result.id = value.idx;
+      result.idx = value.idx;
       result.category = value.category;
       result.productType = value.category;
       result.img = value.images[0];
@@ -45,7 +45,7 @@ export const useMainStore= defineStore("main", () => {
     const result = await axios.get("/api/statistics/wishlist");
     topWishlistProduct.value = result.data.data.slice(0, 3).map((value) => {
       let result = {};
-      result.id = value.productIdx;
+      result.idx = value.productIdx;
       result.category = value.category;
       result.productType = value.category;
       result.img = value.imageUrl;
@@ -66,7 +66,7 @@ export const useMainStore= defineStore("main", () => {
     const result = await axios.get("/api/statistics/topsales");
     topSalesProduct.value = result.data.data.slice(0,3).map((value) => {
       let result = {};
-      result.id = value.productIdx;
+      result.idx = value.productIdx;
       result.category = value.category;
       result.productType = value.category;
       result.img = value.productImageUrl;
