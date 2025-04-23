@@ -5,22 +5,22 @@
     </div>
     <h3 class="tp-product-details-title">{{ product.name }}</h3>
 
-    <!-- inventory details -->
     <div class="tp-product-details-inventory d-flex align-items-center mb-10">
-      <div class="tp-product-details-stock mb-10">
+      <div class="tp-product-details-stock me-4">
         <span>남은 수량: {{ product.stock }}</span>
       </div>
-      <div class="tp-product-details-rating-wrapper d-flex align-items-center mb-10">
-        <div class="tp-product-details-rating">
-          <span><i class="fa-solid fa-star"></i></span>
-          <span><i class="fa-solid fa-star"></i></span>
-          <span><i class="fa-solid fa-star"></i></span>
-          <span><i class="fa-solid fa-star"></i></span>
-          <span><i class="fa-solid fa-star"></i></span>
+      <div class="tp-product-rating-icon tp-product-rating-icon-2">
+        <div class="star-rating">
+          <div class="star-rating__back">
+            <i class="fa-regular fa-star" v-for="n in 5" :key="n" />
+          </div>
+          <div class="star-rating__front" :style="{ width: `${(product.rating / 5) * 100}%` }">
+            <i class="fa-solid fa-star" v-for="n in 5" :key="n" />
+          </div>
         </div>
-        <div class="tp-product-details-reviews">
-          <span>({{ product.reviews && product.reviews.length }} Reviews)</span>
-        </div>
+        <span class="tp-product-details-rating">
+          ({{ product.rating }})
+        </span>
       </div>
     </div>
 
@@ -88,7 +88,8 @@
           </div>
         </div>
         <div class="tp-product-details-add-to-cart mb-15 w-100">
-          <button @click="cartStore.addCartProduct(product, product.idx)" class="tp-product-details-add-to-cart-btn w-100">
+          <button @click="cartStore.addCartProduct(product, product.idx)"
+            class="tp-product-details-add-to-cart-btn w-100">
             Add To Cart
           </button>
         </div>
@@ -116,11 +117,11 @@
     <div v-if="isShowBottom">
       <div class="tp-product-details-query">
         <div class="tp-product-details-query-item d-flex align-items-center">
-          <span>SKU:  </span>
+          <span>SKU: </span>
           <p>{{ product.sku }}</p>
         </div>
         <div class="tp-product-details-query-item d-flex align-items-center">
-          <span>Category:  </span>
+          <span>Category: </span>
           <p>{{ product.category }}</p>
         </div>
         <div class="tp-product-details-query-item d-flex align-items-center">
@@ -177,3 +178,31 @@ function formatPrice(price, withCurrency = true) {
   return Number(price).toFixed(2);
 }
 </script>
+
+<style scoped>
+.star-rating {
+  position: relative;
+  display: inline-block;
+  font-size: 1em;
+  line-height: 1;
+}
+
+.star-rating__back,
+.star-rating__front {
+  display: flex;
+  pointer-events: none;
+}
+
+.star-rating__back {
+  color: #ccc;
+}
+
+.star-rating__front {
+  position: absolute;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  color: #ffc107;
+}
+</style>

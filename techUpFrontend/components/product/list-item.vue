@@ -44,11 +44,14 @@
           <nuxt-link :href="`/product-details/${item.idx}`">{{ item.name }}</nuxt-link>
         </h3>
         <div class="tp-product-rating-icon tp-product-rating-icon-2">
-          <span><i class="fa-solid fa-star"></i></span>
-          <span><i class="fa-solid fa-star"></i></span>
-          <span><i class="fa-solid fa-star"></i></span>
-          <span><i class="fa-solid fa-star"></i></span>
-          <span><i class="fa-solid fa-star"></i></span>
+          <div class="star-rating">
+            <div class="star-rating__back">
+              <i class="fa-regular fa-star" v-for="n in 5" :key="n" />
+            </div>
+            <div class="star-rating__front" :style="{ width: `${(item.rating / 5) * 100}%` }">
+              <i class="fa-solid fa-star" v-for="n in 5" :key="n" />
+            </div>
+          </div>
         </div>
 
         <div class="tp-product-price-wrapper-2">
@@ -102,3 +105,28 @@ function isItemInCart(product: IProduct) {
   return cartStore.cart_products.some((prd: IProduct) => prd.idx === product.idx);
 }
 </script>
+
+<style scoped>
+.star-rating {
+  position: relative;
+  display: inline-block;
+  font-size: 1em; 
+  line-height: 1;  
+}
+.star-rating__back,
+.star-rating__front {
+  display: flex;
+  pointer-events: none; 
+}
+.star-rating__back {
+  color: #ccc;
+}
+.star-rating__front {
+  position: absolute;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  color: #ffc107; 
+}
+</style>
