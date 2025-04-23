@@ -57,80 +57,83 @@
       <div class="tab-pane fade" id="nav-review" role="tabpanel" aria-labelledby="nav-review-tab" tabindex="0">
         <div class="tp-product-details-review-wrapper pt-60">
           <div class="row">
-            <div class="col-lg-6">
-              <div class="tp-product-details-review-statics">
-                <!-- number -->
-                <div class="tp-product-details-review-number d-inline-block mb-50">
-                  <h3 class="tp-product-details-review-number-title">Customer reviews</h3>
-                  <div class="tp-product-details-review-summery d-flex align-items-center">
-                    <div class="tp-product-details-review-summery-value">
-                      <span>{{ averageRating }}</span>
+            <!-- left 8 columns: just the review list + pagination -->
+            <div class="col-lg-8">
+              <h3 class="tp-product-details-review-title mb-4">Rating & Review</h3>
+              <div class="tp-product-details-review-list pr-110">
+                <div v-if="pagedReviews.length">
+                  <div v-for="item in pagedReviews" :key="item.reviewIdx"
+                    class="tp-product-details-review-avater d-flex align-items-start mb-3">
+                    <div class="tp-product-details-review-avater-thumb me-3">
+                      <img :src="item.user" alt="user" />
                     </div>
-                    <div class="tp-product-details-review-summery-rating d-flex align-items-center">
-                      <span v-for="n in Math.round(averageRating)" :key="n">
-                        <i class="fa-solid fa-star"></i>
-                      </span>
-                      <p>({{ totalReviews }} Reviews)</p>
-                    </div>
-                  </div>
-                  <div class="tp-product-details-review-rating-list">
-                    <product-details-rating-item v-for="s in [5, 4, 3, 2, 1]" :key="s" :star="s"
-                      :width="ratingPercent(s)" />
-                  </div>
-                </div>
-
-                <!-- reviews -->
-                <div class="tp-product-details-review-list pr-110">
-                  <h3 class="tp-product-details-review-title">Rating & Review</h3>
-                  <div v-if="reviews && reviews.length > 0">
-                    <div v-for="item in pagedReviews" :key="item.reviewIdx"
-                      class="tp-product-details-review-avater d-flex align-items-start">
-                      <div class="tp-product-details-review-avater-thumb">
-                        <a href="#">
-                          <img :src="item.user" alt="user">
-                        </a>
+                    <div class="flex-grow-1">
+                      <div class="d-flex justify-content-between align-items-center mb-1">
+                        <div class="d-flex align-items-center">
+                          <div class="tp-product-details-review-avater-rating d-flex align-items-center me-3">
+                            <span v-for="n in item.reviewRating" :key="`star-${item.reviewIdx}-${n}`" class="me-1">
+                              <i class="fa-solid fa-star text-warning"></i>
+                            </span>
+                          </div>
+                          <h3 class="tp-product-details-review-avater-title mb-0 me-3">
+                            {{ item.userName }}
+                          </h3>
+                          <small class="text-muted">{{ formatDate(item.reviewDate) }}</small>
+                        </div>
+                        <button class="btn btn-sm btn-outline-danger" @click="remove(item.reviewIdx)">
+                          <i class="fa-solid fa-trash"></i> 삭제
+                        </button>
                       </div>
-                      <div class="tp-product-details-review-avater-content">
-                        <div class="tp-product-details-review-avater-rating d-flex align-items-center">
-                          <!-- render exactly `item.reviewRating` filled stars -->
-                          <span v-for="n in item.reviewRating" :key="`star-${item.reviewIdx}-${n}`">
-                            <i class="fa-solid fa-star"></i>
-                          </span>
-                        </div>
-                        <h3 class="tp-product-details-review-avater-title">{{ item.userName }}</h3>
-                        <span class="tp-product-details-review-avater-meta">{{ item.reviewDate }} </span>
-
-                        <div class="tp-product-details-review-avater-comment">
-                          <p>{{ item.reviewContent }}</p>
-                        </div>
+                      <div class="tp-product-details-review-avater-comment">
+                        <p>{{ item.reviewContent }}</p>
                       </div>
                     </div>
                   </div>
-                  <div v-else>
-                    <h5>No Reviews Found</h5>
-                  </div>
-                  <!-- pagination controls -->
-                  <div class="d-flex justify-content-between align-items-center mt-4">
-                    <button class="btn btn-sm btn-outline-secondary" :disabled="currentPage === 1" @click="goPrev">
-                      <img src="/img/icon/half-arrow-left.svg" alt="logo">
-                    </button>
-                    <span>Page {{ currentPage }} of {{ totalPages }} &mdash; {{ props.reviews.length }} total</span>
-                    <button class="btn btn-sm btn-outline-secondary" :disabled="currentPage === totalPages"
-                      @click="goNext">
-                      <img src="/img/icon/half-arrow-right.svg" alt="logo">
-                    </button>
-                  </div>
                 </div>
-              </div>
-            </div> <!-- end col -->
-            <div class="col-lg-6">
-              <div class="tp-product-details-review-form">
-                <h3 class="tp-product-details-review-form-title">리뷰 작성하기</h3>
-                <!-- form start -->
-                <forms-review-form :product-idx="props.product.idx" @submitted="$emit('review-submitted', $event)" />
-                <!-- form end -->
+                <div v-else class="text-center py-4">
+                  <h5>No Reviews Found</h5>
+                </div>
+
+                <!-- pagination controls -->
+                <div class="d-flex justify-content-between align-items-center mt-4">
+                  <button class="btn btn-sm btn-outline-secondary" :disabled="currentPage === 1" @click="goPrev">
+                    ←
+                  </button>
+                  <span>Page {{ currentPage }} of {{ totalPages }}</span>
+                  <button class="btn btn-sm btn-outline-secondary" :disabled="currentPage === totalPages"
+                    @click="goNext">
+                    →
+                  </button>
+                </div>
               </div>
             </div>
+            <!-- right 4 columns: summary up top, write‐form below -->
+            <div class="col-lg-4">
+              <div class="tp-product-details-review-statics mb-5">
+                <h3 class="tp-product-details-review-number-title">Customer reviews</h3>
+                <div class="tp-product-details-review-summery d-flex align-items-center mb-3">
+                  <div class="tp-product-details-review-summery-value me-3">
+                    <span class="h1">{{ averageRating }}</span>
+                  </div>
+                  <div class="tp-product-details-review-summery-rating d-flex align-items-center">
+                    <span v-for="n in Math.round(averageRating)" :key="n" class="me-1">
+                      <i class="fa-solid fa-star text-warning"></i>
+                    </span>
+                    <p class="mb-0">({{ totalReviews }} Reviews)</p>
+                  </div>
+                </div>
+                <div class="tp-product-details-review-rating-list">
+                  <product-details-rating-item v-for="s in [5, 4, 3, 2, 1]" :key="s" :star="s" :width="ratingPercent(s)" />
+                </div>
+              </div>
+
+              <div class="tp-product-details-review-form">
+                <h3 class="tp-product-details-review-form-title">리뷰 작성하기</h3>
+                <forms-review-form :product-idx="props.product.idx" @submitted="$emit('review-submitted', $event)" />
+
+              </div>
+            </div>
+            
           </div>
         </div>
       </div>
@@ -141,6 +144,8 @@
 <script setup>
 import { onMounted, ref, computed } from 'vue';
 import { useRuntimeConfig } from '#imports'
+import { useReviewStore } from '@/pinia/useReviewStore'
+
 
 const handleActiveMarker = (event) => {
   const marker = document.getElementById("productTabMarker");
@@ -167,6 +172,12 @@ onMounted(() => {
   }
 });
 
+
+function formatDate(iso) {
+  return iso?.split?.('T')[0] || ''
+}
+
+
 // ---------------------페이지네이션 관련----------------------------------
 const currentPage = ref(1)
 // 페이지당 리뷰는 5개씩 보여준다.
@@ -188,7 +199,8 @@ function goNext() {
   if (currentPage.value < totalPages.value) currentPage.value++
 }
 
-// ---------------------별점 평균균 관련----------------------------------
+
+// ---------------------별점 평균 관련----------------------------------
 const totalReviews = computed(() => props.reviews.length)
 
 const averageRating = computed(() => {
@@ -202,4 +214,18 @@ function ratingPercent(star) {
   const count = props.reviews.filter(r => r.reviewRating === star).length
   return ((count / totalReviews.value) * 100).toFixed(0)
 }
+
+// ---------------------리뷰 삭제 관련----------------------------------
+const reviewStore = useReviewStore()
+
+async function remove(reviewIdx) {
+  if (!confirm('정말 이 리뷰를 삭제하시겠습니까?')) return
+  try {
+    await reviewStore.deleteReview(reviewIdx)
+    if (pagedReviews.value.length === 0 && currentPage.value > 1) {
+      currentPage.value--
+    }
+  } catch { }
+}
+
 </script>

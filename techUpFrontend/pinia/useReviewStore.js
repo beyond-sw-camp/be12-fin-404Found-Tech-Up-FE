@@ -42,26 +42,6 @@ export const useReviewStore = defineStore('review', {
       }
     },
 
-    async updateReview(reviewIdx, payload) {
-      try {
-        const config = useRuntimeConfig()
-        const res = await axios.patch(
-          `/api/review/update/${reviewIdx}`,
-          payload,
-          { baseURL: config.public.apiBaseUrl }
-        )
-        const updated = res.data.data
-        if (updated) {
-          const i = this.reviews.findIndex(r => r.reviewIdx === reviewIdx)
-          if (i !== -1) this.reviews.splice(i, 1, updated)
-        }
-        return updated
-      } catch (err) {
-        console.error('리뷰 수정 실패', err)
-        throw err
-      }
-    },
-
     async deleteReview(reviewIdx) {
       try {
         const config = useRuntimeConfig()
