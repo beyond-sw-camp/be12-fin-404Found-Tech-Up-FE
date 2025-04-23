@@ -12,7 +12,7 @@
         <form @submit.prevent="submitOrder" class="row w-100">
           <div class="col-xl-7 col-lg-7">
             <!-- 쿠폰 사용 검증 컴포넌트 -->
-            <checkout-verify />
+            <checkout-verify @update:coupon="couponIdx = $event" />
           </div>
 
           <div class="col-lg-7">
@@ -38,6 +38,8 @@ import { useCartStore } from '@/pinia/useCartStore';
 import { toast } from 'vue3-toastify';
 
 const cartStore = useCartStore();
+
+const couponIdx = ref(null)
 
 const billingData = ref({
   recipientName: '',
@@ -81,6 +83,6 @@ async function submitOrder() {
     toast.error('사이트 이용 약관에 동의해주세요.');
     return;
   }
-  await cartStore.order(billingData.value, shippingMethodSelected.value, paymentMethod.value);
+  await cartStore.order(billingData.value, couponIdx.value, shippingMethodSelected.value, paymentMethod.value);
 }
 </script>

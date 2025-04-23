@@ -170,7 +170,7 @@ export const useCartStore = defineStore("cart_product", () => {
   }
 
   // 주문하기
-  async function order(form, shippingMethod, paymentMethod) {
+  async function order(form, couponIdx, shippingMethod, paymentMethod) {
     if (cart_products.value.length === 0) {
       toast.error("장바구니에 상품이 없습니다.");
       return;
@@ -185,6 +185,7 @@ export const useCartStore = defineStore("cart_product", () => {
 
     const payload = {
       ...form,
+      couponIdx,
       shippingMethod,
       paymentMethod,
       shipCost: shipCost.value,
