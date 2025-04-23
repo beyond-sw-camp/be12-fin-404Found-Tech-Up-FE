@@ -29,6 +29,10 @@ export const useCouponStore = defineStore("coupon", () => {
     }
   };
 
+  async function useCoupon(couponIdx) {
+    await axios.post(`/api/usercoupon/use/${couponIdx}`, null);
+  }
+
   onMounted(async ()=> {
     await loadEventList();
   });
@@ -37,6 +41,7 @@ export const useCouponStore = defineStore("coupon", () => {
     loadEventList,
     loadMyCouponList,
     issueMyCoupon,
+    useCoupon,
     // state
     myCoupons,
     eventsList,
