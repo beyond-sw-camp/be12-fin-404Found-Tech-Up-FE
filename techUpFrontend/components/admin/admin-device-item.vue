@@ -52,7 +52,7 @@ const item = props.item;
 const adminStore = useAdminStore();
 
 const issueCoupon = (idx) => {
-  adminStore.couponProduct = idx.toString();
+  adminStore.changeCouponTarget(idx);
 }
 
 </script>

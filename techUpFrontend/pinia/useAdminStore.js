@@ -461,6 +461,7 @@ export const useAdminStore = defineStore( 'admin',() => {
       }).then(async (result) => {
         alert("사용자 전용 쿠폰이 등록되었습니다!");
         await loadCouponList();
+        couponProduct.value = '';
         navigateTo('/dashboard');
       }).catch((e) => {
         alert("등록 실패: " + e);
@@ -476,6 +477,7 @@ export const useAdminStore = defineStore( 'admin',() => {
         body: payload,
       }).then(async (result) => {
         alert("등록되었습니다!");
+        couponProduct.value = '';
         await loadCouponList();
         navigateTo('/dashboard');
       }).catch((e) => {
@@ -526,6 +528,10 @@ export const useAdminStore = defineStore( 'admin',() => {
     } catch (e) {
       console.log(e);
     }
+  };
+
+  const changeCouponTarget = (idx) => {
+    couponProduct.value = idx.toString();
   };
 
   const submitEventRegisterForm = async (event) => {
@@ -670,6 +676,6 @@ export const useAdminStore = defineStore( 'admin',() => {
     orderDetailOffcanvas,
     handleOrderDetailOffcanvas,
 
-    cancelOrder,
+    changeCouponTarget,
   };
 });
