@@ -7,6 +7,7 @@ import { formatString } from '@/utils/index';
 export const useProductFilterBackStore = defineStore("product_filter", () => {
   const route = useRoute();
   const router = useRouter();
+  const PARENT_CATEGORIES = ["CPU", "GPU", "RAM", "SSD", "HDD"];
 
   // 초기 상태를 정의하는 함수
   function getDefaultState() {
@@ -21,6 +22,15 @@ export const useProductFilterBackStore = defineStore("product_filter", () => {
 
   // 백엔드 API에서 불러온 상품 데이터를 저장하는 상태
   const products = ref([]);
+
+  const categories = computed(() =>
+    PARENT_CATEGORIES.map((parent, i) => ({
+      id: i,
+      parent,
+      slug: parent.toLowerCase(),
+      products: products.value.filter((p) => p.category === parent)
+    }))
+  );
 
   // Axios를 이용해 백엔드 API에서 제품 목록을 가져오는 함수
   async function fetchProducts() {
@@ -58,7 +68,7 @@ export const useProductFilterBackStore = defineStore("product_filter", () => {
   // products 배열을 기반으로 최대 제품 가격 계산
   const maxProductPrice = computed(() => {
     if (products.value && products.value.length > 0) {
-      return Math.max(...products.value.map((p) => p.price));
+      return Math.max(...products.value.map((p) => p.price - (p.price * p.discount / 100)));
     }
     return 0;
   });
@@ -88,8 +98,8 @@ export const useProductFilterBackStore = defineStore("product_filter", () => {
     if (route.query.minPrice && route.query.maxPrice) {
       filtered = filtered.filter(
         (p) =>
-          p.price >= Number(route.query.minPrice) &&
-          p.price <= Number(route.query.maxPrice)
+          p.price - (p.price * p.discount / 100) >= Number(route.query.minPrice) &&
+        p.price - (p.price * p.discount / 100) <= Number(route.query.maxPrice)
       );
     }
     // Status filter (예: on-sale 또는 in-stock)
@@ -190,6 +200,7 @@ export const useProductFilterBackStore = defineStore("product_filter", () => {
 
   return {
     products,
+    categories,
     fetchProducts,
     maxProductPrice,
     priceValues,

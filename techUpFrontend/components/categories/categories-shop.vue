@@ -23,7 +23,6 @@
 </template>
 
 <script>
-import category_data from '@/data/category-data';
 const router = useRouter();
 
 const handleCategory = (parent) => {
