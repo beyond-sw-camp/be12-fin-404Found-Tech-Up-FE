@@ -20,15 +20,38 @@ export const useNotificationStore = defineStore('notificationStore', {
         this.totalElements   = d.totalElements
         this.totalPages      = d.totalPages
       } catch (e) {
-        console.error(e)
+        console.error('fetchNotifications 실패:', e)
       }
     },
+
     async fetchUnreadCount() {
       try {
         const res = await axios.get('/api/notification/unread')
         this.unreadCount = res.data.length
       } catch {
         this.unreadCount = 0
+      }
+    },
+
+    async markAsRead(id) {
+      try {
+        await axios.patch(`/api/notification/${id}/read`)
+        const target = this.notifications.find(n => n.id === id)
+        if (target) {
+          target.read = true
+        }
+      } catch (e) {
+        console.error('markAsRead 실패:', e)
+      }
+    },
+
+    async deleteNotification(id) {
+      try {
+        await axios.delete(`/api/notification/${id}`)
+        this.notifications = this.notifications.filter(n => n.id !== id)
+        this.totalElements--
+      } catch (e) {
+        console.error('deleteNotification 실패:', e)
       }
     }
   }

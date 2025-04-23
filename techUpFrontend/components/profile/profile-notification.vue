@@ -17,10 +17,12 @@
         :key="n.id"
         class="notification-item"
         :class="{ read: n.read }"
-        @click="openDetail(n)"
       >
-        <h4>{{ n.title }}</h4>
-        <small>{{ formatDate(n.createdAt) }}</small>
+        <div class="notification-item-body" @click="openDetail(n)">
+          <h4>{{ n.title }}</h4>
+          <small>{{ formatDate(n.createdAt) }}</small>
+        </div>
+        <button class="delete-btn" @click.stop="deleteNoti(n.id)">삭제</button>
       </div>
     </div>
     <div v-else class="empty">알림이 없습니다.</div>
@@ -89,8 +91,11 @@ function onPageChange(newPage) {
   window.scrollTo(0, 0)
 }
 
-function openDetail(n) {
+async function openDetail(n) {
   selected.value = n
+  if (!n.read) {
+    await store.markAsRead(n.id)
+  }
 }
 
 function clearSelection() {
@@ -101,15 +106,16 @@ function formatDate(dt) {
   return new Date(dt).toLocaleString('ko-KR')
 }
 
-// 토글 클릭 핸들러
 async function onToggle() {
   await userStore.setAlarmEnabled(!userStore.alarmEnabled)
 }
 
+async function deleteNoti(id) {
+  await store.deleteNotification(id)
+}
+
 onMounted(async () => {
-  // 초기 알림 설정 상태 불러오기
   await userStore.fetchAlarmEnabled()
-  // 첫 페이지 알림 목록 불러오기
   await store.fetchNotifications(0, store.size)
   currentPage.value = 1
 })
@@ -124,29 +130,36 @@ onMounted(async () => {
   font-weight: bold;
   border-bottom: 2px solid black;
 }
-
 .notification-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   padding: 1rem;
   border-bottom: 1px solid #ddd;
-  cursor: pointer;
 }
 .notification-item.read {
   opacity: 0.6;
 }
-
+.notification-item-body {
+  flex-grow: 1;
+  cursor: pointer;
+}
+.delete-btn {
+  background: none;
+  border: none;
+  color: red;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
 .empty {
   text-align: center;
   color: #999;
 }
-
-/* 페이지네이션 중앙 정렬 */
 .tp-blog-pagination {
   display: flex;
   justify-content: center;
   margin: 2rem 0;
 }
-
-/* Optional: 페이지네이션 내부 ul 간격 조정 */
 .tp-blog-pagination .tp-pagination ul {
   display: flex;
   gap: 0.5rem;
@@ -154,7 +167,6 @@ onMounted(async () => {
   padding: 0;
   margin: 0;
 }
-
 .toggle-switch {
   margin-bottom: 2rem;
   display: flex;
