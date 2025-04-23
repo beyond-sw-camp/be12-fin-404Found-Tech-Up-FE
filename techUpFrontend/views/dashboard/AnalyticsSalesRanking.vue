@@ -19,12 +19,6 @@ const storeRef = storeToRefs(adminStore);
     <VCardText>
       <VList class="card-list">
         <VListItem v-for="data in storeRef.topSales.value" :key="data.productIdx">
-          <template #prepend>
-            <VAvatar :color="data.color" variant="tonal" size="40">
-              {{ data.title }}
-            </VAvatar>
-          </template>
-
           <VListItemTitle class="mb-1 d-flex align-center">
             <h6 class="text-h6">
               {{ data.productName }}

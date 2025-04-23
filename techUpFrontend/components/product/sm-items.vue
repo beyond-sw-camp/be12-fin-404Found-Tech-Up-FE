@@ -6,17 +6,13 @@
           <div class="tp-product-sm-list mb-50">
             <div class="tp-section-title-wrapper mb-40">
               <h3 class="tp-section-title tp-section-title-sm">
-                Discount Products
+                신규 등록 상품
                 <SvgSectionLineSm />
               </h3>
             </div>
 
             <div class="tp-product-sm-wrapper mr-20">
-              <ProductSmItem
-                v-for="item in discount_products"
-                :key="item.id"
-                :item="item"
-              />
+              <ProductSmItem v-for="item in storeRef.newProducts.value" :key="item.id" :item="item" />
             </div>
           </div>
         </div>
@@ -24,17 +20,13 @@
           <div class="tp-product-sm-list mb-50">
             <div class="tp-section-title-wrapper mb-40">
               <h3 class="tp-section-title tp-section-title-sm">
-                Featured Products
+                위시리스트 등록 상위 제품
                 <SvgSectionLineSm />
               </h3>
             </div>
 
             <div class="tp-product-sm-wrapper mr-20">
-              <ProductSmItem
-                v-for="item in featured_products"
-                :key="item.id"
-                :item="item"
-              />
+              <ProductSmItem v-for="item in storeRef.topWishlistProduct.value" :key="item.id" :item="item" />
             </div>
           </div>
         </div>
@@ -42,17 +34,13 @@
           <div class="tp-product-sm-list mb-50">
             <div class="tp-section-title-wrapper mb-40">
               <h3 class="tp-section-title tp-section-title-sm">
-                Selling Products
+                판매량 상위 제품
                 <SvgSectionLineSm />
               </h3>
             </div>
 
             <div class="tp-product-sm-wrapper mr-20">
-              <ProductSmItem
-                v-for="item in selling_products"
-                :key="item.id"
-                :item="item"
-              />
+              <ProductSmItem v-for="item in storeRef.topSalesProduct.value" :key="item.id" :item="item" />
             </div>
           </div>
         </div>
@@ -63,17 +51,10 @@
 
 <script setup>
 import product_data from "@/data/product-data";
+import { useMainStore } from "../../pinia/useMainStore";
+import { storeToRefs } from "pinia";
 
-const all_products = product_data;
-const discount_products = all_products
-  .filter(p => p.productType === "electronics" && p.discount > 0)
-  .slice(0, 3);
-const featured_products = all_products
-  .filter(p => p.productType === "electronics" && p.featured)
-  .slice(0, 3);
-const selling_products = all_products
-  .filter(p => p.productType === "electronics")
-  .slice()
-  .sort((a, b) => b.sellCount - a.sellCount)
-  .slice(0, 3);
+const mainStore = useMainStore();
+const storeRef = storeToRefs(mainStore);
+
 </script>

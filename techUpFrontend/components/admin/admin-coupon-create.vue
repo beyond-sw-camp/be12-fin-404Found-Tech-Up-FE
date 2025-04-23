@@ -62,7 +62,7 @@ let coupon = ref({
   couponName: '',
   discount: '',
   expiryDate: '',
-  productIdx: '',
+  productIdx: storeRef.couponProduct.value,
 })
 
 const submitForm = async () => {
