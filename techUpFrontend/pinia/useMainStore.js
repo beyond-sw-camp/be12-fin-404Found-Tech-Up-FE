@@ -31,14 +31,13 @@ export const useMainStore= defineStore("main", () => {
       result.discount = value.discount;
       result.brand = value.brand;
       result.reviews = value.reviews;
-      result.reviewAverage = value.reviews.length > 0 ? Math.round(value.reviews.reduce((prev, curr) => prev + curr, 0) / value.reviews.length) : 0;
-      result.reviewHalf = value.reviews.length > 0 ? Math.round(value.reviews.reduce((prev, curr) => prev + curr, 0) / value.reviews.length) - Math.round(value.reviews.reduce((prev, curr) => prev + curr, 0) / value.reviews.length) >= 0.5 : false;
+      result.reviewAverage = value.ratings;
+      result.reviewHalf = Math.round(value.ratings) - Math.round(value.ratings) >= 0.5;
       result.imageURLs = value.images ? value.images.map((url) => {
         return {"img":url};
       }) : [];
       return result;
     });
-    console.log(result.data.data);
   };
 
   const loadTopWishlist = async () => {
@@ -54,12 +53,11 @@ export const useMainStore= defineStore("main", () => {
       result.discount = value.productDiscount;
       result.brand = value.brand;
       result.reviews = value.reviews;
-      result.reviewAverage = value.reviews.length > 0 ? Math.floor(value.reviews.reduce((prev, curr) => prev + curr, 0) / value.reviews.length) : 0;
-      result.reviewHalf = value.reviews.length > 0 ? Math.round(value.reviews.reduce((prev, curr) => prev + curr, 0) / value.reviews.length) - Math.round(value.reviews.reduce((prev, curr) => prev + curr, 0) / value.reviews.length) >= 0.5 : false;
+      result.reviewAverage = value.ratings;
+      result.reviewHalf = Math.round(value.ratings) - Math.round(value.ratings) >= 0.5;
       result.imageURLs = [{img: value.imageUrl}];
       return result;
     });
-    console.log(result.data.data);
   };
 
   const loadTopSales = async () => {
@@ -75,12 +73,11 @@ export const useMainStore= defineStore("main", () => {
       result.discount = value.productDiscount;
       result.brand = value.brand;
       result.reviews = value.reviews ? value.reviews : [];
-      result.reviewAverage = value.reviews.length > 0 ? Math.floor(value.reviews.reduce((prev, curr) => prev + curr, 0) / value.reviews.length) : 0;
-      result.reviewHalf = value.reviews.length > 0 ? Math.round(value.reviews.reduce((prev, curr) => prev + curr, 0) / value.reviews.length) - Math.round(value.reviews.reduce((prev, curr) => prev + curr, 0) / value.reviews.length) >= 0.5 : false;
+      result.reviewAverage = value.ratings;
+      result.reviewHalf = Math.round(value.ratings) - Math.round(value.ratings) >= 0.5;
       result.imageURLs = [{img: value.imageUrl}];
       return result;
     });
-    console.log(result.data.data);
   };
 
   onMounted(async () => {

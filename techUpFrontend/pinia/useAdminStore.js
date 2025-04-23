@@ -125,11 +125,11 @@ export const useAdminStore = defineStore( 'admin',() => {
     stock: '',
     description: '',
     category: '',
-    cpuSpec: { cpuType: '', cpuCore: '', cpuThreads: '' },
-    gpuSpec: { gpuMemory: '', gpuChip: '', gpuLength: '' },
-    hddSpec: { hddCapacity: '', hddRpm: '', hddBuffer: '' },
-    ssdSpec: { ssdCapacity: '', ssdRead: '', ssdWrite: '' },
-    ramSpec: { ramType: '', ramNum: '', ramSize: '', ramUsage: '' }
+    cpuSpec: { amdCpuType: '', socketType: '', coreCount: '', threadCount: '', memorySpec: '', builtInGraphic: '', manufactoringProcess: '', baseClock: '', maxClock: '', l2Cache: '', l3Cache: '', operateSystem: '', tdp: '', ppt: '', pcieVer: '', maxPcie: '', maxMemorySize: '', memoryClock: '', memoryChannel: '', pakageType: '', cooler: '', registYear: '', registMonth: '' },
+    gpuSpec: { chipsetManufacturer: '', productSeries: '', gpuManufacturingProcess: '', interfaceType: '', recommendedPowerCapacity: '', powerPort: '', gpuLength: '', boostClock: '',streamProcessor: '', memoryType: '', memoryClock: '', gpuMemory: '', memoryBus:'', hdmi:'', displayPort: '', monitorSupport: '', fanCount: '', thickness: '', registYear: '', registMonth:''},
+    hddSpec: { productCategory: '', diskSize: '', hddCapacity: '', interfaceType: '', hddRpm: '', hddBuffer: '', transferSpeed: '', recordingMethod: '', thickness: '', workload: '', noise: '', registYear: '', registMonth: ''  },
+    ssdSpec: { productCategory: '', formFactor: '', interfaceType: '', protocol: '', ssdCapacity: '', memoryType: '', nandStructure: '', controller: '', ssdRead: '', ssdWrite: '', mtbf: '', tbw: '', nvmeHeatsink: '', width: '', height: '', thickness: '', weight: '', registYear: '', registMonth: '' },
+    ramSpec: { usageDevice: '', productCategory: '', memorySpec: '', ramSize: '', operatingClock: '', ramTiming: '', operatingVoltage: '', ramNum: '', heatsink: '', height: '', registYear: '', registMonth: '' }
   });
   let targetPreviewImages = ref([]);
   let existingFilePath = ref([]);
