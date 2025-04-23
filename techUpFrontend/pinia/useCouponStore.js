@@ -21,10 +21,10 @@ export const useCouponStore = defineStore("coupon", () => {
   };
 
   const issueMyCoupon = async (eventIdx) => {
-    try {
-      await axios.get(`/api/coupon/events/${eventIdx}`);
+    const result = await axios.get(`/api/coupon/events/${eventIdx}`);
+    if (result.data.code === 8000) {
       alert("발급되었습니다!");
-    } catch (e) {
+    } else {
       alert("발급에 실패했습니다!");
     }
   };

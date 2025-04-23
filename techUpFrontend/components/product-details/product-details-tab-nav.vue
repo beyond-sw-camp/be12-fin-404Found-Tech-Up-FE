@@ -130,6 +130,7 @@
               <div class="tp-product-details-review-form">
                 <h3 class="tp-product-details-review-form-title">리뷰 작성하기</h3>
                 <forms-review-form :product-idx="props.product.idx" @submitted="$emit('review-submitted', $event)" />
+
               </div>
             </div>
             
@@ -144,6 +145,7 @@
 import { onMounted, ref, computed } from 'vue';
 import { useRuntimeConfig } from '#imports'
 import { useReviewStore } from '@/pinia/useReviewStore'
+
 
 const handleActiveMarker = (event) => {
   const marker = document.getElementById("productTabMarker");
@@ -170,9 +172,11 @@ onMounted(() => {
   }
 });
 
+
 function formatDate(iso) {
   return iso?.split?.('T')[0] || ''
 }
+
 
 // ---------------------페이지네이션 관련----------------------------------
 const currentPage = ref(1)
@@ -194,6 +198,7 @@ function goPrev() {
 function goNext() {
   if (currentPage.value < totalPages.value) currentPage.value++
 }
+
 
 // ---------------------별점 평균 관련----------------------------------
 const totalReviews = computed(() => props.reviews.length)
@@ -222,4 +227,5 @@ async function remove(reviewIdx) {
     }
   } catch { }
 }
+
 </script>
