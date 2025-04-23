@@ -12,7 +12,7 @@
         <form @submit.prevent="submitOrder" class="row w-100">
           <div class="col-xl-7 col-lg-7">
             <!-- 쿠폰 사용 검증 컴포넌트 -->
-            <checkout-verify @update:coupon="couponIdx = $event" />
+            <checkout-verify @update:coupon="onCouponUpdate" />
           </div>
 
           <div class="col-lg-7">
@@ -39,7 +39,13 @@ import { toast } from 'vue3-toastify';
 
 const cartStore = useCartStore();
 
-const couponIdx = ref(null)
+const couponInfo = ref({
+  couponIdx: null,
+  couponDiscountRate: 0,
+  couponValidDate: '',
+  productIdx: null,
+  couponeUsed: false
+})
 
 const billingData = ref({
   recipientName: '',
@@ -53,6 +59,10 @@ const billingData = ref({
 const agree = ref(false);
 const shippingMethodSelected = ref('flat_rate');
 const paymentMethod = ref('');
+
+function onCouponUpdate(payload) {
+  couponInfo.value = payload;
+}
 
 function onBillingUpdate(payload) {
   billingData.value = payload;
@@ -83,6 +93,6 @@ async function submitOrder() {
     toast.error('사이트 이용 약관에 동의해주세요.');
     return;
   }
-  await cartStore.order(billingData.value, couponIdx.value, shippingMethodSelected.value, paymentMethod.value);
+  await cartStore.order(billingData.value, couponInfo.value, shippingMethodSelected.value, paymentMethod.value);
 }
 </script>

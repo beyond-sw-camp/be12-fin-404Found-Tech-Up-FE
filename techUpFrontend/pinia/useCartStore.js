@@ -170,22 +170,42 @@ export const useCartStore = defineStore("cart_product", () => {
   }
 
   // 주문하기
-  async function order(form, couponIdx, shippingMethod, paymentMethod) {
+  async function order(form, couponInfo, shippingMethod, paymentMethod) {
     if (cart_products.value.length === 0) {
       toast.error("장바구니에 상품이 없습니다.");
       return;
     }
 
-    const items = cart_products.value.map((item) => ({
-      productName: item.product.name,
-      productIdx: item.product.productIdx,
-      orderDetailQuantity: item.cartItemQuantity,
-      orderDetailPrice: item.product.price - (item.product.price * Number(item.product.discount)) / 100,
-    }));
+    const {
+      couponIdx,
+      couponDiscountRate = 0,
+      productIdx: couponProductIdx
+    } = couponInfo
+  
+
+    const items = cart_products.value.map((item) => {
+      const basePrice = Number(item.product.price);
+      const productDiscountRate = Number(item.product.discount) / 100;
+      
+      // 할인율 적용
+      let priceAfterProductDiscount = basePrice * (1 - productDiscountRate);
+  
+      // 쿠폰 적용
+      if (couponIdx && item.product.productIdx === couponProductIdx) {
+        priceAfterProductDiscount *= (1 - couponDiscountRate / 100);
+      }
+  
+      return {
+        productName: item.product.name,
+        productIdx: item.product.productIdx,
+        orderDetailQuantity: item.cartItemQuantity,
+        orderDetailPrice: priceAfterProductDiscount
+      };
+    });
 
     const payload = {
       ...form,
-      couponIdx,
+      couponIdx: couponIdx || null,
       shippingMethod,
       paymentMethod,
       shipCost: shipCost.value,
@@ -201,15 +221,19 @@ export const useCartStore = defineStore("cart_product", () => {
         payload,
         { baseURL: config.public.apiBaseUrl }
       );
+
       // 주문 생성 성공 시
       if (res.data && res.data.data) {
         const orderIdx = res.data.data.orderIdx;
         const storeId = res.data.data.storeId;
         const channelKey = res.data.data.channelKey;
+
         let orderTotal = items.reduce((sum, i) =>
           sum + i.orderDetailPrice * i.orderDetailQuantity, 0)
+
         // 배송비 추가
         orderTotal += shipCost.value;
+
         // 주문 생성 후 결제 API 호출
         const payConfig = useRuntimeConfig();
         const orderName = items.length < 2 ? items[0].productName + ' ' + items[0].orderDetailQuantity + '개' : items[0].productName + ' 외 ' + (items.length - 1) + '개 품목';
@@ -235,7 +259,7 @@ export const useCartStore = defineStore("cart_product", () => {
         if (payRes.txId) {
           const res = await axios.post(
             `/api/order/verify/${orderIdx}`,
-            { paymentId: payRes.paymentId },
+            { paymentId: payRes.paymentId, couponIdx: couponIdx },
             { baseURL: config.public.apiBaseUrl }
           );
 
