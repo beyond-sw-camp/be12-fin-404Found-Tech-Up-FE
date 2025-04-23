@@ -1,54 +1,171 @@
 import { ref, onMounted } from "vue";
 import { defineStore } from "pinia";
 import { toast } from "vue3-toastify";
+import axios from 'axios';
 
 export const useCompareStore = defineStore("compare_product", () => {
-  let compare_items = ref([]);
+  let compare_items = ref([]); // Note: 비교 뿐만 아니라 제품 목록 쪽 모듈에서 쓰고 있음
+
+  let compare_cpu_items = ref([]);
+  let compare_gpu_items = ref([]);
+  let compare_ram_items = ref([]);
+  let compare_ssd_items = ref([]);
+  let compare_hdd_items = ref([]);
 
   // add_compare_product
   const add_compare_product = (payload) => {
-    const isAdded = compare_items.value.findIndex((p) => p.idx === payload.idx);
-    if (isAdded !== -1) {
-      compare_items.value = compare_items.value.filter(
-        (p) => p.idx !== payload.idx
+    console.log(payload);
+    if (payload.category === "CPU"){
+      const isAdded = compare_cpu_items.value.findIndex((p) => p.idx === payload.idx);
+      if (isAdded !== -1) {
+        compare_cpu_items.value = compare_cpu_items.value.filter(
+          (p) => p.idx !== payload.idx
+        );
+        toast.error(`${payload.name} remove to compare`);
+      } else {
+        compare_cpu_items.value.push(payload);
+        toast.success(`${payload.name} added to compare`);
+      }
+      localStorage.setItem(
+        "compare_cpus",
+        JSON.stringify(compare_cpu_items.value)
       );
-      toast.error(`${payload.name} remove to compare`);
-    } else {
-      compare_items.value.push(payload);
-      toast.success(`${payload.name} added to compare`);
+    } else if (payload.category === "GPU"){
+      const isAdded = compare_gpu_items.value.findIndex((p) => p.idx === payload.idx);
+      if (isAdded !== -1) {
+        compare_gpu_items.value = compare_cpu_items.value.filter(
+          (p) => p.idx !== payload.idx
+        );
+        toast.error(`${payload.name} remove to compare`);
+      } else {
+        compare_gpu_items.value.push(payload);
+        toast.success(`${payload.name} added to compare`);
+      }
+      localStorage.setItem(
+        "compare_gpus",
+        JSON.stringify(compare_gpu_items.value)
+      );
+    } else if (payload.category === "RAM"){
+      const isAdded = compare_ram_items.value.findIndex((p) => p.idx === payload.idx);
+      if (isAdded !== -1) {
+        compare_ram_items.value = compare_ram_items.value.filter(
+          (p) => p.idx !== payload.idx
+        );
+        toast.error(`${payload.name} remove to compare`);
+      } else {
+        compare_ram_items.value.push(payload);
+        toast.success(`${payload.name} added to compare`);
+      }
+      localStorage.setItem(
+        "compare_rams",
+        JSON.stringify(compare_ram_items.value)
+      );
+    } else if (payload.category === "SSD"){
+      const isAdded = compare_ssd_items.value.findIndex((p) => p.idx === payload.idx);
+      if (isAdded !== -1) {
+        compare_ssd_items.value = compare_ssd_items.value.filter(
+          (p) => p.idx !== payload.idx
+        );
+        toast.error(`${payload.name} remove to compare`);
+      } else {
+        compare_ssd_items.value.push(payload);
+        toast.success(`${payload.name} added to compare`);
+      }
+      localStorage.setItem(
+        "compare_ssds",
+        JSON.stringify(compare_ssd_items.value)
+      );
+    } else if (payload.category === "HDD"){
+      const isAdded = compare_hdd_items.value.findIndex((p) => p.idx === payload.idx);
+      if (isAdded !== -1) {
+        compare_hdd_items.value = compare_hdd_items.value.filter(
+          (p) => p.idx !== payload.idx
+        );
+        toast.error(`${payload.name} remove to compare`);
+      } else {
+        compare_hdd_items.value.push(payload);
+        toast.success(`${payload.name} added to compare`);
+      }
+      localStorage.setItem(
+        "compare_hdds",
+        JSON.stringify(compare_hdd_items.value)
+      );
     }
-    localStorage.setItem(
-      "compare_products",
-      JSON.stringify(compare_items.value)
-    );
+    
   };
   // removeCompare
   const removeCompare = (payload) => {
-    compare_items.value = compare_items.value.filter(
-      (p) => p.idx !== payload.idx
-    );
-    toast.error(`${payload.name} remove to compare`);
-    localStorage.setItem(
-      "compare_products",
-      JSON.stringify(compare_items.value)
-    );
+    console.log(payload);
+    if (payload.category === "CPU") {
+      compare_cpu_items.value = compare_cpu_items.value.filter(
+        (p) => p.idx !== payload.idx
+      );
+      toast.error(`${payload.name} remove to compare`);
+      localStorage.setItem(
+        "compare_cpus",
+        JSON.stringify(compare_cpu_items.value)
+      );
+    } else if (payload.category === "GPU"){
+      compare_gpu_items.value = compare_gpu_items.value.filter(
+        (p) => p.idx !== payload.idx
+      );
+      toast.error(`${payload.name} remove to compare`);
+      localStorage.setItem(
+        "compare_gpus",
+        JSON.stringify(compare_gpu_items.value)
+      );
+    } else if (payload.category === "RAM"){
+      compare_ram_items.value = compare_ram_items.value.filter(
+        (p) => p.idx !== payload.idx
+      );
+      toast.error(`${payload.name} remove to compare`);
+      localStorage.setItem(
+        "compare_rams",
+        JSON.stringify(compare_ram_items.value)
+      );
+    }
+    else if (payload.category === "SSD"){
+      compare_ssd_items.value = compare_ssd_items.value.filter(
+        (p) => p.idx !== payload.idx
+      );
+      toast.error(`${payload.name} remove to compare`);
+      localStorage.setItem(
+        "compare_ssds",
+        JSON.stringify(compare_ssd_items.value)
+      );
+    }
+    else if (payload.category === "HDD"){
+      compare_hdd_items.value = compare_hdd_items.value.filter(
+        (p) => p.idx !== payload.idx
+      );
+      toast.error(`${payload.name} remove to compare`);
+      localStorage.setItem(
+        "compare_hdds",
+        JSON.stringify(compare_hdd_items.value)
+      );
+    }
+    
   };
 
   // cart product initialize
-  const initializeCompareProducts = () => {
-    const compareData = localStorage.getItem("compare_products");
-    if (compareData) {
-      compare_items.value = JSON.parse(compareData);
-    }
+  const initializeCompareProducts = async () => {
+    //const compareData = localStorage.getItem("compare_products");
+    compare_cpu_items.value = localStorage.getItem("compare_cpus") ? JSON.parse(localStorage.getItem("compare_cpus")): [];
+    compare_gpu_items.value = localStorage.getItem("compare_gpus") ? JSON.parse(localStorage.getItem("compare_gpus")): [];
+    compare_ram_items.value = localStorage.getItem("compare_rams") ? JSON.parse(localStorage.getItem("compare_rams")): [];
+    compare_ssd_items.value = localStorage.getItem("compare_ssds") ? JSON.parse(localStorage.getItem("compare_ssds")): [];
+    compare_hdd_items.value = localStorage.getItem("compare_hdds") ? JSON.parse(localStorage.getItem("compare_hdds")): [];
   };
 
-  // mounted to update cart products
-  onMounted(() => {
-    initializeCompareProducts();
-  });
   return {
+    initializeCompareProducts,
     add_compare_product,
     removeCompare,
     compare_items,
+    compare_cpu_items,
+    compare_gpu_items,
+    compare_ram_items,
+    compare_ssd_items,
+    compare_hdd_items,
   };
 });

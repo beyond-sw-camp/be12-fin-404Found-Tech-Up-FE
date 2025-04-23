@@ -30,7 +30,8 @@
               </h5>
               <div class="cartmini__price-wrapper">
                 <span v-if="item.product.discount > 0 && item.cartItemQuantity" class="cartmini__price">
-                  {{ formatPrice((Number(item.product.price) - (Number(item.product.price) * Number(item.product.discount)) / 100) * item.cartItemQuantity) }}
+                  {{ formatPrice((Number(item.product.price) - (Number(item.product.price) *
+                    Number(item.product.discount)) / 100) * item.cartItemQuantity) }}
                 </span>
                 <span v-else class="cartmini__price">
                   {{ formatPrice(item.product.price * (item.cartItemQuantity || 0)) }}
@@ -77,7 +78,7 @@ import { useCartStore } from "@/pinia/useCartStore";
 const cartStore = useCartStore();
 
 const formatPrice = (price) => {
-  return "$" + Number(price).toFixed(2);
+  return Number(price).toFixed(2) + "원";
 };
 </script>
 
@@ -86,6 +87,7 @@ const formatPrice = (price) => {
 .v-leave-active {
   transition: opacity 0.5s ease;
 }
+
 .v-enter-from,
 .v-leave-to {
   opacity: 0;

@@ -36,7 +36,6 @@
 import { storeToRefs } from 'pinia';
 import { useAdminStore } from '../../pinia/useAdminStore';
 
-
 const adminStore = useAdminStore();
 const storeRef = storeToRefs(adminStore);
 
@@ -53,4 +52,5 @@ const handlePagination = (data, start, end) => {
   startIndex.value = start;
   endIndex.value = end;
 };
+
 </script>
