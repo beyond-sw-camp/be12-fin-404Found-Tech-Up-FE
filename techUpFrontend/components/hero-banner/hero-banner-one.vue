@@ -1,49 +1,22 @@
 <template>
   <section class="tp-slider-area p-relative z-index-1">
-    <Swiper
-      :slidesPerView="1"
-      :spaceBetween="30"
-      :loop="false"
-      :navigation="{
-        nextEl: '.tp-slider-button-next',
-        prevEl: '.tp-slider-button-prev',
-      }"
-      :pagination="{
+    <Swiper :slidesPerView="1" :spaceBetween="30" :loop="false" :navigation="{
+      nextEl: '.tp-slider-button-next',
+      prevEl: '.tp-slider-button-prev',
+    }" :pagination="{
         el: '.tp-slider-dot',
         clickable: true,
-      }"
-      :effect="'fade'"
-      :modules="[Navigation, Pagination, EffectFade]"
+      }" :effect="'fade'" :modules="[Navigation, Pagination, EffectFade]"
       :onSlideChange="(swiper) => handleActiveIndex(swiper.activeIndex)"
-      :class="`tp-slider-active tp-slider-variation swiper-container ${isActive ? 'is-light' : ''}`"
-    >
-      <SwiperSlide
-        v-for="(item, i) in sliderData"
-        :key="i"
+      :class="`tp-slider-active tp-slider-variation swiper-container ${isActive ? 'is-light' : ''}`">
+      <SwiperSlide v-for="(item, i) in sliderData" :key="i"
         :class="`tp-slider-item tp-slider-height d-flex align-items-center ${item?.green_bg ? 'green-dark-bg' : item?.is_light ? 'is-light' : ''}`"
-        :style="item.is_light && `background-color:#E3EDF6`"
-      >
+        :style="item.is_light && `background-color:#E3EDF6`">
         <div class="tp-slider-shape">
-          <img
-            class="tp-slider-shape-1"
-            src="/img/slider/shape/slider-shape-1.png"
-            alt="slider-shape"
-          />
-          <img
-            class="tp-slider-shape-2"
-            src="/img/slider/shape/slider-shape-2.png"
-            alt="slider-shape"
-          />
-          <img
-            class="tp-slider-shape-3"
-            src="/img/slider/shape/slider-shape-3.png"
-            alt="slider-shape"
-          />
-          <img
-            class="tp-slider-shape-4"
-            src="/img/slider/shape/slider-shape-4.png"
-            alt="slider-shape"
-          />
+          <img class="tp-slider-shape-1" src="/img/slider/shape/slider-shape-1.png" alt="slider-shape" />
+          <img class="tp-slider-shape-2" src="/img/slider/shape/slider-shape-2.png" alt="slider-shape" />
+          <img class="tp-slider-shape-3" src="/img/slider/shape/slider-shape-3.png" alt="slider-shape" />
+          <img class="tp-slider-shape-4" src="/img/slider/shape/slider-shape-4.png" alt="slider-shape" />
         </div>
         <div class="container">
           <div class="row align-items-center">
@@ -142,7 +115,7 @@ const handleActiveIndex = (index) => {
 };
 
 const formatPrice = (price) => {
-  return `$${price}`;
+  return `${price}원`;
 };
 
 export default {

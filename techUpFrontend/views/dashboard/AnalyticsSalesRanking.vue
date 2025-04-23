@@ -6,7 +6,7 @@ import { storeToRefs } from 'pinia';
 
 const adminStore = useAdminStore();
 const storeRef = storeToRefs(adminStore);
-console.log(storeRef.topSales.value)
+//console.log(storeRef.topSales.value)
 
 </script>
 

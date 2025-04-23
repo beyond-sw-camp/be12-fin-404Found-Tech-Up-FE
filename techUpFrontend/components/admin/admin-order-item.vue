@@ -1,4 +1,5 @@
 <script setup>
+import { navigateTo } from 'nuxt/app';
 import { useAdminStore } from '../../pinia/useAdminStore';
 
 const props = defineProps({
@@ -12,7 +13,7 @@ console.log(item.value);
 
 let title = ref('');
 let quantity = ref(0);
-let done = ref(false);
+let done = ref(true);
 
 let titleData = item.value.orderDetails.reduce((prev, value) => prev + 1, -1);
 
@@ -22,7 +23,7 @@ quantity.value = item.value.orderDetails.reduce((prev, value) => {
   return prev;
 }, 0);
 
-done.value = (item.value.orderStatus === "PAID" || item.value.orderStatus === "PLACED" || item.value.orderStatus === "UNPAID") ? false : true;
+done.value = item.value.orderStatus === "PAID" ? true : false;
 
 const handleOffCanvas = (item) => {
   adminStore.handleOrderDetailOffcanvas(item.orderDetails);
@@ -32,7 +33,7 @@ let status = ref(item.value.orderStatus);
 
 const cancelOrder = async () => {
   done.value = await adminStore.cancelOrder(item.value.orderIdx);
-  if (done.value) status.value = "CANCELED";
+  navigateTo('/dashboard');
 };
 
 </script>
@@ -50,7 +51,7 @@ const cancelOrder = async () => {
         style="font-weight:bold;font-size:smaller;background-color: yellow;" @click="cancelOrder">취소하기</button>
       <div v-else>-</div>
     </td>
-    <td><button v-if="!done" href="#" class="tp-btn"
+    <td><button v-if="done" href="#" class="tp-btn"
         style="font-weight:bold;font-size:smaller;background-color:green;">완료하기</button>
       <div v-else>-</div>
     </td>

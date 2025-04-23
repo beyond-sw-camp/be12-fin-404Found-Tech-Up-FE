@@ -32,25 +32,13 @@
               </div>
             </div>
             <div class="tp-product-gadget-banner">
-              <Swiper
-                :slidesPerView="1"
-                :spaceBetween="0"
-                :loop="true"
-                :effect="'fade'"
-                :pagination="{
-                  el: '.tp-product-gadget-banner-slider-dot',
-                  clickable: true,
-                }"
-                :modules="[EffectFade, Pagination]"
-                class="tp-product-gadget-banner-slider-active swiper-container"
-              >
-                <SwiperSlide
-                  v-for="(item, i) in banner_data"
-                  :key="i"
-                  class="tp-product-gadget-banner-item include-bg"
+              <Swiper :slidesPerView="1" :spaceBetween="0" :loop="true" :effect="'fade'" :pagination="{
+                el: '.tp-product-gadget-banner-slider-dot',
+                clickable: true,
+              }" :modules="[EffectFade, Pagination]" class="tp-product-gadget-banner-slider-active swiper-container">
+                <SwiperSlide v-for="(item, i) in banner_data" :key="i" class="tp-product-gadget-banner-item include-bg"
                   :style="`background-image:url(${item.bg})`"
-                  data-background="assets/img/product/gadget/gadget-banner-1.jpg"
-                >
+                  data-background="assets/img/product/gadget/gadget-banner-1.jpg">
                   <div class="tp-product-gadget-banner-content">
                     <span class="tp-product-gadget-banner-price">
                       Only {{ formatPrice(item.price) }}
@@ -70,11 +58,7 @@
         <div class="col-xl-8 col-lg-7">
           <div class="tp-product-gadget-wrapper">
             <div class="row">
-              <div
-                v-for="item in product_data.slice(0, 6)"
-                :key="item.idx"
-                class="col-xl-4 col-sm-6"
-              >
+              <div v-for="item in product_data.slice(0, 6)" :key="item.idx" class="col-xl-4 col-sm-6">
                 <ProductItem :item="item" />
               </div>
             </div>
@@ -104,6 +88,6 @@ const banner_data = [
 ];
 
 const formatPrice = (price) => {
-  return `$${price.toFixed(2)}`;
+  return `${price.toFixed(2)}원`;
 };
 </script>
