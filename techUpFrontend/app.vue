@@ -6,16 +6,22 @@
 </template>
 
 <script setup>
-import { onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useUserStore } from '@/pinia/useUserStore'
 import { useNuxtApp } from '#app'
 
 const userStore = useUserStore()
 const { $connectWebSocket } = useNuxtApp()
 
+// ✅ 웹소켓 재연결 방지 플래그
+const isWebSocketConnected = ref(false)
+
 onMounted(() => {
-  if (userStore.user?.userIdx) {
-    $connectWebSocket(userStore.user.userIdx)
+  const userIdx = userStore.user?.userIdx
+
+  if (userIdx && !isWebSocketConnected.value) {
+    $connectWebSocket(userIdx)
+    isWebSocketConnected.value = true
   }
 })
 /*

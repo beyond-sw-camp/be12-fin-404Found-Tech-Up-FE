@@ -26,8 +26,9 @@ export const useNotificationStore = defineStore('notificationStore', {
 
     async fetchUnreadCount() {
       try {
-        const res = await axios.get('/api/notification/unread')
-        this.unreadCount = res.data.length
+        const res = await axios.get('/api/notification/unread/count')
+        console.log('안읽은 알림 갯수', res.data);
+        this.unreadCount = res.data.data;
       } catch {
         this.unreadCount = 0
       }
