@@ -22,7 +22,7 @@ let topWishList = ref(storeRef.topWishList);
         <VListItem v-for="data in topWishList" :key="data.abbr">
           <VListItemTitle class="mb-1 d-flex align-center">
             <h6 class="text-h6">
-              {{ data.brand }}
+              {{ data.productName }}
 
             </h6>
           </VListItemTitle>

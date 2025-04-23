@@ -1,8 +1,8 @@
 <template>
   <div class="tp-product-sm-item d-flex align-items-center">
-    <div class="tp-product-thumb mr-25 fix">
+    <div class="tp-product-thumb mr-10 fix tp-cart-img">
       <nuxt-link :href="`/product-details/${props.item.idx}`">
-        <img :src="props.item.img" alt="product-img" width="140" height="140" />
+        <img :src="props.item.img" alt="product-img" width="64" height="64" />
       </nuxt-link>
     </div>
     <div class="tp-product-sm-content">
@@ -16,11 +16,8 @@
       </h3>
       <div class="tp-product-rating d-sm-flex align-items-center">
         <div class="tp-product-rating-icon">
-          <span><i class="fa-solid fa-star"></i></span>
-          <span><i class="fa-solid fa-star"></i></span>
-          <span><i class="fa-solid fa-star"></i></span>
-          <span><i class="fa-solid fa-star"></i></span>
-          <span><i class="fa-solid fa-star"></i></span>
+          <span v-for="item in new Array(props.item.reviewAverage)" :key="item"><i class="fa-solid fa-star"></i></span>
+          <span v-if="props.item.reviewHalf"><i class="fa-solid fa-star-half-stroke"></i></span>
         </div>
         <div class="tp-product-rating-text">
           <span>({{ props.item.reviews && props.item.reviews.length }} Review)</span>

@@ -32,9 +32,10 @@
         </div>
       </div>
       <div class="tp-coupon-date">
-        <button @click="issueMyCoupon">
+        <button @click="issueMyCoupon" v-if="quantity > 0">
           <span>발급하기</span>
         </button>
+        <div v-else>발급이 종료되었습니다.</div>
       </div>
     </div>
   </div>

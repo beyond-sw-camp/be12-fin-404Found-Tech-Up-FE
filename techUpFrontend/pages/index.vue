@@ -22,7 +22,7 @@
       <!-- banner area end -->
 
       <!-- offer product start -->
-      <product-offer-items />
+      <!-- <product-offer-items /> -->
       <!-- offer product end -->
 
       <!-- product gadget area start -->
