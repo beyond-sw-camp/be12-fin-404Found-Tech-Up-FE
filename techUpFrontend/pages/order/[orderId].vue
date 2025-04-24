@@ -33,6 +33,7 @@ onMounted(async () => {
     )
     if (res.data?.data) {
       order.value = res.data.data
+      console.log('주문 상세 조회 성공', order.value)
     }
   } catch (e) {
     console.error('주문 상세 조회 실패', e)
