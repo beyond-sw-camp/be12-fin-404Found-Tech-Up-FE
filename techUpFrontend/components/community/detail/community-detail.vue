@@ -41,8 +41,8 @@
       <button class="btn-unlike" @click="handleUnlike">👎 {{ board.boardUnlikes || 0 }}</button>
     </div>
 
-    <!-- 수정 / 삭제 -->
-    <div class="post-section post-actions">
+    <!-- 수정 / 삭제 (작성자 본인만) -->
+    <div class="post-section post-actions" v-if="userStore.user?.userIdx === board.userIdx">
       <button class="btn-edit" @click="goEdit">수정</button>
       <button class="btn-delete" @click="confirmDelete">삭제</button>
     </div>
@@ -90,13 +90,14 @@
 
           <template v-else>
             <p class="comment-content">{{ comment.content }}</p>
-            <div class="comment-action-buttons">
+            <div class="comment-action-buttons" v-if="comment.userIdx === userStore.user?.userIdx">
               <button class="btn-comment-edit" @click="editComment(comment)">수정</button>
               <button class="btn-comment-delete" @click="deleteComment(comment.commentIdx)">삭제</button>
             </div>
           </template>
         </li>
       </ul>
+
       <p v-else class="text-gray-500 text-sm mt-2">아직 댓글이 없습니다.</p>
     </div>
   </div>
@@ -109,13 +110,16 @@ import { onMounted, computed, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useBoardStore } from '@/pinia/useBoardStore';
 import { useCommentStore } from '@/pinia/useCommentStore';
+import { useUserStore } from '@/pinia/useUserStore';
 import { buildS3Url } from '@/utils/useS3';
 import { format } from 'date-fns';
 
 const route = useRoute();
 const router = useRouter();
+
 const boardStore = useBoardStore();
 const commentStore = useCommentStore();
+const userStore = useUserStore();
 
 const board = computed(() => boardStore.currentBoard || {});
 const commentList = computed(() => commentStore.commentList);
@@ -217,6 +221,7 @@ onMounted(async () => {
   await fetchComments();
 });
 </script>
+
 
 <style scoped>
 .post-detail-container {

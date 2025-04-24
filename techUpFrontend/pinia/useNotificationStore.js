@@ -1,5 +1,6 @@
 // /pinia/useNotificationStore.js
 import { defineStore } from 'pinia'
+import { useUserStore } from './useUserStore'
 import axios from 'axios'
 
 export const useNotificationStore = defineStore('notificationStore', {
@@ -26,10 +27,21 @@ export const useNotificationStore = defineStore('notificationStore', {
 
     async fetchUnreadCount() {
       try {
-        const res = await axios.get('/api/notification/unread/count')
-        console.log('안읽은 알림 갯수', res.data);
-        this.unreadCount = res.data.data;
-      } catch {
+        const userStore = useUserStore()
+    
+        if (!userStore.isLoggedIn) {
+          this.unreadCount = 0
+          return
+        }
+    
+        const res = await axios.get('/api/notification/unread/count', {
+          withCredentials: true
+        })
+    
+        console.log('안읽은 알림 갯수', res.data)
+        this.unreadCount = res.data.data
+      } catch (e) {
+        console.error('알림 조회 실패', e)
         this.unreadCount = 0
       }
     },
