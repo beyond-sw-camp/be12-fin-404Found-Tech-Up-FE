@@ -25,13 +25,17 @@
     </div>
 
     <!-- 글쓰기 버튼 -->
-    <div class="community-sidebar-widget mb-35">
-      <div class="community-sidebar-widget-content">
-        <nuxt-link to="/community/write" class="community-write-btn">
-          글쓰기
-        </nuxt-link>
-      </div>
-    </div>
+<div
+  class="community-sidebar-widget mb-35"
+  v-if="userStore.isLoggedIn"
+>
+  <div class="community-sidebar-widget-content">
+    <nuxt-link to="/community/write" class="community-write-btn">
+      글쓰기
+    </nuxt-link>
+  </div>
+</div>
+
 
     <!-- 최신 게시물 (순수 최신 3개) -->
     <div class="community-sidebar-widget mb-35">
@@ -79,6 +83,9 @@ import { ref, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import axios from 'axios';
 import { format } from 'date-fns';
+import { useUserStore } from '@/pinia/useUserStore';
+const userStore = useUserStore();
+
 
 const route = useRoute();
 const router = useRouter();
