@@ -161,31 +161,37 @@
 </template>
 
 <script setup>
-import { useCartStore } from '@/pinia/useCartStore';
-import { useWishlistStore } from '@/pinia/useWishlistStore';
-import { useUtilityStore } from '@/pinia/useUtilityStore';
-import { useSticky } from '@/composables/useSticky.js';
+import { onMounted, watchEffect } from 'vue'
+import { useCartStore } from '@/pinia/useCartStore'
+import { useWishlistStore } from '@/pinia/useWishlistStore'
+import { useUtilityStore } from '@/pinia/useUtilityStore'
+import { useSticky } from '@/composables/useSticky.js'
 import { useNotificationStore } from '@/pinia/useNotificationStore'
+import { useUserStore } from '@/pinia/useUserStore'  // 추가됨
 
-const notificationStore = useNotificationStore();
+const cartStore = useCartStore()
+const wishlistStore = useWishlistStore()
+const utilsStore = useUtilityStore()
+const notificationStore = useNotificationStore()
+const userStore = useUserStore()  // 추가됨
 
-// 만약 formatPrice 함수가 전역에 없다면 직접 정의하세요.
+const { isSticky } = useSticky()
+
 const formatPrice = (price, withCurrency = true) => {
   if (withCurrency) {
-    return `${price.toFixed(0)}원`;
+    return `${price.toFixed(0)}원`
   }
-  return price.toFixed(0);
-};
-
-const { isSticky } = useSticky();
-const cartStore = useCartStore();
-const wishlistStore = useWishlistStore();
-const utilsStore = useUtilityStore();
+  return price.toFixed(0)
+}
 
 onMounted(() => {
-  wishlistStore.fetchWishlist();
-  cartStore.fetchCartProducts();
-  notificationStore.fetchUnreadCount();
-});
+  wishlistStore.fetchWishlist()
+  cartStore.fetchCartProducts()
+})
 
+watchEffect(() => {
+  if (userStore.isLoggedIn) {
+    notificationStore.fetchUnreadCount()
+  }
+})
 </script>
