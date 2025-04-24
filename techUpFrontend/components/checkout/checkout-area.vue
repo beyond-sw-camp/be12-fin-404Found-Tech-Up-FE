@@ -24,7 +24,7 @@
           <div class="col-lg-5">
             <h3 class="tp-checkout-place-title">주문 내역</h3>
             <!-- emit :update:shipping => onShippingUpdate -->
-            <checkout-order @update:shipping="onShippingUpdate" @update:agree="agree = $event" @update:payment="paymentMethod = $event"/>
+            <checkout-order :coupon-info="couponInfo" @update:shipping="onShippingUpdate" @update:agree="agree = $event" @update:payment="paymentMethod = $event"/>
           </div>
         </form>
       </div>

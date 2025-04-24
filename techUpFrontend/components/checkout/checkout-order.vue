@@ -10,20 +10,25 @@
         </li>
 
         <!-- item list -->
-        <li v-for="item in cartStore.cart_products" :key="item.product.productIdx" class="tp-order-info-list-desc">
-          <p>{{ item.product.name }} <span> x {{ item.cartItemQuantity }}</span></p>
-          <span>{{ formatPrice(
-            (item.product.discount > 0
-              ? item.product.price * (1 - item.product.discount / 100)
-              : item.product.price
-            ) * item.cartItemQuantity
-          ) }}</span>
+        <li v-for="d in displayedItems" :key="d.product.productIdx" class="tp-order-info-list-desc">
+          <p class="d-flex align-items-center">
+            {{ d.product.name }}
+            <span class="mx-2">x {{ d.cartItemQuantity }}</span>
+
+            <small v-if="props.couponInfo.couponIdx && d.product.productIdx === props.couponInfo.productIdx"
+              class="text-danger ms-auto">
+              – {{ props.couponInfo.couponDiscountRate }}% 할인!
+            </small>
+          </p>
+          <span>
+            {{ formatPrice(d.finalPrice * d.cartItemQuantity) }}
+          </span>
         </li>
 
         <!-- subtotal -->
         <li class="tp-order-info-list-subtotal">
           <span>소계</span>
-          <span>{{ formatPrice(cartStore.totalPriceQuantity.total) }}</span>
+          <span>{{ formatPrice(subtotal) }}</span>
         </li>
 
         <!-- shipping -->
@@ -40,7 +45,7 @@
         <!-- total -->
         <li class="tp-order-info-list-total d-flex justify-content-between">
           <span>총 주문 금액</span>
-          <span>{{ formatPrice(cartStore.totalPriceQuantity.total + cartStore.shipCost) }}</span>
+          <span>{{ formatPrice(subtotal + cartStore.shipCost) }}</span>
         </li>
       </ul>
     </div>
@@ -91,11 +96,42 @@ import { ref, watch, computed } from 'vue'
 import { useCartStore } from '@/pinia/useCartStore'
 
 const props = defineProps({
+  couponInfo: {
+    type: Object,
+    default: () => ({
+      couponIdx: null,
+      couponDiscountRate: 0,
+      productIdx: null,
+    })
+  },
   shippingMethod: { type: String },
   agree: { type: Boolean, default: false }
 })
 const emit = defineEmits(['update:shipping', 'update:agree', 'update:payment'])
 const cartStore = useCartStore()
+
+const displayedItems = computed(() => {
+  return cartStore.cart_products.map(item => {
+    const basePrice = item.product.price * (1 - item.product.discount / 100)
+    let finalPrice = basePrice
+
+    if (
+      props.couponInfo.couponIdx &&
+      item.product.productIdx === props.couponInfo.productIdx
+    ) {
+      finalPrice = basePrice * (1 - props.couponInfo.couponDiscountRate / 100)
+    }
+
+    return { ...item, finalPrice }
+  })
+})
+
+const subtotal = computed(() =>
+  displayedItems.value.reduce(
+    (sum, d) => sum + d.finalPrice * d.cartItemQuantity,
+    0
+  )
+)
 
 const defaultShipping = computed(() =>
   cartStore.totalPriceQuantity.total < 50000
@@ -111,9 +147,9 @@ watch(shippingMethodLocal, val => emit('update:shipping', val))
 const shippingOptions = computed(() => {
   const total = cartStore.totalPriceQuantity.total
   const all = [
-    { value: 'flat_rate',     label: '일반 배송:', cost: 3000 },
-    { value: 'local_pickup',  label: '매장 수령:', cost: 1500 },
-    { value: 'free_shipping', label: '무료 배송', cost: 0    },
+    { value: 'flat_rate', label: '일반 배송:', cost: 3000 },
+    { value: 'local_pickup', label: '매장 수령:', cost: 1500 },
+    { value: 'free_shipping', label: '무료 배송', cost: 0 },
   ]
 
   if (total < 50000) {
