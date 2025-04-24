@@ -83,9 +83,16 @@ onMounted(async () => {
           <nuxt-link href="/login">로그인</nuxt-link>
         </li>
         <li v-else>
-          <button @click="handleLogout">로그아웃</button>
+          <nuxt-link class="tp-logout" @click="handleLogout">로그아웃</nuxt-link>
         </li>
       </ul>
     </div>
   </div>
 </template>
+
+<style scoped lang="scss">
+.tp-logout {
+  font-size: 14px;
+  color: var(--tp-common-black);
+}
+</style>

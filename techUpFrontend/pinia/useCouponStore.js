@@ -35,6 +35,7 @@ export const useCouponStore = defineStore("coupon", () => {
 
   onMounted(async ()=> {
     await loadEventList();
+    await loadMyCouponList();
   });
 
   return {

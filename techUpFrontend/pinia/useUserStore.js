@@ -85,11 +85,11 @@ export const useUserStore = defineStore('user', {
     async login(user) {
       try {
         const response = await axios.post(`/api/login`, user);
-        const success = await this.fetchUserInfo();
-        if (!success) throw new Error('유저 정보 가져오기 실패');
+        // const success = await this.fetchUserInfo();
+        // if (!success) throw new Error('유저 정보 가져오기 실패');
 
-        const { $connectWebSocket } = useNuxtApp(); // ✅ Nuxt 플러그인으로부터 가져옴
-        $connectWebSocket(this.user.userIdx);
+        // const { $connectWebSocket } = useNuxtApp(); // ✅ Nuxt 플러그인으로부터 가져옴
+        // $connectWebSocket(this.user.userIdx);
 
         return response.data;
       } catch (error) {
