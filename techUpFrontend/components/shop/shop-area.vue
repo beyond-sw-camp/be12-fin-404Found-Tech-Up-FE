@@ -78,7 +78,7 @@ function handleActiveTab(tab) {
   active_tab.value = tab
 }
 
-const ITEMS_PER_PAGE = 9
+const ITEMS_PER_PAGE = 10
 const BLOCK_SIZE = 10
 const currentPage = ref(1)
 const store = useProductFilterBackStore()

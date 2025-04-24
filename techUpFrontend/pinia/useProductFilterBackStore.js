@@ -22,7 +22,7 @@ export const useProductFilterBackStore = defineStore("product_filter", () => {
 
   const totalProducts = ref(0)
   const currentPage   = ref(0)
-  const pageSize      = ref(30)
+  const pageSize      = ref(10)
 
   // 백엔드 API에서 불러온 상품 데이터를 저장하는 상태
   const products = ref([]);
@@ -37,7 +37,7 @@ export const useProductFilterBackStore = defineStore("product_filter", () => {
   );
 
   // Axios를 이용해 백엔드 API에서 제품 목록을 가져오는 함수
-  async function fetchProducts(page = 0, size = 30) {
+  async function fetchProducts(page = 0, size = 10) {
     try {
       currentPage.value = page
       pageSize.value    = size
