@@ -314,7 +314,7 @@
           <input v-model="cpu.pakageType" type="text" class="form-input" placeholder="" required />
         </div>
         <div class="form-group">
-          <label class="form-label">권장 쿨러 높이</label>
+          <label class="form-label">동봉 쿨러</label>
           <input v-model="cpu.cooler" type="text" class="form-input" placeholder="" required />
         </div>
         <div class="form-group">
