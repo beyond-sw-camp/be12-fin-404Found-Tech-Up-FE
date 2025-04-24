@@ -26,11 +26,11 @@ spec:
             - name: config
               mountPath: /etc/nginx/conf.d/
             - name: tls-config
-              mountPath: /etc/nginx/ssl
+              mountPath: /etc/nginx/ssl/
       volumes:
         - name: config
           configMap:
-            name: frontend-conf
+            name: frontend-ssl-conf
         - name: tls-config
           secret:
             secretName: tls-secret

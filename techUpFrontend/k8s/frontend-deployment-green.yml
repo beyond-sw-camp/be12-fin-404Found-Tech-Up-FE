@@ -26,7 +26,7 @@ spec:
             - name: config
               mountPath: /etc/nginx/conf.d/
             - name: tls-config
-              mountPath: /etc/nginx/ssl
+              mountPath: /etc/nginx/ssl/
       volumes:
         - name: config
           configMap:
