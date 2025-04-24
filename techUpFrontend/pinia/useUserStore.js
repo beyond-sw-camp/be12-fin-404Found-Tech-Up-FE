@@ -101,7 +101,6 @@ export const useUserStore = defineStore('user', {
     async fetchUserInfo() {
       try {
         const response = await axios.get('/api/user/auth/me');
-        console.log("유wjwjdqh ", response.data);
         this.user = response.data.data;
         return true;
       } catch (error) {

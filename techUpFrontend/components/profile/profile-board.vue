@@ -5,31 +5,19 @@
         <tr>
           <th scope="col">게시글 번호</th>
           <th scope="col">게시글 제목</th>
-          <th scope="col">수정</th>
-          <th scope="col">삭제</th>
+          <th scope="col">작성일</th>
         </tr>
       </thead>
       <tbody>
         <tr
           v-for="board in boardStore.myPosts"
           :key="board.idx"
+          @click="goToDetail(board.idx)"
+          class="clickable-row"
         >
           <th scope="row">#{{ board.idx }}</th>
           <td>{{ board.boardTitle }}</td>
-          <td>
-            <a
-              href="#"
-              class="tp-logout-btn"
-              @click.prevent="onEdit(board.idx)"
-            >수정</a>
-          </td>
-          <td>
-            <a
-              href="#"
-              class="tp-logout-btn"
-              @click.prevent="onDelete(board.idx)"
-            >삭제</a>
-          </td>
+          <td>{{ formatDate(board.boardCreated) }}</td>
         </tr>
       </tbody>
     </table>
@@ -50,28 +38,30 @@
 
 <script setup>
 import { onMounted, ref } from 'vue'
+import { useRouter } from 'vue-router'
 import { useBoardStore } from '@/pinia/useBoardStore'
 import UiPagination2 from '@/components/ui/pagination2.vue'
 
 const boardStore = useBoardStore()
 const pageSize   = ref(10)
+const router     = useRouter()
 
 onMounted(async () => {
-  // 0-based 페이지 인자
   await boardStore.fetchMyPosts({ page: 0, size: pageSize.value })
 })
 
 function onPageChange(newPage) {
-  // newPage 는 1-based 이므로 -1
   boardStore.fetchMyPosts({ page: newPage - 1, size: pageSize.value })
 }
 
-// 수정/삭제 핸들러 (필요한 로직으로 채워주세요)
-function onEdit(boardIdx) {
-  console.log('수정:', boardIdx)
+function goToDetail(boardIdx) {
+  window.location.href = `/community-details/${boardIdx}`
 }
-function onDelete(boardIdx) {
-  console.log('삭제:', boardIdx)
+
+
+function formatDate(dateString) {
+  const date = new Date(dateString)
+  return date.toLocaleDateString()
 }
 </script>
 
@@ -90,5 +80,12 @@ function onDelete(boardIdx) {
   list-style: none;
   padding: 0;
   margin: 0;
+}
+.clickable-row {
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+.clickable-row:hover {
+  background-color: #f8f9fa;
 }
 </style>
