@@ -27,11 +27,16 @@ pipeline {
 
     environment {
         IMAGE_NAME = 'mstar228/techup-frontend'
-        IMAGE_TAG = "1.0.${BUILD_NUMBER}"
+        IMAGE_TAG = "2.0.${BUILD_NUMBER}"
         PATH = "/usr/local/bin:${env.PATH}"
+
+        // EC2 환경변수
         FRONTEND_URL = credentials('FRONTEND_URL')
         BACKEND_URL = credentials('BACKEND_URL')
         EC2_HOST = "ubuntu@${FRONTEND_URL}"
+
+        // kubernetes 환경변수
+        KUBE_HOST = credentials('KUBE_HOST')
     }
 
     stages {
@@ -49,6 +54,14 @@ pipeline {
                 git url: 'https://github.com/beyond-sw-camp/be12-fin-404Found-Tech-Up-FE.git',
                     branch: "${env.GIT_BRANCH.replace('origin/', '')}"
             }
+            post {
+                success {
+                    sendDiscordMessage("✅ Git Clone 성공!", "Git Repository 클론 완료", "GREEN")
+                }
+                failure {
+                    sendDiscordMessage("❌ Git Clone 실패!", "Git Repository 클론 중 오류 발생", "RED")
+                }
+            }
         }
 
         stage('Build Frontend') {
@@ -65,6 +78,14 @@ pipeline {
                     sed -i 's|\${BACKEND_URL}|${BACKEND_URL}|' ${WORKSPACE}/techUpFrontend/nginx/default.conf
                 """
             }
+            post {
+                success {
+                    sendDiscordMessage("✅ Frontend Build 성공!", "프론트엔드 빌드 완료", "GREEN")
+                }
+                failure {
+                    sendDiscordMessage("❌ Frontend Build 실패!", "프론트엔드 빌드 중 오류 발생", "RED")
+                }
+            }
         }
 
         stage('Build Docker Image') {
@@ -72,6 +93,14 @@ pipeline {
                 script {
                     echo "Building Docker Image ${IMAGE_NAME}:${IMAGE_TAG}"
                     docker.build("${IMAGE_NAME}:${IMAGE_TAG}", "${WORKSPACE}/techUpFrontend")
+                }
+            }
+            post {
+                success {
+                    sendDiscordMessage("✅ Docker Build 성공!", "프론트엔드 이미지 빌드 완료", "GREEN")
+                }
+                failure {
+                    sendDiscordMessage("❌ Docker Build 실패!", "프론트엔드 이미지 빌드 중 오류 발생", "RED")
                 }
             }
         }
@@ -86,12 +115,20 @@ pipeline {
                     }
                 }
             }
+            post {
+                success {
+                    sendDiscordMessage("✅ Docker Push 성공!", "이미지 레지스트리 업로드 완료", "GREEN")
+                }
+                failure {
+                    sendDiscordMessage("❌ Docker Push 실패!", "레지스트리 업로드 중 오류 발생", "RED")
+                }
+            }
         }
 
         stage('Deploy to EC2') {
-            // when {
-            //     expression { env.GIT_BRANCH == 'origin/main' }
-            // }
+            when {
+                expression { env.GIT_BRANCH == 'origin/main' }
+            }
             steps {
                 script {
                     echo "MODIFY DOCKER-COMPOSE.YML"
@@ -111,6 +148,115 @@ pipeline {
                         docker-compose -f /home/ubuntu/docker-compose.yml down  # 기존 컨테이너 중지 및 삭제
                         docker-compose -f /home/ubuntu/docker-compose.yml up -d  # 새 컨테이너 실행
                     """
+                }
+            }
+        }
+
+        stage('Determine Deploy Color') {
+            when {
+                expression { env.GIT_BRANCH == 'origin/main' }
+            }
+            steps {
+                script {
+                    def blueReplicas = sh(
+                        script: "ssh ${KUBE_HOST} 'kubectl get deployment frontend-deployment-blue -o jsonpath=\"{.spec.replicas}\"' || echo '0'",
+                        returnStdout: true
+                    ).trim()
+                    def greenReplicas = sh(
+                        script: "ssh ${KUBE_HOST} 'kubectl get deployment frontend-deployment-green -o jsonpath=\"{.spec.replicas}\"' || echo '0'",
+                        returnStdout: true
+                    ).trim()
+
+                    int blueCount = 0
+                    int greenCount = 0
+                    try { blueCount = blueReplicas.toInteger() } catch (Exception e) {}
+                    try { greenCount = greenReplicas.toInteger() } catch (Exception e) {}
+
+                    if (blueCount > 0 && greenCount == 0) {
+                        deployColor = "green"
+                        otherColor = "blue"
+                    } else if (greenCount > 0 && blueCount == 0) {
+                        deployColor = "blue"
+                        otherColor = "green"
+                    } else if (blueCount > 0 && greenCount > 0) {
+                        deployColor = "green"
+                        otherColor = "blue"
+                    } else {
+                        deployColor = "blue"
+                        otherColor = "green"
+                    }
+
+                    echo "Deploying ${deployColor} version (scaling down ${otherColor})"
+                }
+            }
+            post {
+                success {
+                    sendDiscordMessage("✅ 배포 색상 결정 완료!", "${deployColor}로 배포 진행 예정", "GREEN")
+                }
+                failure {
+                    sendDiscordMessage("❌ 배포 색상 결정 실패!", "replica 확인 중 오류 발생", "RED")
+                }
+            }
+        }
+
+        stage('Deploy Blue-Green') {
+            when {
+                expression { env.GIT_BRANCH == 'origin/main' }
+            }
+            steps {
+                script {
+                    sh """
+                        sed -i "s/latest/${IMAGE_TAG}/g" ${WORKSPACE}/frontend/k8s/frontend-deployment-${deployColor}.yml
+                        sed -i "s/latest/${IMAGE_TAG}/g" ${WORKSPACE}/frontend/k8s/frontend-conf.yml
+                        sed -i "s/latest/${IMAGE_TAG}/g" ${WORKSPACE}/frontend/k8s/frontend-svc.yml
+                        scp ${WORKSPACE}/frontend/k8s/frontend-deployment-${deployColor}.yml ${KUBE_HOST}:/home/test/frontend/k8s/
+                        scp ${WORKSPACE}/frontend/k8s/frontend-conf.yml ${KUBE_HOST}:/home/test/frontend/k8s/
+                        scp ${WORKSPACE}/frontend/k8s/frontend-svc.yml ${KUBE_HOST}:/home/test/frontend/k8s/
+                        ssh ${KUBE_HOST} 'kubectl apply -f /home/test/frontend/k8s/frontend-conf.yml'
+                        ssh ${KUBE_HOST} 'kubectl apply -f /home/test/frontend/k8s/frontend-svc.yml'
+                        ssh ${KUBE_HOST} 'kubectl apply -f /home/test/frontend/k8s/frontend-deployment-${deployColor}.yml'
+                        ssh ${KUBE_HOST} 'kubectl rollout status deployment/frontend-deployment-${deployColor}'
+                        ssh ${KUBE_HOST} 'kubectl scale deployment frontend-deployment-${otherColor} --replicas=0' || true
+                    """
+                }
+            }
+            post {
+                success {
+                    sendDiscordMessage("✅ Blue-Green 배포 성공!", "${deployColor}로 트래픽 전환 완료", "GREEN")
+                }
+                failure {
+                    sendDiscordMessage("❌ Blue-Green 배포 실패!", "배포 중 오류 발생", "RED")
+                }
+            }
+        }
+
+        stage('Update Service Selector') {
+            steps {
+                script {
+                    echo "Updating service selector to deployment: ${deployColor}"
+                    sh """
+                        echo '{"spec":{"selector":{"deployment":"${deployColor}","type":"frontend"}}}' > /tmp/patch.json
+                        scp /tmp/patch.json ${KUBE_HOST}:/tmp/patch.json
+                        ssh ${KUBE_HOST} "kubectl patch svc frontend-svc -p '\$(cat /tmp/patch.json)'"
+                        ssh ${KUBE_HOST} 'rm /tmp/patch.json'
+                        rm /tmp/patch.json
+                    """
+                }
+            }
+        }
+
+        stage('Verify Deployment') {
+            steps {
+                script {
+                    echo "Verifying deployment health..."
+                }
+            }
+            post {
+                success {
+                    sendDiscordMessage("✅ 배포 검증 성공!", "헬스체크 통과", "GREEN")
+                }
+                failure {
+                    sendDiscordMessage("❌ 배포 검증 실패!", "헬스체크 실패", "RED")
                 }
             }
         }

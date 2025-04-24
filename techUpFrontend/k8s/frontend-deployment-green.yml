@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: mstar228/edulink-frontend:latest
+          image: mstar228/techup-frontend:latest
           ports:
             - containerPort: 80
           volumeMounts:
