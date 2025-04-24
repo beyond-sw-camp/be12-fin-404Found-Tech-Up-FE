@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-deployment-green
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      type: frontend
+      deployment: green
+  strategy:
+    type: RollingUpdate
+  minReadySeconds: 10
+  template:
+    metadata:
+      labels:
+        type: frontend
+        deployment: green
+    spec:
+      containers:
+        - name: frontend
+          image: mstar228/edulink-frontend:latest
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: config
+              mountPath: /etc/nginx/conf.d/
+      volumes:
+        - name: config
+          configMap:
+            name: frontend-conf
