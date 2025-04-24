@@ -8,17 +8,18 @@
         <SvgSearch />
       </button>
     </div>
-    <table class="table">
+    <table>
       <thead>
         <tr>
           <th scope="col">번호</th>
           <th scope="col">닉네임</th>
           <th scope="col">이메일</th>
+          <th scope="col">전화번호</th>
+          <th scope="col">주소</th>
           <th scope="col">게시글 수</th>
           <th scope="col">리뷰 수</th>
           <th scope="col">주문 내역</th>
           <th scope="col">쿠폰</th>
-          <th scope="col">회원 정보</th>
         </tr>
       </thead>
       <tbody>

@@ -12,7 +12,8 @@ export default defineNuxtPlugin((nuxtApp) => {
     }
 
     console.info(`[WebSocket] 🌐 연결 시도 (userIdx: ${userIdx})`)
-    const socket = new SockJS('http://localhost:8080/ws-notification')
+    const socket = new SockJS('http://localhost:8080/ws-notification', null, { withCredentials: true })
+
 
     const stompClient = new Client({
       webSocketFactory: () => socket,

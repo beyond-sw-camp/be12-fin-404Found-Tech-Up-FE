@@ -1,12 +1,17 @@
 <script setup>
 import { useUserStore } from '@/pinia/useUserStore'; // useUserStore import 추가
 import { useDeviceStore } from '../../pinia/useDeviceStore';
-import { useWishlistStore } from '@/pinia/useWishlistStore'; // 위시리스트 스토어 가져오기
-import { ref, onMounted } from 'vue';
+import { useUserOrderStore } from '../../pinia/useUserOrderStore';
+import { useWishlistStore } from '@/pinia/useWishlistStore';
+import { useCouponStore } from '@/pinia/useCouponStore';
+import { useNotificationStore } from '../../pinia/useNotificationStore';
+import { ref } from 'vue';
 
+const notificationStore = useNotificationStore(); // 알림 스토어 초기화
 const deviceStore = useDeviceStore(); // 디바이스 스토어 초기화
+const userOrderStore = useUserOrderStore(); // 주문 스토어 초기화
 const wishlistStore = useWishlistStore(); // 위시리스트 스토어 초기화
-const userName = ref('test'); // 사용자 이름을 저장할 ref 변수
+const couponStore = useCouponStore(); // 쿠폰 스토어 초기화
 const valueCount = ref({
   alarmsCount: 0,
   devicesCount: 0,
@@ -62,7 +67,7 @@ const logout = async () => {
             </div> -->
             <div class="profile__main-content">
               <h4 class="profile__main-title">환영합니다, <span>{{ userStore.userInfo.userNickname }}</span>님!</h4>
-              <p>당신에게 <span>{{ valueCount.alarmsCount }}</span>개 알림이 있습니다</p>
+              <p>당신에게 <span>{{ notificationStore.notifications.length }}</span>개 알림이 있습니다</p>
             </div>
           </div>
         </div>
@@ -93,7 +98,7 @@ const logout = async () => {
             <a href="#" class="nav-link" @click.prevent="switchTab('nav-order-tab')">
               <div class="profile__main-info-icon">
                 <span>
-                  <span class="profile-icon-count profile-order">{{ valueCount.ordersCount }}</span>
+                  <span class="profile-icon-count profile-order">{{ userOrderStore.orderList.length }}</span>
                   <svg-orders />
                 </span>
               </div>
@@ -119,7 +124,7 @@ const logout = async () => {
             <nuxt-link to="/coupons" class="nav-link">
               <div class="profile__main-info-icon">
                 <span>
-                  <span class="profile-icon-count profile-wishlist">{{ valueCount.couponsCount }}</span>
+                  <span class="profile-icon-count profile-wishlist">{{ couponStore.myCoupons.length }}</span>
                   <svg-gift-box />
                 </span>
               </div>

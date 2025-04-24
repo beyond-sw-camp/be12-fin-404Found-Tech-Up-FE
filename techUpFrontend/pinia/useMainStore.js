@@ -10,11 +10,11 @@ export const useMainStore = defineStore("main", () => {
   let newProducts = ref([]);
   let topWishlistProduct = ref([]);
   let topSalesProduct = ref([]);
+  let allProducts = ref([]);
 
   const loadSuggestionProducts = async () => {
     // TODO: 백엔드 추천 API 갖고 와서 suggestion 변경
     // DTO 양식에 주의할 것: product/top-items.vue 컴포넌트 참조
-
   };
 
   const loadNewProduct = async () => {
@@ -89,7 +89,9 @@ export const useMainStore = defineStore("main", () => {
       reviewHalf: (value.ratings % 1) >= 0.5,
       imageURLs: [{ img: value.productImageUrl }]
     }));
+
   };
+
 
   onMounted(async () => {
     await Promise.all([
@@ -107,6 +109,7 @@ export const useMainStore = defineStore("main", () => {
     suggestion,
     newProducts,
     topWishlistProduct,
-    topSalesProduct
+    topSalesProduct,
+    allProducts,
   };
 });
