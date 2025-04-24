@@ -42,7 +42,7 @@
       </div>
 
       <!-- SSD 스펙 -->
-      <div v-if="product.category === 'SSD'" class="spec-box">
+      <div v-if="storeRef.targetProduct.value.category === 'SSD'" class="spec-box">
         <h3 class="spec-title">SSD 스펙</h3>
         <div class="form-group">
           <label class="form-label">상세 카테고리</label>
@@ -142,7 +142,7 @@
       </div>
 
       <!-- RAM 스펙 -->
-      <div v-if="product.category === 'RAM'" class="spec-box">
+      <div v-if="storeRef.targetProduct.value.category === 'RAM'" class="spec-box">
         <h3 class="spec-title">RAM 스펙</h3>
         <div class="form-group">
           <label class="form-label">사용 장치</label>
@@ -208,7 +208,7 @@
       </div>
 
       <!-- HDD 스펙 -->
-      <div v-if="product.category === 'HDD'" class="spec-box">
+      <div v-if="storeRef.targetProduct.value.category === 'HDD'" class="spec-box">
         <h3 class="spec-title">HDD 스펙</h3>
         <div class="form-group">
           <label class="form-label">상세 분류</label>
@@ -279,7 +279,7 @@
       </div>
 
       <!-- CPU 스펙 -->
-      <div v-if="product.category === 'CPU'" class="spec-box">
+      <div v-if="storeRef.targetProduct.value.category === 'CPU'" class="spec-box">
         <h3 class="spec-title">CPU 스펙</h3>
         <div class="form-group">
           <label class="form-label">(AMD의 경우) CPU 종류, 인텔은 공란</label>
@@ -313,12 +313,12 @@
         </div>
         <div class="form-group">
           <label class="form-label">기본 클럭(GHz) </label>
-          <input v-model="storeRef.targetProduct.value.cpuSpec.baseClock" type="number" class="form-input"
-            placeholder="" required />
+          <input v-model="storeRef.targetProduct.value.cpuSpec.baseClock" type="text" class="form-input" placeholder=""
+            required />
         </div>
         <div class="form-group">
           <label class="form-label">최대 클럭(GHz)</label>
-          <input v-model="storeRef.targetProduct.value.cpuSpec.maxClock" type="number" class="form-input" placeholder=""
+          <input v-model="storeRef.targetProduct.value.cpuSpec.maxClock" type="text" class="form-input" placeholder=""
             required />
         </div>
         <div class="form-group">
@@ -377,7 +377,7 @@
             required />
         </div>
         <div class="form-group">
-          <label class="form-label">권장 쿨러 높이</label>
+          <label class="form-label">동봉 쿨러</label>
           <input v-model="storeRef.targetProduct.value.cpuSpec.cooler" type="text" class="form-input" placeholder=""
             required />
         </div>
@@ -394,7 +394,7 @@
       </div>
 
       <!-- GPU 스펙 -->
-      <div v-if="product.category === 'GPU'" class="spec-box">
+      <div v-if="storeRef.targetProduct.value.category === 'GPU'" class="spec-box">
         <h3 class="spec-title">GPU 스펙</h3>
         <div class="form-group">
           <label class="form-label">칩셋 제조사</label>
