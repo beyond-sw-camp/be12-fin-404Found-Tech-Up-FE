@@ -153,9 +153,9 @@ pipeline {
         }
 
         stage('Determine Deploy Color') {
-            when {
-                expression { env.GIT_BRANCH == 'origin/main' }
-            }
+            // when {
+            //     expression { env.GIT_BRANCH == 'origin/main' }
+            // }
             steps {
                 script {
                     def blueReplicas = sh(
@@ -200,9 +200,9 @@ pipeline {
         }
 
         stage('Deploy Blue-Green') {
-            when {
-                expression { env.GIT_BRANCH == 'origin/main' }
-            }
+            // when {
+            //     expression { env.GIT_BRANCH == 'origin/main' }
+            // }
             steps {
                 script {
                     sh """
