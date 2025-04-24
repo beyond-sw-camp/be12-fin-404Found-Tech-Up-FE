@@ -29,6 +29,7 @@ data:
     }
     server {
         listen 80;
+        listen [::]:80 nginx;
         server_name nginx;
         location / {
             return 301 https://$host$request_uri;
