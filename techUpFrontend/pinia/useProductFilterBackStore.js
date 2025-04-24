@@ -201,6 +201,7 @@ export const useProductFilterBackStore = defineStore("product_filter", () => {
 
   return {
     products,
+    totalProducts,
     categories,
     fetchProducts,
     maxProductPrice,
