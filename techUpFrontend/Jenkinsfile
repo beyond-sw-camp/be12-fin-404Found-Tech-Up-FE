@@ -206,12 +206,12 @@ pipeline {
             steps {
                 script {
                     sh """
-                        sed -i "s/latest/${IMAGE_TAG}/g" ${WORKSPACE}/frontend/k8s/frontend-deployment-${deployColor}.yml
-                        sed -i "s/latest/${IMAGE_TAG}/g" ${WORKSPACE}/frontend/k8s/frontend-conf.yml
-                        sed -i "s/latest/${IMAGE_TAG}/g" ${WORKSPACE}/frontend/k8s/frontend-svc.yml
-                        scp ${WORKSPACE}/frontend/k8s/frontend-deployment-${deployColor}.yml ${KUBE_HOST}:/home/test/frontend/k8s/
-                        scp ${WORKSPACE}/frontend/k8s/frontend-conf.yml ${KUBE_HOST}:/home/test/frontend/k8s/
-                        scp ${WORKSPACE}/frontend/k8s/frontend-svc.yml ${KUBE_HOST}:/home/test/frontend/k8s/
+                        sed -i "s/latest/${IMAGE_TAG}/g" ${WORKSPACE}/techUpFrontend/k8s/frontend-deployment-${deployColor}.yml
+                        sed -i "s/latest/${IMAGE_TAG}/g" ${WORKSPACE}/techUpFrontend/k8s/frontend-conf.yml
+                        sed -i "s/latest/${IMAGE_TAG}/g" ${WORKSPACE}/techUpFrontend/k8s/frontend-svc.yml
+                        scp ${WORKSPACE}/techUpFrontend/k8s/frontend-deployment-${deployColor}.yml ${KUBE_HOST}:/home/test/frontend/k8s/
+                        scp ${WORKSPACE}/techUpFrontend/k8s/frontend-conf.yml ${KUBE_HOST}:/home/test/frontend/k8s/
+                        scp ${WORKSPACE}/techUpFrontend/k8s/frontend-svc.yml ${KUBE_HOST}:/home/test/frontend/k8s/
                         ssh ${KUBE_HOST} 'kubectl apply -f /home/test/frontend/k8s/frontend-conf.yml'
                         ssh ${KUBE_HOST} 'kubectl apply -f /home/test/frontend/k8s/frontend-svc.yml'
                         ssh ${KUBE_HOST} 'kubectl apply -f /home/test/frontend/k8s/frontend-deployment-${deployColor}.yml'
