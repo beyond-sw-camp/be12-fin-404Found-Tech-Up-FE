@@ -66,7 +66,7 @@
           <span v-else class="tp-product-price-2 new-price">{{ formatPrice(item.price) }}</span>
         </div>
 
-        <p>{{ item.description.slice(0, 100) }}</p>
+        <p>{{ item.description?.slice(0, 100) || '' }}</p>
         <div class="tp-product-list-add-to-cart">
           <button v-if="!isItemInCart(item)" @click="cartStore.addCartProduct(item, item.idx)" type="button"
             class="tp-product-list-add-to-cart-btn text-white">장바구니에 추가</button>
