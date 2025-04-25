@@ -6,7 +6,7 @@ data:
   default.conf: |
     server {
       listen              443 ssl;
-      server_name         nginx;
+      server_name         techup.kro.kr;
       ssl_certificate     /etc/nginx/ssl/tls.crt;
       ssl_certificate_key /etc/nginx/ssl/tls.key;
       ssl_protocols       TLSv1 TLSv1.1 TLSv1.2;
@@ -29,8 +29,8 @@ data:
     }
     server {
         listen 80;
-        listen [::]:80 nginx;
-        server_name nginx;
+        listen [::]:80;
+        
         location / {
             return 301 https://$host$request_uri;
         }
