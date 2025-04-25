@@ -15,7 +15,7 @@
                   CPU
                 </a>
               </h3>
-              <p>{{mainStore.allProducts.filter((value) => value.category === 'CPU').length}} Product</p>
+              <!--<p>{{mainStore.allProducts.filter((value) => value.category === 'CPU').length}} Product</p>-->
             </div>
           </div>
         </div>
@@ -33,7 +33,7 @@
                   GPU
                 </a>
               </h3>
-              <p>{{mainStore.allProducts.filter((value) => value.category === 'GPU').length}} Product</p>
+              <!--<p>{{mainStore.allProducts.filter((value) => value.category === 'GPU').length}} Product</p>-->
             </div>
           </div>
         </div>
@@ -51,7 +51,7 @@
                   RAM
                 </a>
               </h3>
-              <p>{{mainStore.allProducts.filter((value) => value.category === 'RAM').length}} Product</p>
+              <!-- <p>{{mainStore.allProducts.filter((value) => value.category === 'RAM').length}} Product</p> -->
             </div>
           </div>
         </div>
@@ -69,7 +69,7 @@
                   SSD
                 </a>
               </h3>
-              <p>{{mainStore.allProducts.filter((value) => value.category === "SSD").length}} Product</p>
+              <!--<p>{{mainStore.allProducts.filter((value) => value.category === "SSD").length}} Product</p>-->
             </div>
           </div>
         </div>
@@ -87,7 +87,7 @@
                   HDD
                 </a>
               </h3>
-              <p>{{mainStore.allProducts.filter((value) => value.category === "HDD").length}} Product</p>
+              <!-- <p>{{mainStore.allProducts.filter((value) => value.category === "HDD").length}} Product</p>-->
             </div>
           </div>
         </div>
