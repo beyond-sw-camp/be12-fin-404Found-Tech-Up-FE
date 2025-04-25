@@ -49,7 +49,7 @@ const searchUsers = async () => {
 const handlePagination = async (pagenum) => {
   //console.log("data", data, "start", start, "end", end);
   initialPage.value = pagenum;
-  if (storeRef.findUserKeyword.value === "") await adminStore.loadUserInfo(pagenum);
+  if (storeRef.findUserKeyword.value === "") await adminStore.loadUserInfo(pagenum - 1);
 };
 
 </script>

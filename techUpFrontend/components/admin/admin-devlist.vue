@@ -63,7 +63,7 @@ const initialPage = ref(1);
 const handlePagination = async (pagenum) => {
   // console.log("data", data, "start", start, "end", end);
   initialPage.value = pagenum;
-  if (storeRef.findProductKeyword.value === "") await adminStore.loadProductList(pagenum);
+  if (storeRef.findProductKeyword.value === "") await adminStore.loadProductList(pagenum - 1);
   else await adminStore.findProduct(pagenum);
 };
 </script>
