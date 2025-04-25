@@ -34,17 +34,17 @@ export const useCartStore = defineStore("cart_product", () => {
     } catch (error) {
       if (error.response && error.response.status === 401) {
         router.push("/login");
-      } 
+      }
       cart_products.value = [];
     }
   }
 
   // 장바구니에 상품 추가 (백엔드 API 연동)
-  async function addCartProduct(payload, productIdx) {
+  async function addCartProduct(payload, productIdx, orderQuantity = 1) {
     try {
       // payload.productIdx를 이용해 백엔드에 POST 요청 (요청 본문에 수량 정보 포함)
       const config = useRuntimeConfig();
-      const requestBody = { cartItemQuantity: 1 };
+      const requestBody = { cartItemQuantity: orderQuantity };
       const response = await axios.post(
         `/api/cart/add/${productIdx}`,
         requestBody,
@@ -181,20 +181,20 @@ export const useCartStore = defineStore("cart_product", () => {
       couponDiscountRate = 0,
       productIdx: couponProductIdx
     } = couponInfo
-  
+
 
     const items = cart_products.value.map((item) => {
       const basePrice = Number(item.product.price);
       const productDiscountRate = Number(item.product.discount) / 100;
-      
+
       // 할인율 적용
       let priceAfterProductDiscount = basePrice * (1 - productDiscountRate);
-  
+
       // 쿠폰 적용
       if (couponIdx && item.product.productIdx === couponProductIdx) {
         priceAfterProductDiscount *= (1 - couponDiscountRate / 100);
       }
-  
+
       return {
         productName: item.product.name,
         productIdx: item.product.productIdx,
@@ -266,7 +266,7 @@ export const useCartStore = defineStore("cart_product", () => {
           if (res.data && res.data.data) {
             // 결제 성공
             toast.success("주문이 완료되었습니다.");
-            router.push(`/order/${orderIdx}`); 
+            router.push(`/order/${orderIdx}`);
           }
         }
       }
