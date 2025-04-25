@@ -28,7 +28,7 @@
     </table>
     <div class="tp-pagination mt-30">
       <ui-pagination2 :itemsPerPage="adminStore.PAGENATION_SIZE" :data="storeRef.userStorageList.value"
-        :totalItems="storeRef.totalUsers.value" :initialPage="1" @handle-paginate="handlePagination" />
+        :totalItems="storeRef.totalUsers.value" :initialPage="initialPage" @handle-paginate="handlePagination" />
     </div>
   </div>
 </template>
@@ -40,14 +40,16 @@ import { useAdminStore } from '../../pinia/useAdminStore';
 const adminStore = useAdminStore();
 const storeRef = storeToRefs(adminStore);
 
+let initialPage = ref(1);
+
 const searchUsers = async () => {
   await adminStore.findUsers();
 }
 
 const handlePagination = async (pagenum) => {
   //console.log("data", data, "start", start, "end", end);
-  await adminStore.loadUserInfo(pagenum);
-
+  initialPage.value = pagenum;
+  if (storeRef.findUserKeyword.value === "") await adminStore.loadUserInfo(pagenum);
 };
 
 </script>
