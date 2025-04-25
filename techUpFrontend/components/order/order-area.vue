@@ -50,15 +50,38 @@
 
                   <!-- item list -->
                   <li v-for="d in order?.orderDetails" :key="d.orderDetailIdx" class="tp-order-info-list-desc">
-                    <p>{{ d.orderDetailName }} <span> x {{ d.orderDetailQuantity }}</span></p>
-                    <span>{{ formatPrice(
-                      // TODO:할인율 표시하기기
-                      // (d.product.discount > 0
-                      // ? d.product.orderDetailPrice * (1 - d.product.discount / 100)
-                      // : d.product.orderDetailPrice
-                      // )
-                      d.orderDetailPrice * d.orderDetailQuantity
-                    ) }}</span>
+                    <div class="d-flex align-items-center">
+                      <p class="mb-0">
+                        {{ d.orderDetailName }}
+                        <span class="mx-2">× {{ d.orderDetailQuantity }}</span>
+                        <small v-if="d.orderDetailDiscount > 0" class="badge bg-warning text-dark me-2">
+                          {{ d.orderDetailDiscount }}% off
+                        </small>
+                        <!-- coupon discount -->
+                        <small v-if="
+                          order.orderDetails.user_coupon_idx
+                          && d.product.productIdx === order.couponProductIdx
+                        " class="badge bg-danger">
+                          -{{ order.couponDiscountRate }}% coupon
+                        </small>
+                      </p>
+                    </div>
+                    <span>
+                      <template v-if="
+                        d.orderDetailDiscount > 0 ||
+                        (order.orderDetails.user_coupon_idx && d.product.productIdx === order.couponProductIdx)
+                      ">
+                        <!-- only strike & recalc when there is some discount -->
+                        <small class="text-muted text-decoration-line-through">
+                          {{ formatPrice(d.orderDetailPrice * d.orderDetailQuantity) }}
+                        </small>
+                          {{ formatPrice(calculateFinal(d)) }}
+                      </template>
+                      <template v-else>
+                        <!-- otherwise just show the normal total -->
+                        {{ formatPrice(d.orderDetailPrice * d.orderDetailQuantity) }}
+                      </template>
+                    </span>
                   </li>
 
                   <!-- subtotal -->
@@ -116,5 +139,17 @@ const emit = defineEmits(['refund'])
 
 function handleRefund() {
   emit('refund', props.order.orderIdx)
+}
+
+function calculateFinal(d) {
+  const unit = d.orderDetailPrice
+  // after product discount
+  let discounted = unit * (1 - (d.orderDetailDiscount || 0) / 100)
+  // then coupon
+  if (props.order.couponIdx
+    && d.product.productIdx === props.order.couponProductIdx) {
+    discounted *= (1 - props.order.couponDiscountRate / 100)
+  }
+  return discounted * d.orderDetailQuantity
 }
 </script>

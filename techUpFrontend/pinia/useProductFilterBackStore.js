@@ -20,6 +20,10 @@ export const useProductFilterBackStore = defineStore("product_filter", () => {
 
   const state = getDefaultState();
 
+  const totalProducts = ref(0)
+  const currentPage   = ref(0)
+  const pageSize      = ref(10)
+
   // 백엔드 API에서 불러온 상품 데이터를 저장하는 상태
   const products = ref([]);
 
@@ -33,27 +37,24 @@ export const useProductFilterBackStore = defineStore("product_filter", () => {
   );
 
   // Axios를 이용해 백엔드 API에서 제품 목록을 가져오는 함수
-  async function fetchProducts() {
+  async function fetchProducts(page = 0, size = 10) {
     try {
-      const config = useRuntimeConfig();
-      const response = await axios.get("/api/product/list", {
-        baseURL: config.public.apiBaseUrl
-      });
-      if (response.data && response.data.data) {
-        // 응답 데이터가 배열인지 확인하여 배열이 아니면 빈 배열을 할당
-        products.value = Array.isArray(response.data.data)
-          ? response.data.data
-          : [];
-        console.log("백엔드에서 가져온 제품 데이터:", products.value);
-      } else {
-        console.error("API 응답 형식이 올바르지 않습니다.", response.data);
-        // 빈 배열로 초기화
-        products.value = [];
-      }
+      currentPage.value = page
+      pageSize.value    = size
+      const config = useRuntimeConfig()
+      const response = await axios.get(
+        `/api/product/list?page=${page}&size=${size}`,
+        { baseURL: config.public.apiBaseUrl }
+      )
+      const pageData = response.data.data
+      products.value     = Array.isArray(pageData.content)
+                            ? pageData.content
+                            : []
+      totalProducts.value = pageData.totalElements
     } catch (err) {
-      console.error("제품 데이터 API 호출 오류:", err);
-      // 오류 발생 시 빈 배열로 초기화
-      products.value = [];
+      console.error("제품 데이터 API 호출 오류:", err)
+      products.value     = []
+      totalProducts.value = 0
     }
   }
 
@@ -200,6 +201,7 @@ export const useProductFilterBackStore = defineStore("product_filter", () => {
 
   return {
     products,
+    totalProducts,
     categories,
     fetchProducts,
     maxProductPrice,

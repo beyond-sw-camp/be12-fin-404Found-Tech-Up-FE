@@ -25,8 +25,12 @@
     </div>
 
     <p>
-      {{ textMore ? product.description : (product.description.substring(0, 100) + '...') }}
-      <span @click="textMore = !textMore">
+      {{
+        textMore
+          ? product.description ?? ''
+          : (product.description?.substring(0, 100) ?? '') + '...'
+      }}
+      <span v-if="product.description" @click="textMore = !textMore">
         {{ textMore ? 'See less' : 'See more' }}
       </span>
     </p>
