@@ -58,6 +58,27 @@ export const useProductFilterBackStore = defineStore("product_filter", () => {
     }
   }
 
+  async function findProducts(requestbody, page = 0, size = 10) {
+    try {
+      currentPage.value = page
+      pageSize.value    = size
+      const config = useRuntimeConfig()
+      const response = await axios.post(
+        `/api/product/filter?offset=${page}&limit=${size}`, requestbody,
+        { baseURL: config.public.apiBaseUrl }
+      )
+      const pageData = response.data.data
+      products.value     = Array.isArray(pageData.content)
+                            ? pageData.content
+                            : []
+      totalProducts.value = pageData.totalElements
+    } catch (err) {
+      console.error("제품 데이터 API 호출 오류:", err)
+      products.value     = []
+      totalProducts.value = 0
+    }
+  }
+
   // 선택된 필터 옵션을 저장하는 상태
   let selectVal = ref("");
 
@@ -212,7 +233,8 @@ export const useProductFilterBackStore = defineStore("product_filter", () => {
     handleResetFilter,
     selectVal,
     searchFilteredItems,
-    reset
+    reset,
+    findProducts
   };
   {
     persist: {
