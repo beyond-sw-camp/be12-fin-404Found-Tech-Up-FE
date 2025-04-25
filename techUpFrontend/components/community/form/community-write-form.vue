@@ -51,7 +51,7 @@ const route = useRoute();
 const router = useRouter();
 const boardStore = useBoardStore();
 const editorContainer = ref(null);
-const s3BaseUrl = 'https://ogh-spring-prac.s3.ap-northeast-2.amazonaws.com/';
+const s3BaseUrl = 'https://frontbucket-xenamaniac.s3.ap-northeast-2.amazonaws.com/';
 
 let quill = null;
 const isSubmitting = ref(false);
