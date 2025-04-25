@@ -5,18 +5,32 @@ import axios from 'axios';
 export const useDeviceStore = defineStore('device', () => {
   let deviceList = ref([]);
   let registerList = ref([]);
+  let totalPages = ref(0);
+  let currentPage = ref(0);
+  let totalItems = ref(0);
 
   // 제품 목록 가져오기 (검색용)
-  const fetchDeviceList = async (searchText = '') => {
+  const fetchDeviceList = async (searchText = '', page = 0, size = 10) => {
     try {
       // 검색어가 있으면 검색 API 호출, 없으면 전체 목록 가져오기
       const endpoint = searchText 
-        ? `/api/product/search?keyword=${searchText}` 
-        : '/api/product/list';
+        ? `/api/product/search?keyword=${searchText}&page=${page}&size=${size}` 
+        : `/api/product/list?page=${page}&size=${size}`;
       
       const response = await axios.get(endpoint);
-      deviceList.value = response.data.data || [];
+      deviceList.value = response.data.data.content || [];
+
+      // 페이지네이션 정보 업데이트
+      totalPages.value = response.data.data.totalPages || 0;
+      currentPage.value = response.data.data.number || 0;
+      totalItems.value = response.data.data.totalElements || 0;
+
       console.log('제품 목록 정보:', deviceList.value);
+      console.log('페이지네이션 정보:', {
+        currentPage: currentPage.value,
+        totalPages: totalPages.value,
+        totalItems: totalItems.value
+      });
     } catch (error) {
       console.error('제품 목록 조회 실패:', error);
     }
@@ -77,6 +91,9 @@ export const useDeviceStore = defineStore('device', () => {
     fetchDeviceList,
     fetchMyDevices,
     registerList,
-    deviceList
+    deviceList,
+    totalPages,
+    currentPage,
+    totalItems
   };
 });
