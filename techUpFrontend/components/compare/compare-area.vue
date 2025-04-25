@@ -59,39 +59,44 @@
                   <th>CPU 브랜드</th>
                   <td v-for="item in myCpus" :key="item.idx">
                     <div>
-                      {{ item.cpuSpec.cpuType }}
+                      {{ item.cpuSpec.amdCpuType ? item.cpuSpec.amdCpuType : '인텔 코어 시리즈' }}
                     </div>
                   </td>
                 </tr>
                 <!-- cpu 코어 -->
                 <tr>
-                  <th>코어 수</th>
+                  <th>코어 수, 스레드 수</th>
                   <td v-for="item in myCpus" :key="item.idx">
                     <div>
-                      {{ item.cpuSpec.cpuCore }}
+                      {{ item.cpuSpec.coreCount }}코어 {{ item.cpuSpec.threadCount }}스레드
                     </div>
                   </td>
                 </tr>
                 <!-- 스레드 수 -->
                 <tr>
-                  <th>스레드 수</th>
+                  <th>캐시 크기, 내장 그래픽</th>
                   <td v-for="item in myCpus" :key="item.idx">
                     <div>
-                      {{ item.cpuSpec.cpuThreads }}
+                      L3 {{ item.cpuSpec.l3Cache }}MB, 내장그래픽: {{ item.cpuSpec.builtInGraphic }}
+                    </div>
+                  </td>
+                </tr>
+                <!-- 스레드 수 -->
+                <tr>
+                  <th>공정, 부스트 클럭 </th>
+                  <td v-for="item in myCpus" :key="item.idx">
+                    <div>
+                      {{ item.cpuSpec.manufactoringProcess }}nm, 최대 클럭 {{ item.cpuSpec.maxClock }}GHz
                     </div>
                   </td>
                 </tr>
 
-                <!-- 평점 -->
+                <!-- 스레드 수 -->
                 <tr>
-                  <th>평점</th>
+                  <th>PCie 버전 및 레인 수 </th>
                   <td v-for="item in myCpus" :key="item.idx">
-                    <div class="tp-compare-rating">
-                      <span><i class="fas fa-star"></i></span>
-                      <span><i class="fas fa-star"></i></span>
-                      <span><i class="fas fa-star"></i></span>
-                      <span><i class="fas fa-star"></i></span>
-                      <span><i class="fas fa-star"></i></span>
+                    <div>
+                      버전 {{ item.cpuSpec.pcieVer }}, 최대 {{ item.cpuSpec.maxPcie }} 레인
                     </div>
                   </td>
                 </tr>
@@ -176,7 +181,8 @@
                   <th>등급</th>
                   <td v-for="item in myGpus" :key="item.idx">
                     <div>
-                      {{ item.gpuSpec.gpuChip }}
+                      {{ item.gpuSpec.chipsetManufacturer }} {{ item.gpuSpec.productSeries }}, {{
+                        item.gpuSpec.gpuManufacturingProcess }}nm
                     </div>
                   </td>
                 </tr>
@@ -193,10 +199,10 @@
 
                 <!-- 길이 -->
                 <tr>
-                  <th>길이</th>
+                  <th>길이 및 디스플레이 규격</th>
                   <td v-for="item in myGpus" :key="item.idx">
                     <div>
-                      {{ item.gpuSpec.gpuLength }}
+                      {{ item.gpuSpec.gpuLength }}, HDMI {{ item.gpuSpec.hdmi }}, DP {{ item.gpuSpec.displayPort }}
                     </div>
                   </td>
                 </tr>
@@ -215,19 +221,6 @@
                   </td>
                 </tr>
 
-                <!-- 평점 -->
-                <tr>
-                  <th>평점</th>
-                  <td v-for="item in myGpus" :key="item.idx">
-                    <div class="tp-compare-rating">
-                      <span><i class="fas fa-star"></i></span>
-                      <span><i class="fas fa-star"></i></span>
-                      <span><i class="fas fa-star"></i></span>
-                      <span><i class="fas fa-star"></i></span>
-                      <span><i class="fas fa-star"></i></span>
-                    </div>
-                  </td>
-                </tr>
 
                 <!-- 제거 -->
                 <tr>
@@ -295,7 +288,7 @@
                   <th>타입</th>
                   <td v-for="item in myRams" :key="item.idx">
                     <div>
-                      {{ item.ramSpec.ramType }}
+                      {{ item.ramSpec.usageDevice }}
                     </div>
                   </td>
                 </tr>
@@ -325,21 +318,7 @@
                   <th>장착 규격</th>
                   <td v-for="item in myRams" :key="item.idx">
                     <div>
-                      {{ item.ramSpec.ramUsage }}
-                    </div>
-                  </td>
-                </tr>
-
-                <!-- 평점 -->
-                <tr>
-                  <th>평점</th>
-                  <td v-for="item in myRams" :key="item.idx">
-                    <div class="tp-compare-rating">
-                      <span><i class="fas fa-star"></i></span>
-                      <span><i class="fas fa-star"></i></span>
-                      <span><i class="fas fa-star"></i></span>
-                      <span><i class="fas fa-star"></i></span>
-                      <span><i class="fas fa-star"></i></span>
+                      {{ item.ramSpec.memorySpec }}
                     </div>
                   </td>
                 </tr>
@@ -449,19 +428,6 @@
                   </td>
                 </tr>
 
-                <!-- 평점 -->
-                <tr>
-                  <th>평점</th>
-                  <td v-for="item in mySsds" :key="item.idx">
-                    <div class="tp-compare-rating">
-                      <span><i class="fas fa-star"></i></span>
-                      <span><i class="fas fa-star"></i></span>
-                      <span><i class="fas fa-star"></i></span>
-                      <span><i class="fas fa-star"></i></span>
-                      <span><i class="fas fa-star"></i></span>
-                    </div>
-                  </td>
-                </tr>
 
                 <!-- 장바구니 담기 -->
                 <tr>
@@ -540,44 +506,30 @@
 
                 <!-- 용량 -->
                 <tr>
-                  <th>데이터 용량</th>
+                  <th>데이터 용량 및 버퍼 크기</th>
                   <td v-for="item in myHdds" :key="item.idx">
                     <div class="tp-compare-add-to-cart">
-                      {{ item.hddSpec.hddCapacity }}
+                      {{ item.hddSpec.hddCapacity }}GB, 버퍼 {{ item.hddSpec.hddBuffer }}MB
                     </div>
                   </td>
                 </tr>
 
                 <!-- 회전수 -->
                 <tr>
-                  <th>회전수</th>
+                  <th>회전수 및 전송 속도, 소음</th>
                   <td v-for="item in myHdds" :key="item.idx">
                     <div class="tp-compare-add-to-cart">
-                      {{ item.hddSpec.hddRpm }}
+                      {{ item.hddSpec.hddRpm }}RPM, {{ item.hddSpec.transferSpeed }} MB/s, {{ item.hddSpec.noise }}dB
                     </div>
                   </td>
                 </tr>
 
                 <!-- 버퍼 크기 -->
                 <tr>
-                  <th>버퍼 크기</th>
+                  <th>제품 크기</th>
                   <td v-for="item in myHdds" :key="item.idx">
                     <div class="tp-compare-add-to-cart">
-                      {{ item.hddSpec.hddBuffer }}
-                    </div>
-                  </td>
-                </tr>
-
-                <!-- 평점 -->
-                <tr>
-                  <th>평점</th>
-                  <td v-for="item in myHdds" :key="item.idx">
-                    <div class="tp-compare-rating">
-                      <span><i class="fas fa-star"></i></span>
-                      <span><i class="fas fa-star"></i></span>
-                      <span><i class="fas fa-star"></i></span>
-                      <span><i class="fas fa-star"></i></span>
-                      <span><i class="fas fa-star"></i></span>
+                      {{ item.hddSpec.diskSize }}인치, 두께 {{ thickness }}
                     </div>
                   </td>
                 </tr>
