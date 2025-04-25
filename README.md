@@ -79,4 +79,5 @@ URL: [접속하기](https://techup-inner.p-e.kr)
 - 사용자 별 정보 조회 및 주문 내역 조회 기능
 - 사용자의 제품 환불 요청 처리
 - 사이트 공지 알람 기능
+  - 어드민 대시보드 접속 주소: https://techup-inner.p-e.kr/dashboard
   - 테스트 계정: ID: senouis@gmail.com, PW: qwer1234
