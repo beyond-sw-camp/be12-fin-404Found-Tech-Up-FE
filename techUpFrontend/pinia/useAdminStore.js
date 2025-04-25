@@ -23,7 +23,7 @@ export const useAdminStore = defineStore( 'admin',() => {
   if (URLPath[1] === 'notification-modify') modifyingNotification.value = true;
 
   // 상수
-  const PAGENATION_SIZE = 4;
+  const PAGENATION_SIZE = 30;
 
   // 통계 관련 데이터
   let topWishList = ref([]);
@@ -174,6 +174,8 @@ export const useAdminStore = defineStore( 'admin',() => {
 
   let orderDetailOffcanvas = ref(false);
 
+  let totalElements = ref(0);
+
   // ------------------------------------------------
   // ---------------- actions -----------------------
   // ------------------------------------------------
@@ -278,8 +280,9 @@ export const useAdminStore = defineStore( 'admin',() => {
     const result = await axios.get(`/api/product/list?page=${offset}&size=30`, {
       baseURL: config.public.apiBaseUrl,
     });
-    productStorageList.value = result.data.data;
-    productList.value = result.data.data
+    productStorageList.value = result.data.data.content;
+    productList.value = result.data.data.content;
+    totalElements.value = result.data.data.totalElements;
     console.log(result.data.data);
     return result;
   };
@@ -341,7 +344,7 @@ export const useAdminStore = defineStore( 'admin',() => {
         imagePath: imageUrls
       };
       await axios.post('/api/productimage', imagePayload);
-      await loadProductList();
+      await loadProductList(0);
       alert("수정되었습니다!");
       navigateTo('/dashboard');
     }).catch((e) => {
@@ -370,7 +373,7 @@ export const useAdminStore = defineStore( 'admin',() => {
       ramSpec: result.data.data.ramSpec ? result.data.data.ramSpec : null
     };
     existingFilePath.value = result.data.data.images;
-    //console.log(targetProduct.value);
+    console.log(targetProduct.value);
   };
 
   const loadStatistics = async () => {
@@ -396,7 +399,7 @@ export const useAdminStore = defineStore( 'admin',() => {
     if (confirm(`정말 제품 번호 ${idx}를 삭제할 것입니까? 구매 기록이 있거나 쿠폰이 발급된 제품은 삭제되지 않습니다.`)){
       try{
         await axios.delete(`/api/product/${idx}`);
-        await loadProductList();
+        await loadProductList(0);
         productList.value = productStorageList.value.filter((value) => value.idx !== idx).slice(0,PAGENATION_SIZE);
       } catch (e) {
         console.log(e);
@@ -409,8 +412,9 @@ export const useAdminStore = defineStore( 'admin',() => {
       const result = await axios.get(`/api/product/search?keyword=${findProductKeyword.value}&page=${offset}`);
       productStorageList = [];
       productList.value = [];
-      productStorageList.value = result.data.data;
-      productList.value = result.data.data;
+      productStorageList.value = result.data.data.content;
+      productList.value = result.data.data.content;
+      totalElements.value = result.data.dat.totalElements;
     } catch (e) {
       console.log(e);
     }
@@ -433,7 +437,7 @@ export const useAdminStore = defineStore( 'admin',() => {
   const loadCouponInfo = async (idx) => {
     try {
       const result = await axios.get(`/api/coupon/details/${idx}`);
-      // console.log(result.data);
+      console.log(result.data);
       targetCoupon.value.couponName = result.data.data.couponName;
       targetCoupon.value.discount=result.data.data.couponDiscountRate;
       targetCoupon.value.productIdx=result.data.data.productIdx;
@@ -576,25 +580,12 @@ export const useAdminStore = defineStore( 'admin',() => {
   };
 
 
-  const cancelOrder = async (idx) => {
-    if (confirm(`정말 주문 번호 ${idx}을 취소할 것입니까? 이 조치는 되돌릴 수 없습니다.`)){
-      try{
-        await axios.post(`/api/order/cancel/${idx}`);
-        return true;
-      } catch (e) {
-        console.log(e);
-        return false;
-      }
-    }
-    return false;
-  };
-
   // ---------------------------------
   // ====== 초기화할 것은 여기로 ======
   onMounted(async () => {
     await loadStatistics();
     await loadCouponList();
-    await loadProductList();
+    await loadProductList(0);
     await loadUserInfo();
     await loadNotificationList();
   });
@@ -678,5 +669,6 @@ export const useAdminStore = defineStore( 'admin',() => {
     handleOrderDetailOffcanvas,
 
     changeCouponTarget,
+    totalElements,
   };
 });

@@ -40,18 +40,12 @@ import { useAdminStore } from '../../pinia/useAdminStore';
 const adminStore = useAdminStore();
 const storeRef = storeToRefs(adminStore);
 
-let startIndex = ref(0);
-let endIndex = ref(adminStore.PAGENATION_SIZE);
-
 const searchUsers = async () => {
   await adminStore.findUsers();
 }
 
-const handlePagination = (data, start, end) => {
+const handlePagination = (pagenum) => {
   //console.log("data", data, "start", start, "end", end);
-  adminStore.sliceUserList(start, end);
-  startIndex.value = start;
-  endIndex.value = end;
 };
 
 </script>

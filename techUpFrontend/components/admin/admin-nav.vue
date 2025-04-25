@@ -16,7 +16,7 @@
         </button>
       -->
       <button class="nav-link" id="nav-devlist-tab" data-bs-toggle="tab" data-bs-target="#nav-devlist" type="button"
-        role="tab" aria-controls="nav-devlist" aria-selected="false" @click="adminStore.loadProductList">
+        role="tab" aria-controls="nav-devlist" aria-selected="false" @click="adminStore.loadProductList(0)">
         <span><i class="fa-light fa-clipboard-list-check"></i></span> 제품 목록
       </button>
       <button class="nav-link" id="nav-notifications-tab" data-bs-toggle="tab" data-bs-target="#nav-notifications"
