@@ -238,6 +238,7 @@ export const useAdminStore = defineStore( 'admin',() => {
     const result = await axios.get('/api/user/alluser', {
       baseURL: config.public.apiBaseUrl,
     });
+    console.log(result.data);
     userStorageList.value = result.data.data;
     userList.value = userStorageList.value.slice(0, PAGENATION_SIZE);
   };
@@ -273,13 +274,13 @@ export const useAdminStore = defineStore( 'admin',() => {
 
   // --------------- 제품 관련 ----------------------
 
-  const loadProductList = async () => {
-    const result = await axios.get('/api/product/list', {
+  const loadProductList = async (offset) => {
+    const result = await axios.get(`/api/product/list?page=${offset}&size=30`, {
       baseURL: config.public.apiBaseUrl,
     });
     productStorageList.value = result.data.data;
-    productList.value = result.data.data.slice(0, PAGENATION_SIZE);
-    // console.log(result.data.data);
+    productList.value = result.data.data
+    console.log(result.data.data);
     return result;
   };
 
@@ -403,13 +404,13 @@ export const useAdminStore = defineStore( 'admin',() => {
     }
   };
 
-  const findProduct = async () => {
+  const findProduct = async (offset) => {
     try {
-      const result = await axios.get(`/api/product/search?keyword=${findProductKeyword.value}`);
+      const result = await axios.get(`/api/product/search?keyword=${findProductKeyword.value}&page=${offset}`);
       productStorageList = [];
       productList.value = [];
       productStorageList.value = result.data.data;
-      productList.value = result.data.data.slice(0, PAGENATION_SIZE);
+      productList.value = result.data.data;
     } catch (e) {
       console.log(e);
     }
