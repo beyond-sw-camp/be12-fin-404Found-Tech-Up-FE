@@ -30,7 +30,7 @@
             <svg-quick-view />
             <span class="tp-product-tooltip">Quick View</span>
           </button>
-          <button @click="wishlistStore.add_wishlist_product(item)" type="button"
+          <button @click="wishlistStore.toggleWishlist(item.idx)" type="button"
             :class="`tp-product-action-btn tp-product-add-to-wishlist-btn ${isItemInWishlist(item) ? 'active' : ''}`">
             <svg-wishlist />
             <span class="tp-product-tooltip">
