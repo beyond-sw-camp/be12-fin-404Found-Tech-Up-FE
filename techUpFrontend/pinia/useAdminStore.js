@@ -241,7 +241,7 @@ export const useAdminStore = defineStore( 'admin',() => {
     const result = await axios.get(`/api/user/alluser?offset=${offset}&limit=${PAGENATION_SIZE}`, {
       baseURL: config.public.apiBaseUrl,
     });
-    console.log(result.data);
+    //console.log(result.data);
     userStorageList.value = result.data.data.content;
     userList.value = result.data.data.content;
     totalUsers.value = result.data.totalElements;
@@ -286,7 +286,7 @@ export const useAdminStore = defineStore( 'admin',() => {
     productStorageList.value = result.data.data.content;
     productList.value = result.data.data.content;
     totalElements.value = result.data.data.totalElements;
-    console.log(result.data.data);
+    //console.log(result.data.data);
     return result;
   };
 
@@ -376,7 +376,7 @@ export const useAdminStore = defineStore( 'admin',() => {
       ramSpec: result.data.data.ramSpec ? result.data.data.ramSpec : null
     };
     existingFilePath.value = result.data.data.images;
-    console.log(targetProduct.value);
+    //console.log(targetProduct.value);
   };
 
   const loadStatistics = async () => {
@@ -440,7 +440,7 @@ export const useAdminStore = defineStore( 'admin',() => {
   const loadCouponInfo = async (idx) => {
     try {
       const result = await axios.get(`/api/coupon/details/${idx}`);
-      console.log(result.data);
+      //console.log(result.data);
       targetCoupon.value.couponName = result.data.data.couponName;
       targetCoupon.value.discount=result.data.data.couponDiscountRate;
       targetCoupon.value.productIdx=result.data.data.productIdx;
@@ -461,7 +461,7 @@ export const useAdminStore = defineStore( 'admin',() => {
         userIdx,
         ...coupon,
       };
-      console.log('등록 데이터:', payload);
+      //console.log('등록 데이터:', payload);
       $fetch('/api/coupon/issue', {
         baseURL: config.public.apiBaseUrl,
         method: 'POST',
@@ -478,7 +478,7 @@ export const useAdminStore = defineStore( 'admin',() => {
       const payload = {
         ...coupon,
       };
-      console.log('등록 데이터:', payload);
+      //console.log('등록 데이터:', payload);
       $fetch('/api/coupon/issueall', {
         baseURL: config.public.apiBaseUrl,
         method: 'POST',
@@ -500,7 +500,7 @@ export const useAdminStore = defineStore( 'admin',() => {
     const payload = {
       ...targetCoupon.value,
     }
-    console.log('수정할 쿠폰 데이터:', payload);
+    //console.log('수정할 쿠폰 데이터:', payload);
     // 여기서 axios.post('/api/coupons', payload).then(...)
     const result = await axios.put(`/api/coupon/update/${route.params.idx}`, payload, {
       baseURL: config.public.apiBaseUrl,
@@ -532,7 +532,7 @@ export const useAdminStore = defineStore( 'admin',() => {
       couponList.value = [];
       couponStorageList.value = result.data.data.couponList;
       couponList.value = result.data.data.couponList.slice(0, PAGENATION_SIZE);
-      console.log(result.data);
+      //console.log(result.data);
     } catch (e) {
       console.log(e);
     }
@@ -547,7 +547,7 @@ export const useAdminStore = defineStore( 'admin',() => {
     const payload = {
       ...event,
     };
-    console.log('이벤트 등록 데이터:', payload)
+    //console.log('이벤트 등록 데이터:', payload)
     // 여기서 axios.post('/api/coupons', payload).then(...)
 
     const result = await axios.post('/api/coupon/events', payload );
@@ -561,7 +561,7 @@ export const useAdminStore = defineStore( 'admin',() => {
     const payload = {
       ...targetCoupon.value,
     }
-    console.log('수정할 쿠폰 데이터:', payload);
+    //console.log('수정할 쿠폰 데이터:', payload);
     // 여기서 axios.put()
     // post를 하면 이벤트 쿠폰 발행이므로 혼동하지 말 것
     const result = await axios.put(`/api/coupon/events/${route.params.idx}`, payload);
