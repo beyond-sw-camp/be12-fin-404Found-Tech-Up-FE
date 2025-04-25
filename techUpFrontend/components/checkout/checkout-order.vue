@@ -134,7 +134,7 @@ const subtotal = computed(() =>
 )
 
 const defaultShipping = computed(() =>
-  cartStore.totalPriceQuantity.total < 50000
+  cartStore.totalPriceQuantity.total < 64000
     ? 'flat_rate'
     : 'free_shipping'
 )
@@ -152,7 +152,7 @@ const shippingOptions = computed(() => {
     { value: 'free_shipping', label: '무료 배송', cost: 0 },
   ]
 
-  if (total < 50000) {
+  if (total < 64000) {
     return all.filter(o => o.value !== 'free_shipping')
   }
 
