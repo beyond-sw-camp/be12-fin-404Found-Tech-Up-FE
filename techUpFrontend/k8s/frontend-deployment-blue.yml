@@ -30,7 +30,7 @@ spec:
       volumes:
         - name: config
           configMap:
-            name: frontend-conf
+            name: frontend-ssl-conf
         - name: tls-config
           secret:
             secretName: tls-secret
