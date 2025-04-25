@@ -82,23 +82,25 @@
       <div class="tp-product-details-action-item-wrapper d-flex align-items-center">
         <div class="tp-product-details-quantity">
           <div class="tp-product-quantity mb-15 mr-15">
-            <span class="tp-cart-minus" @click="cartStore.decrement">
+            <span class="tp-cart-minus" @click="decreaseQuantity">
               <svg-minus />
             </span>
             <input class="tp-cart-input" type="text" :value="cartStore.orderQuantity" disabled />
-            <span class="tp-cart-plus" @click="cartStore.increment">
+            <span class="tp-cart-plus" @click="increaseQuantity">
               <svg-plus-sm />
             </span>
           </div>
         </div>
         <div class="tp-product-details-add-to-cart mb-15 w-100">
-          <button @click="cartStore.addCartProduct(product, product.idx)"
+          <button @click="cartStore.addCartProduct(product, product.idx, cartStore.orderQuantity)"
             class="tp-product-details-add-to-cart-btn w-100">
             Add To Cart
           </button>
         </div>
       </div>
-      <nuxt-link :href="`/product-details/${product.idx}`" class="tp-product-details-buy-now-btn w-100 text-center">
+      <nuxt-link :to="`/checkout`"
+        @click.prevent="cartStore.addCartProduct(product, product.idx, cartStore.orderQuantity)"
+        class="tp-product-details-buy-now-btn w-100 text-center">
         Buy Now
       </nuxt-link>
     </div>
@@ -166,6 +168,8 @@ const cartStore = useCartStore();
 const compareStore = useCompareStore();
 const wishlistStore = useWishlistStore();
 
+let textMore = ref(false)
+
 const props = defineProps({
   product: Object,
   isShowBottom: {
@@ -173,13 +177,21 @@ const props = defineProps({
     default: true
   },
 });
-let textMore = ref(false);
 
 function formatPrice(price, withCurrency = true) {
   if (withCurrency) {
-    return "$" + Number(price).toFixed(2);
+    return "₩" + Number(price).toFixed(0);
   }
-  return Number(price).toFixed(2);
+  return Number(price).toFixed(0);
+}
+
+function decreaseQuantity() {
+  if (cartStore.orderQuantity > 1) {
+    cartStore.orderQuantity--
+  }
+}
+function increaseQuantity() {
+  cartStore.orderQuantity++
 }
 </script>
 

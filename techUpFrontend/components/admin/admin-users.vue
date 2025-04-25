@@ -27,8 +27,8 @@
       </tbody>
     </table>
     <div class="tp-pagination mt-30">
-      <ui-pagination :items-per-page="adminStore.PAGENATION_SIZE" :data="storeRef.userStorageList.value"
-        @handle-paginate="handlePagination" />
+      <ui-pagination2 :itemsPerPage="adminStore.PAGENATION_SIZE" :data="storeRef.userStorageList.value"
+        :totalItems="storeRef.totalUsers.value" :initialPage="1" @handle-paginate="handlePagination" />
     </div>
   </div>
 </template>
@@ -44,8 +44,10 @@ const searchUsers = async () => {
   await adminStore.findUsers();
 }
 
-const handlePagination = (pagenum) => {
+const handlePagination = async (pagenum) => {
   //console.log("data", data, "start", start, "end", end);
+  await adminStore.loadUserInfo(pagenum);
+
 };
 
 </script>

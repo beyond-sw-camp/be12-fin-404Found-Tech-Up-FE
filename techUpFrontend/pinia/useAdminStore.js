@@ -155,6 +155,7 @@ export const useAdminStore = defineStore( 'admin',() => {
   // 사용자 목록
   let userStorageList = ref([]);
   let userList = ref([]);
+  let totalUsers = ref(0);
   // 사용자 검색
   let findUserKeyword = ref('');
 
@@ -235,14 +236,15 @@ export const useAdminStore = defineStore( 'admin',() => {
 
   // ------------------ 사용자 정보 -------------------------
 
-  const loadUserInfo = async () => {
+  const loadUserInfo = async (offset) => {
     // 기존 정보를 가져온다.
-    const result = await axios.get('/api/user/alluser', {
+    const result = await axios.get(`/api/user/alluser?offset=${offset}&limit=${PAGENATION_SIZE}`, {
       baseURL: config.public.apiBaseUrl,
     });
     console.log(result.data);
-    userStorageList.value = result.data.data;
-    userList.value = userStorageList.value.slice(0, PAGENATION_SIZE);
+    userStorageList.value = result.data.data.content;
+    userList.value = result.data.data.content;
+    totalUsers.value = result.data.totalElements;
   };
 
   
@@ -253,6 +255,7 @@ export const useAdminStore = defineStore( 'admin',() => {
       userList.value = [];
       userStorageList.value = result.data.data;
       userList.value = result.data.data.slice(0, PAGENATION_SIZE);
+
     } catch (e) {
       console.log(e);
     }
@@ -586,7 +589,7 @@ export const useAdminStore = defineStore( 'admin',() => {
     await loadStatistics();
     await loadCouponList();
     await loadProductList(0);
-    await loadUserInfo();
+    await loadUserInfo(0);
     await loadNotificationList();
   });
   
@@ -670,5 +673,6 @@ export const useAdminStore = defineStore( 'admin',() => {
 
     changeCouponTarget,
     totalElements,
+    totalUsers,
   };
 });
