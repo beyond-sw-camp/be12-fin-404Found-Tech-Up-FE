@@ -40,8 +40,8 @@
       </div>
     </div>
     <div class="tp-pagination mt-30">
-      <ui-pagination :items-per-page="adminStore.PAGENATION_SIZE" :data="storeRef.productStorageList.value"
-        @handle-paginate="handlePagination" />
+      <ui-pagination2 :itemsPerPage="adminStore.PAGENATION_SIZE" :data="storeRef.productStorageList.value"
+        :totalItems="storeRef.totalElements.value" :initialPage="initialPage" @handle-paginate="handlePagination" />
     </div>
   </div>
 </template>
@@ -54,17 +54,16 @@ import { useAdminStore } from '../../pinia/useAdminStore';
 const adminStore = useAdminStore();
 const storeRef = storeToRefs(adminStore);
 
-let startIndex = ref(0);
-let endIndex = ref(adminStore.PAGENATION_SIZE);
-
 const searchProduct = async () => {
-  await adminStore.findProduct();
+  await adminStore.findProduct(0);
 }
 
-const handlePagination = (data, start, end) => {
+const initialPage = ref(1);
+
+const handlePagination = async (pagenum) => {
   // console.log("data", data, "start", start, "end", end);
-  adminStore.sliceProductList(start, end);
-  startIndex.value = start;
-  endIndex.value = end;
+  initialPage.value = pagenum;
+  if (storeRef.findProductKeyword.value === "") await adminStore.loadProductList(pagenum);
+  else await adminStore.findProduct(pagenum);
 };
 </script>
