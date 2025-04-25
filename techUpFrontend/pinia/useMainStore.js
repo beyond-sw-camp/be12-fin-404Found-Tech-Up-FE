@@ -2,8 +2,26 @@ import { onMounted, ref } from "vue";
 import { defineStore } from "pinia";
 import axios from 'axios';
 import product_data from '../data/product-data.js';
+import { useUserStore } from "@/pinia/useUserStore.js";
 
 export const useMainStore = defineStore("main", () => {
+
+  function mapToItem(x) {
+    return {
+      idx:    x.idx ?? x.productIdx,
+      category:      x.category,
+      productType:   x.category,
+      img:     (x.images?.[0] || x.productImageUrl || x.imageUrl) || "",
+      name:    x.name  || x.productName,
+      price:   x.price || x.productPrice,
+      discount: x.discount ?? x.productDiscount,
+      brand:   x.brand,
+      reviews: x.reviews ?? [],
+      reviewAverage: x.rating ?? x.ratings ?? 0,
+      reviewHalf:    ((x.rating ?? x.ratings) % 1) >= 0.5,
+      imageURLs: (x.images || [ x.imageUrl || x.productImageUrl ]).map(u => ({ img: u })),
+    };
+  }
 
   let suggestion = ref(product_data.filter((value) => value.productType === 'electronics').slice(0, 8));
 
@@ -11,10 +29,31 @@ export const useMainStore = defineStore("main", () => {
   let topWishlistProduct = ref([]);
   let topSalesProduct = ref([]);
   let allProducts = ref([]);
+  const userStore = useUserStore();
 
   const loadSuggestionProducts = async () => {
-    // TODO: 백엔드 추천 API 갖고 와서 suggestion 변경
-    // DTO 양식에 주의할 것: product/top-items.vue 컴포넌트 참조
+    try {
+      if (userStore.isLoggedIn) {
+        const me = await axios.get("/api/user-product/my-product");
+        const user = me.data.data;
+        if (user && user.products) {
+          const rec = await axios.post("/recommend/item-based", { product_idx: user.products[0].productIdx });
+          const recs = rec.data.recommended_products;
+          if (Array.isArray(recs) && recs.length) {
+            suggestion.value = recs.slice(0, 8).map(mapToItem);
+            return;
+          }
+        }
+      }
+    } catch (e) {
+      console.warn("Could not load recommendations, falling back", e);
+    }
+
+    const resp = await axios.get("/api/product/list?page=0&size=8");
+    const page = resp.data.data;
+    suggestion.value = Array.isArray(page.content)
+      ? page.content.slice(0, 8).map(mapToItem)
+      : [];
   };
 
   const loadNewProduct = async () => {

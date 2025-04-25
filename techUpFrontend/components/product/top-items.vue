@@ -57,24 +57,8 @@ export default {
 
     const mainStore = useMainStore();
     const storeRef = storeToRefs(mainStore);
-    /*
-    const electronic_prd = product_data.filter(
-      (p) => p.productType === 'electronics'
-    );
-    const allProducts = electronic_prd;
-
-    const filteredProducts = computed(() => {
-      if (active_tab.value === 'New') {
-        return allProducts.slice(0, 8);
-      } else if (active_tab.value === 'Featured') {
-        return allProducts.filter((product) => product.featured);
-      } else {
-        return [];
-      }
-    });
-    */
     onMounted(() => {
-      // 필요하다면 onMounted 로직 추가
+      mainStore.loadSuggestionProducts();
     });
 
     return {
