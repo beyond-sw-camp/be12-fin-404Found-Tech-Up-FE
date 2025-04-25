@@ -10,7 +10,7 @@ export const useDeviceStore = defineStore('device', () => {
   let totalItems = ref(0);
 
   // 제품 목록 가져오기 (검색용)
-  const fetchDeviceList = async (searchText = '', page = 0, size = 10) => {
+  const fetchDeviceList = async (searchText = '', page = 0, size = 5) => {
     try {
       // 검색어가 있으면 검색 API 호출, 없으면 전체 목록 가져오기
       const endpoint = searchText 
