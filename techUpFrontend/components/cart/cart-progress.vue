@@ -26,8 +26,8 @@ import { ref, computed } from 'vue';
 import { useCartStore } from '@/pinia/useCartStore';
 
 const cartStore = useCartStore();
-// 50,000원 이상 무료 배송 하드 코딩
-const freeShippingThreshold = ref(50000);
+// 64000원 이상 무료 배송 하드 코딩
+const freeShippingThreshold = ref(64000);
 const progress = computed(() => (cartStore.totalPriceQuantity.total / freeShippingThreshold.value) * 100);
 const remainingAmount = computed(() => freeShippingThreshold.value - cartStore.totalPriceQuantity.total);
 </script>
