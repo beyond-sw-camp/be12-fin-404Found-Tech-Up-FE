@@ -104,12 +104,12 @@ const pagesInBlock = computed(() => {
 
 // fetch the first page on mount
 onMounted(() => {
-  store.fetchProducts(0, ITEMS_PER_PAGE)
+  // store.fetchProducts(0, ITEMS_PER_PAGE)
 })
 
 function changePage(page) {
   if (page === currentPage.value) return
   currentPage.value = page
-  store.fetchProducts(page - 1, ITEMS_PER_PAGE)
+  // store.fetchProducts(page - 1, ITEMS_PER_PAGE)
 }
 </script>
