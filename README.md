@@ -1,7 +1,7 @@
 # be12-fin-404Found-Tech-Up-FE
 
 URL: [접속하기](https://techup-inner.p-e.kr)
-
+  - 관리자 계정: ID: senouis@gmail.com, PW: qwer1234
 ## “Tech-Up” 서비스
 고사양을 요하지 않는 일반 사용자들은 기기 전체를 바꾸는 것보다 필요한 부분만 간단히 업그레이드하길 원한다. 하지만 부품의 호환성, 업그레이드 범위, 관련된 추가 제품을 파악하는 일은 일반 사용자에게 쉽지 않다.
 “Tech-Up”은 그런 사용자들을 위한 가벼운 업그레이드 추천 중심의 서비스이다.
@@ -80,4 +80,3 @@ URL: [접속하기](https://techup-inner.p-e.kr)
 - 사용자의 제품 환불 요청 처리
 - 사이트 공지 알람 기능
   - 어드민 대시보드 접속 주소: https://techup-inner.p-e.kr/dashboard
-  - 테스트 계정: ID: senouis@gmail.com, PW: qwer1234
