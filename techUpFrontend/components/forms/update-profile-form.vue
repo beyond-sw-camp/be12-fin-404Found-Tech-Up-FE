@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { useUserStore } from '@/pinia/useUserStore'; // useUserStore import 추가
+import { useRouter } from 'vue-router';
+import { onMounted, ref } from 'vue';
 
 const userStore = useUserStore();
 const router = useRouter();
@@ -128,9 +130,10 @@ onMounted(async () => {
         <div class="profile__input-box">
           <div class="profile__input">
             <input
-              type="text"
+              type="tel"
               placeholder="Enter your phone number"
               v-model="userStore.userInfo.userPhone"
+              @input="userStore.userInfo.userPhone = userStore.userInfo.userPhone.replace(/[^0-9]/g, '')"
             />
             <span>
               <svg-phone-2 />
