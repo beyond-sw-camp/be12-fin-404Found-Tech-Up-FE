@@ -1,6 +1,6 @@
 // utils/useS3.js
 export const buildS3Url = (key) => {
-    const baseUrl = 'https://frontbucket-xenamaniac.s3.ap-northeast-2.amazonaws.com/';
+    const baseUrl = 'https://techup-s3.s3.ap-northeast-2.amazonaws.com/';
     return `${baseUrl}${key}`;
   };
   
