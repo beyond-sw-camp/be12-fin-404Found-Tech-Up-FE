@@ -26,6 +26,12 @@ export default defineNuxtConfig({
         changeOrigin: true,
         prependPath: true,
       },
+      '/rec': {
+        target: 'http://192.0.40.205:8000',
+        secure: false,
+        changeOrigin: true,
+        prependPath: true,
+      },
     },
     preset: 'static',
     prerender: {
