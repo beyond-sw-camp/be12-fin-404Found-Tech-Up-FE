@@ -7,6 +7,7 @@ let showPass = ref(false);
 let showPassValid = ref(false);
 
 let showMailValid = ref(false);
+let showResendButton = ref(false);
 let clockCounter = ref(180);
 let clockCountingString = ref(`남은 시간 ${clockCounter.value}초`);
 
@@ -61,13 +62,16 @@ const sendEmail = async () => {
   }
 
   try {
+    showMailValid.value = true;
+    showResendButton.value = true;
+    // 타이머 설정
+    clearInterval(timer.value);
+    clockCounter.value = 180;
+    timer.value = setInterval(decreaseCounter, 1000);
     const response = await userStore.sendEmail(email, issign); // Pinia store의 함수 호출
     console.log(response);
     if (response.isSuccess) {
       alert('이메일을 전송하였습니다.');
-      showMailValid.value = true;
-      // 타이머 설정
-      timer.value = setInterval(decreaseCounter, 1000);
     }
   } catch (error) {
     console.error('이메일 전송 중 오류 발생:', error.response.data);
@@ -95,6 +99,7 @@ const verifyEmail = async () => {
       alert('이메일 인증을 완료했습니다.');
       disableValidationButton.value = true;
       clearInterval(timer.value);
+      timer.value = null;
       clockCountingString.value = '인증되었습니다.';
     }
   } catch (error) {
@@ -161,6 +166,7 @@ const togglePasswordValidVisibility = () => {
 const decreaseCounter = () => {
   if (clockCounter.value === 0) {
     clearInterval(timer.value);
+    timer.value = null;
     disableValidationButton.value = true;
     clockCountingString.value = '시간이 만료되었습니다. 다시 가입을 진행해주세요.';
   } else {
@@ -204,9 +210,13 @@ const decreaseCounter = () => {
           <label for="email">이메일</label>
         </div>
         <div class="tp-login-input" style="display:inline-flex; width:100%;">
-          <input id="email" type="email" placeholder="example@mail.com" v-model="signupuser.userEmail" />
-          <button type="button" class="tp-login-btn w-50" v-show="!showMailValid"
+          <input id="email" type="email" placeholder="example@mail.com" :disabled="disableValidationButton" v-model="signupuser.userEmail" />
+          <button v-if="!showResendButton&!disableValidationButton"  type="button" class="tp-login-btn w-50" v-show="!showMailValid"
             @click="sendEmail">인증</button>
+          <button v-if="showResendButton&!disableValidationButton" type="button" class="tp-login-btn w-50" v-show="showMailValid"
+            @click="sendEmail">재전송</button>
+          <button v-if="disableValidationButton&showResendButton" type="button" class="tp-login-btn-closed w-50" :disabled="disableValidationButton"
+            >재전송</button>
         </div>
         <err-message :msg="errors.email" />
       </div>
@@ -215,7 +225,7 @@ const decreaseCounter = () => {
           <label for="email">인증번호</label>
         </div>
         <div class="tp-login-input" style="display:inline-flex; width:100%;">
-          <input id="emailValid" type="text" placeholder="000000" v-model="signupuser.inputCode" />
+          <input id="emailValid" type="text" placeholder="000000" :disabled="disableValidationButton" v-model="signupuser.inputCode" />
           <button v-if="!disableValidationButton" type="button" class="tp-login-btn w-50" :disabled="disableValidationButton"
             @click="verifyEmail">확인</button>
           <button v-else type="button" class="tp-login-btn-closed w-50" :disabled="disableValidationButton"
