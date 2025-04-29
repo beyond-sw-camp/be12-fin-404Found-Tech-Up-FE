@@ -10,7 +10,7 @@
           ${{ store.priceValues[0] }} - ${{ store.priceValues[1] }}
         </span>
         <span v-else>
-          $0 - $0
+          {{ '\u20A9' }} 0 - {{ '\u20A9' }}0
         </span>
         <button @click="handlePrice" class="tp-shop-widget-filter-btn" type="button">
           가격대 검색
