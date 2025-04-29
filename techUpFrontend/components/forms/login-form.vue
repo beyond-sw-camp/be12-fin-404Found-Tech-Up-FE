@@ -30,7 +30,7 @@ const login = async () => {
   } catch (error) {
     if (error.response) {
       // 서버에서 반환한 에러 메시지 처리
-      alert(error.response.data.errorMessage);
+      alert("로그인에 실패했습니다. 이메일과 비밀번호를 확인해주세요.");
     } else {
       // 네트워크 에러 또는 서버와의 연결 문제
       alert("서버와 연결할 수 없습니다. 다시 시도해주세요.");

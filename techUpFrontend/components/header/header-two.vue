@@ -8,11 +8,9 @@
             <div class="col-md-6">
               <div class="tp-header-info d-flex align-items-center">
                 <div class="tp-header-info-item">
-                  <a href="#">
-                    <span>
-                      <svg-facebook />
-                    </span> 7500k Followers
-                  </a>
+                  <span>
+                  <svg-facebook />
+                  </span> 7500k Followers
                 </div>
                 <div class="tp-header-info-item">
                   <span>

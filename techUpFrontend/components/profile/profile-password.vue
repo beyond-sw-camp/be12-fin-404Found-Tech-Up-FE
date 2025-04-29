@@ -37,6 +37,13 @@ const updatePwd = async () => {
     const response = await userStore.updatePwd(userInfo.value);
     console.log("success:", response);
     alert('비밀번호 변경이 완료되었습니다.');
+
+    // 값 초기화
+    userInfo.value = {
+      userCurrentPassword: "",
+      userPassword: "",
+      userConfirmPassword: ""
+    };
   } catch (error) {
     console.error('비밀번호 변경 중 오류 발생:', error.response.data);
     if (error.response.data.code) {
