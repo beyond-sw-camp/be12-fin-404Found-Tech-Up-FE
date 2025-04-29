@@ -2,78 +2,82 @@
   <section class="tp-product-sm-area">
     <div class="container">
       <div class="row">
+
+        <!-- 신규 등록 상품 -->
         <div class="col-xl-4 col-md-6">
           <div class="tp-product-sm-list mb-50">
             <div class="tp-section-title-wrapper mb-40">
               <h3 class="tp-section-title tp-section-title-sm">
-                Discount Products
+                신규 등록 상품
                 <SvgSectionLineSm />
               </h3>
             </div>
-
             <div class="tp-product-sm-wrapper mr-20">
               <ProductSmItem
-                v-for="item in discount_products"
-                :key="item.id"
+                v-for="item in newProducts"
+                :key="item.idx"
                 :item="item"
               />
             </div>
           </div>
         </div>
+
+        <!-- 위시리스트 등록 상위 제품 -->
         <div class="col-xl-4 col-md-6">
           <div class="tp-product-sm-list mb-50">
             <div class="tp-section-title-wrapper mb-40">
               <h3 class="tp-section-title tp-section-title-sm">
-                Featured Products
+                위시리스트 등록 상위 제품
                 <SvgSectionLineSm />
               </h3>
             </div>
-
             <div class="tp-product-sm-wrapper mr-20">
               <ProductSmItem
-                v-for="item in featured_products"
-                :key="item.id"
+                v-for="item in topWishlistProduct"
+                :key="item.idx"
                 :item="item"
               />
             </div>
           </div>
         </div>
+
+        <!-- 판매량 상위 제품 -->
         <div class="col-xl-4 col-md-6">
           <div class="tp-product-sm-list mb-50">
             <div class="tp-section-title-wrapper mb-40">
               <h3 class="tp-section-title tp-section-title-sm">
-                Selling Products
+                판매량 상위 제품
                 <SvgSectionLineSm />
               </h3>
             </div>
-
             <div class="tp-product-sm-wrapper mr-20">
               <ProductSmItem
-                v-for="item in selling_products"
-                :key="item.id"
+                v-for="item in topSalesProduct"
+                :key="item.idx"
                 :item="item"
               />
             </div>
           </div>
         </div>
+
       </div>
     </div>
   </section>
 </template>
 
 <script setup>
-import product_data from "@/data/product-data";
+import { onMounted } from 'vue'
+import { useMainStore } from '@/pinia/useMainStore'
+import { storeToRefs } from 'pinia'
 
-const all_products = product_data;
-const discount_products = all_products
-  .filter(p => p.productType === "electronics" && p.discount > 0)
-  .slice(0, 3);
-const featured_products = all_products
-  .filter(p => p.productType === "electronics" && p.featured)
-  .slice(0, 3);
-const selling_products = all_products
-  .filter(p => p.productType === "electronics")
-  .slice()
-  .sort((a, b) => b.sellCount - a.sellCount)
-  .slice(0, 3);
+const mainStore = useMainStore()
+const { newProducts, topWishlistProduct, topSalesProduct } = storeToRefs(mainStore)
+
+onMounted(async () => {
+  await Promise.all([
+    mainStore.loadNewProduct(),
+    mainStore.loadTopWishlist(),
+    mainStore.loadTopSales()
+  ])
+})
 </script>

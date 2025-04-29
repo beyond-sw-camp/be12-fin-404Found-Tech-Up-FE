@@ -2,22 +2,12 @@
   <div class="tp-product-banner-area pb-90">
     <div class="container">
       <div class="tp-product-banner-slider fix">
-        <Swiper
-          :slidesPerView="1"
-          :spaceBetween="0"
-          :effect="'fade'"
-          :pagination="{
-            el: '.tp-product-banner-slider-dot',
-            clickable: true,
-          }"
-          :modules="[EffectFade, Pagination]"
-          class="tp-product-banner-slider-active swiper-container"
-        >
-          <SwiperSlide
-            v-for="(item, i) in bannerProducts"
-            :key="i"
-            class="tp-product-banner-inner theme-bg p-relative z-index-1 fix"
-          >
+        <Swiper :slidesPerView="1" :spaceBetween="0" :effect="'fade'" :pagination="{
+          el: '.tp-product-banner-slider-dot',
+          clickable: true,
+        }" :modules="[EffectFade, Pagination]" class="tp-product-banner-slider-active swiper-container">
+          <SwiperSlide v-for="(item, i) in bannerProducts" :key="i"
+            class="tp-product-banner-inner theme-bg p-relative z-index-1 fix">
             <h4 class="tp-product-banner-bg-text">{{ item.banner_bg_txt }}</h4>
             <div class="row align-items-center">
               <div class="col-xl-6 col-lg-6">
@@ -41,11 +31,7 @@
                 <div class="tp-product-banner-thumb-wrapper p-relative">
                   <div class="tp-product-banner-thumb-shape">
                     <span class="tp-product-banner-thumb-gradient"></span>
-                    <img
-                      class="tp-offer-shape"
-                      src="/img/banner/banner-slider-offer.png"
-                      alt="offer-shape"
-                    />
+                    <img class="tp-offer-shape" src="/img/banner/banner-slider-offer.png" alt="offer-shape" />
                   </div>
                   <div class="tp-product-banner-thumb text-end p-relative z-index-1">
                     <img :src="item.img" alt="slider-img" />
@@ -99,7 +85,7 @@ const bannerProducts = [
 // 가격 포맷 함수 (withCurrency가 false일 경우 단순 소수점 두자리 형식)
 const formatPrice = (price, withCurrency = true) => {
   if (withCurrency) {
-    return `$${price.toFixed(2)}`;
+    return `${price.toFixed(2)}원`;
   }
   return price.toFixed(2);
 };

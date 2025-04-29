@@ -3,23 +3,19 @@
     <form @submit.prevent="handleSubmit">
       <div class="tp-header-search-wrapper d-flex align-items-center">
         <div class="tp-header-search-box">
-          <input type="text" placeholder="Search for Products..." v-model="searchText" />
+          <input type="text" placeholder="상품 검색" v-model="searchText" />
         </div>
         <div class="tp-header-search-category">
-          <ui-nice-select
-            :options="[
+          <client-only>
+            <ui-nice-select :options="[
               { value: '', text: '전체 카테고리         ' },
               { value: 'cpu', text: 'CPU                           ' },
               { value: 'gpu', text: 'GPU                           ' },
               { value: 'ram', text: 'RAM                           ' },
               { value: 'ssd', text: 'SSD                           ' },
               { value: 'hdd', text: 'HDD                           ' }
-            ]"
-            name="Select Category"
-            v-model="productType"
-            :default-current="0"
-            @onChange="changeHandler"
-          />
+            ]" name="Select Category" v-model="productType" :default-current="0" @onChange="changeHandler" />
+          </client-only>
         </div>
         <div class="tp-header-search-btn">
           <button type="submit">

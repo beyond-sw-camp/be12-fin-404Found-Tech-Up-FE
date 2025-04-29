@@ -1,53 +1,57 @@
 <template>
   <div class="tp-product-details-wrapper has-sticky">
     <div class="tp-product-details-category">
-      <span>{{ product.parent }}</span>
+      <span>{{ product.category }}</span>
     </div>
-    <h3 class="tp-product-details-title">{{ product.title }}</h3>
+    <h3 class="tp-product-details-title">{{ product.name }}</h3>
 
-    <!-- inventory details -->
     <div class="tp-product-details-inventory d-flex align-items-center mb-10">
-      <div class="tp-product-details-stock mb-10">
-        <span>{{ product.status }}</span>
+      <div class="tp-product-details-stock me-4">
+        <span>남은 수량: {{ product.stock }}</span>
       </div>
-      <div class="tp-product-details-rating-wrapper d-flex align-items-center mb-10">
-        <div class="tp-product-details-rating">
-          <span><i class="fa-solid fa-star"></i></span>
-          <span><i class="fa-solid fa-star"></i></span>
-          <span><i class="fa-solid fa-star"></i></span>
-          <span><i class="fa-solid fa-star"></i></span>
-          <span><i class="fa-solid fa-star"></i></span>
+      <div class="tp-product-rating-icon tp-product-rating-icon-2">
+        <div class="star-rating">
+          <div class="star-rating__back">
+            <i class="fa-regular fa-star" v-for="n in 5" :key="n" />
+          </div>
+          <div class="star-rating__front" :style="{ width: `${(product.rating / 5) * 100}%` }">
+            <i class="fa-solid fa-star" v-for="n in 5" :key="n" />
+          </div>
         </div>
-        <div class="tp-product-details-reviews">
-          <span>({{ product.reviews && product.reviews.length }} Reviews)</span>
-        </div>
+        <span class="tp-product-details-rating">
+          ({{ product.rating }})
+        </span>
       </div>
     </div>
 
     <p>
-      {{ textMore ? product.description : (product.description.substring(0, 100) + '...') }}
-      <span @click="textMore = !textMore">
+      {{
+        textMore
+          ? product.description ?? ''
+          : (product.description?.substring(0, 100) ?? '') + '...'
+      }}
+      <span v-if="product.description" @click="textMore = !textMore">
         {{ textMore ? 'See less' : 'See more' }}
       </span>
     </p>
 
     <!-- price -->
     <div class="tp-product-details-price-wrapper mb-20">
-      <div v-if="product.discount > 0">
+      <div v-if="product.discount > 0 || product.discount !== null">
         <span class="tp-product-details-price old-price">{{ formatPrice(product.price, false) }}</span>
         <span class="tp-product-details-price new-price">
           {{ formatPrice(Number(product.price) - (Number(product.price) * Number(product.discount)) / 100) }}
         </span>
       </div>
-      <span v-else class="tp-product-details-price old-price">
+      <span v-else class="tp-product-details-price">
         {{ formatPrice(product.price) }}
       </span>
     </div>
 
     <!-- variations -->
-    <div v-if="hasColorData" class="tp-product-details-variation">
+    <!-- <div v-if="hasColorData" class="tp-product-details-variation">
       <div class="tp-product-details-variation-item">
-        <h4 class="tp-product-details-variation-title">Color :</h4>
+        <h4 class="tp-product-details-variation-title">옵션 :</h4>
         <div class="tp-product-details-variation-list">
           <button
             v-for="(item, i) in product.imageURLs"
@@ -64,7 +68,7 @@
           </button>
         </div>
       </div>
-    </div>
+    </div> -->
 
     <!-- product countdown start -->
     <div v-if="product.offerDate && product.offerDate.endDate">
@@ -78,22 +82,25 @@
       <div class="tp-product-details-action-item-wrapper d-flex align-items-center">
         <div class="tp-product-details-quantity">
           <div class="tp-product-quantity mb-15 mr-15">
-            <span class="tp-cart-minus" @click="cartStore.decrement">
+            <span class="tp-cart-minus" @click="decreaseQuantity">
               <svg-minus />
             </span>
             <input class="tp-cart-input" type="text" :value="cartStore.orderQuantity" disabled />
-            <span class="tp-cart-plus" @click="cartStore.increment">
+            <span class="tp-cart-plus" @click="increaseQuantity">
               <svg-plus-sm />
             </span>
           </div>
         </div>
         <div class="tp-product-details-add-to-cart mb-15 w-100">
-          <button @click="cartStore.addCartProduct(product)" class="tp-product-details-add-to-cart-btn w-100">
+          <button @click="cartStore.addCartProduct(product, product.idx, cartStore.orderQuantity)"
+            class="tp-product-details-add-to-cart-btn w-100">
             Add To Cart
           </button>
         </div>
       </div>
-      <nuxt-link :href="`/product-details/${product.id}`" class="tp-product-details-buy-now-btn w-100 text-center">
+      <nuxt-link :to="`/checkout`"
+        @click.prevent="cartStore.addCartProduct(product, product.idx, cartStore.orderQuantity)"
+        class="tp-product-details-buy-now-btn w-100 text-center">
         Buy Now
       </nuxt-link>
     </div>
@@ -103,7 +110,7 @@
         <svg-compare-3 />
         Compare
       </button>
-      <button @click="wishlistStore.add_wishlist_product(product)" type="button" class="tp-product-details-action-sm-btn">
+      <button @click="wishlistStore.toggleWishlist(product.idx)" type="button" class="tp-product-details-action-sm-btn">
         <svg-wishlist-3 />
         Add Wishlist
       </button>
@@ -116,12 +123,12 @@
     <div v-if="isShowBottom">
       <div class="tp-product-details-query">
         <div class="tp-product-details-query-item d-flex align-items-center">
-          <span>SKU:  </span>
+          <span>SKU: </span>
           <p>{{ product.sku }}</p>
         </div>
         <div class="tp-product-details-query-item d-flex align-items-center">
-          <span>Category:  </span>
-          <p>{{ product.parent }}</p>
+          <span>Category: </span>
+          <p>{{ product.category }}</p>
         </div>
         <div class="tp-product-details-query-item d-flex align-items-center">
           <span>Tag: </span>
@@ -161,6 +168,8 @@ const cartStore = useCartStore();
 const compareStore = useCompareStore();
 const wishlistStore = useWishlistStore();
 
+let textMore = ref(false)
+
 const props = defineProps({
   product: Object,
   isShowBottom: {
@@ -168,16 +177,48 @@ const props = defineProps({
     default: true
   },
 });
-let textMore = ref(false);
-
-const hasColorData = computed(() => {
-  return props.product.imageURLs.some(item => item && item.color && item.color.name);
-});
 
 function formatPrice(price, withCurrency = true) {
   if (withCurrency) {
-    return "$" + Number(price).toFixed(2);
+    return "₩" + Number(price).toFixed(0);
   }
-  return Number(price).toFixed(2);
+  return Number(price).toFixed(0);
+}
+
+function decreaseQuantity() {
+  if (cartStore.orderQuantity > 1) {
+    cartStore.orderQuantity--
+  }
+}
+function increaseQuantity() {
+  cartStore.orderQuantity++
 }
 </script>
+
+<style scoped>
+.star-rating {
+  position: relative;
+  display: inline-block;
+  font-size: 1em;
+  line-height: 1;
+}
+
+.star-rating__back,
+.star-rating__front {
+  display: flex;
+  pointer-events: none;
+}
+
+.star-rating__back {
+  color: #ccc;
+}
+
+.star-rating__front {
+  position: absolute;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  color: #ffc107;
+}
+</style>

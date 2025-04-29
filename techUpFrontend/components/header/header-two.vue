@@ -8,16 +8,14 @@
             <div class="col-md-6">
               <div class="tp-header-info d-flex align-items-center">
                 <div class="tp-header-info-item">
-                  <a href="#">
-                    <span>
-                      <svg-facebook />
-                    </span> 7500k Followers
-                  </a>
+                  <span>
+                  <svg-facebook />
+                  </span> 7500k Followers
                 </div>
                 <div class="tp-header-info-item">
                   <span>
                     <svg-phone />
-                  </span> 080 0808 0808
+                  </span> 010 1234 1234
                 </div>
               </div>
             </div>
@@ -38,7 +36,7 @@
           <div class="tp-mega-menu-wrapper p-relative">
             <div class="row align-items-center">
               <div class="col-xl-2 col-lg-5 col-md-5 col-sm-4 col-6">
-                <div class="logo">
+                <div class="logo" style="object-fit: cover;">
                   <nuxt-link href="/">
                     <img src="/img/logo/logo.svg" alt="logo">
                   </nuxt-link>
@@ -54,10 +52,10 @@
                 </div>
               </div>
               <div class="col-xl-5 col-lg-7 col-md-7 col-sm-8 col-6">
-                <div class="tp-header-bottom-right d-flex align-items-center justify-content-end pl-30">
+                <div class="tp-header-bottom-right d-flex align-items-center justify-content-end pl-60">
                   <div class="tp-header-search-2 d-none d-sm-block">
                     <form @submit.prevent="handleSubmit">
-                      <input type="text" placeholder="Search for Products..." v-model="searchText">
+                      <input type="text" placeholder="상품 검색" v-model="searchText">
                       <button type="submit">
                         <svg-search />
                       </button>
@@ -81,6 +79,16 @@
                         <span class="tp-header-action-badge">{{ cartStore.totalPriceQuantity.quantity }}</span>
                       </button>
                     </div>
+                    <div class="tp-header-action-item d-none d-lg-block">
+        <nuxt-link to="/profile" class="tp-header-action-btn">
+          <SvgEmail />
+          <span
+            class="tp-header-action-badge"
+          >
+            {{ notificationStore.unreadCount }}
+          </span>
+        </nuxt-link>
+      </div>
                     <div class="tp-header-action-item tp-header-hamburger mr-20 d-xl-none">
                       <button @click="utilsStore.handleOpenMobileMenu()" type="button" class="tp-offcanvas-open-btn">
                         <svg-menu-icon />
@@ -101,7 +109,7 @@
   <!-- cart offcanvas end -->
 
   <!-- cart offcanvas start -->
-  <offcanvas-mobile-sidebar product-type="fashion" />
+  <!-- <offcanvas-mobile-sidebar product-type="fashion" /> -->
   <!-- cart offcanvas end -->
 </template>
 
@@ -112,6 +120,12 @@ import { useCartStore } from '@/pinia/useCartStore';
 import { useWishlistStore } from '@/pinia/useWishlistStore';
 import { useUtilityStore } from '@/pinia/useUtilityStore';
 
+import { useNotificationStore } from '@/pinia/useNotificationStore'
+const notificationStore = useNotificationStore()
+
+onMounted(() => {
+  notificationStore.fetchUnreadCount()
+})
 const cartStore = useCartStore();
 const wishlistStore = useWishlistStore();
 const utilsStore = useUtilityStore();

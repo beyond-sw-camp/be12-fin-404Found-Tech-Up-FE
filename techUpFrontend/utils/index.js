@@ -1,7 +1,7 @@
 export function formatPrice(price,showDecimals) {
-    return new Intl.NumberFormat("en-US", {
+    return new Intl.NumberFormat("ko-KR", {
       style: "currency",
-      currency: "USD",
+      currency: "KRW",
       minimumFractionDigits: showDecimals ? 2 : 0,
       maximumFractionDigits: showDecimals ? 2 : 0
     }).format(price);

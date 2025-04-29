@@ -1,53 +1,40 @@
 <template>
-  <div class="tp-shop-widget-content">
-    <div class="tp-shop-widget-categories">
-      <ul>
-        <li v-for="category in category_data" :key="category.id">
-          <a
-            @click.prevent="handleCategory(category.parent)"
-            :class="`cursor-pointer ${
-              route.query.category === formatString(category.parent)
-                ? 'active'
-                : ''
-            }`"
-          >
-            {{ category.parent }}
-            <span>{{ category.products.length }}</span>
-          </a>
-        </li>
-      </ul>
-    </div>
+  <div class="tp-shop-widget-categories">
+    <ul>
+      <li>
+        <a @click.prevent="selectCategory('')" :class="{ active: !route.query.category }">
+          전체 카테고리 
+          <!-- <span>{{ products.length }}</span> -->
+        </a>
+      </li>
+      <li v-for="cat in categories" :key="cat.id">
+        <a @click.prevent="selectCategory(cat.slug)" :class="{ active: route.query.category === cat.slug }">
+          {{ cat.parent }} 
+          <!-- <span>{{ cat.products.length }}</span> -->
+        </a>
+      </li>
+    </ul>
   </div>
 </template>
 
 <script setup>
-import { formatString } from '@/utils/index';
-import category_data from '@/data/category-data';
+import { onMounted, computed } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import { useProductFilterBackStore } from "@/pinia/useProductFilterBackStore";
 
-const router = useRouter();
 const route = useRoute();
+const router = useRouter();
+const store = useProductFilterBackStore();
 
-function handleCategory(category) {
-  const currentQuery = router.currentRoute.value.query;
-  const existing = currentQuery.category || '';
+onMounted(store.fetchProducts);
 
-  let newCategory;
+const categories = computed(() => store.categories);
+const products = computed(() => store.products);
 
-  if (existing.includes(category)) {
-    // Remove category from query
-    newCategory = existing
-      .split(',')
-      .filter((item) => item !== category)
-      .join(',');
-  } else {
-    newCategory = formatString(category);
-  }
-
-  router.push({
-    query: {
-      ...currentQuery,
-      category: newCategory
-    }
-  });
+function selectCategory(slug) {
+  const q = { ...router.currentRoute.value.query };
+  if (slug) q.category = slug;
+  else delete q.category;
+  router.push({ query: q });
 }
 </script>

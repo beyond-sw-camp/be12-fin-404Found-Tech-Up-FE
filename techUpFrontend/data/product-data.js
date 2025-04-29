@@ -3,9 +3,9 @@ const product_data = [
   {
     id: "641e887d05f9ee1717e1348a",
     sku: "NTB7SDVX44",
-    img: "https://i.ibb.co/WVdTgR8/headphone-1.png",
-    title: "Headphones Wireless.",
-    slug: "headphones-wireless.",
+    img: "https://i.ibb.co/XZfQj4VV/gpu-5070-1.png",
+    title: "PALIT 지포스 RTX 5070 GAMINGPRO D7 12GB 이엠텍",
+    slug: "gpu-rtx-5070",
     unit: "3pcs",
     imageURLs: [
       {
@@ -13,40 +13,40 @@ const product_data = [
           name: "Purply Blue",
           clrCode: "#C1BAE4",
         },
-        img: "https://i.ibb.co/WVdTgR8/headphone-1.png",
+        img: "https://i.ibb.co/XZfQj4VV/gpu-5070-1.png",
       },
       {
         color: {
           name: "Light Grey",
           clrCode: "#D8D7DD",
         },
-        img: "https://i.ibb.co/zh9x3Q0/headphone-2.png",
+        img: "https://i.ibb.co/KjJvRHSD/gpu-5070-2.png",
       },
       {
         color: {
           name: "Baby Pink",
           clrCode: "#F3C0D1",
         },
-        img: "https://i.ibb.co/JBZk7sS/headphone-3.png",
+        img: "https://i.ibb.co/F4L8rbfP/gpu-5070-3.png",
       },
       {
         color: {
           name: "Bluish Cyan",
           clrCode: "#64BFD1",
         },
-        img: "https://i.ibb.co/SrPq3r0/headphone-4.png",
+        img: "https://i.ibb.co/9HkZsZLN/gpu-5070-4.png",
       },
     ],
-    parent: "Headphones",
-    children: "Bluetooth Headphones",
+    parent: "GPU",
+    children: "gigabyte",
     price: 120,
     discount: 14,
     quantity: 12,
     brand: {
-      name: "Logitech",
+      name: "이엠텍",
     },
     category: {
-      name: "Headphones",
+      name: "GPU",
     },
     status: "in-stock",
     reviews: [
@@ -113,13 +113,13 @@ const product_data = [
     ],
     featured: false,
     sellCount: 1,
-    tags: ["Headphones", "Bluetooth "],
+    tags: ["GPU", "Bluetooth "],
   },
   {
     id: "641e887d05f9ee1717e1348f",
     sku: "NVB7SDVX45",
-    img: "https://i.ibb.co/n1YRvWJ/headphone-5.png",
-    title: "Gaming Headphone",
+    img: "https://i.ibb.co/Pv65zcRx/msi-gpu-1.png",
+    title: "MSI 지포스 RTX 5070 게이밍 트리오 OC D7 12GB 트라이프로져4",
     slug: "gaming-headphone",
     unit: "5pcs",
     imageURLs: [
@@ -128,33 +128,33 @@ const product_data = [
           name: "Cyan",
           clrCode: "#03E2DD",
         },
-        img: "https://i.ibb.co/n1YRvWJ/headphone-5.png",
+        img: "https://i.ibb.co/Pv65zcRx/msi-gpu-1.png",
       },
       {
         color: {
           name: "Dark Grey",
           clrCode: "#484848",
         },
-        img: "https://i.ibb.co/WpkH1vq/headphone-6.png",
+        img: "https://i.ibb.co/whrpZjXD/msi-gpu-2.png",
       },
       {
         color: {
           name: "Orange",
           clrCode: "#F17B3D",
         },
-        img: "https://i.ibb.co/yRYbDCc/headphone-7.png",
+        img: "https://i.ibb.co/SDMyH4Hw/msi-gpu-3.png",
       },
     ],
-    parent: "Headphones",
-    children: "Kids Headphones",
+    parent: "GPU",
+    children: "MSI",
     price: 130,
     discount: 5,
     quantity: 10,
     brand: {
-      name: "Sony",
+      name: "MSI",
     },
     category: {
-      name: "Headphones",
+      name: "GPU",
     },
     status: "in-stock",
     reviews: [
@@ -216,14 +216,14 @@ const product_data = [
     },
     featured: false,
     sellCount: 2,
-    tags: ["Headphones", "Kids "],
+    tags: ["GPU", "MSI "],
   },
   {
     id: "641e887d05f9ee1717e13496",
     sku: "BVB7SDVX50",
-    img: "https://i.ibb.co/5FPhGtq/headphone-8.png",
-    title: "Headphone with Mic",
-    slug: "headphone-with-mic",
+    img: "https://i.ibb.co/hxnhT5DN/gigabyte-1.png",
+    title: "GIGABYTE 지포스 RTX 5070 Ti GAMING OC D7 16GB",
+    slug: "GIGABYTE-지포스-RTX-5070",
     unit: "4pcs",
     imageURLs: [
       {
@@ -231,33 +231,33 @@ const product_data = [
           name: "Tealish Blue",
           clrCode: "#455D89",
         },
-        img: "https://i.ibb.co/5FPhGtq/headphone-8.png",
+        img: "https://i.ibb.co/hxnhT5DN/gigabyte-1.png",
       },
       {
         color: {
           name: "Silver",
           clrCode: "#ECECEC",
         },
-        img: "https://i.ibb.co/vHP1TQf/headphone-9.png",
+        img: "https://i.ibb.co/q3gQKyfQ/gigabyte-2.png",
       },
       {
         color: {
           name: "Reddish Magenta",
           clrCode: "#DED3DB",
         },
-        img: "https://i.ibb.co/3mdtrcm/headphone-10.png",
+        img: "https://i.ibb.co/mFvBFwpq/gigabyte-3.png",
       },
     ],
-    parent: "Headphones",
-    children: "On-Ear Headphones",
+    parent: "GPU",
+    children: "GIGABYTE",
     price: 110,
     discount: 0,
     quantity: 8,
     brand: {
-      name: "Sony",
+      name: "GIGABYTE",
     },
     category: {
-      name: "Headphones",
+      name: "GPU",
     },
     status: "out-of-stock",
     reviews: [
@@ -324,15 +324,15 @@ const product_data = [
     ],
     featured: true,
     sellCount: 0,
-    tags: ["Headphones", "On-Ear"],
+    tags: ["GPU", "GIGABYTE"],
     videoId: "EW4ZYb3mCZk",
   },
   {
     id: "641e887d05f9ee1717e1349a",
     sku: "BD7SDVX62",
-    img: "https://i.ibb.co/jvGv6qf/mobile-1.png",
-    title: "Galaxy Android Tablet",
-    slug: "galaxy-android-tablet",
+    img: "https://i.ibb.co/5xrycTZY/cpu-i7-1.png",
+    title: "인텔 코어 울트라7 시리즈2 265K (애로우레이크)",
+    slug: "인텔-코어-울트라7-시리즈2-265K",
     unit: "8pcs",
     imageURLs: [
       {
@@ -340,40 +340,40 @@ const product_data = [
           name: "Black",
           clrCode: "#3A454B",
         },
-        img: "https://i.ibb.co/jvGv6qf/mobile-1.png",
+        img: "https://i.ibb.co/5xrycTZY/cpu-i7-1.png",
       },
       {
         color: {
           name: "Gray",
           clrCode: "#3C3B39",
         },
-        img: "https://i.ibb.co/F3VPLLh/mobile-2.png",
+        img: "https://i.ibb.co/0RYKf4TX/cpu-i7-2.png",
       },
       {
         color: {
           name: "Silver",
           clrCode: "#343338",
         },
-        img: "https://i.ibb.co/rtmKcPg/mobile-3.png",
+        img: "https://i.ibb.co/mVs43KcY/cpu-i7-3.png",
       },
       {
         color: {
           name: "Cadet Grey",
           clrCode: "#7B97A3",
         },
-        img: "https://i.ibb.co/NpWtdts/mobile-4.png",
+        img: "https://i.ibb.co/35WGR3qD/cpu-i7-4.png",
       },
     ],
-    parent: "Mobile Tablets",
-    children: "Samsung",
+    parent: "CPU",
+    children: "Intel",
     price: 320,
     discount: 10,
     quantity: 12,
     brand: {
-      name: "Samsung",
+      name: "Intel",
     },
     category: {
-      name: "Mobile Tablets",
+      name: "CPU",
     },
     status: "in-stock",
     reviews: [
@@ -431,14 +431,14 @@ const product_data = [
     ],
     featured: false,
     sellCount: 0,
-    tags: ["Mobile ", "Tablets", "Samsung"],
+    tags: ["CPU", "Intel"],
   },
   {
     id: "641e887d05f9ee1717e1349f",
     sku: "AF7SDVX65",
-    img: "https://i.ibb.co/3WMPkkf/mobile-5.png",
-    title: "iPhone 14 Pro",
-    slug: "iPhone-14-pro",
+    img: "https://i.ibb.co/Vpxfqtf3/cpu-amd-1.png",
+    title: "AMD 라이젠7-6세대 9700X",
+    slug: "AMD-라이젠7-6세대-9700X",
     unit: "10pcs",
     imageURLs: [
       {
@@ -446,40 +446,40 @@ const product_data = [
           name: "Lunar Green",
           clrCode: "#33422B",
         },
-        img: "https://i.ibb.co/3WMPkkf/mobile-5.png",
+        img: "https://i.ibb.co/Vpxfqtf3/cpu-amd-1.png",
       },
       {
         color: {
           name: "Dark",
           clrCode: "#292C31",
         },
-        img: "https://i.ibb.co/MfdxWfv/mobile-6.png",
+        img: "https://i.ibb.co/mVTfRS7X/cpu-amd-2.png",
       },
       {
         color: {
           name: "Red Wine",
           clrCode: "#BA1827",
         },
-        img: "https://i.ibb.co/vV22rXc/mobile-7.png",
+        img: "https://i.ibb.co/Cstyk8TF/cpu-amd-3.png",
       },
       {
         color: {
           name: "Peach Schnapps",
           clrCode: "#EAD2CE",
         },
-        img: "https://i.ibb.co/Kby3sY7/mobile-8.png",
+        img: "https://i.ibb.co/ynMDKt2h/cpu-amd-4.png",
       },
     ],
-    parent: "Mobile Tablets",
-    children: "Apple",
+    parent: "CPU",
+    children: "AMD",
     price: 1199,
     discount: 15,
     quantity: 20,
     brand: {
-      name: "Apple",
+      name: "AMD",
     },
     category: {
-      name: "Mobile Tablets",
+      name: "CPU",
     },
     status: "in-stock",
     reviews: [
@@ -537,7 +537,7 @@ const product_data = [
     ],
     featured: true,
     sellCount: 0,
-    tags: ["Mobile ", "Tablets", "Apple"],
+    tags: ["CPU", "AMD"],
   },
   {
     id: "641d4106dbfab7b02ab28b22",
@@ -569,7 +569,7 @@ const product_data = [
         img: "https://i.ibb.co/bzgBZ4Y/ipad-3.png",
       },
     ],
-    parent: "Mobile Tablets",
+    parent: "CPU",
     children: "Apple",
     price: 999,
     discount: 5,
@@ -578,7 +578,7 @@ const product_data = [
       name: "Apple",
     },
     category: {
-      name: "Mobile Tablets",
+      name: "CPU",
     },
     status: "in-stock",
     reviews: [
@@ -675,7 +675,7 @@ const product_data = [
         img: "https://i.ibb.co/23XyrR3/cpu-4.png",
       },
     ],
-    parent: "CPU Heat Pipes",
+    parent: "RAM",
     children: "CPU Cooler",
     price: 80,
     discount: 0,
@@ -684,7 +684,7 @@ const product_data = [
       name: "Deepcool",
     },
     category: {
-      name: "CPU Heat Pipes",
+      name: "RAM",
     },
     status: "in-stock",
     reviews: [
@@ -781,7 +781,7 @@ const product_data = [
         img: "https://i.ibb.co/vDrwNFX/cpu-8.png",
       },
     ],
-    parent: "CPU Heat Pipes",
+    parent: "RAM",
     children: "Air CPU Cooler",
     price: 80,
     discount: 0,
@@ -790,7 +790,7 @@ const product_data = [
       name: "Antec",
     },
     category: {
-      name: "CPU Heat Pipes",
+      name: "RAM",
     },
     status: "in-stock",
     reviews: [
@@ -891,7 +891,7 @@ const product_data = [
         img: "https://i.ibb.co/8rfG5wZ/watch-4.png",
       },
     ],
-    parent: "Smart Watch",
+    parent: "SSD",
     children: "Apple Watch",
     price: 449,
     discount: 5,
@@ -900,7 +900,7 @@ const product_data = [
       name: "Apple",
     },
     category: {
-      name: "Smart Watch",
+      name: "SSD",
     },
     status: "in-stock",
     reviews: [
@@ -998,7 +998,7 @@ const product_data = [
         img: "https://i.ibb.co/JxJ0XS4/watch-8.png",
       },
     ],
-    parent: "Smart Watch",
+    parent: "SSD",
     children: "Sports Smart Watch",
     price: 200,
     discount: 5,
@@ -1007,7 +1007,7 @@ const product_data = [
       name: "Sony",
     },
     category: {
-      name: "Smart Watch",
+      name: "SSD",
     },
     status: "in-stock",
     reviews: [
@@ -1104,7 +1104,7 @@ const product_data = [
         img: "https://i.ibb.co/HCzgB0m/watch-12.png",
       },
     ],
-    parent: "Smart Watch",
+    parent: "SSD",
     children: "Fitness Smart Watch",
     price: 150,
     discount: 3,
@@ -1113,7 +1113,7 @@ const product_data = [
       name: "Sony",
     },
     category: {
-      name: "Smart Watch",
+      name: "SSD",
     },
     status: "in-stock",
     reviews: [
@@ -1198,7 +1198,7 @@ const product_data = [
         img: "https://i.ibb.co/L12vDxf/blutooth-6.png",
       },
     ],
-    parent: "Bluetooth",
+    parent: "HDD",
     children: "Wireless Bluetooth",
     price: 70,
     discount: 5,
@@ -1207,7 +1207,7 @@ const product_data = [
       name: "Lenovo",
     },
     category: {
-      name: "Bluetooth",
+      name: "HDD",
     },
     status: "in-stock",
     reviews: [],
@@ -1278,7 +1278,7 @@ const product_data = [
         img: "https://i.ibb.co/Kw36W0G/blutooth-3.png",
       },
     ],
-    parent: "Bluetooth",
+    parent: "HDD",
     children: "Sports Bluetooth",
     price: 70,
     discount: 5,
@@ -1287,7 +1287,7 @@ const product_data = [
       name: "Lenovo",
     },
     category: {
-      name: "Bluetooth",
+      name: "HDD",
     },
     status: "in-stock",
     reviews: [

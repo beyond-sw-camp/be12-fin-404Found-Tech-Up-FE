@@ -4,7 +4,7 @@
       <div class="cartmini__top-wrapper">
         <div class="cartmini__top p-relative">
           <div class="cartmini__top-title">
-            <h4>Shopping cart</h4>
+            <h4>장바구니</h4>
           </div>
           <div class="cartmini__close">
             <button @click="cartStore.handleCartOffcanvas" type="button" class="cartmini__close-btn cartmini-close-btn">
@@ -16,29 +16,30 @@
           <cart-progress />
         </div>
         <div v-if="cartStore.cart_products.length > 0" class="cartmini__widget">
-          <div v-for="item in cartStore.cart_products" :key="item.id" class="cartmini__widget-item">
+          <div v-for="item in cartStore.cart_products" :key="item.product.productIdx" class="cartmini__widget-item">
             <div class="cartmini__thumb">
-              <nuxt-link :href="`/product-details/${item.id}`">
+              <nuxt-link :href="`/product-details/${item.product.productIdx}`">
                 <img :src="item.img" alt="cart-img" width="70" height="60" />
               </nuxt-link>
             </div>
             <div class="cartmini__content">
               <h5 class="cartmini__title">
-                <nuxt-link :href="`/product-details/${item.id}`">
-                  {{ item.title }}
+                <nuxt-link :href="`/product-details/${item.product.productIdx}`">
+                  {{ item.product.name }}
                 </nuxt-link>
               </h5>
               <div class="cartmini__price-wrapper">
-                <span v-if="item.discount > 0 && item.orderQuantity" class="cartmini__price">
-                  {{ formatPrice((Number(item.price) - (Number(item.price) * Number(item.discount)) / 100) * item.orderQuantity) }}
+                <span v-if="item.product.discount > 0 && item.cartItemQuantity" class="cartmini__price">
+                  {{ formatPrice((Number(item.product.price) - (Number(item.product.price) *
+                    Number(item.product.discount)) / 100) * item.cartItemQuantity) }}
                 </span>
                 <span v-else class="cartmini__price">
-                  {{ formatPrice(item.price * (item.orderQuantity || 0)) }}
+                  {{ formatPrice(item.product.price * (item.cartItemQuantity || 0)) }}
                 </span>
-                <span class="cartmini__quantity"> x{{ item.orderQuantity }}</span>
+                <span class="cartmini__quantity"> x{{ item.cartItemQuantity }}</span>
               </div>
             </div>
-            <a @click="cartStore.removeCartProduct(item)" class="cartmini__del cursor-pointer">
+            <a @click="cartStore.removeCartProduct(item, item.cartItemIdx)" class="cartmini__del cursor-pointer">
               <i class="fa-regular fa-xmark"></i>
             </a>
           </div>
@@ -52,15 +53,15 @@
       </div>
       <div v-if="cartStore.cart_products.length > 0" class="cartmini__checkout">
         <div class="cartmini__checkout-title mb-30">
-          <h4>Subtotal:</h4>
+          <h4>소계:</h4>
           <span>{{ formatPrice(cartStore.totalPriceQuantity.total) }}</span>
         </div>
         <div class="cartmini__checkout-btn">
           <nuxt-link href="/cart" @click="cartStore.handleCartOffcanvas" class="tp-btn mb-10 w-100">
-            view cart
+            장바구니로 가기
           </nuxt-link>
           <nuxt-link href="/checkout" @click="cartStore.handleCartOffcanvas" class="tp-btn tp-btn-border w-100">
-            checkout
+            주문하기
           </nuxt-link>
         </div>
       </div>
@@ -77,7 +78,7 @@ import { useCartStore } from "@/pinia/useCartStore";
 const cartStore = useCartStore();
 
 const formatPrice = (price) => {
-  return "$" + Number(price).toFixed(2);
+  return Number(price).toFixed(2) + "원";
 };
 </script>
 
@@ -86,6 +87,7 @@ const formatPrice = (price) => {
 .v-leave-active {
   transition: opacity 0.5s ease;
 }
+
 .v-enter-from,
 .v-leave-to {
   opacity: 0;

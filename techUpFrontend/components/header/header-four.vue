@@ -41,6 +41,16 @@
                     <span class="tp-header-action-badge">{{ cartStore.totalPriceQuantity.quantity }}</span>
                   </button>
                 </div>
+                <div class="tp-header-action-item d-none d-lg-block">
+        <nuxt-link to="/profile" class="tp-header-action-btn">
+          <SvgEmail />
+          <span
+            class="tp-header-action-badge"
+          >
+            {{ notificationStore.unreadCount }}
+          </span>
+        </nuxt-link>
+      </div>
                 <div class="tp-header-action-item d-lg-none">
                   <button @click="utilityStore.handleOpenMobileMenu()" type="button" class="tp-offcanvas-open-btn">
                     <svg-menu-icon />
@@ -63,7 +73,7 @@
   <!-- cart offcanvas end -->
 
   <!-- cart offcanvas start -->
-  <offcanvas-mobile-sidebar product-type="jewelry"/>
+  <!-- <offcanvas-mobile-sidebar product-type="jewelry"/> -->
   <!-- cart offcanvas end -->
 </template>
 
@@ -71,8 +81,16 @@
 import { useUtilityStore } from '@/pinia/useUtilityStore';
 import { useCartStore } from '@/pinia/useCartStore';
 import { useWishlistStore } from '@/pinia/useWishlistStore';
+import { useNotificationStore } from '@/pinia/useNotificationStore'
+
+const notificationStore = useNotificationStore();
+
 const {isSticky} = useSticky();
 const utilityStore = useUtilityStore();
 const cartStore = useCartStore();
 const wishlistStore = useWishlistStore();
+
+onMounted(() => {
+  notificationStore.fetchUnreadCount()
+})
 </script>

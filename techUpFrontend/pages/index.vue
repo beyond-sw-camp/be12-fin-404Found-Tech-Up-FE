@@ -2,7 +2,7 @@
   <div>
     <nuxt-layout name="layout-one">
       <!-- hero banner start -->
-      <hero-banner-one />
+      <!-- <hero-banner-one /> -->
       <!-- hero banner end -->
 
       <!-- category start -->
@@ -10,7 +10,7 @@
       <!-- category end -->
 
       <!-- feature area start -->
-      <feature-one />
+      <!--<feature-one />-->
       <!-- feature area end -->
 
       <!-- product area start -->
@@ -18,23 +18,23 @@
       <!-- product area end -->
 
       <!-- banner area start -->
-      <banner-area />
+      <!--<banner-area />-->
       <!-- banner area end -->
 
       <!-- offer product start -->
-      <product-offer-items />
+      <!-- <product-offer-items /> -->
       <!-- offer product end -->
 
       <!-- product gadget area start -->
-      <product-gadget-items />
+      <!--<product-gadget-items />-->
       <!-- product gadget area end -->
 
       <!-- product banner start -->
-      <banner-area-2 />
+      <!-- <banner-area-2 />-->
       <!-- product banner end -->
 
       <!-- product new arrivals area start -->
-      <product-new-arrivals />
+      <!--<product-new-arrivals />-->
       <!-- product new arrivals area end -->
 
       <!-- product sm items start -->

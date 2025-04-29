@@ -19,7 +19,7 @@
               </thead>
               <tbody>
                 <!-- wishlist item start -->
-                <wishlist-item v-for="item in wishlistStore.wishlists" :key="item.id" :item="item" />
+                <wishlist-item v-for="item in wishlistStore.wishlists" :key="item.idx" :item="item" />
                 <!-- wishlist item end -->
               </tbody>
             </table>
@@ -40,6 +40,12 @@
 </template>
 
 <script setup>
-import { useWishlistStore } from "@/pinia/useWishlistStore";
+import { onMounted } from 'vue';
+import { useWishlistStore } from '@/pinia/useWishlistStore';
+
 const wishlistStore = useWishlistStore();
+
+onMounted(() => {
+  wishlistStore.fetchWishlist();
+});
 </script>

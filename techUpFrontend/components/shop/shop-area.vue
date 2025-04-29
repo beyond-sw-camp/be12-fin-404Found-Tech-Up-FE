@@ -1,150 +1,115 @@
 <template>
-    <section
-      :class="`tp-shop-area pb-120 ${full_width ? 'tp-shop-full-width-padding' : ''}`"
-    >
-      <div
-        :class="`${full_width ? 'container-fluid' : shop_1600 ? 'container-shop' : 'container'}`"
-      >
-        <div class="row">
-          <div v-if="!shop_right_side && !shop_no_side" class="col-xl-3 col-lg-4">
-            <!-- shop sidebar start -->
-            <shop-sidebar />
-            <!-- shop sidebar end -->
-          </div>
-          <div :class="`${shop_no_side ? 'col-xl-12' : 'col-xl-9 col-lg-8'}`">
-            <div class="tp-shop-main-wrapper">
-              <div class="tp-shop-top mb-45">
-                <div class="row">
-                  <div class="col-xl-6">
-                    <div class="tp-shop-top-left d-flex align-items-center">
-                      <div class="tp-shop-top-tab tp-tab">
-                        <ul class="nav nav-tabs" id="productTab" role="tablist">
-                          <li class="nav-item" role="presentation">
-                            <button
-                              :class="`nav-link ${active_tab === 'grid' ? 'active' : ''}`"
-                              @click="handleActiveTab('grid')"
-                            >
-                              <svg-grid />
-                            </button>
-                          </li>
-                          <li class="nav-item" role="presentation">
-                            <button
-                              :class="`nav-link ${active_tab === 'list' ? 'active' : ''}`"
-                              @click="handleActiveTab('list')"
-                            >
-                              <svg-list />
-                            </button>
-                          </li>
-                        </ul>
-                      </div>
-                      <div class="tp-shop-top-result">
-                        <p v-if="store.filteredProducts?.length && product_data?.length">
-  Showing 1–{{ store.filteredProducts.slice(startIndex, endIndex).length }}
-  of {{ product_data.length }} results
-</p>
+  <section :class="`tp-shop-area pb-120 ${full_width ? 'tp-shop-full-width-padding' : ''}`">
+    <div :class="`${full_width ? 'container-fluid' : shop_1600 ? 'container-shop' : 'container'}`">
+      <div class="row">
+        <div v-if="!shop_right_side && !shop_no_side" class="col-xl-3 col-lg-4">
+          <shop-sidebar />
+        </div>
+        <div :class="`${shop_no_side ? 'col-xl-12' : 'col-xl-9 col-lg-8'}`">
+          <div class="tp-shop-main-wrapper">
 
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-xl-6">
-                    <shop-sidebar-filter-select
-                      @handle-select-filter="store.handleSelectFilter"
-                    />
-                  </div>
-                </div>
-              </div>
-              <div class="tp-shop-items-wrapper tp-shop-item-primary">
-                <div v-if="active_tab === 'grid'">
-                  <div class="row infinite-container">
-                    <div
-                      v-for="item in store.filteredProducts?.slice(startIndex, endIndex)"
-                      :key="item.id"
-                      class="col-xl-4 col-md-6 col-sm-6 infinite-item"
-                    >
-                      <product-fashion-product-item :item="item" :spacing="true" />
-                    </div>
-                  </div>
-                </div>
-  
-                <div v-if="active_tab === 'list'">
-                  <div class="row">
-                    <div class="col-xl-12">
-                      <product-list-item
-                        v-for="item in store.filteredProducts?.slice(startIndex, endIndex)"
-                        :key="item.id"
-                        :item="item"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-  
-              <div class="tp-shop-pagination mt-20">
-                <div
-                  v-if="store.filteredProducts && store.filteredProducts.length > 9"
-                  class="tp-pagination"
-                >
-                  <ui-pagination
-                    :items-per-page="9"
-                    :data="store.filteredProducts || []"
-                    @handle-paginate="handlePagination"
-                  />
-                </div>
+            <!-- result count -->
+            <div class="tp-shop-top-result mb-3">
+              <p v-if="store.totalProducts">
+                Showing
+                {{ (currentPage - 1) * ITEMS_PER_PAGE + 1 }}
+                –
+                {{ Math.min(currentPage * ITEMS_PER_PAGE, store.totalProducts) }}
+                of {{ store.totalProducts }} results
+              </p>
+            </div>
+
+            <!-- GRID -->
+            <div v-if="active_tab === 'grid'" key="grid" class="row infinite-container">
+              <div v-for="item in store.products" :key="item.productIdx"
+                class="col-xl-4 col-md-6 col-sm-6 infinite-item">
+                <product-fashion-product-item :item="item" :spacing="true" />
               </div>
             </div>
-          </div>
-  
-          <div v-if="shop_right_side && !shop_no_side" class="col-xl-3 col-lg-4">
-            <!-- shop sidebar start -->
-            <shop-sidebar />
-            <!-- shop sidebar end -->
+
+            <!-- LIST -->
+            <div v-else key="list" class="row">
+              <div class="col-xl-12">
+                <product-list-item v-for="item in store.products" :key="item.productIdx" :item="item" />
+              </div>
+            </div>
+
+            <!-- custom pagination -->
+            <nav v-if="pageCount > 1" class="tp-shop-pagination mt-20" aria-label="Page navigation">
+              <ul class="pagination">
+                <li v-if="blockStart > 1" class="page-item">
+                  <a href="#" class="page-link" @click.prevent="changePage(blockStart - 1)">«</a>
+                </li>
+
+                <li v-for="page in pagesInBlock" :key="page" :class="['page-item', { active: page === currentPage }]">
+                  <a href="#" class="page-link" @click.prevent="changePage(page)">{{ page }}</a>
+                </li>
+
+                <li v-if="blockEnd < pageCount" class="page-item">
+                  <a href="#" class="page-link" @click.prevent="changePage(blockEnd + 1)">»</a>
+                </li>
+              </ul>
+            </nav>
+
           </div>
         </div>
+        <div v-if="shop_right_side && !shop_no_side" class="col-xl-3 col-lg-4">
+          <shop-sidebar />
+        </div>
       </div>
-    </section>
-  </template>
-  
-  <script setup>
+    </div>
+  </section>
+</template>
 
-  import product_data from '@/data/product-data';
-  import { useProductFilterStore } from '@/pinia/useProductFilterStore';
-  
-  const route = useRoute();
-  
-  const props = defineProps({
-    list_style: Boolean,
-    full_width: Boolean,
-    shop_1600: Boolean,
-    shop_right_side: Boolean,
-    shop_no_side: Boolean
-  });
-  
-  const active_tab = ref(props.list_style ? 'list' : 'grid');
-  const store = useProductFilterStore();
-  
-  let filteredProductsItems = ref(store.filteredProducts || []);
-  let startIndex = ref(0);
-  let endIndex = ref(store.filteredProducts?.length || 0);
-  
-  const handlePagination = (data, start, end) => {
-    filteredProductsItems.value = data;
-    startIndex.value = start;
-    endIndex.value = end;
-  };
-  
-  function handleActiveTab(tab) {
-    active_tab.value = tab;
+<script setup>
+import { ref, computed, onMounted } from 'vue'
+import { useProductFilterBackStore } from '@/pinia/useProductFilterBackStore'
+
+const props = defineProps({
+  list_style: Boolean,
+  full_width: Boolean,
+  shop_1600: Boolean,
+  shop_right_side: Boolean,
+  shop_no_side: Boolean,
+})
+
+const active_tab = ref(props.list_style ? 'grid' : 'list')
+function handleActiveTab(tab) {
+  active_tab.value = tab
+}
+
+const ITEMS_PER_PAGE = 10
+const BLOCK_SIZE = 10
+const currentPage = ref(1)
+const store = useProductFilterBackStore()
+
+const pageCount = computed(() =>
+  Math.ceil(store.totalProducts / ITEMS_PER_PAGE)
+)
+
+const blockStart = computed(() =>
+  Math.floor((currentPage.value - 1) / BLOCK_SIZE) * BLOCK_SIZE + 1
+)
+const blockEnd = computed(() =>
+  Math.min(blockStart.value + BLOCK_SIZE - 1, pageCount.value)
+)
+
+const pagesInBlock = computed(() => {
+  const pages = []
+  for (let p = blockStart.value; p <= blockEnd.value; p++) {
+    pages.push(p)
   }
-  
-  watch(
-    () => route.query || route.params,
-    () => {
-      startIndex.value = 0;
-      endIndex.value =
-        store.filteredProducts && store.filteredProducts.length > 9
-          ? 9
-          : store.filteredProducts?.length || 0;
-    }
-  );
-  </script>
-  
+  return pages
+})
+
+// fetch the first page on mount
+onMounted(() => {
+  store.fetchProducts(0, ITEMS_PER_PAGE)
+})
+
+function changePage(page) {
+  if (page === currentPage.value) return
+  currentPage.value = page
+  store.fetchProducts(page - 1, ITEMS_PER_PAGE)
+}
+</script>
