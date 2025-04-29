@@ -88,8 +88,8 @@ export const useUserStore = defineStore('user', {
         const success = await this.fetchUserInfo();
         if (!success) throw new Error('유저 정보 가져오기 실패');
 
-        // const { $connectWebSocket } = useNuxtApp(); // ✅ Nuxt 플러그인으로부터 가져옴
-        // $connectWebSocket(this.user.userIdx);
+       const { $connectWebSocket } = useNuxtApp(); // ✅ Nuxt 플러그인으로부터 가져옴
+       $connectWebSocket(this.user.userIdx);
 
         return response.data;
       } catch (error) {
@@ -102,6 +102,7 @@ export const useUserStore = defineStore('user', {
       try {
         const response = await axios.get('/api/user/auth/me');
         this.user = response.data.data;
+        console.log('유저정보 : ', this.user);
         return true;
       } catch (error) {
         console.error("fetchUserInfo 오류:", error);
