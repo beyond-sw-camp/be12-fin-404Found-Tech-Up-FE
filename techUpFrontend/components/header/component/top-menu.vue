@@ -10,6 +10,7 @@ const wishlistStore = useWishlistStore();
 const router = useRouter();
 
 let isActive = ref<string>('')
+
 // handle active
 const handleActive = (type: string) => {
   if (type === isActive.value) {
@@ -35,6 +36,16 @@ const handleLogout = async () => {
   }
 };
 
+// 내 프로파일 클릭 처리
+const handleProfileClick = () => {
+  if (userStore.isLoggedIn) {
+    router.push('/profile'); // 로그인 상태면 /profile로 이동
+  } else {
+    alert('로그인이 필요합니다.'); // 로그인 필요 메시지
+    router.push('/login'); // /login으로 이동
+  }
+};
+
 // 컴포넌트가 마운트될 때 사용자 정보 가져오기
 onMounted(async () => {
   await userStore.checkAuth();
@@ -44,7 +55,7 @@ onMounted(async () => {
 
 <template>
   <div class="tp-header-top-menu d-flex align-items-center justify-content-end">
-    <div class="tp-header-top-menu-item tp-header-lang">
+    <!-- <div class="tp-header-top-menu-item tp-header-lang">
       <span @click="handleActive('lang')" class="tp-header-lang-toggle" id="tp-header-lang-toggle">Korean</span>
       <ul :class="`${isActive === 'lang' ? 'tp-lang-list-open' : ''}`">
         <li>
@@ -66,12 +77,12 @@ onMounted(async () => {
           <a href="#">USD</a>
         </li>
       </ul>
-    </div>
+    </div> -->
     <div class="tp-header-top-menu-item tp-header-setting">
       <span @click="handleActive('setting')" class="tp-header-setting-toggle" id="tp-header-setting-toggle">설정</span>
       <ul :class="`${isActive === 'setting' ? 'tp-setting-list-open' : ''}`">
         <li>
-          <nuxt-link href="/profile">내 프로파일</nuxt-link>
+          <a class="tp-logout" @click.prevent="handleProfileClick">내 프로파일</a>
         </li>
         <li>
           <nuxt-link href="/wishlist">위시리스트</nuxt-link>
@@ -94,5 +105,6 @@ onMounted(async () => {
 .tp-logout {
   font-size: 14px;
   color: var(--tp-common-black);
+  cursor: pointer; /* 마우스 오버 시 손가락 모양 표시 */
 }
 </style>
