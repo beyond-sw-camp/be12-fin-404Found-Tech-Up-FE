@@ -23,7 +23,7 @@
         </tr>
       </thead>
       <tbody>
-        <admin-user-item v-for="item in storeRef.userList.value" :key="item.userNickname" :item="item" />
+        <admin-user-item v-for="item in storeRef.userStorageList.value" :key="item.userNickname" :item="item" />
       </tbody>
     </table>
     <div class="tp-pagination mt-30">

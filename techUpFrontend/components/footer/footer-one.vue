@@ -29,11 +29,9 @@
                 <h4 class="tp-footer-widget-title">사용자</h4>
                 <div class="tp-footer-widget-content">
                   <ul>
-                    <li><a href="#">주문 내역</a></li>
-                    <li><a href="#">카트</a></li>
-                    <li><a href="#">위시리스트</a></li>
-                    <li><a href="#">내 프로파일</a></li>
-                    <li><a href="#">게시글 보기</a></li>
+                    <li><nuxt-link href="/profile">내 프로파일</nuxt-link></li>
+                    <li><nuxt-link href="/cart">장바구니</nuxt-link></li>
+                    <li><nuxt-link href="/wishlist">위시리스트</nuxt-link></li>
                   </ul>
                 </div>
               </div>
@@ -45,6 +43,7 @@
                   <ul>
                     <li><nuxt-link href="/about">소개</nuxt-link></li>
                     <li><nuxt-link href="/privacy">개인정보처리방침</nuxt-link></li>
+                    <li><nuxt-link href="/community">커뮤니티</nuxt-link></li>
                     <!-- <li><a href="#">약관 </a></li> -->
                   </ul>
                 </div>
