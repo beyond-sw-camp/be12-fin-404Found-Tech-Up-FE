@@ -587,33 +587,38 @@ let myRams = ref([]);
 let mySsds = ref([]);
 let myHdds = ref([]);
 
-const removeCompare = (item) => {
+const removeCompare = async (item) => {
   compareStore.removeCompare(item);
-  processFilter();
+  await processFilter();
 }
 
-const processFilter = () => {
+const processFilter = async () => {
   myCpus.value = deviceStore.registerList.filter((value) => value.category === "CPU");
-  myCpus.value.forEach((value) => value.mine = true);
+  myCpus.value.forEach((value) => value.mine = true); // TODO: 추천 상품 삽입
+  myCpus.value = await compareStore.loadSuggestionProducts(myCpus.value);
   myCpus.value = myCpus.value.concat(compareStore.compare_cpu_items);
   myGpus.value = deviceStore.registerList.filter((value) => value.category === "GPU");
   myGpus.value.forEach((value) => value.mine = true);
+  myGpus.value = await compareStore.loadSuggestionProducts(myGpus.value); // TODO: 추천 상품 삽입
   myGpus.value = myGpus.value.concat(compareStore.compare_gpu_items);
   myRams.value = deviceStore.registerList.filter((value) => value.category === "RAM");
   myRams.value.forEach((value) => value.mine = true);
+  myRams.value = await compareStore.loadSuggestionProducts(myRams.value); // TODO: 추천 상품 삽입
   myRams.value = myRams.value.concat(compareStore.compare_ram_items);
   mySsds.value = deviceStore.registerList.filter((value) => value.category === "SSD");
   mySsds.value.forEach((value) => value.mine = true);
+  mySsds.value = await compareStore.loadSuggestionProducts(mySsds.value); // TODO: 추천 상품 삽입
   mySsds.value = mySsds.value.concat(compareStore.compare_ssd_items);
   myHdds.value = deviceStore.registerList.filter((value) => value.category === "HDD");
   myHdds.value.forEach((value) => value.mine = true);
+  myHdds.value = await compareStore.loadSuggestionProducts(myHdds.value); // TODO: 추천 상품 삽입
   myHdds.value = myHdds.value.concat(compareStore.compare_hdd_items);
 }
 
 onMounted(async () => {
   await compareStore.initializeCompareProducts();
   await deviceStore.fetchMyDevices();
-  processFilter();
+  await processFilter();
 })
 
 </script>

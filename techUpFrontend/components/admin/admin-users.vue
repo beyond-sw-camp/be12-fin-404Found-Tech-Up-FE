@@ -23,12 +23,14 @@
         </tr>
       </thead>
       <tbody>
-        <admin-user-item v-for="item in storeRef.userList.value" :key="item.userNickname" :item="item" />
+        <admin-user-item v-for="item in storeRef.userStorageList.value" :key="item.userNickname" :item="item" />
       </tbody>
     </table>
     <div class="tp-pagination mt-30">
+      <!--
       <ui-pagination2 :itemsPerPage="adminStore.PAGENATION_SIZE" :data="storeRef.userStorageList.value"
         :totalItems="storeRef.totalUsers.value" :initialPage="initialPage" @handle-paginate="handlePagination" />
+      -->
     </div>
   </div>
 </template>

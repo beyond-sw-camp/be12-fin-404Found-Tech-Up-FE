@@ -12,6 +12,23 @@ export const useCompareStore = defineStore("compare_product", () => {
   let compare_ssd_items = ref([]);
   let compare_hdd_items = ref([]);
 
+  const mapToItem = (x) => {
+    return {
+      idx:    x.idx ?? x.productIdx,
+      category:      x.category,
+      productType:   x.category,
+      img:     (x.images?.[0] || x.productImageUrl || x.imageUrl) || "",
+      name:    x.name  || x.productName,
+      price:   x.price || x.productPrice,
+      discount: x.discount ?? x.productDiscount,
+      brand:   x.brand,
+      reviews: x.reviews ?? [],
+      reviewAverage: x.rating ?? x.ratings ?? 0,
+      reviewHalf:    ((x.rating ?? x.ratings) % 1) >= 0.5,
+      imageURLs: (x.images || [ x.imageUrl || x.productImageUrl ]).map(u => ({ img: u })),
+    };
+  };
+
   // add_compare_product
   const add_compare_product = (payload) => {
     console.log(payload);
@@ -157,10 +174,29 @@ export const useCompareStore = defineStore("compare_product", () => {
     compare_hdd_items.value = localStorage.getItem("compare_hdds") ? JSON.parse(localStorage.getItem("compare_hdds")): [];
   };
 
+  const loadSuggestionProducts = async (products) => {
+    let result = products;
+    for await (let product of products) {
+      try {
+        const rec = await axios.post("/recommend/item-based", { product_idx: product.productIdx });
+        const recs = rec.data.recommended_products;
+        console.log(recs);
+        if (Array.isArray(recs) && recs.length) {
+          result = result.concat(recs.slice(0,2).map(mapToItem));
+        }
+      } catch(e) {
+        return result;
+      }
+    }
+    return result;
+  };
+
   return {
     initializeCompareProducts,
     add_compare_product,
     removeCompare,
+    loadSuggestionProducts,
+    mapToItem,
     compare_items,
     compare_cpu_items,
     compare_gpu_items,
