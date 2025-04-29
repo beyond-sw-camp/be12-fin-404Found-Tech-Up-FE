@@ -10,7 +10,7 @@
       <!-- 비교 항목이 있을 때 -->
       <div v-else class="row">
         <div class="col-xl-12">
-          <div class="tp-compare-table table-responsive text-center">
+          <div v-if="myCpus.length > 0" class="tp-compare-table table-responsive text-center">
             <h4>CPU</h4>
             <table class="table">
               <tbody>
@@ -19,7 +19,7 @@
                   <th>상품</th>
                   <td v-for="item in myCpus" :key="item.idx" :style="`${item.mine ? 'background-color:#BFEEBF' : ''}`">
                     <div class="tp-compare-thumb">
-                      <img :src="item.images[0]" alt="product" height="128px" />
+                      <img :src="item.images[0] ? item.images[0] : ''" alt="product" height="128px" />
                       <h4 class="tp-compare-product-title">
                         <nuxt-link :href="`/product-details/${item.idx}`">{{ item.name }}</nuxt-link>
                       </h4>
@@ -68,7 +68,7 @@
                   <th>코어 수, 스레드 수</th>
                   <td v-for="item in myCpus" :key="item.idx">
                     <div>
-                      {{ item.cpuSpec.coreCount }}코어 {{ item.cpuSpec.threadCount }}스레드
+                      {{ item.cpuSpec.coreCount }} {{ item.cpuSpec.threadCount }}
                     </div>
                   </td>
                 </tr>
@@ -77,7 +77,7 @@
                   <th>캐시 크기, 내장 그래픽</th>
                   <td v-for="item in myCpus" :key="item.idx">
                     <div>
-                      L3 {{ item.cpuSpec.l3Cache }}MB, 내장그래픽: {{ item.cpuSpec.builtInGraphic }}
+                      L3 {{ item.cpuSpec.l3Cache }}, {{ item.cpuSpec.builtInGraphic }}
                     </div>
                   </td>
                 </tr>
@@ -86,7 +86,7 @@
                   <th>공정, 부스트 클럭 </th>
                   <td v-for="item in myCpus" :key="item.idx">
                     <div>
-                      {{ item.cpuSpec.manufactoringProcess }}nm, 최대 클럭 {{ item.cpuSpec.maxClock }}GHz
+                      {{ item.cpuSpec.manufactoringProcess }}, 최대 클럭 {{ item.cpuSpec.maxClock }}
                     </div>
                   </td>
                 </tr>
@@ -96,7 +96,7 @@
                   <th>PCie 버전 및 레인 수 </th>
                   <td v-for="item in myCpus" :key="item.idx">
                     <div>
-                      버전 {{ item.cpuSpec.pcieVer }}, 최대 {{ item.cpuSpec.maxPcie }} 레인
+                      버전 {{ item.cpuSpec.pcieVer }}, {{ item.cpuSpec.maxPcie }}
                     </div>
                   </td>
                 </tr>
@@ -132,7 +132,7 @@
               </tbody>
             </table>
           </div>
-          <div class="tp-compare-table table-responsive text-center">
+          <div v-if="myGpus.length > 0" class="tp-compare-table table-responsive text-center">
             <h4>GPU(그래픽 카드)</h4>
             <table class="table">
               <tbody>
@@ -182,7 +182,7 @@
                   <td v-for="item in myGpus" :key="item.idx">
                     <div>
                       {{ item.gpuSpec.chipsetManufacturer }} {{ item.gpuSpec.productSeries }}, {{
-                        item.gpuSpec.gpuManufacturingProcess }}nm
+                        item.gpuSpec.gpuManufacturingProcess }}
                     </div>
                   </td>
                 </tr>
@@ -239,7 +239,7 @@
               </tbody>
             </table>
           </div>
-          <div class="tp-compare-table table-responsive text-center">
+          <div v-if="myRams.length > 0" class="tp-compare-table table-responsive text-center">
             <h4>RAM</h4>
             <table class="table">
               <tbody>
@@ -354,7 +354,7 @@
               </tbody>
             </table>
           </div>
-          <div class="tp-compare-table table-responsive text-center">
+          <div v-if="mySsds.length > 0" class="tp-compare-table table-responsive text-center">
             <h4>SSD</h4>
             <table class="table">
               <tbody>
@@ -460,7 +460,7 @@
               </tbody>
             </table>
           </div>
-          <div class="tp-compare-table table-responsive text-center">
+          <div v-if="myHdds.length > 0" class="tp-compare-table table-responsive text-center">
             <h4>HDD</h4>
             <table class="table">
               <tbody>

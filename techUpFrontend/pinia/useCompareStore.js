@@ -17,7 +17,7 @@ export const useCompareStore = defineStore("compare_product", () => {
       idx:    x.idx ?? x.productIdx,
       category:      x.category,
       productType:   x.category,
-      img:     (x.images?.[0] || x.productImageUrl || x.imageUrl) || "",
+      images:     (x.images?.[0] || x.productImageUrl || x.imageUrl) || "",
       name:    x.name  || x.productName,
       price:   x.price || x.productPrice,
       discount: x.discount ?? x.productDiscount,
@@ -176,15 +176,20 @@ export const useCompareStore = defineStore("compare_product", () => {
 
   const loadSuggestionProducts = async (products) => {
     let result = products;
+    console.log(result);
     for await (let product of products) {
       try {
-        const rec = await axios.post("/recommend/item-based", { product_idx: product.idx });
+        const rec = await axios.post("/rec/recommend/item-based", { product_idx: product.idx });
         const recs = rec.data.recommended_products;
         console.log(recs);
         if (Array.isArray(recs) && recs.length) {
-          result = result.concat(recs.slice(0,2).map(mapToItem));
+          const info = await axios.get(`/api/product/${recs[0].product_idx}`);
+          console.log(`추천 대상: ${JSON.stringify(info.data)}`);
+          const page = info.data.data;
+          result = result.concat(page);
         }
       } catch(e) {
+        console.log(e);
         return result;
       }
     }
