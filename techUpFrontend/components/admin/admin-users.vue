@@ -27,8 +27,10 @@
       </tbody>
     </table>
     <div class="tp-pagination mt-30">
+      <!--
       <ui-pagination2 :itemsPerPage="adminStore.PAGENATION_SIZE" :data="storeRef.userStorageList.value"
         :totalItems="storeRef.totalUsers.value" :initialPage="initialPage" @handle-paginate="handlePagination" />
+      -->
     </div>
   </div>
 </template>

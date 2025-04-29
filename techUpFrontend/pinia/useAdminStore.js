@@ -329,9 +329,9 @@ export const useAdminStore = defineStore( 'admin',() => {
     // 카테고리에 맞는 스펙 데이터를 합쳐서 payload 구성
     // 파일 업로드 요청
     let imageUrls = [];
-    for (let i = existingFilePath.value.length; i < uploadTarget.value.length; i++) {
+    for await (let file of uploadTarget.value) {
       let formdata = new FormData();
-      formdata.append("file", uploadTarget.value[i-existingFilePath.value.length]);
+      formdata.append("file", file);
       const resultUrl = await axios.put('/api/productimage/upload', formdata);
       imageUrls.push(resultUrl.data.data);
     }
