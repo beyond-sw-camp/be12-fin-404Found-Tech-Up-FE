@@ -1,4 +1,36 @@
 <template>
+    <div style="margin: 1rem 0;">
+    <h4>내 기기 목록</h4>
+  </div>
+  <div class="profile__address">
+    <div class="row">
+      <div v-if="!deviceStore.registerList.length > 0" class='text-center pt-50'>
+        <h5>품목이 없습니다</h5>
+      </div>
+      <div v-else class="row">
+        <div class="col-xl-12">
+          <div class="tp-cart-list mb-10 mr-10">
+            <table style="text-align:center;">
+              <thead>
+                <tr>
+                  <th colspan="2" class="tp-cart-header-product" style="width:35%;">제품</th>
+                  <th style="width:15%;">카테고리</th>
+                  <th style="width:30%;">제품 설명</th>
+                  <th style="width:20%;">등록</th>                </tr>
+              </thead>
+              <tbody>
+                <!-- wishlist item start -->
+                <device-item v-for="item in deviceStore.registerList" :key="item.idx" :item="item" :registered="true" />
+                <!-- wishlist item end -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div style="width:50vw;background-color:#d5d5d5;height:5px;">
+  </div>
   <div style="margin: 1rem 0;">
     <h4>기기 검색</h4>
   </div>
@@ -63,38 +95,6 @@
             </div>
           </div>
 
-        </div>
-      </div>
-    </div>
-  </div>
-  <div style="width:50vw;background-color:#d5d5d5;height:5px;">
-  </div>
-  <div style="margin: 1rem 0;">
-    <h4>내 기기 목록</h4>
-  </div>
-  <div class="profile__address">
-    <div class="row">
-      <div v-if="!deviceStore.registerList.length > 0" class='text-center pt-50'>
-        <h5>품목이 없습니다</h5>
-      </div>
-      <div v-else class="row">
-        <div class="col-xl-12">
-          <div class="tp-cart-list mb-10 mr-10">
-            <table style="text-align:center;">
-              <thead>
-                <tr>
-                  <th colspan="2" class="tp-cart-header-product" style="width:35%;">제품</th>
-                  <th style="width:15%;">카테고리</th>
-                  <th style="width:30%;">제품 설명</th>
-                  <th style="width:20%;">등록</th>                </tr>
-              </thead>
-              <tbody>
-                <!-- wishlist item start -->
-                <device-item v-for="item in deviceStore.registerList" :key="item.idx" :item="item" :registered="true" />
-                <!-- wishlist item end -->
-              </tbody>
-            </table>
-          </div>
         </div>
       </div>
     </div>
