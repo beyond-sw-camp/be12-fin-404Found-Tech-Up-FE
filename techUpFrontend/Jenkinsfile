@@ -278,7 +278,7 @@ pipeline {
                     
                     // 서비스 엔드포인트 확인 (헬스체크 API가 있다면)
                     try {
-                        sh "curl -s --retry 5 --retry-delay 10 -f http://${FRONTEND_URL}/health || echo 'Health check endpoint not available, skipping...'"
+                        sh "curl -s --retry 5 --retry-delay 10 -f https://techup-inner.p-e.kr/health || echo 'Health check endpoint not available, skipping...'"
                     } catch (Exception e) {
                         echo "Note: Health endpoint check skipped or failed, but continuing with deployment."
                     }
