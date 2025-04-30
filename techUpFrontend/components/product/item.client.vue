@@ -2,7 +2,7 @@
   <div :class="`${offer_style ? 'tp-product-offer-item' : 'mb-25'} tp-product-item transition-3`">
     <div class="tp-product-thumb p-relative fix m-img">
       <nuxt-link :href="`/product-details/${item.idx}`">
-        <img :src="item.img" alt="product-electronic" />
+        <img :src="item.images[0]" alt="product-electronic1" />
       </nuxt-link>
 
       <!-- product badge -->

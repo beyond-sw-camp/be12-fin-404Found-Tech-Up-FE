@@ -19,7 +19,7 @@
           <div v-for="item in cartStore.cart_products" :key="item.product.productIdx" class="cartmini__widget-item">
             <div class="cartmini__thumb">
               <nuxt-link :href="`/product-details/${item.product.productIdx}`">
-                <img :src="item.img" alt="cart-img" width="70" height="60" />
+                <img :src="item.product.imageUrl" alt="cart-img" width="70" height="60" />
               </nuxt-link>
             </div>
             <div class="cartmini__content">
