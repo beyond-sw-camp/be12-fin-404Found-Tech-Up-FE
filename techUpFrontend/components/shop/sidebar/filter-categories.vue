@@ -3,13 +3,13 @@
     <ul>
       <li>
         <a @click.prevent="selectCategory('')" :class="{ active: !route.query.category }">
-          전체 카테고리 
+          전체 카테고리
           <!-- <span>{{ products.length }}</span> -->
         </a>
       </li>
       <li v-for="cat in categories" :key="cat.id">
         <a @click.prevent="selectCategory(cat.slug)" :class="{ active: route.query.category === cat.slug }">
-          {{ cat.parent }} 
+          {{ cat.parent }}
           <!-- <span>{{ cat.products.length }}</span> -->
         </a>
       </li>
@@ -31,10 +31,11 @@ onMounted(store.fetchProducts);
 const categories = computed(() => store.categories);
 const products = computed(() => store.products);
 
-function selectCategory(slug) {
+async function selectCategory(slug) {
   const q = { ...router.currentRoute.value.query };
   if (slug) q.category = slug;
   else delete q.category;
-  router.push({ query: q });
+  store.productFilter.category = slug;
+  await store.filterProducts(0, 10);
 }
 </script>

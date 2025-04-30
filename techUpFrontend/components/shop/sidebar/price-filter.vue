@@ -38,18 +38,13 @@ onMounted(() => {
   }
 });
 
-function handlePrice() {
+async function handlePrice() {
   const price_query = {
     minPrice: store.priceValues[0],
     maxPrice: store.priceValues[1]
   };
-
-  router.push({
-    path: router.currentRoute.value.path,
-    query: {
-      ...router.currentRoute.value.query,
-      ...price_query
-    }
-  });
+  store.productFilter.maxPrice = price_query.maxPrice;
+  store.productFilter.minPrice = price_query.minPrice;
+  await store.filterProducts(0, 10);
 }
 </script>
