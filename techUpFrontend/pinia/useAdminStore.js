@@ -244,7 +244,7 @@ export const useAdminStore = defineStore( 'admin',() => {
     //console.log(result.data);
     userStorageList.value = result.data.data.content;
     userList.value = result.data.data.content;
-    totalUsers.value = result.data.totalElements;
+    totalUsers.value = result.data.data.totalElements;
   };
 
   

@@ -26,45 +26,41 @@
         <admin-user-item v-for="item in storeRef.userStorageList.value" :key="item.userNickname" :item="item" />
       </tbody>
     </table>
-    <div class="tp-pagination mt-30">
-      <span v-if="initialPage > 1" @click="handlePagination(initialPage - 1)">&lt;</span>
+    <div class="tp-pagination mt-30 ml-100">
+      <span class="ml-200" style="display:inline-flex;"></span>
+      <button style="font-weight:bold;" v-if="initialPage > 1"
+        @click="handlePagination(initialPage - 1)">&lt;&nbsp;</button>
       <span> {{ initialPage }}</span>
-      <span v-if="false">&gt;</span>
-      <!--
-      <ui-pagination2 :itemsPerPage="adminStore.PAGENATION_SIZE" :data="storeRef.userStorageList.value"
-        :totalItems="storeRef.totalUsers.value" :initialPage="initialPage" @handle-paginate="handlePagination" />
-      -->
+      <button style="font-weight:bold;"
+        v-if="initialPage < Math.floor(adminStore.totalUsers / adminStore.PAGENATION_SIZE)"
+        @click="handlePagination(initialPage + 1)">&nbsp;&gt;</button>
     </div>
   </div>
 </template>
 
 <script setup>
 import { ref } from 'vue';
-const props = defineProps({
-  idx: Number
-})
 
-const idx = ref(props.idx);
+const idx = ref(1);
 
 import { storeToRefs } from 'pinia';
 import { useAdminStore } from '../../pinia/useAdminStore';
-import { navigateTo } from 'nuxt/app';
 
 const adminStore = useAdminStore();
 const storeRef = storeToRefs(adminStore);
 
-let initialPage = ref(props.idx ? props.idx : 1);
+let initialPage = ref(1);
 
 const searchUsers = async () => {
   await adminStore.findUsers();
 }
-
+console.log(adminStore.totalUsers);
 const handlePagination = async (pagenum) => {
   //console.log("data", data, "start", start, "end", end);
   initialPage.value = pagenum;
+
   if (storeRef.findUserKeyword.value === "") {
     await adminStore.loadUserInfo(pagenum - 1);
-    navigateTo(`/users/${idx.value}`);
   } else {
     await adminStore.findUsers();
   }

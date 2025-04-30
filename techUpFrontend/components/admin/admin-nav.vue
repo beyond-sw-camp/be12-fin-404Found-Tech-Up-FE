@@ -5,7 +5,7 @@
         type="button" role="tab" aria-controls="nav-dashboard" aria-selected="false">
         <span><i class="fa-regular fa-user-pen"></i></span>대시보드
       </button>
-      <nuxt-link href="/users/1"><button class="nav-link" id="nav-users-tab" aria-selected="false">
+      <nuxt-link href="/users"><button class="nav-link" id="nav-users-tab" aria-selected="false">
           <span><i class="fa-regular fa-circle-info"></i></span> 사용자 관리
         </button></nuxt-link>
       <!--
