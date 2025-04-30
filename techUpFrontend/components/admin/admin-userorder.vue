@@ -11,7 +11,6 @@
           <th scope="col" style="font-size:x-small;width:10%">현재 상태</th>
           <th scope="col" style="font-size:x-small;width:10%">상세</th>
           <th scope="col" style="font-size:x-small;width:10%">환불 진행</th>
-          <th scope="col" style="font-size:x-small;width:10%">배송 완료</th>
         </tr>
       </thead>
       <tbody>

@@ -51,9 +51,5 @@ const cancelOrder = async () => {
         style="font-weight:bold;font-size:smaller;background-color: yellow;" @click="cancelOrder">취소하기</button>
       <div v-else>-</div>
     </td>
-    <td><button v-if="done" href="#" class="tp-btn"
-        style="font-weight:bold;font-size:smaller;background-color:green;">완료하기</button>
-      <div v-else>-</div>
-    </td>
   </tr>
 </template>
