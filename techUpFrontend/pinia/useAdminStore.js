@@ -251,7 +251,8 @@ export const useAdminStore = defineStore( 'admin',() => {
   const findUsers = async () => {
     try {
       const result = await axios.get(`/api/user/finduser?keyword=${findUserKeyword.value}`);
-      userStorageList = [];
+      console.log(result);
+      userStorageList.value = [];
       userList.value = [];
       userStorageList.value = result.data.data;
       userList.value = result.data.data.slice(0, PAGENATION_SIZE);
@@ -582,6 +583,15 @@ export const useAdminStore = defineStore( 'admin',() => {
     }
   };
 
+  const cancelOrder = async (idx) => {
+    try{
+      const result = await axios.post(`/api/order/cancel/${idx}`);
+      orderList.value = orderList.value.map((value) => value.idx !== idx);
+    } catch(e) {
+      alert("주문 취소 및 환불에 실패했습니다");
+    }
+    
+  };
 
   // ---------------------------------
   // ====== 초기화할 것은 여기로 ======
@@ -674,5 +684,6 @@ export const useAdminStore = defineStore( 'admin',() => {
     changeCouponTarget,
     totalElements,
     totalUsers,
+    cancelOrder,
   };
 });

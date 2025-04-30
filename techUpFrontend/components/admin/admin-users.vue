@@ -2,7 +2,7 @@
   <div class="admin__user table-responsive">
     <div class="tp-header-search-box"
       style="width:100%;display:inline-flex;background-color:#f8f8f8; padding-right: 2rem;">
-      <input type="text" placeholder="Search for Users..." v-model="storeRef.findUserKeyword.value"
+      <input type="text" placeholder="Search for Users..." v-model="adminStore.findUserKeyword"
         style="color:black;background-color:inherit; padding-right: inherit;" />
       <button type="submit" style="width:1rem;" @click="searchUsers">
         <SvgSearch />
