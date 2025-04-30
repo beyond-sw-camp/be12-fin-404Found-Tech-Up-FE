@@ -179,10 +179,10 @@ const props = defineProps({
 });
 
 function formatPrice(price, withCurrency = true) {
-  if (withCurrency) {
-    return "₩" + Number(price).toFixed(0);
-  }
-  return Number(price).toFixed(0);
+  const formatted = Number(price).toLocaleString('ko-KR', {
+    maximumFractionDigits: 0
+  });
+  return withCurrency ? `${formatted}원` : formatted;
 }
 
 function decreaseQuantity() {
