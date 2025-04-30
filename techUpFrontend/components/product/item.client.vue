@@ -53,16 +53,15 @@
         </nuxt-link>
       </h3>
       <div class="tp-product-rating d-flex align-items-center">
-        <div class="tp-product-rating-icon">
-          <span><i class="fa-solid fa-star"></i></span>
-          <span><i class="fa-solid fa-star"></i></span>
-          <span><i class="fa-solid fa-star"></i></span>
-          <span><i class="fa-solid fa-star"></i></span>
-          <span><i class="fa-solid fa-star-half-stroke"></i></span>
-          <!--
-          <span v-for="item in new Array(props.item.reviewAverage)" :key="item"><i class="fa-solid fa-star"></i></span>
-          <span v-if="props.item.reviewHalf"><i class="fa-solid fa-star-half-stroke"></i></span>
-          -->
+        <div class="tp-product-rating-icon tp-product-rating-icon-2">
+          <div class="star-rating">
+            <div class="star-rating__back">
+              <i class="fa-regular fa-star" v-for="n in 5" :key="'b' + n"></i>
+            </div>
+            <div class="star-rating__front" :style="{ width: (item.reviewAverage / 5 * 100) + '%' }">
+              <i class="fa-solid fa-star" v-for="n in 5" :key="'f' + n"></i>
+            </div>
+          </div>
         </div>
         <div class="tp-product-rating-text">
           <span>({{ item.reviews && item.reviews.length }} Review)</span>
@@ -141,3 +140,27 @@ function formatPrice(price, withCurrency = true) {
 
 }
 </script>
+<style scoped lang="scss">
+.star-rating {
+  position: relative;
+  display: inline-block;
+  font-size: 1em;
+  line-height: 1;
+  color: #ccc; /* empty stars color */
+}
+
+.star-rating__back {
+  display: flex;
+}
+
+.star-rating__front {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  overflow: hidden;
+  white-space: nowrap;
+  color: #ffc107; /* filled stars color */
+  z-index: 1;
+}
+</style>
