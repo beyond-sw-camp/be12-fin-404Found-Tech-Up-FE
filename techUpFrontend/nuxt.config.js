@@ -27,7 +27,7 @@ export default defineNuxtConfig({
         prependPath: true,
       },
       '/rec': {
-        target: 'https://techup-inner.kro.kr',
+        target: 'http://192.0.40.205:8000',
         secure: false,
         changeOrigin: true,
         prependPath: true,

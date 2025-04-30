@@ -49,6 +49,50 @@ data:
     }
 
     server {
+      listen              443 ssl;
+      server_name         techup-inner.kro.kr;
+      ssl_certificate     /etc/nginx/ssl2/tls.crt;
+      ssl_certificate_key /etc/nginx/ssl2/tls.key;
+      ssl_session_timeout  5m;
+      
+      ssl_ciphers         HIGH:!aNULL:!MD5;
+      
+      location / {
+        root   /usr/share/nginx/html;
+        index  index.html index.htm;
+        try_files $uri $uri/ /index.html;
+      }
+      
+      location /api {
+        rewrite ^/api(/.*)$ $1 break;
+        proxy_pass https://backend-svc:443;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_ssl_server_name on;
+      }
+
+      location /swagger-ui {
+        proxy_pass https://backend-svc:443;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_ssl_server_name on;
+      }
+
+      location /rec {
+        proxy_pass https://recommender-svc:8000;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_ssl_server_name on;
+      }
+    }
+
+    server {
         listen 80;
         listen [::]:80;
         
