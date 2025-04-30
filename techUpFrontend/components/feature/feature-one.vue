@@ -64,7 +64,7 @@ export default {
   setup() {
     // 간단한 가격 포맷팅 함수 (필요에 따라 변경)
     const formatPrice = (price) => {
-      return `${price.toFixed(2)}원`;
+      return `${price.toFixed(0)}원`;
     };
 
     return { formatPrice };

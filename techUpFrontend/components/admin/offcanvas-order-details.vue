@@ -51,9 +51,14 @@ import { useAdminStore } from '../../pinia/useAdminStore';
 const adminStore = useAdminStore();
 const storeRef = storeToRefs(adminStore);
 
-const formatPrice = (price) => {
-  return Number(price).toFixed(2) + "원";
-};
+
+function formatPrice(price, withCurrency = true) {
+  const formatted = Number(price).toLocaleString('ko-KR', {
+    maximumFractionDigits: 0
+  });
+  return withCurrency ? `${formatted}원` : formatted;
+}
+
 </script>
 
 <style scoped>

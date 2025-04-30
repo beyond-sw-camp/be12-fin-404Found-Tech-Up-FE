@@ -83,10 +83,12 @@ const bannerProducts = [
 ];
 
 // 가격 포맷 함수 (withCurrency가 false일 경우 단순 소수점 두자리 형식)
-const formatPrice = (price, withCurrency = true) => {
-  if (withCurrency) {
-    return `${price.toFixed(2)}원`;
-  }
-  return price.toFixed(2);
-};
+
+function formatPrice(price, withCurrency = true) {
+  const formatted = Number(price).toLocaleString('ko-KR', {
+    maximumFractionDigits: 0
+  });
+  return withCurrency ? `${formatted}원` : formatted;
+}
+
 </script>
