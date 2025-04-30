@@ -3,7 +3,7 @@
     <div class="tp-shop-widget-filter price__slider">
       <div id="slider-range" class="mb-10">
         <Slider :value="store.priceValues" :tooltips="false" @change="store.handlePriceChange"
-          :max="store.maxProductPrice" />
+          :max="store.maxProductPrice * 4" />
       </div>
       <div class="tp-shop-widget-filter-info d-flex align-items-center justify-content-between">
         <span class="input-range" v-if="store.priceValues && store.priceValues.length >= 2">

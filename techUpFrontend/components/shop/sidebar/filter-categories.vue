@@ -35,7 +35,7 @@ async function selectCategory(slug) {
   const q = { ...router.currentRoute.value.query };
   if (slug) q.category = slug;
   else delete q.category;
-  store.productFilter.category = slug;
+  store.productFilter.category = slug.toUpperCase();
   await store.filterProducts(0, 10);
 }
 </script>

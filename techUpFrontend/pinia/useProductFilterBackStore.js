@@ -3,6 +3,7 @@ import { ref, computed, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import axios from "axios";
 import { formatString } from '@/utils/index';
+import PriceFilter from "../components/shop/sidebar/price-filter.vue";
 
 export const useProductFilterBackStore = defineStore("product_filter", () => {
   const route = useRoute();
@@ -97,7 +98,6 @@ export const useProductFilterBackStore = defineStore("product_filter", () => {
     priceValues.value = [0, maxProductPrice.value];
     productFilter.value = {
       category: '',
-      nameKeyword: '',
       minPrice: 0,
       maxPrice: 10000000
     };
@@ -114,6 +114,7 @@ export const useProductFilterBackStore = defineStore("product_filter", () => {
     products.value = filteredResult.data.data.content;
     totalProducts.value = 0;
     totalProducts.value = filteredResult.data.data.totalElements;
+    maxProductPrice.value = productFilter.value.maxPrice;
     currentPage.value = page+1;
   };
 
