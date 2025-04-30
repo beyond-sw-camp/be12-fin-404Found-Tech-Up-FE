@@ -51,7 +51,13 @@ export const useCartStore = defineStore("cart_product", () => {
         { baseURL: config.public.apiBaseUrl }
       );
       if (response.data && response.data.data) {
-        toast.success(`${payload.name} added to cart`);
+        toast.success(`${payload.name} 장바구니에 추가되었습니다`,
+          {
+            onClick: () => {
+              router.push("/cart")
+            }
+          }
+        );
         // 백엔드 응답을 반영하여 장바구니 목록 다시 불러오기
         await fetchCartProducts();
       }
@@ -87,7 +93,12 @@ export const useCartStore = defineStore("cart_product", () => {
         { baseURL: config.public.apiBaseUrl }
       );
       if (response.data && response.data.data) {
-        toast.error(`${payload.product.name} removed from cart`);
+        toast.error(`${payload.product.name} 장바구니에서 삭제되었습니다`,
+          {
+            onClick: () => {
+              router.push("/cart")
+            }
+          });
         await fetchCartProducts();
       }
     } catch (error) {
@@ -135,7 +146,7 @@ export const useCartStore = defineStore("cart_product", () => {
         { baseURL: config.public.apiBaseUrl }
       );
       if (response.data && response.data.data) {
-        toast.success(`Increment Quantity For ${payload.name}`);
+        toast.success(`${payload.name} 장바구니 수량 증가`);
         await fetchCartProducts();
       }
     } catch (error) {
