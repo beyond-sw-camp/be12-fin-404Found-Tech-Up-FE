@@ -12,7 +12,7 @@
           <swiper v-bind="slider_setting" :modules="[Scrollbar]"
             class="tp-product-related-slider-active swiper-container mb-10">
             <swiper-slide v-for="(item, i) in relatedProducts" :key="i">
-              <product-beauty-item :item="item" :primary_style="true" :style_2="true" />
+              <ProductItem :item="item" :primary_style="true" :style_2="true" />
             </swiper-slide>
           </swiper>
           <div class="tp-related-swiper-scrollbar tp-swiper-scrollbar"></div>

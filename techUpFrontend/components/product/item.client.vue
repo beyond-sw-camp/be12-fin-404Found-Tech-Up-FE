@@ -131,9 +131,9 @@ if (props.item.offerDate) {
 }
 */
 function formatPrice(price, withCurrency = true) {
-  if (withCurrency) {
-    return Number(price).toFixed(2) + "원";
-  }
-  return Number(price).toFixed(2);
+  const formatted = Number(price).toLocaleString('ko-KR', {
+    maximumFractionDigits: 0
+  });
+  return withCurrency ? `${formatted}원` : formatted;
 }
 </script>
