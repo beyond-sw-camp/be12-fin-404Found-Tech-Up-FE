@@ -132,8 +132,8 @@ if (props.item.offerDate) {
 */
 function formatPrice(price, withCurrency = true) {
   if (withCurrency) {
-    return Number(price).toFixed(2) + "원";
+    return Number(price).toFixed(0) + "원";
   }
-  return Number(price).toFixed(2);
+  return Number(price).toFixed(0);
 }
 </script>
