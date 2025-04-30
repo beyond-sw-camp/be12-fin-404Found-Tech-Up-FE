@@ -25,7 +25,7 @@
               </li>
             </ul>
           </td>
-          <td>{{ order.orderStatus }}</td>
+          <td>{{ formatStatus(order.orderStatus) }}</td>
           <td>
             <button class="btn btn-link p-0" @click="goDetail(order.orderIdx)">
               보기
@@ -99,6 +99,18 @@ const paginatedOrders = computed(() => {
   const start = (page.value - 1) * pageSize
   return filteredOrders.value.slice(start, start + pageSize)
 })
+
+const statusMap = {
+  PAID:              '배송 준비 중',
+  REFUND_REQUESTED:  '환불 요청됨',
+  PLACED:            '주문 중',
+  UNPAID:            '결제 실패',
+  CANCELED:          '환불됨',
+}
+
+function formatStatus(status) {
+  return statusMap[status] || status
+}
 
 function goDetail(orderIdx) {
   router.push(`/order/${orderIdx}`)
