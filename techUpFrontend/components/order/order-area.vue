@@ -75,7 +75,7 @@
                         <small class="text-muted text-decoration-line-through">
                           {{ formatPrice(d.orderDetailPrice * d.orderDetailQuantity) }}
                         </small>
-                          {{ formatPrice(calculateFinal(d)) }}
+                        {{ formatPrice(calculateFinal(d)) }}
                       </template>
                       <template v-else>
                         <!-- otherwise just show the normal total -->
@@ -113,8 +113,9 @@
                 </ul>
               </div>
               <div class="d-flex justify-content-end mt-4">
-                <button class="tp-btn tp-btn-border tp-btn-border-sm" @click="handleRefund">
-                  환불
+                <button class="tp-btn tp-btn-border tp-btn-border-sm" @click="handleRefund"
+                  :disabled="isRefundDisabled">
+                  {{ isRefundDisabled ? '환불 불가' : '환불' }}
                 </button>
               </div>
             </div>
@@ -126,7 +127,7 @@
 </template>
 
 <script setup>
-import { defineProps } from 'vue'
+import { defineProps, defineEmits, computed } from 'vue'
 
 const props = defineProps({
   order: {
@@ -136,6 +137,10 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['refund'])
+
+const isRefundDisabled = computed(() =>
+  ['REFUND_REQUESTED', 'UNPAID', 'CANCELED'].includes(props.order.orderStatus)
+)
 
 function handleRefund() {
   emit('refund', props.order.orderIdx)
