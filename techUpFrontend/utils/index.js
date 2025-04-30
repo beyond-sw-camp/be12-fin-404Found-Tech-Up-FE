@@ -2,8 +2,8 @@ export function formatPrice(price,showDecimals) {
     return new Intl.NumberFormat("ko-KR", {
       style: "currency",
       currency: "KRW",
-      minimumFractionDigits: showDecimals ? 2 : 0,
-      maximumFractionDigits: showDecimals ? 2 : 0
+      minimumFractionDigits: showDecimals ? 0 : 0,
+      maximumFractionDigits: showDecimals ? 0 : 0
     }).format(price);
   }
   export function formatString(str) {

@@ -78,7 +78,7 @@ import { useCartStore } from "@/pinia/useCartStore";
 const cartStore = useCartStore();
 
 const formatPrice = (price) => {
-  return Number(price).toFixed(2) + "원";
+  return Number(price).toFixed(0) + "원";
 };
 </script>
 

@@ -85,8 +85,8 @@ const bannerProducts = [
 // 가격 포맷 함수 (withCurrency가 false일 경우 단순 소수점 두자리 형식)
 const formatPrice = (price, withCurrency = true) => {
   if (withCurrency) {
-    return `${price.toFixed(2)}원`;
+    return `${price.toFixed(0)}원`;
   }
-  return price.toFixed(2);
+  return price.toFixed(0);
 };
 </script>

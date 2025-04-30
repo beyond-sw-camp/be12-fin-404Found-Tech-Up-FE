@@ -43,7 +43,7 @@ export default {
   },
   setup(props) {
     const formatPrice = (price, withCurrency = true) => {
-      return withCurrency ? Number(price).toFixed(2) + "원" : Number(price).toFixed(2);
+      return withCurrency ? Number(price).toFixed(0) + "원" : Number(price).toFixed(0);
     };
 
     return { props, formatPrice };
