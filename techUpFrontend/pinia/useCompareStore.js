@@ -179,13 +179,13 @@ export const useCompareStore = defineStore("compare_product", () => {
     console.log(result);
     for await (let product of products) {
       try {
-        const rec = await axios.post("/rec/recommend/item-based", { product_idx: product.idx });
-        const recs = rec.data.recommended_products;
+        const rec = await axios.post("/rec/recommend", { product_name: product.name });
+        const recs = rec.data.similar_products;
         console.log(recs);
         if (Array.isArray(recs) && recs.length) {
-          const info = await axios.get(`/api/product/${recs[0].product_idx}`);
-          console.log(`추천 대상: ${JSON.stringify(info.data)}`);
-          const page = info.data.data;
+          const info = await axios.get(`/api/product/search?keyword=${recs[0].name}&page=0&size=1`);
+          console.log(`추천 대상: ${JSON.stringify(info.data.data.content)}`);
+          const page = info.data.data.content;
           result = result.concat(page);
         }
       } catch(e) {

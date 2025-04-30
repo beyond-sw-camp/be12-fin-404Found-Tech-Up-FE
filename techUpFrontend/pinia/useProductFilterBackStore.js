@@ -18,10 +18,17 @@ export const useProductFilterBackStore = defineStore("product_filter", () => {
     };
   }
 
+  let productFilter = ref({
+    category: '',
+    nameKeyword: '',
+    minPrice: 0,
+    maxPrice: 10000000
+  });
+
   const state = getDefaultState();
 
   const totalProducts = ref(0)
-  const currentPage   = ref(0)
+  let currentPage   = ref(0)
   const pageSize      = ref(10)
 
   // 백엔드 API에서 불러온 상품 데이터를 저장하는 상태
@@ -86,11 +93,32 @@ export const useProductFilterBackStore = defineStore("product_filter", () => {
     priceValues.value = value;
   };
 
-  const handleResetFilter = () => {
+  const handleResetFilter = async () => {
     priceValues.value = [0, maxProductPrice.value];
+    productFilter.value = {
+      category: '',
+      nameKeyword: '',
+      minPrice: 0,
+      maxPrice: 10000000
+    };
+    await fetchProducts(0,10);
   };
 
+
   // 필터링: 백엔드에서 불러온 products 배열 기반 필터링 처리
+  const filterProducts = async ( page = 0, size = 10) => {
+    console.log(productFilter.value);
+    const filteredResult = await axios.post(`/api/product/filter?page=${page}&size=${size}`, productFilter.value);
+    console.log(filteredResult.data);
+    products.value = [];
+    products.value = filteredResult.data.data.content;
+    totalProducts.value = 0;
+    totalProducts.value = filteredResult.data.data.totalElements;
+    currentPage.value = page+1;
+  };
+
+
+  /*
   const filteredProducts = computed(() => {
     const base = Array.isArray(products.value) ? [...products.value] : [];
     let filtered = base;
@@ -147,6 +175,7 @@ export const useProductFilterBackStore = defineStore("product_filter", () => {
     }
     return filtered;
   });
+  */
 
   // 검색 필터: route 쿼리 값(searchText, productType 등)을 사용
   const searchFilteredItems = computed(() => {
@@ -207,7 +236,9 @@ export const useProductFilterBackStore = defineStore("product_filter", () => {
     maxProductPrice,
     priceValues,
     handleSelectFilter,
-    filteredProducts,
+    productFilter,
+    filterProducts,
+    // filteredProducts,
     handlePriceChange,
     handleResetFilter,
     selectVal,
