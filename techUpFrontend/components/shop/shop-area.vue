@@ -64,6 +64,7 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import { useProductFilterBackStore } from '@/pinia/useProductFilterBackStore'
+import { nextTick } from 'vue'
 
 const props = defineProps({
   list_style: Boolean,
@@ -107,9 +108,11 @@ onMounted(() => {
   store.fetchProducts(0, ITEMS_PER_PAGE)
 })
 
-function changePage(page) {
+async function changePage(page) {
   if (page === currentPage.value) return
   currentPage.value = page
-  store.fetchProducts(page - 1, ITEMS_PER_PAGE)
+  window.scrollTo({ top: 0, behavior: 'smooth' })
+  await store.fetchProducts(page - 1, ITEMS_PER_PAGE)
+  await nextTick()
 }
 </script>
