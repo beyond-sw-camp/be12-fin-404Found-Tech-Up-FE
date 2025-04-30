@@ -8,6 +8,11 @@ export const useProductBackStore = defineStore("productDetail", () => {
   // 현재 활성화된 이미지 저장 상태
   const activeImg = ref('')
 
+  // 모든 제품 목록 저장 상태(추천 api가 작동하지 않는 경우 사용)
+  const allProducts = ref([])
+  // 관련 제품 저장 상태
+  const related     = ref([])
+
   // 백엔드 API를 호출하여 제품 상세 정보를 가져오는 함수
   async function fetchProductDetail(id) {
     try {
@@ -29,6 +34,35 @@ export const useProductBackStore = defineStore("productDetail", () => {
     }
   }
 
+  async function fetchAllProducts(page = 0, size = 1000) {
+    const config = useRuntimeConfig()
+    const res = await axios.get(
+      `/api/product/list?page=${page}&size=${size}`,
+      { baseURL: config.public.apiBaseUrl }
+    )
+    allProducts.value = res.data?.data?.content || []
+  }
+
+  async function fetchRelatedProducts(id) {
+    if (!product.value) return
+    const config = useRuntimeConfig()
+    try {
+      const rec = await axios.post(
+        '/recommend/item-based',
+        { product_idx: id },
+        { baseURL: config.public.apiBaseUrl }
+      )
+      related.value = rec.data?.recommended_products || []
+    } catch {
+      related.value = allProducts.value
+        .filter(p =>
+          p.category === product.value.category &&
+          p.productIdx !== id
+        )
+        .slice(0, 8)
+    }
+  }
+
   // 이미지 활성화를 위한 헬퍼 함수
   const handleImageActive = (img) => {
     activeImg.value = img
@@ -37,7 +71,11 @@ export const useProductBackStore = defineStore("productDetail", () => {
   return {
     product,
     activeImg,
+    allProducts,
+    related,
     fetchProductDetail,
+    fetchAllProducts,
+    fetchRelatedProducts,
     handleImageActive
   }
 })
