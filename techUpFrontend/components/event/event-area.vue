@@ -38,4 +38,5 @@ import { useCouponStore } from '../../pinia/useCouponStore.js';
 const couponStore = useCouponStore();
 const storeRef = storeToRefs(couponStore);
 
+
 </script>

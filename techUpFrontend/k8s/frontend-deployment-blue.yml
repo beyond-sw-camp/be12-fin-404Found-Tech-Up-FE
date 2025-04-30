@@ -28,6 +28,8 @@ spec:
               mountPath: /etc/nginx/conf.d/
             - name: tls-config
               mountPath: /etc/nginx/ssl/
+            - name: tls-config2
+              mountPath: /etc/nginx/ssl2/
       volumes:
         - name: config
           configMap:
@@ -35,3 +37,6 @@ spec:
         - name: tls-config
           secret:
             secretName: tls-secret
+        - name: tls-config2
+          secret:
+            secretName: tls-kro

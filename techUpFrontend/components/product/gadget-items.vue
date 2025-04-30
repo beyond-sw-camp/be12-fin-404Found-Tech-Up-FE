@@ -88,6 +88,6 @@ const banner_data = [
 ];
 
 const formatPrice = (price) => {
-  return `${price.toFixed(2)}원`;
+  return `${price.toFixed(0)}원`;
 };
 </script>

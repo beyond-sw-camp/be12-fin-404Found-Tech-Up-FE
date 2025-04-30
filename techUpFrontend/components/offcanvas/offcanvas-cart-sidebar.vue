@@ -77,12 +77,14 @@ import { useCartStore } from "@/pinia/useCartStore";
 
 const cartStore = useCartStore();
 
+
 function formatPrice(price, withCurrency = true) {
   const formatted = Number(price).toLocaleString('ko-KR', {
     maximumFractionDigits: 0
   });
   return withCurrency ? `${formatted}원` : formatted;
 }
+
 </script>
 
 <style scoped>

@@ -1,5 +1,6 @@
 <template>
-  <div :class="`tp-product-item-3 ${primary_style ? 'tp-product-style-primary' : ''} mb-50 ${isCenter ? 'text-center' : ''}`">
+  <div
+    :class="`tp-product-item-3 ${primary_style ? 'tp-product-style-primary' : ''} mb-50 ${isCenter ? 'text-center' : ''}`">
     <div class="tp-product-thumb-3 mb-15 fix p-relative z-index-1"
       :style="`background-color: ${style_2 ? '#f6f6f6' : '#fff'};`">
       <nuxt-link :href="`/product-details/${item.id}`">
@@ -90,7 +91,7 @@ onMounted(() => {
 
 // 포맷터
 function formatPrice(value) {
-  return "$" + Number(value).toFixed(2);
+  return Number(value).toFixed(0) + "원";
 }
 
 // 해당 상품이 위시리스트에 있는지

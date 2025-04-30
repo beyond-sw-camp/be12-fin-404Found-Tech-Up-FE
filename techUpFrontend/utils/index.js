@@ -1,3 +1,4 @@
+
 export function formatPrice(price, showDecimals = false) {
   return new Intl.NumberFormat('ko-KR', {
     style: 'currency',
@@ -15,3 +16,4 @@ export function formatString(str) {
     .replace(/-+/g, "-") // Replace multiple "-" with a single "-"
     .trim(); // Remove any leading or trailing spaces
 }
+
