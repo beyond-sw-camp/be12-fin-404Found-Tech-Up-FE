@@ -59,7 +59,7 @@
           <div class="row">
             <!-- left 8 columns: just the review list + pagination -->
             <div class="col-lg-8">
-              <h3 class="tp-product-details-review-title mb-4">Rating & Review</h3>
+              <h3 class="tp-product-details-review-title mb-4">별점 & 리뷰</h3>
               <div class="tp-product-details-review-list pr-110">
                 <div v-if="pagedReviews.length">
                   <div v-for="item in pagedReviews" :key="item.reviewIdx"
@@ -80,7 +80,7 @@
                           </h3>
                           <small class="text-muted">{{ formatDate(item.reviewDate) }}</small>
                         </div>
-                        <button class="btn btn-sm btn-outline-danger" @click="remove(item.reviewIdx)">
+                        <button v-if="item.reviewUserId === userStore.user?.userIdx" class="btn btn-sm btn-outline-danger" @click="remove(item.reviewIdx)">
                           <i class="fa-solid fa-trash"></i> 삭제
                         </button>
                       </div>
@@ -145,7 +145,9 @@
 import { onMounted, ref, computed } from 'vue';
 import { useRuntimeConfig } from '#imports'
 import { useReviewStore } from '@/pinia/useReviewStore'
+import { useUserStore }     from '@/pinia/useUserStore'
 
+const userStore   = useUserStore()
 
 const handleActiveMarker = (event) => {
   const marker = document.getElementById("productTabMarker");
@@ -172,6 +174,12 @@ onMounted(() => {
   }
 });
 
+onMounted(async () => {
+  if (userStore.user === null) {
+    await userStore.fetchUserInfo()
+    console.log('userStore.user:', userStore.user)
+  }
+})
 
 function formatDate(iso) {
   return iso?.split?.('T')[0] || ''

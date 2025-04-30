@@ -220,6 +220,7 @@ onMounted(async () => {
   await fetchBoardDetail();
   await fetchComments();
 });
+
 </script>
 
 

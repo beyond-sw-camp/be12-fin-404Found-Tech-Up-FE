@@ -19,6 +19,8 @@ import { useRoute }       from 'vue-router'
 import axios               from 'axios'
 import { useRuntimeConfig } from '#imports'
 import OrderArea           from '@/components/order/order-area.vue'
+import { toast } from 'vue3-toastify'
+import 'vue3-toastify/dist/index.css'
 
 const route   = useRoute()
 const orderId = route.params.orderId
@@ -44,15 +46,19 @@ async function onRefund(orderIdx) {
   try {
     const res = await axios.post(
       `/api/order/refund/${orderIdx}`,
-      {},  
+      {},
       { baseURL: config.public.apiBaseUrl }
     )
-   
     if (res.data?.data) {
+      // update local status
       order.value.orderStatus = res.data.data.orderStatus
+      toast.success('환불 요청이 성공적으로 접수되었습니다.')
+    } else {
+      toast.error('환불 요청에 실패했습니다.')
     }
   } catch (err) {
     console.error('환불 요청 실패', err)
+    toast.error('환불 요청 중 오류가 발생했습니다.')
   }
 }
 </script>
