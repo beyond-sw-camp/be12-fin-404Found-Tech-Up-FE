@@ -9,9 +9,8 @@
     <!-- product details area end -->
 
     <!-- related products start -->
-    <product-related 
-      :product-id="String(productBackStore.product.idx)" 
-      :category="productBackStore.product.category" 
+    <product-related
+      :related-products="related"
     />
     <!-- related products end -->
   </div>
@@ -29,14 +28,19 @@ const productIdx = Number(route.params.idx)
 const productBackStore = useProductBackStore()
 const reviewStore = useReviewStore()
 
-onMounted(() => {
-  // URL 파라미터에 있는 id 값을 이용하여 백엔드 API 호출로 제품 상세 정보를 가져옵니다.
-  productBackStore.fetchProductDetail(productIdx)
-  reviewStore.fetchReviews(productIdx)
+onMounted(async () => {
+  // 상품 상세 정보+ 리뷰를 가져옵니다.
+  await productBackStore.fetchProductDetail(productIdx)
+  await reviewStore.fetchReviews(productIdx)
+
+  // 관련 상품을 가져옵니다.
+  await productBackStore.fetchAllProducts()
+  await productBackStore.fetchRelatedProducts(productIdx)
 })
 
 const product = computed(() => productBackStore.product)
 const reviews = computed(() => reviewStore.reviews)
+const related = computed(() => productBackStore.related)
 
 function onReviewSubmitted(newReview) {
   // 리뷰가 제출된 후, 리뷰 목록을 다시 가져옵니다.

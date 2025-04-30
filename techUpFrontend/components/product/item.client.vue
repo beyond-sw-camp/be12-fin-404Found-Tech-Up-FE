@@ -1,8 +1,10 @@
 <template>
   <div :class="`${offer_style ? 'tp-product-offer-item' : 'mb-25'} tp-product-item transition-3`">
     <div class="tp-product-thumb p-relative fix m-img">
-      <nuxt-link :href="`/product-details/${item.idx}`">
-        <img :src="item.img" alt="product-electronic" />
+      <nuxt-link :to="`/product-details/${item.idx ?? item.id ?? item.slug}`" class="image-swapper">
+        <img v-if="item.images && item.images.length" class="primary-img" :src="item.images[0]"
+          :alt="item.name || item.title" />
+        <img v-else class="primary-img" :src="item.img" :alt="item.name || item.title" />
       </nuxt-link>
 
       <!-- product badge -->
@@ -131,9 +133,11 @@ if (props.item.offerDate) {
 }
 */
 function formatPrice(price, withCurrency = true) {
-  if (withCurrency) {
-    return Number(price).toFixed(2) + "원";
-  }
-  return Number(price).toFixed(2);
+
+  const formatted = Number(price).toLocaleString('ko-KR', {
+    maximumFractionDigits: 0
+  });
+  return withCurrency ? `${formatted}원` : formatted;
+
 }
 </script>
