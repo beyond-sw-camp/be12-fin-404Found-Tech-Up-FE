@@ -64,6 +64,7 @@ export const useProductFilterBackStore = defineStore("product_filter", () => {
       products.value     = []
       totalProducts.value = 0
     }
+    console.log("호출 종료");
   }
 
   // 선택된 필터 옵션을 저장하는 상태
@@ -116,6 +117,7 @@ export const useProductFilterBackStore = defineStore("product_filter", () => {
     totalProducts.value = filteredResult.data.data.totalElements;
     maxProductPrice.value = productFilter.value.maxPrice;
     currentPage.value = page+1;
+    console.log("필터 종료");
   };
 
 
