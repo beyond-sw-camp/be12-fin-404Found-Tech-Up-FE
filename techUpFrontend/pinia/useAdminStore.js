@@ -281,7 +281,7 @@ export const useAdminStore = defineStore( 'admin',() => {
   // --------------- 제품 관련 ----------------------
 
   const loadProductList = async (offset) => {
-    const result = await axios.get(`/api/product/list?page=${offset}&size=30`, {
+    const result = await axios.get(`/api/product/list?category=&page=${offset}&size=30`, {
       baseURL: config.public.apiBaseUrl,
     });
     productStorageList.value = result.data.data.content;

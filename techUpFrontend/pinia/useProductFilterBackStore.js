@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { ref, computed, watch } from "vue";
+import { ref, computed, watch, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import axios from "axios";
 import { formatString } from '@/utils/index';
@@ -234,6 +234,10 @@ export const useProductFilterBackStore = defineStore("product_filter", () => {
     selectVal.value = defaults.selectVal;
     priceValues.value = defaults.priceValues;
   }
+
+  onMounted(async () => {
+    await fetchProducts(route.query.category ? route.query.category : '',0,10);
+  });
 
   // route의 변경 감지 (필요에 따라 리셋 등 처리)
   watch(
