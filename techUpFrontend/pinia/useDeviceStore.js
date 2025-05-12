@@ -15,7 +15,7 @@ export const useDeviceStore = defineStore('device', () => {
       // 검색어가 있으면 검색 API 호출, 없으면 전체 목록 가져오기
       const endpoint = searchText 
         ? `/api/product/search?keyword=${searchText}&page=${page}&size=${size}` 
-        : `/api/product/list?page=${page}&size=${size}`;
+        : `/api/product/list?category=&page=${page}&size=${size}`;
       
       const response = await axios.get(endpoint);
       deviceList.value = response.data.data.content || [];
