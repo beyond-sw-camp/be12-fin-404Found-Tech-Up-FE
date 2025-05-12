@@ -187,10 +187,16 @@ export const useProductFilterBackStore = defineStore("product_filter", () => {
   */
 
   // 검색 필터: route 쿼리 값(searchText, productType 등)을 사용
-  const searchFilteredItems = computed(() => {
-    let filtered = [...products.value];
+  let searchFilteredItems = ref([]);
+  const searchProducts = async () => {
     const searchText = route.query.searchText || "";
     const productType = route.query.productType || "";
+    const filteredResult = await axios.post(`/api/product/search?keyword=${searchText}&category=${productType}&page=${page}&size=${size}`, productFilter.value);
+    products.value = [];
+    products.value = filteredResult.data.data.content;
+    totalProducts.value = 0;
+    totalProducts.value = filteredResult.data.data.totalElements;
+    let filtered = [...products.value];
 
     if (searchText && !productType) {
       filtered = filtered.filter((prd) =>
@@ -219,8 +225,8 @@ export const useProductFilterBackStore = defineStore("product_filter", () => {
         break;
       default:
     }
-    return filtered;
-  });
+    products.value = filtered;
+  };
 
   function reset() {
     const defaults = getDefaultState();
@@ -252,6 +258,7 @@ export const useProductFilterBackStore = defineStore("product_filter", () => {
     handleResetFilter,
     selectVal,
     searchFilteredItems,
+    searchProducts,
     reset
   };
   {
