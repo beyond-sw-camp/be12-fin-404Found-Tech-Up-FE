@@ -19,7 +19,7 @@
                           Showing 1–{{
                             store.searchFilteredItems?.slice(0, perView).length
                           }}
-                          of {{ product_data.length }} results
+                          of {{ store.totalProducts }} results
                         </p>
                       </div>
                     </div>
@@ -44,7 +44,7 @@
             <div class="text-center">
               <button v-if="
                 store.searchFilteredItems &&
-                perView < store.searchFilteredItems.length
+                perView < store.totalProducts
               " @click="handlePerView" type="button" class="btn-loadmore tp-btn tp-btn-border tp-btn-border-primary">
                 Load More Products
               </button>
