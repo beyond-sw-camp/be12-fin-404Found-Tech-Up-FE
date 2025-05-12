@@ -26,8 +26,6 @@ const route = useRoute();
 const router = useRouter();
 const store = useProductFilterBackStore();
 
-//onMounted(store.fetchProducts);
-
 const categories = computed(() => store.categories);
 const products = computed(() => store.products);
 

@@ -19,30 +19,22 @@
                           Showing 1–{{
                             store.searchFilteredItems?.slice(0, perView).length
                           }}
-                          of {{ product_data.length }} results
+                          of {{ store.totalProducts }} results
                         </p>
                       </div>
                     </div>
                   </div>
                   <div class="col-xl-6">
-                    <shop-sidebar-filter-select
-                      @handle-select-filter="store.handleSelectFilter"
-                    />
+                    <shop-sidebar-filter-select @handle-select-filter="store.handleSelectFilter" />
                   </div>
                 </div>
               </div>
               <div class="tp-shop-items-wrapper tp-shop-item-primary">
                 <div>
                   <div class="row infinite-container">
-                    <div
-                      v-for="item in store.searchFilteredItems?.slice(0,perView)"
-                      :key="item.idx"
-                      class="col-xl-4 col-md-6 col-sm-6 infinite-item"
-                    >
-                      <product-fashion-product-item
-                        :item="item"
-                        :spacing="true"
-                      />
+                    <div v-for="item in store.searchFilteredItems?.slice(0, perView)" :key="item.idx"
+                      class="col-xl-4 col-md-6 col-sm-6 infinite-item">
+                      <product-fashion-product-item :item="item" :spacing="true" />
                     </div>
                   </div>
                 </div>
@@ -50,15 +42,10 @@
             </div>
 
             <div class="text-center">
-              <button
-                v-if="
-                  store.searchFilteredItems &&
-                  perView < store.searchFilteredItems.length
-                "
-                @click="handlePerView"
-                type="button"
-                class="btn-loadmore tp-btn tp-btn-border tp-btn-border-primary"
-              >
+              <button v-if="
+                store.searchFilteredItems &&
+                perView < store.totalProducts
+              " @click="handlePerView" type="button" class="btn-loadmore tp-btn tp-btn-border tp-btn-border-primary">
                 Load More Products
               </button>
 
@@ -81,6 +68,8 @@ import { useProductFilterBackStore } from "@/pinia/useProductFilterBackStore";
 
 let perView = ref(9);
 const store = useProductFilterBackStore();
+
+onMounted(store.searchProducts);
 
 function handlePerView() {
   perView.value = perView.value + 3;

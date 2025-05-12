@@ -4,6 +4,7 @@ import { useRoute, useRouter } from "vue-router";
 import axios from "axios";
 import { formatString } from '@/utils/index';
 import PriceFilter from "../components/shop/sidebar/price-filter.vue";
+import { navigateTo } from "nuxt/app";
 
 export const useProductFilterBackStore = defineStore("product_filter", () => {
   const route = useRoute();
@@ -45,13 +46,13 @@ export const useProductFilterBackStore = defineStore("product_filter", () => {
   );
 
   // Axios를 이용해 백엔드 API에서 제품 목록을 가져오는 함수
-  async function fetchProducts(page = 0, size = 10) {
+  async function fetchProducts(category = '', page = 0, size = 10) {
     try {
       currentPage.value = page
       pageSize.value    = size
       const config = useRuntimeConfig()
       const response = await axios.get(
-        `/api/product/list?page=${page}&size=${size}`,
+        `/api/product/list?category=${category}&page=${page}&size=${size}`,
         { baseURL: config.public.apiBaseUrl }
       )
       const pageData = response.data.data
@@ -118,6 +119,11 @@ export const useProductFilterBackStore = defineStore("product_filter", () => {
     maxProductPrice.value = productFilter.value.maxPrice;
     currentPage.value = page+1;
     console.log("필터 종료");
+    if (productFilter.value.category === '') {
+      navigateTo("/shop")
+    } else {
+      navigateTo(`/shop?category=${productFilter.value.category}`);
+    }
   };
 
 
@@ -181,10 +187,16 @@ export const useProductFilterBackStore = defineStore("product_filter", () => {
   */
 
   // 검색 필터: route 쿼리 값(searchText, productType 등)을 사용
-  const searchFilteredItems = computed(() => {
-    let filtered = [...products.value];
+  let searchFilteredItems = ref([]);
+  const searchProducts = async () => {
     const searchText = route.query.searchText || "";
     const productType = route.query.productType || "";
+    const filteredResult = await axios.post(`/api/product/search?keyword=${searchText}&category=${productType}&page=${page}&size=${size}`, productFilter.value);
+    products.value = [];
+    products.value = filteredResult.data.data.content;
+    totalProducts.value = 0;
+    totalProducts.value = filteredResult.data.data.totalElements;
+    let filtered = [...products.value];
 
     if (searchText && !productType) {
       filtered = filtered.filter((prd) =>
@@ -213,8 +225,8 @@ export const useProductFilterBackStore = defineStore("product_filter", () => {
         break;
       default:
     }
-    return filtered;
-  });
+    products.value = filtered;
+  };
 
   function reset() {
     const defaults = getDefaultState();
@@ -246,6 +258,7 @@ export const useProductFilterBackStore = defineStore("product_filter", () => {
     handleResetFilter,
     selectVal,
     searchFilteredItems,
+    searchProducts,
     reset
   };
   {
