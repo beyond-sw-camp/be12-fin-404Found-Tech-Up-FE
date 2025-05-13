@@ -44,7 +44,7 @@
             <div class="text-center">
               <button v-if="
                 store.searchFilteredItems &&
-                perView < store.totalProducts
+                perView < storeRef.totalProducts.value
               " @click="handlePerView" type="button" class="btn-loadmore tp-btn tp-btn-border tp-btn-border-primary">
                 Load More Products
               </button>
@@ -64,9 +64,11 @@ useSeoMeta({ title: "Search Page" });
 
 import { ref } from "vue";
 import { useProductFilterBackStore } from "@/pinia/useProductFilterBackStore";
+import { storeToRefs } from "pinia";
 
 let perView = ref(9);
 const store = useProductFilterBackStore();
+const storeRef = storeToRefs(store);
 
 onMounted(async () => {
   await store.searchProducts();

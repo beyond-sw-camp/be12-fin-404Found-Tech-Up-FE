@@ -1,8 +1,9 @@
 <script lang="ts" setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useUserStore } from '@/pinia/useUserStore'; // Pinia 스토어 가져오기
 import { useCartStore } from "@/pinia/useCartStore";
 import { useWishlistStore } from '@/pinia/useWishlistStore';
+import { useRouter } from 'vue-router';
 
 const userStore = useUserStore(); // 스토어 초기화
 const cartStore = useCartStore();
@@ -105,6 +106,7 @@ onMounted(async () => {
 .tp-logout {
   font-size: 14px;
   color: var(--tp-common-black);
-  cursor: pointer; /* 마우스 오버 시 손가락 모양 표시 */
+  cursor: pointer;
+  /* 마우스 오버 시 손가락 모양 표시 */
 }
 </style>
