@@ -15,5 +15,5 @@
 
 useSeoMeta({ title: "Tech Up" });
 
-]
+
 </script>
