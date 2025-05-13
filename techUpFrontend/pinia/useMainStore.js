@@ -69,7 +69,7 @@ export const useMainStore = defineStore("main", () => {
   };
 
   const loadNewProduct = async () => {
-    const resp = await axios.get("/api/product/list?page=0&size=30");
+    const resp = await axios.get("/api/product/list?page=0&size=3");
     const page = resp.data.data;
     const list = Array.isArray(page.content)
       ? page.content
@@ -77,7 +77,6 @@ export const useMainStore = defineStore("main", () => {
 
     newProducts.value = list
       .sort((a, b) => b.idx - a.idx)
-      .slice(0, 3)
       .map((value) => ({
         idx: value.idx,
         category: value.category,
@@ -146,6 +145,7 @@ export const useMainStore = defineStore("main", () => {
 
   onMounted(async () => {
     await Promise.all([
+      loadSuggestionProducts(),
       loadNewProduct(),
       loadTopWishlist(),
       loadTopSales(),

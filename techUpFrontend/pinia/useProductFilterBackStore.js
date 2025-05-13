@@ -52,7 +52,7 @@ export const useProductFilterBackStore = defineStore("product_filter", () => {
       pageSize.value    = size
       const config = useRuntimeConfig()
       const response = await axios.get(
-        `/api/product/list?category=${category}&page=${page}&size=${size}`,
+        `/api/product/list?category=${category}&page=${page*size}&size=${size}`,
         { baseURL: config.public.apiBaseUrl }
       )
       const pageData = response.data.data
@@ -189,8 +189,8 @@ export const useProductFilterBackStore = defineStore("product_filter", () => {
   // 검색 필터: route 쿼리 값(searchText, productType 등)을 사용
   let searchFilteredItems = ref([]);
   const searchProducts = async () => {
-    const searchText = route.query.searchText || "";
-    const productType = route.query.productType || "";
+    const searchText = route.query.searchText || " ";
+    const productType = route.query.productType || " ";
     const filteredResult = await axios.post(`/api/product/search?keyword=${searchText}&category=${productType}&page=${page}&size=${size}`, productFilter.value);
     products.value = [];
     products.value = filteredResult.data.data.content;
@@ -205,8 +205,8 @@ export const useProductFilterBackStore = defineStore("product_filter", () => {
     }
     if (searchText && productType) {
       filtered = filtered.filter((prd) => {
-        return (prd.category || "").toLowerCase() === productType.toLowerCase();
-      }).filter(p => (p.name || "").toLowerCase().includes(searchText.toLowerCase()));
+        return (prd.category || " ").toLowerCase() === productType.toLowerCase();
+      }).filter(p => (p.name || " ").toLowerCase().includes(searchText.toLowerCase()));
     }
     switch (selectVal.value) {
       case "default-sorting":
@@ -236,7 +236,7 @@ export const useProductFilterBackStore = defineStore("product_filter", () => {
   }
 
   onMounted(async () => {
-    await fetchProducts(route.query.category ? route.query.category : '',0,10);
+    // await fetchProducts(route.query.category ? route.query.category : '',0,10);
   });
 
   // route의 변경 감지 (필요에 따라 리셋 등 처리)

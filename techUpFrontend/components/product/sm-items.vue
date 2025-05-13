@@ -13,11 +13,7 @@
               </h3>
             </div>
             <div class="tp-product-sm-wrapper mr-20">
-              <ProductSmItem
-                v-for="item in newProducts"
-                :key="item.idx"
-                :item="item"
-              />
+              <ProductSmItem v-for="item in newProducts" :key="item.idx" :item="item" />
             </div>
           </div>
         </div>
@@ -32,11 +28,7 @@
               </h3>
             </div>
             <div class="tp-product-sm-wrapper mr-20">
-              <ProductSmItem
-                v-for="item in topWishlistProduct"
-                :key="item.idx"
-                :item="item"
-              />
+              <ProductSmItem v-for="item in topWishlistProduct" :key="item.idx" :item="item" />
             </div>
           </div>
         </div>
@@ -51,11 +43,7 @@
               </h3>
             </div>
             <div class="tp-product-sm-wrapper mr-20">
-              <ProductSmItem
-                v-for="item in topSalesProduct"
-                :key="item.idx"
-                :item="item"
-              />
+              <ProductSmItem v-for="item in topSalesProduct" :key="item.idx" :item="item" />
             </div>
           </div>
         </div>
@@ -70,14 +58,15 @@ import { onMounted } from 'vue'
 import { useMainStore } from '@/pinia/useMainStore'
 import { storeToRefs } from 'pinia'
 
-const mainStore = useMainStore()
-const { newProducts, topWishlistProduct, topSalesProduct } = storeToRefs(mainStore)
+const mainStore = useMainStore();
+let { newProducts, topWishlistProduct, topSalesProduct } = storeToRefs(mainStore)
 
+/*
 onMounted(async () => {
   await Promise.all([
     mainStore.loadNewProduct(),
     mainStore.loadTopWishlist(),
     mainStore.loadTopSales()
   ])
-})
+})*/
 </script>
