@@ -25,6 +25,7 @@ import Slider from '@vueform/slider';
 import '@vueform/slider/themes/default.css';
 import { useProductFilterBackStore } from '@/pinia/useProductFilterBackStore';
 import { useRoute } from 'vue-router';
+import { navigateTo } from 'nuxt/app';
 
 const store = useProductFilterBackStore();
 const route = useRoute();
