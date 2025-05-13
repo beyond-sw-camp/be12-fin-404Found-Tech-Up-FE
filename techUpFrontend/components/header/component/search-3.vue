@@ -49,7 +49,6 @@ export default {
       if (!searchText.value && !productType.value) {
         return;
       } else if (searchText.value && productType.value) {
-        await productStore
         router.push(`/search?searchText=${searchText.value}&productType=${productType.value}`);
       } else if (searchText.value && !productType.value) {
         router.push(`/search?searchText=${searchText.value}`);

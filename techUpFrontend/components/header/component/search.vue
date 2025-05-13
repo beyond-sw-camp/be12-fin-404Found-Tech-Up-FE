@@ -35,7 +35,6 @@ export default {
     const router = useRouter();
     const searchText = ref("");
     // 초기값을 빈 문자열로 설정하여 기본 옵션("Select Category")이 표시되게 함
-    const utilityStore = useUtilityStore();
     const productType = ref("");
 
     const changeHandler = (e) => {
