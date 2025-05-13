@@ -37,7 +37,7 @@ export const useProductBackStore = defineStore("productDetail", () => {
   async function fetchAllProducts(page = 0, size = 1000) {
     const config = useRuntimeConfig()
     const res = await axios.get(
-      `/api/product/list?category=%20&page=${page}&size=${size}`,
+      `/api/product/list?page=${page}&size=${size}`,
       { baseURL: config.public.apiBaseUrl }
     )
     allProducts.value = res.data?.data?.content || []
