@@ -52,7 +52,7 @@ export const useProductFilterBackStore = defineStore("product_filter", () => {
       pageSize.value    = size
       const config = useRuntimeConfig()
       const response = await axios.get(
-        `/api/product/list?category=${category}&page=${page}&size=${size}`,
+        `/api/product/list?category=${category}&page=${page*size}&size=${size}`,
         { baseURL: config.public.apiBaseUrl }
       )
       const pageData = response.data.data

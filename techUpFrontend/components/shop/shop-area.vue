@@ -62,7 +62,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import { useProductFilterBackStore } from '@/pinia/useProductFilterBackStore'
 import { nextTick } from 'vue'
 import { useRoute } from 'vue-router';
@@ -104,19 +104,21 @@ const pagesInBlock = computed(() => {
   for (let p = blockStart.value; p <= blockEnd.value; p++) {
     pages.push(p)
   }
-  return pages
+  return pages;
 })
+
+watch(() => category.value, () => { });
 
 // fetch the first page on mount
 onMounted(() => {
-  store.fetchProducts(0, ITEMS_PER_PAGE)
+  //store.fetchProducts(0, ITEMS_PER_PAGE)
 })
 
 async function changePage(page) {
   if (page === currentPage.value) return
   currentPage.value = page
   window.scrollTo({ top: 0, behavior: 'smooth' })
-  await store.fetchProducts(category.value, page - 1, ITEMS_PER_PAGE)
+  await store.fetchProducts(route.query.category, page - 1, ITEMS_PER_PAGE)
   await nextTick()
 }
 </script>
