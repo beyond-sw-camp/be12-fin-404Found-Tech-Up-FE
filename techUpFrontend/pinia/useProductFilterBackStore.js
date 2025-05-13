@@ -205,8 +205,8 @@ export const useProductFilterBackStore = defineStore("product_filter", () => {
     }
     if (searchText && productType) {
       filtered = filtered.filter((prd) => {
-        return (prd.category || " ").toLowerCase() === productType.toLowerCase();
-      }).filter(p => (p.name || " ").toLowerCase().includes(searchText.toLowerCase()));
+        return (prd.category || "").toLowerCase() === productType.toLowerCase();
+      }).filter(p => (p.name || "").toLowerCase().includes(searchText.toLowerCase()));
     }
     switch (selectVal.value) {
       case "default-sorting":
