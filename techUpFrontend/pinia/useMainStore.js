@@ -77,7 +77,6 @@ export const useMainStore = defineStore("main", () => {
 
     newProducts.value = list
       .sort((a, b) => b.idx - a.idx)
-      .slice(0, 3)
       .map((value) => ({
         idx: value.idx,
         category: value.category,
@@ -146,6 +145,7 @@ export const useMainStore = defineStore("main", () => {
 
   onMounted(async () => {
     await Promise.all([
+      loadSuggestionProducts(),
       loadNewProduct(),
       loadTopWishlist(),
       loadTopSales(),
