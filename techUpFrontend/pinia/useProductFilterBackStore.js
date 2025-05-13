@@ -46,7 +46,7 @@ export const useProductFilterBackStore = defineStore("product_filter", () => {
   );
 
   // Axios를 이용해 백엔드 API에서 제품 목록을 가져오는 함수
-  async function fetchProducts(category = '', page = 0, size = 10) {
+  async function fetchProducts(category = ' ', page = 0, size = 10) {
     try {
       currentPage.value = page
       pageSize.value    = size
