@@ -12,5 +12,8 @@
 
 <script setup>
 
+
 useSeoMeta({ title: "Tech Up" });
+
+]
 </script>

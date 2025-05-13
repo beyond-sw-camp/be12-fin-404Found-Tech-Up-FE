@@ -110,8 +110,8 @@ const pagesInBlock = computed(() => {
 watch(() => category.value, () => { });
 
 // fetch the first page on mount
-onMounted(() => {
-  //store.fetchProducts(0, ITEMS_PER_PAGE)
+onMounted(async () => {
+  await productFilterBackStore.fetchProducts(route.query.category ? route.query.category : '', 0, 10);
 })
 
 async function changePage(page) {

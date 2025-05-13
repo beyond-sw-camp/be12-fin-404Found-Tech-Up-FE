@@ -63,7 +63,6 @@
 useSeoMeta({ title: "Search Page" });
 
 import { ref } from "vue";
-import product_data from "@/data/product-data";
 import { useProductFilterBackStore } from "@/pinia/useProductFilterBackStore";
 
 let perView = ref(9);
@@ -71,7 +70,7 @@ const store = useProductFilterBackStore();
 
 onMounted(async () => {
   await store.searchProducts();
-);
+});
 
 function handlePerView() {
   perView.value = perView.value + 3;
