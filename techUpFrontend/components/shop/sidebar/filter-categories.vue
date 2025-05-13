@@ -35,5 +35,6 @@ async function selectCategory(slug) {
   else delete q.category;
   store.productFilter.category = slug.toUpperCase();
   await store.filterProducts(0, 10);
+  navigateTo(`/shop?category=${slug}`);
 }
 </script>

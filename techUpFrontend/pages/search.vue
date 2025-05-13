@@ -32,7 +32,7 @@
               <div class="tp-shop-items-wrapper tp-shop-item-primary">
                 <div>
                   <div class="row infinite-container">
-                    <div v-for="item in store.searchFilteredItems?.slice(0, perView)" :key="item.name"
+                    <div v-for="item in store.searchFilteredItems?.slice(0, perView)" :key="item.idx"
                       class="col-xl-4 col-md-6 col-sm-6 infinite-item">
                       <product-fashion-product-item :item="item" :spacing="true" />
                     </div>
@@ -69,10 +69,6 @@ import { storeToRefs } from "pinia";
 let perView = ref(9);
 const store = useProductFilterBackStore();
 const storeRef = storeToRefs(store);
-
-onMounted(async () => {
-  await store.searchProducts();
-});
 
 function handlePerView() {
   perView.value = perView.value + 3;
