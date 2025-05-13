@@ -24,10 +24,11 @@
 import Slider from '@vueform/slider';
 import '@vueform/slider/themes/default.css';
 import { useProductFilterBackStore } from '@/pinia/useProductFilterBackStore';
+import { useRoute } from 'vue-router';
 
 const store = useProductFilterBackStore();
-const router = useRouter();
 const route = useRoute();
+const category = ref(route.query.category);
 
 onMounted(() => {
   if (route.query.minPrice && route.query.maxPrice) {
@@ -41,10 +42,12 @@ onMounted(() => {
 async function handlePrice() {
   const price_query = {
     minPrice: store.priceValues[0],
-    maxPrice: store.priceValues[1]
+    maxPrice: store.priceValues[1],
+    category: category.value ? category.value : ''
   };
   store.productFilter.maxPrice = price_query.maxPrice;
   store.productFilter.minPrice = price_query.minPrice;
   await store.filterProducts(0, 10);
+  navigateTo('/shop' + (category.value ? `?category=${category.value}` : ''));
 }
 </script>

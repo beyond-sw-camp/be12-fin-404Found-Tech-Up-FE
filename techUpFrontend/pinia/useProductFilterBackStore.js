@@ -237,6 +237,7 @@ export const useProductFilterBackStore = defineStore("product_filter", () => {
 
   onMounted(async () => {
     // await fetchProducts(route.query.category ? route.query.category : '',0,10);
+    await searchProducts();
   });
 
   // route의 변경 감지 (필요에 따라 리셋 등 처리)
