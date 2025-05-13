@@ -59,7 +59,7 @@ export const useMainStore = defineStore("main", () => {
       console.warn("Could not load recommendations, falling back", err);
     }
   
-    const listRes = await axios.get("/api/product/list?category=&page=0&size=8", {
+    const listRes = await axios.get("/api/product/list?page=0&size=8", {
       baseURL: config.public.apiBaseUrl,
     });
     const page = listRes.data.data;
@@ -69,7 +69,7 @@ export const useMainStore = defineStore("main", () => {
   };
 
   const loadNewProduct = async () => {
-    const resp = await axios.get("/api/product/list?category=&page=0&size=30");
+    const resp = await axios.get("/api/product/list?page=0&size=30");
     const page = resp.data.data;
     const list = Array.isArray(page.content)
       ? page.content
