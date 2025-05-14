@@ -77,4 +77,7 @@ async function handlePerView() {
   await store.searchProducts(0, perView.value);
 }
 
+onMounted(async () => {
+  await store.searchProducts(0, 9);
+})
 </script>
