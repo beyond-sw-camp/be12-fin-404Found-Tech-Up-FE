@@ -21,6 +21,7 @@
 import { onMounted, computed } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useProductFilterBackStore } from "@/pinia/useProductFilterBackStore";
+import { navigateTo } from 'nuxt/app';
 
 const route = useRoute();
 const router = useRouter();
