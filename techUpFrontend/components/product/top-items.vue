@@ -30,11 +30,12 @@
           로딩 중...
         </div>
       </div>
-      <div v-else class="row">
+      <div v-else></div>
+      <div class="row">
         <div class="col-xl-12">
           <div class="tp-product-tab-content">
             <div class="row">
-              <div v-for="(item, i) in storeRef.suggestion.value" :key="i" class="col-xl-3 col-lg-3 col-sm-6">
+              <div v-for="item in storeRef.suggestion.value" :key="item.idx" class="col-xl-3 col-lg-3 col-sm-6">
                 <ProductItem :item="item" />
               </div>
             </div>
