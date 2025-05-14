@@ -19,7 +19,7 @@
                       <div class="tp-shop-top-result">
                         <p>
                           Showing 1–{{
-                            store.products?.slice(0, perView).length
+                            store.searchResult?.slice(0, perView).length
                           }}
                           of {{ store.totalProducts }} results
                         </p>
@@ -34,7 +34,7 @@
               <div class="tp-shop-items-wrapper tp-shop-item-primary">
                 <div>
                   <div class="row infinite-container">
-                    <div v-for="item in store.products?.slice(0, perView)" :key="item.idx"
+                    <div v-for="item in store.searchResult?.slice(0, perView)" :key="item.idx"
                       class="col-xl-4 col-md-6 col-sm-6 infinite-item">
                       <product-fashion-product-item :item="item" :spacing="true" />
                     </div>
@@ -45,7 +45,7 @@
 
             <div class="text-center">
               <button v-if="
-                store.products &&
+                store.searchResult &&
                 perView < storeRef.totalProducts.value
               " @click="handlePerView" type="button" class="btn-loadmore tp-btn tp-btn-border tp-btn-border-primary">
                 Load More Products
@@ -77,7 +77,4 @@ async function handlePerView() {
   await store.searchProducts(0, perView.value);
 }
 
-onMounted(async () => {
-  await store.searchProducts(0, 9);
-})
 </script>
