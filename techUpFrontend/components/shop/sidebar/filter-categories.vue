@@ -21,6 +21,7 @@
 import { onMounted, computed } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useProductFilterBackStore } from "@/pinia/useProductFilterBackStore";
+import { navigateTo } from 'nuxt/app';
 
 const route = useRoute();
 const router = useRouter();
@@ -35,5 +36,6 @@ async function selectCategory(slug) {
   else delete q.category;
   store.productFilter.category = slug.toUpperCase();
   await store.filterProducts(0, 10);
+  navigateTo(`/shop?category=${slug}`);
 }
 </script>
