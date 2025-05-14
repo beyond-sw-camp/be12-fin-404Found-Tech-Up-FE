@@ -125,33 +125,6 @@ pipeline {
             }
         }
 
-#        stage('Deploy to EC2') {
-#            when {
-#                expression { env.GIT_BRANCH == 'origin/main' }
-#            }
-#            steps {
-#                script {
-#                    echo "MODIFY DOCKER-COMPOSE.YML"
-#                    sh """
-#                        sed -i 's|mstar228/techup-frontend:latest|mstar228/techup-frontend:${IMAGE_TAG}|' ${WORKSPACE}/techUpFrontend/docker-compose.yml
-#                    """
-#
-#                    echo "SCP DOCKER-COMPOSE.YML"
-#                    sh """
-#                        ssh -o StrictHostKeyChecking=no ${EC2_HOST} "[ -f /home/ubuntu/docker-compose.yml ] && echo 'File exists, overwriting' || echo 'File does not exist'"
-#                        scp -o StrictHostKeyChecking=no ${WORKSPACE}/techUpFrontend/docker-compose.yml ${EC2_HOST}:/home/ubuntu/docker-compose.yml
-#                    """
-#
-#                    echo "RUN DOCKER-COMPOSE"
-#                    sh """
-#                        ssh -o StrictHostKeyChecking=no ${EC2_HOST} <<'EOF'
-#                        docker-compose -f /home/ubuntu/docker-compose.yml down  # 기존 컨테이너 중지 및 삭제
-#                        docker-compose -f /home/ubuntu/docker-compose.yml up -d  # 새 컨테이너 실행
-#                    """
-#                }
-#            }
-#        }
-
         stage('Determine Deploy Color') {
             when {
                 expression { env.GIT_BRANCH == 'origin/main' }
