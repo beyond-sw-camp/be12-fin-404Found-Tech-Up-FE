@@ -72,7 +72,7 @@ let perView = ref(9);
 const store = useProductFilterBackStore();
 const storeRef = storeToRefs(store);
 
-function handlePerView() {
+async function handlePerView() {
   perView.value = perView.value + 3;
   await store.searchProducts(0, perView.value);
 }
