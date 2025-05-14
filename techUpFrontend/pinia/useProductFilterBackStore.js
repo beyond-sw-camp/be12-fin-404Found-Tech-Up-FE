@@ -36,7 +36,7 @@ export const useProductFilterBackStore = defineStore("product_filter", () => {
   const pageSize      = ref(10)
 
   // 백엔드 API에서 불러온 상품 데이터를 저장하는 상태
-  const products = ref([]);
+  let products = ref([]);
 
   const categories = computed(() =>
     PARENT_CATEGORIES.map((parent, i) => ({
@@ -245,8 +245,7 @@ export const useProductFilterBackStore = defineStore("product_filter", () => {
   }
 
   onMounted(async () => {
-    // await fetchProducts(route.query.category ? route.query.category : '',0,10);
-    await searchProducts();
+    // await fetchProducts(route.query.category ? route.query.category : ' ',0,10);
     isLoading.value = false;
   });
 

@@ -112,7 +112,7 @@ watch(() => category.value, () => { });
 
 // fetch the first page on mount
 onMounted(async () => {
-  await store.fetchProducts(route.query.category ? route.query.category : '', 0, 10);
+  await store.fetchProducts(route.query.category ? route.query.category : ' ', 0, 10);
 })
 
 async function changePage(page) {
