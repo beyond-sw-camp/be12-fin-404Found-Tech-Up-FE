@@ -25,7 +25,7 @@ export const useMainStore = defineStore("main", () => {
     };
   }
 
-  let suggestion = ref(product_data.filter((value) => value.productType === 'electronics').slice(0, 8));
+  let suggestion = ref([]);
 
   let newProducts = ref([]);
   let topWishlistProduct = ref([]);

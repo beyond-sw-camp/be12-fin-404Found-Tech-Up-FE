@@ -9,7 +9,7 @@
               <div class="tp-header-info d-flex align-items-center">
                 <div class="tp-header-info-item">
                   <span>
-                  <svg-facebook />
+                    <svg-facebook />
                   </span> 7500k Followers
                 </div>
                 <div class="tp-header-info-item">
@@ -80,15 +80,13 @@
                       </button>
                     </div>
                     <div class="tp-header-action-item d-none d-lg-block">
-        <nuxt-link to="/profile" class="tp-header-action-btn">
-          <SvgEmail />
-          <span
-            class="tp-header-action-badge"
-          >
-            {{ notificationStore.unreadCount }}
-          </span>
-        </nuxt-link>
-      </div>
+                      <nuxt-link to="/profile" class="tp-header-action-btn">
+                        <SvgEmail />
+                        <span class="tp-header-action-badge">
+                          {{ notificationStore.unreadCount }}
+                        </span>
+                      </nuxt-link>
+                    </div>
                     <div class="tp-header-action-item tp-header-hamburger mr-20 d-xl-none">
                       <button @click="utilsStore.handleOpenMobileMenu()" type="button" class="tp-offcanvas-open-btn">
                         <svg-menu-icon />
@@ -114,13 +112,15 @@
 </template>
 
 <script setup>
-const router = useRouter();
-const { isSticky } = useSticky();
 import { useCartStore } from '@/pinia/useCartStore';
 import { useWishlistStore } from '@/pinia/useWishlistStore';
 import { useUtilityStore } from '@/pinia/useUtilityStore';
 
 import { useNotificationStore } from '@/pinia/useNotificationStore'
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+const { isSticky } = useSticky();
 const notificationStore = useNotificationStore()
 
 onMounted(() => {
