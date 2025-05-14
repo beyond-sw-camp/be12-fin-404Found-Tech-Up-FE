@@ -9,13 +9,12 @@
     </div>
 
     <!-- status -->
+    <!--
     <div class="tp-shop-widget mb-50">
       <h3 class="tp-shop-widget-title">이벤트별 검색</h3>
-      <!-- filter status start -->
       <shop-sidebar-filter-status />
-      <!-- filter status end -->
     </div>
-
+    -->
     <!-- categories -->
     <div class="tp-shop-widget mb-50">
       <h3 class="tp-shop-widget-title">카테고리</h3>
