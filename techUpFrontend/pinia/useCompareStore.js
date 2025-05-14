@@ -176,18 +176,13 @@ export const useCompareStore = defineStore("compare_product", () => {
 
   const loadSuggestionProducts = async (products) => {
     let result = products;
-    console.log(result);
+    //console.log(result);
     for await (let product of products) {
       try {
-        const rec = await axios.post("http://recommender-svc:8000/recommend", { product_name: product.name });
-        const recs = rec.data.similar_products;
-        console.log(recs);
-        if (Array.isArray(recs) && recs.length) {
-          const info = await axios.get(`/api/product/search?keyword=${recs[0].name}&page=0&size=1`);
-          console.log(`추천 대상: ${JSON.stringify(info.data.data.content)}`);
-          const page = info.data.data.content;
-          result = result.concat(page);
-        }
+        const rec = await axios.post("/api/recommend/content-based", { product_idx: product.idx, result_num: 1 });
+        const recs = rec.data.data;
+        //console.log(recs);
+        result = result.concat(recs);
       } catch(e) {
         console.log(e);
         return result;
