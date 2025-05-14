@@ -52,7 +52,7 @@ export const useProductFilterBackStore = defineStore("product_filter", () => {
       pageSize.value    = size
       const config = useRuntimeConfig()
       const response = await axios.get(
-        `/api/product/list?category=${category}&page=${page*size}&size=${size}`,
+        `/api/product/list?category=${category}&page=${page}&size=${size}`,
         { baseURL: config.public.apiBaseUrl }
       )
       const pageData = response.data.data
@@ -188,7 +188,7 @@ export const useProductFilterBackStore = defineStore("product_filter", () => {
 
   // 검색 필터: route 쿼리 값(searchText, productType 등)을 사용
   let searchFilteredItems = ref([]);
-  const searchProducts = async () => {
+  const searchProducts = async (page = 0, size= 10) => {
     const searchText = route.query.searchText || " ";
     const productType = route.query.productType || " ";
     const filteredResult = await axios.post(`/api/product/search?keyword=${searchText}&category=${productType}&page=${page}&size=${size}`, productFilter.value);
