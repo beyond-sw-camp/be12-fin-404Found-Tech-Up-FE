@@ -8,6 +8,8 @@
     <section class="tp-shop-area pb-120">
       <div class="container">
         <div class="row">
+          <div v-if="store.isLoading">검색 중...</div>
+          <div v-else></div>
           <div class="col-xl-12 col-lg-12">
             <div class="tp-shop-main-wrapper">
               <div class="tp-shop-top mb-45">

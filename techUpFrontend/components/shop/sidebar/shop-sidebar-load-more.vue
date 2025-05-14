@@ -32,17 +32,18 @@
       <!-- filter top-product end -->
     </div>
 
-    <!-- brand -->
+    <!-- brand(하드 코딩?) -->
+    <!--
     <div class="tp-shop-widget mb-50">
       <h3 class="tp-shop-widget-title">인기 제품</h3>
       <!-- filter brand start -->
-      <shop-sidebar-filter-brand />
-      <!-- filter brand end -->
-    </div>
-
-    <!-- reset filter start -->
-    <shop-sidebar-reset-filter />
-    <!-- reset filter end -->
+    <shop-sidebar-filter-brand />
+    <!-- filter brand end -->
+  </div>
+  -->
+  <!-- reset filter start -->
+  <shop-sidebar-reset-filter />
+  <!-- reset filter end -->
   </div>
 </template>
 
