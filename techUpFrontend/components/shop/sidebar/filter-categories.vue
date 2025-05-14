@@ -3,13 +3,13 @@
     <ul>
       <li>
         <a @click.prevent="selectCategory('')" :class="{ active: !route.query.category }">
-          전체 카테고리
+          <button>전체 카테고리</button>
           <!-- <span>{{ products.length }}</span> -->
         </a>
       </li>
       <li v-for="cat in categories" :key="cat.id">
         <a @click.prevent="selectCategory(cat.slug)" :class="{ active: route.query.category === cat.slug }">
-          {{ cat.parent }}
+          <button>{{ cat.parent }}</button>
           <!-- <span>{{ cat.products.length }}</span> -->
         </a>
       </li>

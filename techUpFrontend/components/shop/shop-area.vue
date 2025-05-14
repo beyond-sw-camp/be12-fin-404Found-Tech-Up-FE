@@ -7,7 +7,8 @@
         </div>
         <div :class="`${shop_no_side ? 'col-xl-12' : 'col-xl-9 col-lg-8'}`">
           <div class="tp-shop-main-wrapper">
-
+            <div v-if="store.isLoading">로딩 중...</div>
+            <div v-else></div>
             <!-- result count -->
             <div class="tp-shop-top-result mb-3">
               <p v-if="store.totalProducts">
