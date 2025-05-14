@@ -39,7 +39,7 @@
     <!-- filter brand start -->
     <!--<shop-sidebar-filter-brand />-->
     <!-- filter brand end -->
-    <!--</div>
+    <!--</div> -->
 
     <!-- reset filter start -->
     <shop-sidebar-reset-filter />
