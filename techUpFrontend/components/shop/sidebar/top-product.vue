@@ -5,7 +5,7 @@
         class="tp-shop-widget-product-item d-flex align-items-center">
         <div class="tp-shop-widget-product-thumb">
           <nuxt-link :href="`/product-details/${item.idx}`">
-            <img :src="item.product.img" alt="product-img" />
+            <img :src="item.img" alt="product-img" />
           </nuxt-link>
         </div>
         <div class="tp-shop-widget-product-content">
