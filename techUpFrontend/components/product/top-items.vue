@@ -25,7 +25,12 @@
           </div>
         </div>
       </div>
-      <div class="row">
+      <div v-if="storeRef.suggestion.value.length === 0">
+        <div class="col-xl-12" style="text-align: center;">
+          로딩 중...
+        </div>
+      </div>
+      <div v-else class="row">
         <div class="col-xl-12">
           <div class="tp-product-tab-content">
             <div class="row">
