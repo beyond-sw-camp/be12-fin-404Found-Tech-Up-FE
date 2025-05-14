@@ -11,11 +11,7 @@
         <div class="tp-shop-widget-product-content">
           <div class="tp-shop-widget-product-rating-wrapper d-flex align-items-center">
             <div class="tp-shop-widget-product-rating">
-              <span><svg-rating /></span>
-              <span><svg-rating /></span>
-              <span><svg-rating /></span>
-              <span><svg-rating /></span>
-              <span><svg-rating /></span>
+              별점:
             </div>
             <div class="tp-shop-widget-product-rating-number">
               <span>({{ item.rating }})</span>
