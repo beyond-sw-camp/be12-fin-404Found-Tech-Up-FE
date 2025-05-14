@@ -74,5 +74,10 @@ const storeRef = storeToRefs(store);
 
 function handlePerView() {
   perView.value = perView.value + 3;
+  await store.searchProducts(0, perView.value);
 }
+
+onMounted(async () => {
+  await store.searchProducts(0, 9);
+})
 </script>
