@@ -191,14 +191,14 @@ export const useProductFilterBackStore = defineStore("product_filter", () => {
   */
 
   // 검색 필터: route 쿼리 값(searchText, productType 등)을 사용
-
+  let searchResult = ref([]);
   const searchProducts = async (page = 0, size= 10) => {
     isLoading.value = true;
     const searchText = route.query.searchText || "";
     const productType = route.query.productType || "%20";
     const filteredResult = await axios.get(`/api/product/search?keyword=${searchText}&category=${productType}&page=${page}&size=${size}`, productFilter.value);
-    products.value = [];
-    products.value = filteredResult.data.data.content.map((value) => {
+    searchResult.value = [];
+    searchResult.value = filteredResult.data.data.content.map((value) => {
       try {
         value.img = value.images[0];
       } catch (e) {
@@ -208,7 +208,7 @@ export const useProductFilterBackStore = defineStore("product_filter", () => {
     });
     totalProducts.value = 0;
     totalProducts.value = filteredResult.data.data.totalElements;
-    let filtered = [...products.value];
+    let filtered = [...searchResult.value];
 
     if (searchText && !productType) {
       filtered = filtered.filter((prd) =>
@@ -237,7 +237,7 @@ export const useProductFilterBackStore = defineStore("product_filter", () => {
         break;
       default:
     }
-    products.value = filtered;
+    searchResult.value = filtered;
     isLoading.value = false;
   };
 
@@ -246,6 +246,7 @@ export const useProductFilterBackStore = defineStore("product_filter", () => {
     products.value = defaults.products;
     selectVal.value = defaults.selectVal;
     priceValues.value = defaults.priceValues;
+    searchResult.value = [];
   }
 
   onMounted(async () => {
@@ -264,6 +265,7 @@ export const useProductFilterBackStore = defineStore("product_filter", () => {
 
   return {
     isLoading,
+    searchResult,
     products,
     totalProducts,
     categories,
