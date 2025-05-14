@@ -20,6 +20,8 @@ export const useProductFilterBackStore = defineStore("product_filter", () => {
     };
   }
 
+  let isLoading = ref(true);
+
   let productFilter = ref({
     category: '',
     nameKeyword: '',
@@ -48,6 +50,7 @@ export const useProductFilterBackStore = defineStore("product_filter", () => {
   // Axios를 이용해 백엔드 API에서 제품 목록을 가져오는 함수
   async function fetchProducts(category = ' ', page = 0, size = 10) {
     try {
+      isLoading.value = true;
       currentPage.value = page
       pageSize.value    = size
       const config = useRuntimeConfig()
@@ -60,6 +63,7 @@ export const useProductFilterBackStore = defineStore("product_filter", () => {
                             ? pageData.content
                             : []
       totalProducts.value = pageData.totalElements
+      isLoading.value = false;
     } catch (err) {
       console.error("제품 데이터 API 호출 오류:", err)
       products.value     = []
@@ -107,7 +111,7 @@ export const useProductFilterBackStore = defineStore("product_filter", () => {
   };
 
 
-  // 필터링: 백엔드에서 불러온 products 배열 기반 필터링 처리
+  // 필터링: 백엔드에서 불러온 products 배열 기반 필터링 처리(프론트엔드 단에서 필터하는 액션)
   const filterProducts = async ( page = 0, size = 10) => {
     console.log(productFilter.value);
     const filteredResult = await axios.post(`/api/product/filter?page=${page}&size=${size}`, productFilter.value);
@@ -189,9 +193,10 @@ export const useProductFilterBackStore = defineStore("product_filter", () => {
   // 검색 필터: route 쿼리 값(searchText, productType 등)을 사용
   let searchFilteredItems = ref([]);
   const searchProducts = async (page = 0, size= 10) => {
+    isLoading.value = true;
     const searchText = route.query.searchText || " ";
     const productType = route.query.productType || " ";
-    const filteredResult = await axios.post(`/api/product/search?keyword=${searchText}&category=${productType}&page=${page}&size=${size}`, productFilter.value);
+    const filteredResult = await axios.get(`/api/product/search?keyword=${searchText}&category=${productType}&page=${page}&size=${size}`, productFilter.value);
     products.value = [];
     products.value = filteredResult.data.data.content;
     totalProducts.value = 0;
@@ -226,6 +231,7 @@ export const useProductFilterBackStore = defineStore("product_filter", () => {
       default:
     }
     products.value = filtered;
+    isLoading.value = false;
   };
 
   function reset() {
@@ -238,6 +244,7 @@ export const useProductFilterBackStore = defineStore("product_filter", () => {
   onMounted(async () => {
     // await fetchProducts(route.query.category ? route.query.category : '',0,10);
     await searchProducts();
+    isLoading.value = false;
   });
 
   // route의 변경 감지 (필요에 따라 리셋 등 처리)
@@ -249,6 +256,7 @@ export const useProductFilterBackStore = defineStore("product_filter", () => {
   );
 
   return {
+    isLoading,
     products,
     totalProducts,
     categories,
