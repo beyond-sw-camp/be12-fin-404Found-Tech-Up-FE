@@ -200,16 +200,20 @@ export const useProductFilterBackStore = defineStore("product_filter", () => {
     searchResult.value = [];
     searchResult.value = filteredResult.data.data.content.map((value) => {
       try {
-        value.img = value.images[0];
+        value.productIdx = value.idx;
+        value.images = value.images[0];
+        value.img = value.images;
       } catch (e) {
-        value.img = ""
+        value.productIdx = value.idx;
+        value.img = "";
+        value.images = "";
       }
       return value;
     });
     totalProducts.value = 0;
     totalProducts.value = filteredResult.data.data.totalElements;
     let filtered = [...searchResult.value];
-
+    /*
     if (searchText && !productType) {
       filtered = filtered.filter((prd) =>
         (prd.name || "").toLowerCase().includes((searchText || "").toLowerCase())
@@ -220,6 +224,7 @@ export const useProductFilterBackStore = defineStore("product_filter", () => {
         return (prd.category || "").toLowerCase() === productType.toLowerCase();
       }).filter(p => (p.name || "").toLowerCase().includes(searchText.toLowerCase()));
     }
+    */
     switch (selectVal.value) {
       case "default-sorting":
         break;
