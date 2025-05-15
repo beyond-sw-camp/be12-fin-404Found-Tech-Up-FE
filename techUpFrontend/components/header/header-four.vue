@@ -25,32 +25,32 @@
             <div class="col-xl-2 col-lg-2 col-6">
               <div class="tp-header-action d-flex align-items-center justify-content-end ml-50">
                 <div class="tp-header-action-item d-none d-sm-block">
-                  <button @click="utilityStore.handleOpenSearchBar()" type="button" class="tp-header-action-btn tp-search-open-btn">
+                  <button @click="utilityStore.handleOpenSearchBar()" type="button"
+                    class="tp-header-action-btn tp-search-open-btn">
                     <svg-search />
                   </button>
                 </div>
                 <div class="tp-header-action-item d-none d-sm-block">
                   <nuxt-link href="/wishlist" class="tp-header-action-btn">
                     <svg-wishlist />
-                    <span class="tp-header-action-badge">{{wishlistStore.wishlists.length}}</span>
+                    <span class="tp-header-action-badge">{{ wishlistStore.wishlists.length }}</span>
                   </nuxt-link>
                 </div>
                 <div class="tp-header-action-item d-none d-sm-block">
-                  <button @click="cartStore.handleCartOffcanvas" type="button" class="tp-header-action-btn cartmini-open-btn">
+                  <button @click="cartStore.handleCartOffcanvas" type="button"
+                    class="tp-header-action-btn cartmini-open-btn">
                     <svg-cart-bag />
                     <span class="tp-header-action-badge">{{ cartStore.totalPriceQuantity.quantity }}</span>
                   </button>
                 </div>
                 <div class="tp-header-action-item d-none d-lg-block">
-        <nuxt-link to="/profile" class="tp-header-action-btn">
-          <SvgEmail />
-          <span
-            class="tp-header-action-badge"
-          >
-            {{ notificationStore.unreadCount }}
-          </span>
-        </nuxt-link>
-      </div>
+                  <nuxt-link to="/profile" class="tp-header-action-btn">
+                    <SvgEmail />
+                    <span class="tp-header-action-badge">
+                      {{ notificationStore.unreadCount }}
+                    </span>
+                  </nuxt-link>
+                </div>
                 <div class="tp-header-action-item d-lg-none">
                   <button @click="utilityStore.handleOpenMobileMenu()" type="button" class="tp-offcanvas-open-btn">
                     <svg-menu-icon />
@@ -64,17 +64,20 @@
     </div>
   </header>
 
-   <!-- search bar start -->
-   <header-component-search3/>
+  <!-- search bar start -->
+  <header-component-search3 />
   <!-- search bar end -->
 
   <!-- cart offcanvas start -->
-  <offcanvas-cart-sidebar/>
+  <offcanvas-cart-sidebar />
   <!-- cart offcanvas end -->
 
-  <!-- cart offcanvas start -->
-  <!-- <offcanvas-mobile-sidebar product-type="jewelry"/> -->
-  <!-- cart offcanvas end -->
+  <!-- mobile menu start -->
+  <div v-if="utilityStore.openMobileMenus">
+    <header-component-mobile-menus style="position:sticky;z-index:164;float:left;" />
+  </div>
+  <div v-else></div>
+  <!-- mobile men end -->
 </template>
 
 <script>
@@ -85,7 +88,7 @@ import { useNotificationStore } from '@/pinia/useNotificationStore'
 
 const notificationStore = useNotificationStore();
 
-const {isSticky} = useSticky();
+const { isSticky } = useSticky();
 const utilityStore = useUtilityStore();
 const cartStore = useCartStore();
 const wishlistStore = useWishlistStore();
