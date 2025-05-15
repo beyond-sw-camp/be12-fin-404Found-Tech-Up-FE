@@ -192,7 +192,7 @@ export const useProductFilterBackStore = defineStore("product_filter", () => {
 
   // 검색 필터: route 쿼리 값(searchText, productType 등)을 사용
   let searchResult = ref([]);
-  const searchProducts = async (searchText = route.query.searchText || "%20", productType = route.query.productType || "%20",  page = 0, size= 10) => {
+  const searchProducts = async (searchText = "%20", productType = "%20",  page = 0, size= 10) => {
     isLoading.value = true;
     const filteredResult = await axios.get(`/api/product/search?keyword=${searchText}&category=${productType}&page=${page}&size=${size}`, productFilter.value);
     searchResult.value = [];
