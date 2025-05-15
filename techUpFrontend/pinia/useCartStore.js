@@ -180,6 +180,22 @@ export const useCartStore = defineStore("cart_product", () => {
     }
   }
 
+  async function clear_cart_without_asking() {
+    try {
+      const config = useRuntimeConfig();
+      const response = await axios.delete(
+        `/api/cart/clear`,
+        { baseURL: config.public.apiBaseUrl }
+      );
+      if (response.data && response.data.data) {
+        cart_products.value = [];
+        await fetchCartProducts();
+      }
+    } catch (error) {
+      toast.error("장바구니 비우기에 실패했습니다.");
+    }
+  }
+
   // 주문하기
   async function order(form, couponInfo, shippingMethod, paymentMethod) {
     if (cart_products.value.length === 0) {
@@ -276,8 +292,9 @@ export const useCartStore = defineStore("cart_product", () => {
 
           if (res.data && res.data.data) {
             // 결제 성공
-            toast.success("주문이 완료되었습니다.");
             router.push(`/order/${orderIdx}`);
+            toast.success("주문이 완료되었습니다.");
+            await clear_cart_without_asking();
           }
         }
       }
