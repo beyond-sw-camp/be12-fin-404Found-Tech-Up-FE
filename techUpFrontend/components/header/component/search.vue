@@ -28,8 +28,8 @@
 </template>
 
 <script>
-import { navigateTo } from "nuxt/app";
 import { ref } from "vue";
+import { useRouter } from "vue-router";
 
 export default {
   setup() {
@@ -46,15 +46,15 @@ export default {
       if (!searchText.value && !productType.value) {
         return;
       } else if (searchText.value && productType.value) {
-        navigateTo(
+        router.push(
           `/search?searchText=${searchText.value}&productType=${productType.value}`
         );
       } else if (searchText.value && !productType.value) {
-        navigateTo(`/search?searchText=${searchText.value}`);
+        router.push(`/search?searchText=${searchText.value}`);
       } else if (!searchText.value && productType.value) {
-        navigateTo(`/search?productType=${productType.value}`);
+        router.push(`/search?productType=${productType.value}`);
       } else {
-        navigateTo(`/search`);
+        router.push(`/search`);
       }
     };
 

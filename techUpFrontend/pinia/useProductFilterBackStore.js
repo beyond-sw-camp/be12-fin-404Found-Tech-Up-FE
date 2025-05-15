@@ -194,6 +194,7 @@ export const useProductFilterBackStore = defineStore("product_filter", () => {
   let searchResult = ref([]);
   const searchProducts = async (searchText, productType,  page = 0, size= 10) => {
     isLoading.value = true;
+    console.log(`searching ${searchText} in category ${productType}`);
     let filteredResult;
     if (!productType) {
       filteredResult = await axios.get(`/api/product/search?keyword=${searchText}&page=${page}&size=${size}`);

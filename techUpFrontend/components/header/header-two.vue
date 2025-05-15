@@ -118,7 +118,6 @@ import { useUtilityStore } from '@/pinia/useUtilityStore';
 
 import { useNotificationStore } from '@/pinia/useNotificationStore'
 import { useRouter } from 'vue-router';
-import { navigateTo } from 'nuxt/app';
 
 const router = useRouter();
 const { isSticky } = useSticky();
@@ -141,7 +140,7 @@ const handleSubmit = () => {
     return
   }
   else {
-    navigateTo(`/search?searchText=${searchText.value}`)
+    router.push(`/search?searchText=${searchText.value}`)
   }
 }
 </script>

@@ -36,7 +36,6 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useUtilityStore } from '@/pinia/useUtilityStore';
-import { navigateTo } from 'nuxt/app';
 
 export default {
   setup() {
@@ -50,13 +49,13 @@ export default {
       if (!searchText.value && !productType.value) {
         return;
       } else if (searchText.value && productType.value) {
-        navigateTo(`/search?searchText=${searchText.value}&productType=${productType.value}`);
+        router.push(`/search?searchText=${searchText.value}&productType=${productType.value}`);
       } else if (searchText.value && !productType.value) {
-        navigateTo(`/search?searchText=${searchText.value}`);
+        router.push(`/search?searchText=${searchText.value}`);
       } else if (!searchText.value && productType.value) {
-        navigateTo(`/search?productType=${productType.value}`);
+        router.push(`/search?productType=${productType.value}`);
       } else {
-        navigateTo(`/search`);
+        router.push(`/search`);
       }
     };
 
