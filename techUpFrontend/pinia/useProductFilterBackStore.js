@@ -194,8 +194,12 @@ export const useProductFilterBackStore = defineStore("product_filter", () => {
   let searchResult = ref([]);
   const searchProducts = async (searchText, productType,  page = 0, size= 10) => {
     isLoading.value = true;
-    if (!productType) productType = "%20";
-    const filteredResult = await axios.get(`/api/product/search?keyword=${searchText}&category=${productType}&page=${page}&size=${size}`, productFilter.value);
+    let filteredResult;
+    if (!productType) {
+      filteredResult = await axios.get(`/api/product/search?keyword=${searchText}&page=${page}&size=${size}`);
+    } else {
+      filteredResult = await axios.get(`/api/product/search?keyword=${searchText}&category=${productType}&page=${page}&size=${size}`);
+    }
     searchResult.value = [];
     searchResult.value = filteredResult.data.data.content.map((value) => {
       try {
