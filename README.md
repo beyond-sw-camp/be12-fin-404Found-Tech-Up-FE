@@ -68,7 +68,7 @@
 
 
 ## 📚 Tech-Up 데모 사이트 바로가기
-### [OOO](https://techup.kro.kr)</a>
+### [공개 버전 링크](https://techup.kro.kr)</a>
 <br><br>
 ## 🎨 Tech-Up 서비스 소개
 ![프로젝트 이미지]()
@@ -104,11 +104,13 @@
 ![프론트엔드 시스템 아키텍처 이미지]()<br><br>
 
 
-## 📚 프론트엔드 프로젝트 목표
-- `사용자 인터페이스(UI) 개발` : 직관적이고 반응형(Responsive) 디자인 구현
-- `사용자 경험(UX) 향상` : 최대한 사용자가 제공되는 서비스를 파악하기 쉽게 안내한다.
-- `프론트엔드 기술 활용` : HTML, CSS, JavaScript, 프레임워크(Vue 및 Nuxt.js 등)를 사용할 때 확장성 및 컴포넌트 파일 배치를 고려하여 프로젝트를 진행
-- `API 연동` : 백엔드와의 데이터 통신(fetch, axios 등)
+## 📚 백엔드 프로젝트 목표
+- `API 설계 및 개발` : 클라이언트(프론트엔드)에서 호출할 수 있는 REST/GraphQL API 제공
+- `비즈니스 로직 구현` : 사용자 요청을 처리하고 결과 반환
+- `DB 연동 및 관리` : 데이터베이스 모델 설계, CRUD 기능 구현
+- `보안 및 인증` : 로그인, 권한 관리, JWT/OAuth 등 인증 로직
+- `성능 최적화` : 안정적인 서버 운영을 위한 로직 구성
+- `예외 처리` : 안정적인 서버 운영을 위한 로직 구성
 <br>
 
 ## 📈 프로젝트 설계
@@ -127,7 +129,7 @@
 <details>
 <summary>회원가입</summary>
 
-![image](https://github.com/user-attachments/assets/6ef2e630-2ca7-4b7a-9a04-701e23910757)
+![회원가입 페이지지]()
 > 이메일, 비밀번호, 닉네임로 회원 가입을 한다.  
 > 이메일, 닉네임은 **중복이 불가능**하며, 비밀번호는 8자 이상의 영문 및 숫자여야 한다.
 > 계정 생성 스패밍을 막기 위해 이메일 인증을 해야 가입할 수 있다.
@@ -136,10 +138,10 @@
 <details>
 <summary>로그인</summary>
 
-![image](https://github.com/user-attachments/assets/56220ef1-c825-4e00-aebb-ee879074f307)
+![image]()
 > 일반 로그인, 소셜(Kakao) 로그인
 
-<img width="1361" alt="image" src="https://github.com/user-attachments/assets/15cb6985-03af-4fd5-a8f2-ac389420e747">
+![로그인 페이지]()
 
 > 소셜 로그인은 소셜로 로그인 한 후 로그인한 사용자 계정의 이름 및 이메일을 받아온다.
 > 소셜 로그인 사용자는 소셜 로그인으로만 로그인할 수 있다.
@@ -149,7 +151,7 @@
 <summary>검색</summary>
 
 ### 제품 검색
-![통합검색](https://github.com/user-attachments/assets/9e1d18b7-f0e5-4699-91c0-3ce32f73e78b)
+![통합검색]()
 > 헤더에 있는 검색창으로 제품 검색이 가능하다.  
 > 메인 페이지의 검색창은 카테고리별 제품 검색이 가능하다.
 > 검색 결과는 5가지 옵션으로 정렬하며, 페이지네이션을 통해 다음 제품 목록을 받아온다.
@@ -168,7 +170,7 @@
 > 사용자는 마이페이지 내에서 사이드바의 제품 정보 등록 페이지 링크를 눌러 내 제품 등록 페이지로 이동할 수 있다.
 > 자신의 부품 이름을 검색하여 찾은 부품을 내 부품으로 등록할 수 있다.
 ### 제공한 부품 정보를 바탕으로 제품 추천
-<img width="1368" alt="image" src="https://github.com/user-attachments/assets/6431a47f-6d68-4567-bf20-eed750fbc1b7">
+![비교 페이지]()
 
 > 페이지 상단의 양방향 화살표 로고를 누르면 제품 간 비교 페이지에 진입한다.
 > 사용자가 소유한 제품, 사용자가 위시리스트에 담은 제품과 추천 알고리즘에 의해 선정된 연관 부품을 5가지 카테고리(CPU, 그래픽 카드, RAM, SSD, 하드디스크)로 구분하여 볼 수 있다.
@@ -223,11 +225,11 @@
 <summary>커뮤니티</summary>
 
 ### 게시글 목록
-<img width="1363" alt="image" src="https://github.com/user-attachments/assets/22572d84-691d-4fc7-9b4a-b093908130cd">
+![커뮤니티 페이지지]()
 
 > ...
 ### 게시글 작성/수정/삭제
-<img width="1368" alt="image" src="https://github.com/user-attachments/assets/6431a47f-6d68-4567-bf20-eed750fbc1b7">
+![에디터]()
 
 > ...
 </details>
@@ -238,7 +240,7 @@
 
 
 ## 📂 백엔드, DevOps 프로젝트 폴더 바로가기
-### [📃 Backend](https://github.com/ddarahakit2025/be12-fin-template/tree/main/backend) <br>
-### [📃 Devops](https://github.com/ddarahakit2025/be12-fin-template/tree/main/devops)
+### [📃 Backend](https://github.com/beyond-sw-camp/be12-fin-404Found-Tech-Up-BE) <br>
+### [📃 Devops]()
 <br>
 
