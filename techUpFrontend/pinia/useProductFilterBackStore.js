@@ -213,7 +213,7 @@ export const useProductFilterBackStore = defineStore("product_filter", () => {
     totalProducts.value = 0;
     totalProducts.value = filteredResult.data.data.totalElements;
     let filtered = [...searchResult.value];
-
+    /*
     if (searchText && !productType) {
       filtered = filtered.filter((prd) =>
         (prd.name || "").toLowerCase().includes((searchText || "").toLowerCase())
@@ -224,6 +224,7 @@ export const useProductFilterBackStore = defineStore("product_filter", () => {
         return (prd.category || "").toLowerCase() === productType.toLowerCase();
       }).filter(p => (p.name || "").toLowerCase().includes(searchText.toLowerCase()));
     }
+    */
     switch (selectVal.value) {
       case "default-sorting":
         break;
