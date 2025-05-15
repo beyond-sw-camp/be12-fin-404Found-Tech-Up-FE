@@ -106,9 +106,12 @@
   <offcanvas-cart-sidebar />
   <!-- cart offcanvas end -->
 
-  <!-- cart offcanvas start -->
-  <!-- <offcanvas-mobile-sidebar product-type="fashion" /> -->
-  <!-- cart offcanvas end -->
+  <!-- mobile menu start -->
+  <div v-if="utilsStore.openMobileMenus">
+    <header-component-mobile-menus style="position:sticky;right:10%;z-index:164;float:right;background-color: white;" />
+  </div>
+  <div v-else></div>
+  <!-- mobile men end -->
 </template>
 
 <script setup>

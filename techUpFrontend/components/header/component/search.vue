@@ -30,6 +30,7 @@
 <script>
 import { navigateTo } from "nuxt/app";
 import { ref } from "vue";
+import { useRouter } from "vue-router";
 
 export default {
   setup() {

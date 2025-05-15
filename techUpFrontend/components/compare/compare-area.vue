@@ -612,7 +612,7 @@ const processFilter = async () => {
   }
   myRams.value = myRams.value.concat(compareStore.compare_ram_items);
   mySsds.value = deviceStore.registerList.filter((value) => value.category === "SSD");
-  if (myRams.value.length > 0) {
+  if (mySsds.value.length > 0) {
     mySsds.value.forEach((value) => value.mine = true);
     mySsds.value = await compareStore.loadSuggestionProducts(mySsds.value); // 추천 상품 삽입
   }
