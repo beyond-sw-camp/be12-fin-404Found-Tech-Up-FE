@@ -200,9 +200,13 @@ export const useProductFilterBackStore = defineStore("product_filter", () => {
     searchResult.value = [];
     searchResult.value = filteredResult.data.data.content.map((value) => {
       try {
-        value.img = value.images[0];
+        value.productIdx = value.idx;
+        value.images = value.images[0];
+        value.img = value.images;
       } catch (e) {
-        value.img = ""
+        value.productIdx = value.idx;
+        value.img = "";
+        value.images = "";
       }
       return value;
     });
