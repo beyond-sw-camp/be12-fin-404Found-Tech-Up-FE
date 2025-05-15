@@ -14,7 +14,7 @@
               별점:
             </div>
             <div class="tp-shop-widget-product-rating-number">
-              <span>({{ item.rating }})</span>
+              <span>({{ item.reviewAverage }})</span>
             </div>
           </div>
           <h4 class="tp-shop-widget-product-title">
