@@ -1,7 +1,7 @@
 
 
 <br>
-<img src="https://capsule-render.vercel.app/api?type=waving&height=250&color=gradient&text=Enadu&fontSize=60&fontAlignY=30&animation=fadeIn&rotate=0&desc=개발자%20지식%20공유%20플랫폼&descSize=30&reversal=false" style="width: 120%;">
+![Tech Up 프로젝트 이미지]()
 <!-- <br>
 <div align="center">
 <img src="https://github.com/user-attachments/assets/3f6df515-9e11-4b63-b4e1-c35d22176721" style="width: 60%;">
@@ -33,8 +33,8 @@
 
 ### 목차
 - [🛠 기술 스택](#-기술-스택)
-- [📚 OOO 데모 사이트 링크](#-OOO-데모-사이트-바로가기)
-- [🎨 OOO 서비스 소개](#-OOO-서비스-소개)
+- [📚 Tech-Up 데모 사이트 링크](#-Tech-Up-데모-사이트-바로가기)
+- [🎨 Tech-Up 서비스 소개](#-Tech-Up-서비스-소개)
 - [🏗️ 시스템 아키텍처](#-시스템-아키텍처)
 - [📚 프론트엔드 프로젝트 목표](#-프론트엔드-프로젝트-목표)
 - [📈 프로젝트 설계](#-프로젝트-설계)
