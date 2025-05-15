@@ -1,11 +1,6 @@
 
 
-<br>
-![Tech Up 프로젝트 이미지]()
-<!-- <br>
-<div align="center">
-<img src="https://github.com/user-attachments/assets/3f6df515-9e11-4b63-b4e1-c35d22176721" style="width: 60%;">
-</div> -->
+![logo-white](https://github.com/user-attachments/assets/02138cb8-7eb8-4c2a-8564-cbb5a9656e58)
 
 <br>
 
@@ -27,11 +22,13 @@
     <td align="center">😼<a href="https://github.com/jimnyy"><b>오건하</b></td>
     <td align="center">🐰<a href="https://github.com/dlrkdms125"><b>황경윤</b></td>
   </tr>
+
   </table>
 <br>
 
 
 ### 목차
+
 - [🛠 기술 스택](#-기술-스택)
 - [📚 Tech-Up 데모 사이트 링크](#-Tech-Up-데모-사이트-바로가기)
 - [🎨 Tech-Up 서비스 소개](#-Tech-Up-서비스-소개)
@@ -51,7 +48,7 @@
 ![Vue.js](https://img.shields.io/badge/vuejs-%2335495e.svg?style=for-the-badge&logo=vuedotjs&logoColor=%234FC08D)
 <img src="https://img.shields.io/badge/nginx-009639?style=for-the-badge&logo=nginx&logoColor=white" style="border-radius: 5px;"/>
 <img src="https://img.shields.io/badge/pinia-gold?style=for-the-badge&logo=Pinia&logoColor=white" style="border-radius: 5px;"/>
-![Nuxt.js]()
+![Nuxt](https://img.shields.io/badge/nuxt-%2300DC82?style=for-the-badge&logo=nuxt&labelColor=%23FFFFFF)
 
 #### &nbsp;　[ CI/CD ]
 &nbsp;&nbsp;&nbsp;&nbsp;![Kubernetes](https://img.shields.io/badge/kubernetes-%23326ce5.svg?style=for-the-badge&logo=kubernetes&logoColor=white)
@@ -62,8 +59,8 @@
 &nbsp;&nbsp;&nbsp;&nbsp;<img src="https://img.shields.io/badge/discord-326CE5?style=for-the-badge&logo=discord&logoColor=white" style="border-radius: 5px;">
 <img src="https://img.shields.io/badge/git-F05032?style=for-the-badge&logo=git&logoColor=white" style="border-radius: 5px;">
 <img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white" style="border-radius: 5px;">
-![JIRA]()
-![Confluence]()
+![Jira](https://img.shields.io/badge/jira-%230052CC?style=for-the-badge&logo=jira)
+![Confluence](https://img.shields.io/badge/confluence-%23172B4D?style=for-the-badge&logo=confluence)
 <br><br><br>
 
 
