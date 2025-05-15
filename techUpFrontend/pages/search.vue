@@ -8,8 +8,6 @@
     <section class="tp-shop-area pb-120">
       <div class="container">
         <div class="row">
-          <div v-if="store.isLoading">검색 중...</div>
-          <div v-else></div>
           <div class="col-xl-12 col-lg-12">
             <div class="tp-shop-main-wrapper">
               <div class="tp-shop-top mb-45">
@@ -27,14 +25,14 @@
                     </div>
                   </div>
                   <div class="col-xl-6">
-                    <shop-sidebar-filter-select @handle-select-filter="store.handleSelectFilter" />
+                    <shop-sidebar-filter-select @handle-select-filter="handleSelectFilter" />
                   </div>
                 </div>
               </div>
               <div class="tp-shop-items-wrapper tp-shop-item-primary">
                 <div>
                   <div class="row infinite-container">
-                    <div v-for="item in store.searchResult?.slice(0, perView)" :key="item.productIdx"
+                    <div v-for="item in storeRef.searchResult.value?.slice(0, perView)" :key="item.idx"
                       class="col-xl-4 col-md-6 col-sm-6 infinite-item">
                       <product-fashion-product-item :item="item" :spacing="true" />
                     </div>
@@ -53,6 +51,8 @@
 
               <p v-else class="btn-loadmore-text">End Of Products</p>
             </div>
+            <div v-if="store.isLoading">검색 중...</div>
+            <div v-else></div>
           </div>
         </div>
       </div>
@@ -77,6 +77,11 @@ const route = useRoute();
 async function handlePerView() {
   perView.value = perView.value + 3;
   await store.searchProducts(route.query.searchText, route.query.productType, 0, perView.value);
+}
+
+const handleSelectFilter = async (e) => {
+  store.handleSelectFilter(e)
+  await store.searchProducts(route.query.searchText, route.query.productType, 0, 9);
 }
 
 onMounted(async () => {

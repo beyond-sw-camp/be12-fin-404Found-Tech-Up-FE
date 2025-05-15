@@ -34,7 +34,6 @@
 </template>
 
 <script setup>
-import product_data from '@/data/product-data';
 import { formatPrice } from '@/utils/index';
 import { onMounted } from 'vue';
 import { useMainStore } from '../../../pinia/useMainStore';
