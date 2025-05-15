@@ -1,10 +1,8 @@
 <template>
-  <nav class="tp-main-menu-content" style="background-color: white;">
-    <ul v-for="(menu, i) in mobile_menu" :key="i">
-      <li :key="i">
-        <nuxt-link :to="menu.link">{{ menu.title }}</nuxt-link>
-      </li>
-    </ul>
+  <nav class="tp-main-menu-content">
+    <div v-for="(menu, i) in mobile_menu" :key="i" style="margin-bottom: 1em;">
+      <nuxt-link :to="menu.link">{{ menu.title }}</nuxt-link>
+    </div>
   </nav>
 </template>
 

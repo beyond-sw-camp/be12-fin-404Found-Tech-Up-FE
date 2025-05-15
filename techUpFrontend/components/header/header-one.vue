@@ -155,7 +155,7 @@
 
   <!-- mobile menu start -->
   <div v-if="utilsStore.openMobileMenus">
-    <header-component-mobile-menus style="position:sticky;z-index:164;float:left;" />
+    <header-component-mobile-menus style="position:sticky;right:10%;z-index:164;float:right;background-color: white;" />
   </div>
   <div v-else></div>
   <!-- mobile men end -->
