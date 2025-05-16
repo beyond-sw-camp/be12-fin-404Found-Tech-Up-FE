@@ -381,17 +381,51 @@ export const useAdminStore = defineStore( 'admin',() => {
   };
 
   const loadStatistics = async () => {
+    let result;
     try{
-      const result = await axios.get("/api/statistics", {
+      result = await axios.get("/api/statistics/wishlist", {
       });
-      topWishList.value = result.data.data.topWishList;
+      topWishList.value = result.data.data;
+    }
+    catch (e) {
+      console.log(e);
+    }
+    try {
+      result = await axios.get("/api/statistics/order", {
+      });
+      totalOrders.value = result.data.data;
+    }
+      catch (e) {
+      console.log(e);
+    }
+    try {
+      result = await axios.get("/api/statistics/refund", {
+      });
+      totalRefunds.value = result.data.data;
+    }
+    catch (e) {
+      console.log(e);
+    }
+    try {
+      result = await axios.get("/api/statistics/topsales", {
+      });
+      topSales.value = result.data.data;
+    } catch (e) {
+      console.log(e);
+    }
+    try {
+      result = await axios.get("/api/statistics/incomes", {
+      });
+      incomeGraph.value = [{data:result.data.data}];// 그래프 갱신 
+    } catch (e) {
+      console.log(e);
+    }
+        
+    try{
+      result = await axios.get("/api/statistics", {
+      });
       newComers.value = result.data.data.newCustomers;
-      totalSales.value = result.data.data.totalSales;
-      totalOrders.value = result.data.data.totalOrders;
-      totalRefunds.value = result.data.data.totalRefunds;
-      topSales.value = result.data.data.topSales;
-      // 그래프 갱신 
-      incomeGraph.value = [{data:result.data.data.incomeData}];
+      totalSales.value = result.data.data.totalSales;      
 
     } catch (e) {
       console.log(e);
