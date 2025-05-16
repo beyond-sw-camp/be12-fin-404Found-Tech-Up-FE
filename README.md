@@ -165,10 +165,12 @@
 ## ⚙️ 주요 기능 시연
 <details>
 <summary>회원가입</summary>
+<div align="center">
+    <img src="./images/function/회원가입.gif" /> <br>
+</div>
 
-![회원가입 페이지](./images/function/회원가입.gif)
-> 이메일, 비밀번호, 닉네임로 회원 가입을 한다.  
-> 이메일, 닉네임은 **중복이 불가능**하며, 비밀번호는 8자 이상의 영문 및 숫자여야 한다.
+> 이메일, 비밀번호, 닉네임로 회원 가입을 한다.<br>
+> 이메일, 닉네임은 **중복이 불가능**하며, 비밀번호는 8자 이상의 영문 및 숫자여야 한다.<br>
 > 계정 생성 스패밍을 막기 위해 이메일 인증을 해야 가입할 수 있다.
 </details>
 
@@ -176,18 +178,27 @@
 <summary>로그인 & 로그아웃</summary>
 
 - 로그인 & 로그아웃
-![로그인 & 로그아웃](./images/function/로그인&로그아웃.gif)
-> 이메일, 비밀번호로 로그인한다.  
+<div align="center">
+    <img src="./images/function/로그인&로그아웃.gif" /> <br>
+</div>
+
+> 이메일, 비밀번호로 로그인한다.<br>
 > 로그아웃을 클릭하여 로그아웃한다.
 
 - 소셜 로그인  
-![소셜 로그인 페이지](./images/function/소셜로그인.gif)
-> 소셜 로그인은 소셜로 로그인 한 후 로그인한 사용자 계정의 이름을 받아온다.  
+<div align="center">
+    <img src="./images/function/소셜로그인.gif" /> <br>
+</div>
+
+> 소셜 로그인은 소셜로 로그인 한 후 로그인한 사용자 계정의 이름을 받아온다.<br>
 > 소셜 로그인 사용자는 소셜 로그인으로만 로그인할 수 있다.
 
 - 비밀번호 찾기  
- ![비밀번호 찾기 페이지](./images/function/비밀번호찾기.gif)
-> 이메일 인증을 통해 비밀번호 찾기를 한다.  
+<div align="center">
+    <img src="./images/function/비밀번호찾기.gif" /> <br>
+</div>
+
+> 이메일 인증을 통해 비밀번호 찾기를 한다.<br>
 > 이메일 인증이 완료되면 새로운 비밀번호, 확인 비밀번호를 입력하여 비밀번호를 변경할 수 있다.
 </details>
 
@@ -196,34 +207,52 @@
 <summary>마이페이지</summary>
 
 - 회원 정보 수정 및 탈퇴
-![회원정보 관리 페이지](./images/function/회원정보관리.gif)
-> 전화 번호, 주소를 입력하여 회원 정보를 수정할 수 있다.  
+<div align="center">
+    <img src="./images/function/회원정보관리.gif" /> <br>
+</div>
+
+> 전화 번호, 주소를 입력하여 회원 정보를 수정할 수 있다.<br>
 > 회원 탈퇴 버튼을 클릭하여 탈퇴할 수 있다.
 
 - 기기 등록 및 관리
-![기기 등록 페이지](./images/function/기기등록.gif)
-> 기기 목록에서 검색을 통해 나의 기기를 탐색할 수 있다.  
-> 등록하기 버튼을 클릭하면 내 기기 목록에 추가된다.  
+<div align="center">
+    <img src="./images/function/기기등록.gif" /> <br>
+</div>
+
+> 기기 목록에서 검색을 통해 나의 기기를 탐색할 수 있다.<br>
+> 등록하기 버튼을 클릭하면 내 기기 목록에 추가된다.<br>
 > 등록 해제 버튼을 클릭하여 등록한 기기를 해제할 수 있다.  
 
 - 내 게시글 목록  
-![게시글 관리 페이지](./images/function/게시판관리.gif)
-> 커뮤니티에 작성한 게시글의 목록을 확인한다.  
+<div align="center">
+    <img src="./images/function/게시판관리.gif" /> <br>
+</div>
+
+> 커뮤니티에 작성한 게시글의 목록을 확인한다.<br>
 > 게시글을 클릭하여 게시글 상세보기 페이지로 이동할 수 있다.  
 
 - 내 주문 내역  
-![주문 내역 페이지](./images/function/주문관리.gif)
-> 주문한 제품의 목록을 확인한다.  
+<div align="center">
+    <img src="./images/function/주문관리.gif" /> <br>
+</div>
+
+> 주문한 제품의 목록을 확인한다.<br>
 > 상세 정보 보기를 통해 주문 내역의 상세정보를 확인하고 환불할 수 있다.  
 
 - 내 알림 내역  
-![알림 내역 페이지](./images/function/알림관리.gif)
+<div align="center">
+    <img src="./images/function/알림관리.gif" /> <br>
+</div>
+
 > 알림 내역 목록을 확인한다.
 > 읽은 알림과 안읽은 알림을 구분하여 확인할 수 있고, 삭제할 수 있다.  
 > 알림 수신 여부를 토글을 통해 설정할 수 있다.  
 
 - 비밀번호 바꾸기  
-![비밀번호 변경 페이지](./images/function/비밀번호변경.gif)
+<div align="center">
+    <img src="./images/function/비밀번호변경.gif" /> <br>
+</div>
+
 > 이전 비밀번호, 새 비밀번호, 새 비밀번호(확인)을 입력하여 비밀번호를 변경한다.  
 </details>
 
