@@ -1,6 +1,6 @@
-
-
-![logo-white](https://github.com/user-attachments/assets/02138cb8-7eb8-4c2a-8564-cbb5a9656e58)
+<div align="center">
+    <img src="./images/readme/techup_header_logo.png" /> <br>
+</div>
 
 <br>
 
@@ -11,16 +11,16 @@
 
 <table align="center">
  <tr>
-    <td align="center"><a href="https://github.com/dyun23"><img src="https://github.com/user-attachments/assets/99536e16-063c-4785-92d2-44b909ab7c84" width="150px;" alt=""></td>
-    <td align="center"><a href="https://github.com/sue06004"><img src="https://github.com/user-attachments/assets/2dde57cc-aa14-410c-99f7-9d50841fde51" width="150px;" alt=""></td>
-    <td align="center"><a href="https://github.com/jimnyy"><img src="https://github.com/user-attachments/assets/5ff5cb30-f7aa-4ab2-a18d-a31087ab9f80" width="150px;" alt=""></td>
-    <td align="center"><a href="https://github.com/dlrkdms125"><img src="https://github.com/user-attachments/assets/42bed0f6-7d78-4eec-8906-e843495fca4f" width="150px;" alt=""></td>
+    <td align="center"><a href="https://github.com/GoodLeaf"><img src="./images/readme/gpu.png" width="150px;" alt=""></td>
+    <td align="center"><a href="https://github.com/museongkim0"><img src="./images/readme/cpu.png" width="150px;" alt=""></td>
+    <td align="center"><a href="https://github.com/gunha0405"><img src="./images/readme/ssd.png" width="150px;" alt=""></td>
+    <td align="center"><a href="https://github.com/Xen-alpha"><img src="./images/readme/hdd.png" width="150px;" alt=""></td>
   </tr>
   <tr>
-    <td align="center">🐥<a href="https://github.com/dyun23"><b>김정엽</b></td>
-    <td align="center">🦊<a href="https://github.com/sue06004"><b>김무성</b></td>
-    <td align="center">😼<a href="https://github.com/jimnyy"><b>오건하</b></td>
-    <td align="center">🐰<a href="https://github.com/dlrkdms125"><b>황경윤</b></td>
+    <td align="center">🐥<a href="https://github.com/GoodLeaf"><b>김정엽</b></td>
+    <td align="center">🦊<a href="https://github.com/museongkim0"><b>김무성</b></td>
+    <td align="center">😼<a href="https://github.com/gunha0405"><b>오건하</b></td>
+    <td align="center">🐰<a href="https://github.com/Xen-alpha"><b>황경윤</b></td>
   </tr>
 
   </table>
@@ -45,34 +45,61 @@
 &nbsp;&nbsp;&nbsp;&nbsp;<img src="https://img.shields.io/badge/html5-E34F26?style=for-the-badge&logo=html5&logoColor=white" style="border-radius: 5px;"/>
 <img src="https://img.shields.io/badge/css3-1572B6?style=for-the-badge&logo=css3&logoColor=white" style="border-radius: 5px;"/>
 <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=JavaScript&logoColor=white" style="border-radius: 5px;"/>
-![Vue.js](https://img.shields.io/badge/vuejs-%2335495e.svg?style=for-the-badge&logo=vuedotjs&logoColor=%234FC08D)
+<img src="https://img.shields.io/badge/vuejs-%2335495e.svg?style=for-the-badge&logo=vuedotjs&logoColor=%234FC08D" style="border-radius: 5px;"/>
 <img src="https://img.shields.io/badge/nginx-009639?style=for-the-badge&logo=nginx&logoColor=white" style="border-radius: 5px;"/>
 <img src="https://img.shields.io/badge/pinia-gold?style=for-the-badge&logo=Pinia&logoColor=white" style="border-radius: 5px;"/>
-![Nuxt](https://img.shields.io/badge/nuxt-%2300DC82?style=for-the-badge&logo=nuxt&labelColor=%23FFFFFF)
+<img src="https://img.shields.io/badge/nuxt-%2300DC82?style=for-the-badge&logo=nuxt&labelColor=%23FFFFFF" style="border-radius: 5px;"/>
+
+#### &nbsp;　[ Backend ]
+&nbsp;&nbsp;&nbsp;&nbsp;
+<img src="https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white" style="border-radius: 5px;">
+<img src="https://img.shields.io/badge/Spring Boot-6DB33F?style=for-the-badge&logo=Spring Boot&logoColor=white" style="border-radius: 5px;">
+<img src="https://img.shields.io/badge/Spring_Security-6DB33F?style=for-the-badge&logo=Spring-Security&logoColor=white" style="border-radius: 5px;">
+<img src="https://img.shields.io/badge/Spring data jpa-6DB33F?style=for-the-badge&logo=Spring Boot&logoColor=white" style="border-radius: 5px;">
+<img src="https://img.shields.io/badge/SMTP-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white" style="border-radius: 5px;">
+<img src="https://img.shields.io/badge/python-%230377CC.svg?style=for-the-badge&logo=python&logoColor=white" style="border-radius: 5px;">
+
+
+#### &nbsp;　[ DB ]
+&nbsp;&nbsp;&nbsp;</a>
+<img src="https://img.shields.io/badge/MariaDB-003545?style=for-the-badge&logo=mariadb&logoColor=white" style="border-radius: 5px;"> 
+<img src="https://img.shields.io/badge/AmazonS3-e05242?style=for-the-badge&logo=AmazonS3&logoColor=white" style="border-radius: 5px;">
+<img src="https://img.shields.io/badge/elasticsearch-%230377CC.svg?style=for-the-badge&logo=elasticsearch&logoColor=white" style="border-radius: 5px;">
+<img src="https://img.shields.io/badge/redis-E34F26?style=for-the-badge&logo=redis&logoColor=white" style="border-radius: 5px;">
 
 #### &nbsp;　[ CI/CD ]
-&nbsp;&nbsp;&nbsp;&nbsp;![Kubernetes](https://img.shields.io/badge/kubernetes-%23326ce5.svg?style=for-the-badge&logo=kubernetes&logoColor=white)
+&nbsp;&nbsp;&nbsp;&nbsp;
+<img src="https://img.shields.io/badge/kubernetes-%23326ce5.svg?style=for-the-badge&logo=kubernetes&logoColor=white" style="border-radius: 5px;">
 <img src="https://img.shields.io/badge/docker-2496ED?style=for-the-badge&logo=docker&logoColor=white" style="border-radius: 5px;">
 <img src="https://img.shields.io/badge/jenkins-D24939?style=for-the-badge&logo=jenkins&logoColor=white" style="border-radius: 5px;">
 
+#### &nbsp;　[ Etc ]
+&nbsp;&nbsp;&nbsp;&nbsp;
+<img src="https://img.shields.io/badge/kafka-231F20?style=for-the-badge&logo=apachekafka&logoColor=white" style="border-radius: 5px;">
+<img src="https://img.shields.io/badge/zookeeper-009639?style=for-the-badge&logo=zookeeper&logoColor=white" style="border-radius: 5px;">
+<img src="https://img.shields.io/badge/logstash-f3bd19?style=for-the-badge&logo=logstash&logoColor=white" style="border-radius: 5px;">
+
 #### &nbsp;　[ Communication ]
-&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://img.shields.io/badge/discord-326CE5?style=for-the-badge&logo=discord&logoColor=white" style="border-radius: 5px;">
+&nbsp;&nbsp;&nbsp;&nbsp;
+<img src="https://img.shields.io/badge/discord-326CE5?style=for-the-badge&logo=discord&logoColor=white" style="border-radius: 5px;">
 <img src="https://img.shields.io/badge/git-F05032?style=for-the-badge&logo=git&logoColor=white" style="border-radius: 5px;">
 <img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white" style="border-radius: 5px;">
-![Jira](https://img.shields.io/badge/jira-%230052CC?style=for-the-badge&logo=jira)
-![Confluence](https://img.shields.io/badge/confluence-%23172B4D?style=for-the-badge&logo=confluence)
+<img src="https://img.shields.io/badge/jira-%230052CC?style=for-the-badge&logo=jira" style="border-radius: 5px;">
+<img src="https://img.shields.io/badge/confluence-%23172B4D?style=for-the-badge&logo=confluence" style="border-radius: 5px;">
 <br><br><br>
 
 
 ## 📚 Tech-Up 데모 사이트 바로가기
-### [공개 버전 링크](https://techup.kro.kr)</a>
+### [공개 버전 링크](http://www.techup.kro.kr)</a>
 <br><br>
 ## 🎨 Tech-Up 서비스 소개
-![프로젝트 이미지]()
+<div align="center">
+    <img src="./images/readme/테크업_이미지.png" /> <br>
+</div>
 
 #### 프로젝트 배경
- - 사용자 맞춤 부품 추천 쇼핑몰 <br>
- - 고객이 제공한 제품 정보 및 구매 기록을 바탕으로 연관된 상품을 알 수 있다.<br>
+ - 사용자 맞춤 부품 추천 플랫폼 <br>
+ - 고객이 등록한 본인 제품 정보 및 사용자 행동(위시리스트, 장바구니, 리뷰 등)을 바탕으로 연관된 상품을 알 수 있다.<br>
    고사양을 요하지 않는 일반 사용자들은 기기 전체를 바꾸는 것보다 필요한 부분만 간단히 업그레이드하길 원한다. 하지만 부품의 호환성, 업그레이드 범위, 관련된 추가 제품을 파악하는 일은 일반 사용자에게 쉽지 않다.<br>
    “Tech-Up”은 그런 사용자들을 위한 가벼운 업그레이드 추천 중심의 서비스이다.
 <br>
@@ -85,31 +112,50 @@
 
 
 #### 세부 기능
-  - ** 제품 목록 **
-  - ** 제품 검색 **
-  - ** 추천 받은 제품 비교 **
-  - ** 선착순 쿠폰 이벤트 및 사용자 지정 쿠폰 발급 **
-  - ** 기타 지식을 공유하는 커뮤니티 **
+  - `제품 목록/상세 조회`<br>
+    검색, 제품 카테고리 및 필터로 목록을 조회하고 상세 정보를 확인할 수 있는 기능
+  - `기기 등록`<br>
+    사용자가 본인의 기기를 등록하고 관리할 수 있는 기능
+  - `장바구니 & 위시리스트`<br>
+    사용자가 관심있는 제품을 담고 취소하며 관리할 수 있는 기능
+  - `주문/결제`<br>
+    사용자가 원하는 제품을 주문하고 결제할 수 있는 기능
+  - `상품 리뷰`<br>
+    사용자가 제품에 대해 별점과 리뷰를 남길 수 있는 기능
+  - `마이페이지`<br>
+    사용자가 개인 정보 및 활동 내역을 조회하고 관리할 수 있는 기능
+  - `알림`<br>
+    사용자에게 공통 알림, 개인 알림(주문 완료, 재입고, 품절임박 등)을 제공하는 기능
+  - `추천`<br>
+    사용자가 등록한 제품과 유사한 제품, 유사한 사용자가 관심있어한 제품 등 사용자 행동 기반 개인화 추천 기능
+  - `쿠폰 이벤트`
+    선착순 쿠폰 및 사용자 지정 쿠폰을 제공하는 기능
+  - `기타 지식을 공유하는 커뮤니티`<br>
+    사용자가 개인의 경험 및 지식을 공유할 수 있는 공간을 제공하는 기능
+  - `어드민`<br>
+    매출, 판매량, TOP위시리스트 등 통계량을 확인할 수 있는 대시보드와 쿠폰 발급, 알림 발행, 사용자/제품 관리 등의 관리 기능 제공공
 <br>
 
 ## 🏗️ 시스템 아키텍처
-![프론트엔드 시스템 아키텍처 이미지]()<br><br>
+<div align="center">
+    <img src="./images/readme/테크업_시스템아키텍처.png" /> <br>
+</div>
 
 
 ## 📚 프론트엔드 프로젝트 목표
-- `사용자 인터페이스(UI) 개발` : 직관적이고 반응형(Responsive) 디자인 구현
-- `사용자 경험(UX) 향상` : 최대한 사용자가 제공되는 서비스를 파악하기 쉽게 안내한다.
-- `프론트엔드 기술 활용` : HTML, CSS, JavaScript, 프레임워크(Vue 및 Nuxt.js 등)를 사용할 때 확장성 및 컴포넌트 파일 배치를 고려하여 프로젝트를 진행
-- `API 연동` : 백엔드와의 데이터 통신(fetch, axios 등)
+- `사용자 인터페이스(UI) 개발` : 직관적이고 반응형(Responsive) 디자인을 구현하여 다양한 디바이스에서 일관된 경험 제공.
+- `사용자 경험(UX) 향상` : 사용자가 서비스를 쉽게 이해하고 탐색할 수 있도록 명확한 안내와 최적화된 인터페이스 제공.
+- `프론트엔드 기술 활용` : HTML, CSS, JavaScript, Vue.js 및 Nuxt.js를 사용하며, 확장성과 유지보수를 고려한 컴포넌트 구조 설계. Pinia를 활용하여 컴포넌트 간 데이터를 중앙집중적으로 관리.
+- `API 연동` : 백엔드와의 데이터 통신을 위해 axios를 사용하여 효율적이고 안정적인 데이터 처리 구현.
 <br>
 
 ## 📈 프로젝트 설계
 
-### [1. 기획서 바로가기]()
+### [1. 기획서 바로가기](https://docs.google.com/document/d/16gP1yR5g0CdxHhqj8PXJoByyoDGGJnpJ/edit?usp=sharing&ouid=114636369401934471820&rtpof=true&sd=true)
 
-### [2. 요구사항 정의서]()
+### [2. 요구사항 정의서](https://docs.google.com/spreadsheets/d/1lb-SckwF90w3tpbJPMl18hdyDSESCkCRWy9koUEmFbI/edit?usp=sharing)
 
-### [3. WBS]()
+### [3. WBS](https://docs.google.com/spreadsheets/d/1ZyTxJWcncdOwUFm7sC4lPoY8Tqr1N9bT/edit?usp=sharing&ouid=114636369401934471820&rtpof=true&sd=true)
 
 ### [4. 화면설계서 바로가기](https://www.figma.com/design/iJvl1G2NeaJ16nfu0IkcUh/404Found?node-id=0-1&t=e4BsxJGkX5qVDjfZ-1)
 
@@ -119,7 +165,7 @@
 <details>
 <summary>회원가입</summary>
 
-![회원가입 페이지지]()
+![회원가입 페이지]()
 > 이메일, 비밀번호, 닉네임로 회원 가입을 한다.  
 > 이메일, 닉네임은 **중복이 불가능**하며, 비밀번호는 8자 이상의 영문 및 숫자여야 한다.
 > 계정 생성 스패밍을 막기 위해 이메일 인증을 해야 가입할 수 있다.
@@ -230,7 +276,7 @@
 
 
 ## 📂 백엔드, DevOps 프로젝트 폴더 바로가기
-### [📃 Backend](https://github.com/beyond-sw-camp/be12-fin-404Found-Tech-Up-BE) <br>
-### [📃 Devops]()
+### [📃 Backend](https://github.com/beyond-sw-camp/be12-fin-404Found-Tech-Up-BE/blob/main/README.md) <br>
+### [📃 Devops](https://github.com/beyond-sw-camp/be12-fin-404Found-Tech-Up-BE/blob/main/devops/README.md)
 <br>
 
