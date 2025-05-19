@@ -300,7 +300,7 @@
 > 카카오페이가 지원된다.
 ---
 ### 주문 취소 및 환불
-![사용자의 환불 신청 이미지]()
+![images](https://github.com/beyond-sw-camp/be12-fin-404Found-Tech-Up-FE/blob/main/images/function/product_request_refund.gif)
 
 > 사용자는 주문 상세 페이지에서 환불 요청을 쉽게 할 수 있다.
 
