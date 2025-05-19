@@ -260,13 +260,13 @@
 <summary>검색</summary>
 
 ### 제품 검색
-![통합검색]()
+![images](https://github.com/beyond-sw-camp/be12-fin-404Found-Tech-Up-FE/blob/main/images/function/product_search.gif)
 > 헤더에 있는 검색창으로 제품 검색이 가능하다.  
 > 메인 페이지의 검색창은 카테고리별 제품 검색이 가능하다.
 > 검색 결과는 5가지 옵션으로 정렬하며, 페이지네이션을 통해 다음 제품 목록을 받아온다.
 ---
 ### 제품 목록 탐색
-![제품 목록 페이지]()
+![images](https://github.com/beyond-sw-camp/be12-fin-404Found-Tech-Up-FE/blob/main/images/function/product_list.gif)
 > 헤더의 **제품** 링크로 들어간 페이지에서 부품 카테고리(CPU, 그래픽 카드, RAM, SSD, 하드디스크) 및 가격대 별로 판매 중인 상품을 조회할 수 있다.
 > 제품 상세보기에서는 제품에 대한 설명과 제품에 대한 리뷰를 볼 수 있다.
 </details>
@@ -289,11 +289,11 @@
 <summary>제품 주문 및 환불</summary>
 
 ### 장바구니
-![장바구니 캡쳐]()
+![images](https://github.com/beyond-sw-camp/be12-fin-404Found-Tech-Up-FE/blob/main/images/function/product_cart_add.gif)
 > 장바구니에 구매하려는 여러 제품을 모아 한 번에 주문할 수 있다.
 ---
 ### 주문 및 결제
-![주문 결제 과정 이미지 예시]()
+![images](https://github.com/beyond-sw-camp/be12-fin-404Found-Tech-Up-FE/blob/main/images/function/product_order.gif)
 
 > 주문 내역을 보고 결제를 할 수 있다.
 > 주문에 사용 가능한 쿠폰을 받았다면 적용하여 할인을 받을 수 있다.
