@@ -375,17 +375,78 @@
 
 ### 게시글 목록
 
-![커뮤니티 페이지](https://github.com/user-attachments/assets/17292041-4feb-41e8-9a4f-ac1cb333c9e4)
+![게시글 목록](./images/function/board_list.gif)
 
+> 커뮤니티 페이지 진입 시, 등록된 게시글들이 일정한 개수로 나뉘어 목록 형태로 표시됩니다.  <br>
+> 하단의 페이지 이동 버튼을 통해 다른 목록으로 전환할 수 있습니다.
 
-> 커뮤니티 페이지에 진입하여 조회 요청을 하면 현재 등록된 게시글들이 일정한 갯수로 잘린 목록을 볼 수 있다.
-> 아래 페이지 이동 버튼들로 페이지 이동 요청을 하여 보이는 게시글 목록을 바꿀 수 있다.
+### 게시글 작성 / 수정 / 삭제
+- 게시글 작성<br>
+![게시글 작성](./images/function/board_write.gif)
+- 게시글 수정<br>
+![게시글 수정](./images/function/board_update.gif)
+- 게시글 삭제<br>
+![게시글 삭제](./images/function/board_delete.gif)
 
-### 게시글 작성/수정/삭제
+> 에디터에 입력한 내용은 게시글로 등록되며, 작성된 게시글은 수정 또는 삭제할 수 있습니다.
 
-![게시글 작성](https://github.com/user-attachments/assets/0754b5f3-f2ad-429e-bc66-1b723e6c4fab)
+### 게시글 좋아요 / 싫어요
 
-> 에디터에 입력한 데이터가 등록되며, 게시글에서 수정/삭제를 선택하여 수정 또는 삭제가 가능하다.
+![게시글 좋아요 / 싫어요](./images/function/board_like.gif)
+
+> 게시글에는 좋아요 또는 싫어요 중 하나만 선택하여 반응할 수 있습니다.
+
+### 게시글 검색
+
+![게시글 검색](./images/function/board_search.gif)
+
+> 제목, 작성자, 내용 중 하나를 선택하여 원하는 키워드로 게시글을 검색할 수 있습니다.
+
+### 게시글 정렬
+
+![게시글 정렬](./images/function/board_sort_category.gif)
+
+> 게시글을 최신순, 좋아요순, 댓글순으로 정렬하여 볼 수 있으며, 카테고리를 선택해 해당 분류의 게시글만 필터링할 수 있습니다.
+
+</details>
+
+<details>
+<summary>댓글</summary>
+
+### 댓글 작성 / 수정 / 삭제
+- 댓글 작성<br>
+![댓글 작성](./images/function/comment_write.gif)
+- 댓글 수정<br>
+![댓글 수정](./images/function/comment_update.gif)
+- 댓글 삭제<br>
+![댓글 삭제](./images/function/comment_delete.gif)
+
+> 댓글은 작성 후 수정 및 삭제가 가능합니다.
+
+</details>
+
+<details>
+<summary>알림</summary>
+
+### 실시간 알림
+
+![실시간 알림](./images/function/realtime_notification.gif)
+
+> 사용자가 접속 중일 때, 웹소켓을 통해 재입고, 품절 임박, 할인 등 주요 이벤트 알림을 실시간으로 받을 수 있습니다.
+
+### 알림 목록 보기 / 삭제 / 설정
+
+![알림 목록 보기](./images/function/notification_list_delete_able.gif)
+
+> 받은 알림은 10개 단위로 나뉘어 목록 형태로 표시됩니다.  <br>
+> 불필요한 알림은 삭제 버튼으로 제거할 수 있으며, 알림 수신 여부는 토글 버튼으로 설정할 수 있습니다.
+
+### 알림 상세 보기
+
+![알림 상세 보기](./images/function/notification_detail.gif)
+
+> 수신한 알림의 상세 내용을 확인할 수 있습니다.
+
 </details>
 
 
