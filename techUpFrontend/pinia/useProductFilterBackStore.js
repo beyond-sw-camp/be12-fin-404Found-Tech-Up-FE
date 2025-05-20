@@ -44,7 +44,7 @@ export const useProductFilterBackStore = defineStore("product_filter", () => {
         const me = await axios.get("/api/user-product/my-product");
         const user = me.data.data;
         if (user && user.products) {
-          const rec = await axios.post("/rec/recommend/item-based", { product_idx: user.products[0].productIdx, result_num: 1 });
+          const rec = await axios.post("/rec/recommend", { product_idx: user.products[0].productIdx, result_num: 1 });
           const recs = rec.data.recommended_products;
           if (Array.isArray(recs) && recs.length) {
             suggestion.value = recs.slice(0, 8).map(mapToItem);
@@ -89,27 +89,28 @@ export const useProductFilterBackStore = defineStore("product_filter", () => {
   );
 
   // Axios를 이용해 백엔드 API에서 제품 목록을 가져오는 함수
-  async function fetchProducts(page = 0, size = 10) {
+   async function fetchProducts(category = ' ', page = 0, size = 10) {
     try {
       isLoading.value = true;
       currentPage.value = page
       pageSize.value    = size
       const config = useRuntimeConfig()
       const response = await axios.get(
-        `/api/product/list?page=${page}&size=${size}`,
+        `/api/product/list?category=${category}&page=${page}&size=${size}`,
         { baseURL: config.public.apiBaseUrl }
       )
       const pageData = response.data.data
       products.value     = Array.isArray(pageData.content)
                             ? pageData.content
                             : []
-      totalProducts.value = pageData.totalElements;
+      totalProducts.value = pageData.totalElements
       isLoading.value = false;
     } catch (err) {
       console.error("제품 데이터 API 호출 오류:", err)
       products.value     = []
       totalProducts.value = 0
     }
+    console.log("호출 종료");
   }
 
   // 선택된 필터 옵션을 저장하는 상태
@@ -322,6 +323,8 @@ export const useProductFilterBackStore = defineStore("product_filter", () => {
     handleResetFilter,
     selectVal,
     searchProducts,
+    loadSuggestionProducts,
+    suggestion,
     reset
   };
   {

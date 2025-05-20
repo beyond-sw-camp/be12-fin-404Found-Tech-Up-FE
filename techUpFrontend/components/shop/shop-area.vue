@@ -65,6 +65,7 @@
 import { ref, computed, onMounted } from 'vue'
 import { useProductFilterBackStore } from '@/pinia/useProductFilterBackStore'
 import { nextTick } from 'vue'
+import { useRoute } from 'vue-router';
 
 const props = defineProps({
   list_style: Boolean,
@@ -78,6 +79,8 @@ const active_tab = ref(props.list_style ? 'grid' : 'list')
 function handleActiveTab(tab) {
   active_tab.value = tab
 }
+
+const route = useRoute();
 
 const ITEMS_PER_PAGE = 10
 const BLOCK_SIZE = 10
@@ -104,15 +107,15 @@ const pagesInBlock = computed(() => {
 })
 
 // fetch the first page on mount
-onMounted(() => {
-  store.fetchProducts(0, ITEMS_PER_PAGE)
+onMounted(async () => {
+  await store.fetchProducts(route.query.category ? route.query.category : ' ', 0, 10);
 })
 
 async function changePage(page) {
   if (page === currentPage.value) return
   currentPage.value = page
   window.scrollTo({ top: 0, behavior: 'smooth' })
-  await store.fetchProducts(page - 1, ITEMS_PER_PAGE)
+  await store.fetchProducts(route.query.category, page - 1, ITEMS_PER_PAGE)
   await nextTick()
 }
 </script>
