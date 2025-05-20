@@ -17,32 +17,24 @@
                       <div class="tp-shop-top-result">
                         <p>
                           Showing 1–{{
-                            store.searchFilteredItems?.slice(0, perView).length
+                            store.searchResult?.slice(0, perView).length
                           }}
-                          of {{ product_data.length }} results
+                          of {{ store.totalProducts }} results
                         </p>
                       </div>
                     </div>
                   </div>
                   <div class="col-xl-6">
-                    <shop-sidebar-filter-select
-                      @handle-select-filter="store.handleSelectFilter"
-                    />
+                    <shop-sidebar-filter-select @handle-select-filter="handleSelectFilter" />
                   </div>
                 </div>
               </div>
               <div class="tp-shop-items-wrapper tp-shop-item-primary">
                 <div>
                   <div class="row infinite-container">
-                    <div
-                      v-for="item in store.searchFilteredItems?.slice(0,perView)"
-                      :key="item.idx"
-                      class="col-xl-4 col-md-6 col-sm-6 infinite-item"
-                    >
-                      <product-fashion-product-item
-                        :item="item"
-                        :spacing="true"
-                      />
+                    <div v-for="item in storeRef.searchResult.value?.slice(0, perView)" :key="item.idx"
+                      class="col-xl-4 col-md-6 col-sm-6 infinite-item">
+                      <product-fashion-product-item :item="item" :spacing="true" />
                     </div>
                   </div>
                 </div>
@@ -50,20 +42,17 @@
             </div>
 
             <div class="text-center">
-              <button
-                v-if="
-                  store.searchFilteredItems &&
-                  perView < store.searchFilteredItems.length
-                "
-                @click="handlePerView"
-                type="button"
-                class="btn-loadmore tp-btn tp-btn-border tp-btn-border-primary"
-              >
+              <button v-if="
+                store.searchResult &&
+                perView < storeRef.totalProducts.value
+              " @click="handlePerView" type="button" class="btn-loadmore tp-btn tp-btn-border tp-btn-border-primary">
                 Load More Products
               </button>
 
               <p v-else class="btn-loadmore-text">End Of Products</p>
             </div>
+            <div v-if="store.isLoading">검색 중...</div>
+            <div v-else></div>
           </div>
         </div>
       </div>
@@ -76,13 +65,26 @@
 useSeoMeta({ title: "Search Page" });
 
 import { ref } from "vue";
-import product_data from "@/data/product-data";
 import { useProductFilterBackStore } from "@/pinia/useProductFilterBackStore";
+import { storeToRefs } from "pinia";
+import { useRoute } from "vue-router";
 
 let perView = ref(9);
 const store = useProductFilterBackStore();
+const storeRef = storeToRefs(store);
+const route = useRoute();
 
-function handlePerView() {
+async function handlePerView() {
   perView.value = perView.value + 3;
+  await store.searchProducts(route.query.searchText, route.query.productType, 0, perView.value);
 }
+
+const handleSelectFilter = async (e) => {
+  store.handleSelectFilter(e)
+  await store.searchProducts(route.query.searchText, route.query.productType, 0, 9);
+}
+
+onMounted(async () => {
+  await store.searchProducts(route.query.searchText, route.query.productType, 0, 9);
+})
 </script>

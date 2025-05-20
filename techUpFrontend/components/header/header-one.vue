@@ -128,15 +128,13 @@
                   </button>
                 </div>
                 <div class="tp-header-action-item d-none d-lg-block">
-        <nuxt-link to="/profile" class="tp-header-action-btn">
-          <SvgEmail />
-          <span
-            class="tp-header-action-badge"
-          >
-            {{ notificationStore.unreadCount }}
-          </span>
-        </nuxt-link>
-      </div>
+                  <nuxt-link to="/profile" class="tp-header-action-btn">
+                    <SvgEmail />
+                    <span class="tp-header-action-badge">
+                      {{ notificationStore.unreadCount }}
+                    </span>
+                  </nuxt-link>
+                </div>
                 <div class="tp-header-action-item d-lg-none">
                   <!-- <button @click="utilsStore.handleOpenMobileMenu()" type="button" class="tp-header-action-btn tp-offcanvas-open-btn">
                     <svg-menu-icon />
@@ -155,9 +153,10 @@
   <offcanvas-cart-sidebar />
   <!-- cart offcanvas end -->
 
-  <!-- cart offcanvas start -->
-  <!-- <offcanvas-mobile-sidebar product-type="electronics" /> -->
-  <!-- cart offcanvas end -->
+  <div v-if="utilsStore.openMobileMenus">
+    <header-component-mobile-menus style="position:sticky;right:10%;z-index:164;float:right;background-color: white;" />
+  </div>
+  <div v-else></div>
 </template>
 
 <script setup>

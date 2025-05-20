@@ -9,21 +9,13 @@
             </div>
             <form @submit.prevent="handleSubmit">
               <div class="tp-search-input mb-10">
-                <input
-                  type="text"
-                  placeholder="Search for product..."
-                  v-model="searchText"
-                />
+                <input type="text" placeholder="Search for product..." v-model="searchText" />
                 <button type="submit"><i class="flaticon-search-1"></i></button>
               </div>
               <div class="tp-search-category">
                 <span>Search by : </span>
-                <a
-                  v-for="(c, i) in categories"
-                  :key="i"
-                  @click="productType = c"
-                  class="cursor-pointer text-capitalize"
-                >
+                <a v-for="(c, i) in categories" :key="i" @click="productType = c"
+                  class="cursor-pointer text-capitalize">
                   {{ c }}
                   <span v-if="i < categories.length - 1">, </span>
                 </a>
@@ -35,10 +27,8 @@
     </div>
   </section>
 
-  <div
-    @click="utilityStore.handleOpenSearchBar()"
-    :class="`body-overlay ${utilityStore.openSearchBar ? 'opened' : ''}`"
-  ></div>
+  <div @click="utilityStore.handleOpenSearchBar()"
+    :class="`body-overlay ${utilityStore.openSearchBar ? 'opened' : ''}`"></div>
 </template>
 
 
@@ -46,6 +36,7 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useUtilityStore } from '@/pinia/useUtilityStore';
+import { navigateTo } from 'nuxt/app';
 
 export default {
   setup() {
@@ -53,19 +44,19 @@ export default {
     const utilityStore = useUtilityStore();
     const searchText = ref("");
     const productType = ref("");
-    const categories = ["electronics", "fashion", "beauty", "jewelry"];
+    const categories = ["CPU", "GPU", "RAM", "SSD", "HDD"];
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
       if (!searchText.value && !productType.value) {
         return;
       } else if (searchText.value && productType.value) {
-        router.push(`/search?searchText=${searchText.value}&productType=${productType.value}`);
+        navigateTo(`/search?searchText=${searchText.value}&productType=${productType.value}`);
       } else if (searchText.value && !productType.value) {
-        router.push(`/search?searchText=${searchText.value}`);
+        navigateTo(`/search?searchText=${searchText.value}`);
       } else if (!searchText.value && productType.value) {
-        router.push(`/search?productType=${productType.value}`);
+        navigateTo(`/search?productType=${productType.value}`);
       } else {
-        router.push(`/search`);
+        navigateTo(`/search`);
       }
     };
 

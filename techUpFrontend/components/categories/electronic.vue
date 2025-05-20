@@ -102,21 +102,29 @@
   </section>
 </template>
 
-<script>
-import { useMainStore } from "../../pinia/useMainStore";
+<script setup>
+import { useRoute, useRouter } from 'vue-router'
+import { useProductFilterBackStore } from '@/pinia/useProductFilterBackStore'
 
-export default {
-  setup() {
+const route = useRoute()
+const router = useRouter()
+const store = useProductFilterBackStore()
 
-    const router = useRouter();
+async function handleParentCategory(slug) {
+  // 1) slug 생성
+  const q = { ...route.query };
+  if (slug) q.category = slug;
+  else delete q.category;
 
-    const handleParentCategory = (value) => {
-      const newCategory = value.toLowerCase().replace("&", "").split(" ").join("-");
-      router.push(`/shop?category=${newCategory}`);
-    };
-    const mainStore = useMainStore();
+  // B. URL 업데이트
+  await router.push({ path: '/shop', query: q });
 
-    return { mainStore, handleParentCategory };
-  }
+  // C. 스토어 필터 동기화
+  store.productFilter.category = slug;
+  store.productFilter.nameKeyword = '';      // 이전 검색어가 남아있으면 제거
+
+  // D. 백엔드에서 다시 가져오기
+  await store.filterProducts(0, 10);
 }
+
 </script>

@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { ref, computed, watch } from "vue";
+import { ref, computed, watch, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import axios from "axios";
 import { formatString } from '@/utils/index';
@@ -36,6 +36,7 @@ export const useProductFilterBackStore = defineStore("product_filter", () => {
     };
   };
 
+  let isLoading = ref(true);
   let suggestion = ref([]);
   const loadSuggestionProducts = async () => {
     try {
@@ -90,6 +91,7 @@ export const useProductFilterBackStore = defineStore("product_filter", () => {
   // Axios를 이용해 백엔드 API에서 제품 목록을 가져오는 함수
   async function fetchProducts(page = 0, size = 10) {
     try {
+      isLoading.value = true;
       currentPage.value = page
       pageSize.value    = size
       const config = useRuntimeConfig()
@@ -101,7 +103,8 @@ export const useProductFilterBackStore = defineStore("product_filter", () => {
       products.value     = Array.isArray(pageData.content)
                             ? pageData.content
                             : []
-      totalProducts.value = pageData.totalElements
+      totalProducts.value = pageData.totalElements;
+      isLoading.value = false;
     } catch (err) {
       console.error("제품 데이터 API 호출 오류:", err)
       products.value     = []
@@ -222,11 +225,34 @@ export const useProductFilterBackStore = defineStore("product_filter", () => {
   */
 
   // 검색 필터: route 쿼리 값(searchText, productType 등)을 사용
-  const searchFilteredItems = computed(() => {
-    let filtered = [...products.value];
-    const searchText = route.query.searchText || "";
-    const productType = route.query.productType || "";
-
+// 검색 필터: route 쿼리 값(searchText, productType 등)을 사용
+  let searchResult = ref([]);
+  const searchProducts = async (searchText, productType,  page = 0, size= 10) => {
+    isLoading.value = true;
+    console.log(`searching ${searchText} in category ${productType}`);
+    let filteredResult;
+    if (!productType) {
+      filteredResult = await axios.get(`/api/product/search?keyword=${searchText}&page=${page}&size=${size}`);
+    } else {
+      filteredResult = await axios.get(`/api/product/search?keyword=${searchText}&category=${productType}&page=${page}&size=${size}`);
+    }
+    searchResult.value = [];
+    searchResult.value = filteredResult.data.data.content.map((value) => {
+      try {
+        value.productIdx = value.idx;
+        value.images = value.images[0];
+        value.img = value.images;
+      } catch (e) {
+        value.productIdx = value.idx;
+        value.img = "";
+        value.images = "";
+      }
+      return value;
+    });
+    totalProducts.value = 0;
+    totalProducts.value = filteredResult.data.data.totalElements;
+    let filtered = [...searchResult.value];
+    /*
     if (searchText && !productType) {
       filtered = filtered.filter((prd) =>
         (prd.name || "").toLowerCase().includes((searchText || "").toLowerCase())
@@ -237,6 +263,7 @@ export const useProductFilterBackStore = defineStore("product_filter", () => {
         return (prd.category || "").toLowerCase() === productType.toLowerCase();
       }).filter(p => (p.name || "").toLowerCase().includes(searchText.toLowerCase()));
     }
+    */
     switch (selectVal.value) {
       case "default-sorting":
         break;
@@ -254,15 +281,21 @@ export const useProductFilterBackStore = defineStore("product_filter", () => {
         break;
       default:
     }
-    return filtered;
-  });
+    searchResult.value = filtered;
+    isLoading.value = false;
+  };
 
   function reset() {
     const defaults = getDefaultState();
     products.value = defaults.products;
     selectVal.value = defaults.selectVal;
     priceValues.value = defaults.priceValues;
+    searchResult.value = [];
   }
+
+  onMounted(() => {
+    isLoading.value = false;
+  })
 
   // route의 변경 감지 (필요에 따라 리셋 등 처리)
   watch(
@@ -273,6 +306,8 @@ export const useProductFilterBackStore = defineStore("product_filter", () => {
   );
 
   return {
+    isLoading,
+    searchResult,
     products,
     totalProducts,
     categories,
@@ -286,10 +321,8 @@ export const useProductFilterBackStore = defineStore("product_filter", () => {
     handlePriceChange,
     handleResetFilter,
     selectVal,
-    searchFilteredItems,
-    reset,
-    loadSuggestionProducts,
-    suggestion
+    searchProducts,
+    reset
   };
   {
     persist: {
