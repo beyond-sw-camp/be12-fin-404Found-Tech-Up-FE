@@ -91,7 +91,7 @@
 
 
 ## 📚 Tech-Up 데모 사이트 바로가기
-### [공개 버전 링크](http://www.techup.kro.kr)</a>
+### [공개 버전 링크](https://techup.n-e.kr/)</a>
 <br><br>
 ## 🎨 Tech-Up 서비스 소개
 <div align="center">
