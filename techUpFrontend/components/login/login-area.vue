@@ -31,6 +31,11 @@
               <forms-login-form />
               <!-- form end -->
             </div>
+            <div>
+              <p>테스트용 계정</p>
+              <p>관리자 - ID: senouis@gmail.com, 비밀번호: qwer1234</p>
+              <p>사용자 - ID: ky1234tho@gmail.com, 비밀번호: qwer1234</p>
+            </div>
           </div>
         </div>
       </div>

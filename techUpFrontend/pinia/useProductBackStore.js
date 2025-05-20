@@ -48,8 +48,8 @@ export const useProductBackStore = defineStore("productDetail", () => {
     const config = useRuntimeConfig()
     try {
       const rec = await axios.post(
-        '/recommend/item-based',
-        { product_idx: id },
+        '/rec/recommend/item-based',
+        { product_idx: id, result_num: 1 },
         { baseURL: config.public.apiBaseUrl }
       )
       related.value = rec.data?.recommended_products || []

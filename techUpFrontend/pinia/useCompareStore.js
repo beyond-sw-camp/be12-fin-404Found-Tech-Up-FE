@@ -179,7 +179,7 @@ export const useCompareStore = defineStore("compare_product", () => {
     console.log(result);
     for await (let product of products) {
       try {
-        const rec = await axios.post("http://recommender-svc:8000/recommend", { product_name: product.name });
+        const rec = await axios.post("/rec/recommend", { product_name: product.name, result_num: 1 });
         const recs = rec.data.similar_products;
         console.log(recs);
         if (Array.isArray(recs) && recs.length) {

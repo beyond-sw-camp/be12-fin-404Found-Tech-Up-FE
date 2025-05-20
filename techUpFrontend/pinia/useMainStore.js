@@ -1,27 +1,25 @@
 import { onMounted, ref } from "vue";
 import { defineStore } from "pinia";
 import axios from 'axios';
-import { useRuntimeConfig } from '#imports';  
 import product_data from '../data/product-data.js';
 import { useUserStore } from "@/pinia/useUserStore.js";
 
 export const useMainStore = defineStore("main", () => {
-  const config = useRuntimeConfig();
 
   function mapToItem(x) {
     return {
-      idx: x.idx ?? x.productIdx,
-      category: x.category,
-      productType: x.category,
-      img: (x.images?.[0] || x.productImageUrl || x.imageUrl) || "",
-      name: x.name || x.productName,
-      price: x.price || x.productPrice,
+      idx:    x.idx ?? x.productIdx,
+      category:      x.category,
+      productType:   x.category,
+      img:     (x.images?.[0] || x.productImageUrl || x.imageUrl) || "",
+      name:    x.name  || x.productName,
+      price:   x.price || x.productPrice,
       discount: x.discount ?? x.productDiscount,
-      brand: x.brand,
+      brand:   x.brand,
       reviews: x.reviews ?? [],
       reviewAverage: x.rating ?? x.ratings ?? 0,
-      reviewHalf: ((x.rating ?? x.ratings) % 1) >= 0.5,
-      imageURLs: (x.images || [x.imageUrl || x.productImageUrl]).map(u => ({ img: u })),
+      reviewHalf:    ((x.rating ?? x.ratings) % 1) >= 0.5,
+      imageURLs: (x.images || [ x.imageUrl || x.productImageUrl ]).map(u => ({ img: u })),
     };
   }
 
@@ -34,35 +32,25 @@ export const useMainStore = defineStore("main", () => {
   const userStore = useUserStore();
 
   const loadSuggestionProducts = async () => {
-    const config = useRuntimeConfig();
     try {
-      await userStore.checkAuth();
       if (userStore.isLoggedIn) {
-        const me = await axios.get("/api/user-product/my-product", {
-          baseURL: config.public.apiBaseUrl,
-        });
+        const me = await axios.get("/api/user-product/my-product");
         const user = me.data.data;
-        if (user?.products?.length) {
-          const recRes = await axios.post(
-            "/api/product/recommend/item-based",
-            { product_idx: user.products[0].idx, result_num: 8 },
-            { baseURL: config.public.apiBaseUrl }
-          );
-          const recs = recRes.data.data;
+        if (user && user.products) {
+          const rec = await axios.post("/rec/recommend/item-based", { product_idx: user.products[0].productIdx, result_num: 1 });
+          const recs = rec.data.recommended_products;
           if (Array.isArray(recs) && recs.length) {
             suggestion.value = recs.slice(0, 8).map(mapToItem);
             return;
           }
         }
       }
-    } catch (err) {
-      console.warn("Could not load recommendations, falling back", err);
+    } catch (e) {
+      console.warn("Could not load recommendations, falling back", e);
     }
-  
-    const listRes = await axios.get("/api/product/list?page=0&size=8", {
-      baseURL: config.public.apiBaseUrl,
-    });
-    const page = listRes.data.data;
+
+    const resp = await axios.get("/api/product/list?page=0&size=8");
+    const page = resp.data.data;
     suggestion.value = Array.isArray(page.content)
       ? page.content.slice(0, 8).map(mapToItem)
       : [];

@@ -19,6 +19,49 @@ export const useProductFilterBackStore = defineStore("product_filter", () => {
     };
   }
 
+  const mapToItem = (x) => {
+    return {
+      idx:    x.idx ?? x.productIdx,
+      category:      x.category,
+      productType:   x.category,
+      images:     (x.images?.[0] || x.productImageUrl || x.imageUrl) || "",
+      name:    x.name  || x.productName,
+      price:   x.price || x.productPrice,
+      discount: x.discount ?? x.productDiscount,
+      brand:   x.brand,
+      reviews: x.reviews ?? [],
+      reviewAverage: x.rating ?? x.ratings ?? 0,
+      reviewHalf:    ((x.rating ?? x.ratings) % 1) >= 0.5,
+      imageURLs: (x.images || [ x.imageUrl || x.productImageUrl ]).map(u => ({ img: u })),
+    };
+  };
+
+  let suggestion = ref([]);
+  const loadSuggestionProducts = async () => {
+    try {
+      if (userStore.isLoggedIn) {
+        const me = await axios.get("/api/user-product/my-product");
+        const user = me.data.data;
+        if (user && user.products) {
+          const rec = await axios.post("/rec/recommend/item-based", { product_idx: user.products[0].productIdx, result_num: 1 });
+          const recs = rec.data.recommended_products;
+          if (Array.isArray(recs) && recs.length) {
+            suggestion.value = recs.slice(0, 8).map(mapToItem);
+            return;
+          }
+        }
+      }
+    } catch (e) {
+      console.warn("Could not load recommendations, falling back", e);
+    }
+
+    const resp = await axios.get("/api/product/list?page=0&size=4");
+    const page = resp.data.data;
+    suggestion.value = Array.isArray(page.content)
+      ? page.content.slice(0, 4).map(mapToItem)
+      : [];
+  };
+
   let productFilter = ref({
     category: '',
     nameKeyword: '',
@@ -64,7 +107,6 @@ export const useProductFilterBackStore = defineStore("product_filter", () => {
       products.value     = []
       totalProducts.value = 0
     }
-    console.log("호출 종료");
   }
 
   // 선택된 필터 옵션을 저장하는 상태
@@ -117,7 +159,6 @@ export const useProductFilterBackStore = defineStore("product_filter", () => {
     totalProducts.value = filteredResult.data.data.totalElements;
     maxProductPrice.value = productFilter.value.maxPrice;
     currentPage.value = page+1;
-    console.log("필터 종료");
   };
 
 
@@ -246,7 +287,9 @@ export const useProductFilterBackStore = defineStore("product_filter", () => {
     handleResetFilter,
     selectVal,
     searchFilteredItems,
-    reset
+    reset,
+    loadSuggestionProducts,
+    suggestion
   };
   {
     persist: {
