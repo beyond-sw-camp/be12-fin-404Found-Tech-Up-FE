@@ -1,7 +1,7 @@
 <template>
   <div :class="`${offer_style ? 'tp-product-offer-item' : 'mb-25'} tp-product-item transition-3`">
     <div class="tp-product-thumb p-relative fix m-img">
-      <nuxt-link :to="`/product-details/${item.idx ?? item.id ?? item.slug}`" class="image-swapper">
+      <nuxt-link :to="`/product-details/${item.idx ?? item.idx ?? item.slug}`" class="image-swapper">
         <img v-if="item.images && item.images.length" class="primary-img" :src="item.images[0]"
           :alt="item.name || item.title" />
         <img v-else class="primary-img" :src="item.img" :alt="item.name || item.title" />

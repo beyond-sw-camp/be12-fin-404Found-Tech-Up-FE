@@ -38,10 +38,17 @@ export const useMainStore = defineStore("main", () => {
         const user = me.data.data;
         if (user && user.products) {
           const index = Math.floor(Math.random() * user.products.length);
-          const rec = await axios.post("/rec/recommend", { product_idx: user.products[index].productIdx, result_num: 8 });
-          const recs = rec.data.recommended_products;
+          const rec = await axios.post("/rec/recommend", { product_name: user.products[index].name, result_num: 8 });
+          // console.log(rec.data);
+          const recs = rec.data.similar_products;
           if (Array.isArray(recs) && recs.length) {
-            suggestion.value = recs.slice(0, 8).map(mapToItem);
+            let result = [];
+            for await (let prod of recs) {
+              const info = await axios.get(`/api/product/search?keyword=${prod.name}&page=0&size=1`);
+              const page = info.data.data.content;
+              result = result.concat(page);
+            }
+            suggestion.value = result.slice(0, 8).map(mapToItem);
             return;
           }
         }
