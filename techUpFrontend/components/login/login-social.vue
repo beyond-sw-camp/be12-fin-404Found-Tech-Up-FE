@@ -1,5 +1,7 @@
 <script setup>
 import { useUserStore } from '@/pinia/useUserStore'; // useUserStore import 추가
+import { useRouter } from 'vue-router';
+
 
 const userStore = useUserStore();
 const router = useRouter();
@@ -27,7 +29,7 @@ const kakaoLogin = async () => {
 </template>
 
 <style scoped>
-.has-kakao > a {
+.has-kakao>a {
   width: 12rem;
 }
 </style>

@@ -21,8 +21,7 @@
 
             <!-- GRID -->
             <div v-if="active_tab === 'grid'" key="grid" class="row infinite-container">
-              <div v-for="item in store.products" :key="item.productIdx"
-                class="col-xl-4 col-md-6 col-sm-6 infinite-item">
+              <div v-for="item in store.products" :key="item.idx" class="col-xl-4 col-md-6 col-sm-6 infinite-item">
                 <product-fashion-product-item :item="item" :spacing="true" />
               </div>
             </div>
@@ -30,7 +29,7 @@
             <!-- LIST -->
             <div v-else key="list" class="row">
               <div class="col-xl-12">
-                <product-list-item v-for="item in store.products" :key="item.productIdx" :item="item" />
+                <product-list-item v-for="item in store.products" :key="item.idx" :item="item" />
               </div>
             </div>
 
@@ -108,7 +107,7 @@ const pagesInBlock = computed(() => {
 
 // fetch the first page on mount
 onMounted(async () => {
-  await store.fetchProducts(route.query.category ? route.query.category : ' ', 0, 10);
+  // await store.fetchProducts(route.query.category ? route.query.category : ' ', 0, 10);
 })
 
 async function changePage(page) {

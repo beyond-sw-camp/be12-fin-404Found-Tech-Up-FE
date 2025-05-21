@@ -4,6 +4,7 @@ import { useRoute, useRouter } from "vue-router";
 import axios from "axios";
 import { formatString } from '@/utils/index';
 import PriceFilter from "../components/shop/sidebar/price-filter.vue";
+import { useUserStore } from "@/pinia/useUserStore.js";
 
 export const useProductFilterBackStore = defineStore("product_filter", () => {
   const route = useRoute();
@@ -18,6 +19,8 @@ export const useProductFilterBackStore = defineStore("product_filter", () => {
       priceValues: [0, 0]
     };
   }
+
+  const userStore = useUserStore();
 
   const mapToItem = (x) => {
     return {
@@ -43,8 +46,10 @@ export const useProductFilterBackStore = defineStore("product_filter", () => {
       if (userStore.isLoggedIn) {
         const me = await axios.get("/api/user-product/my-product");
         const user = me.data.data;
+        console.log(user);
         if (user && user.products) {
-          const rec = await axios.post("/rec/recommend", { product_idx: user.products[0].productIdx, result_num: 1 });
+          const index = Math.floor(Math.random() * user.products.length);
+          const rec = await axios.post("/rec/recommend", { product_idx: user.products[index].productIdx, result_num: 1 });
           const recs = rec.data.recommended_products;
           if (Array.isArray(recs) && recs.length) {
             suggestion.value = recs.slice(0, 8).map(mapToItem);
@@ -294,7 +299,8 @@ export const useProductFilterBackStore = defineStore("product_filter", () => {
     searchResult.value = [];
   }
 
-  onMounted(() => {
+  onMounted(async () => {
+    await fetchProducts(route.query.category ? route.query.category : ' ', 0, 10);
     isLoading.value = false;
   })
 

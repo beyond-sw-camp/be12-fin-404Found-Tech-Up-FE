@@ -37,7 +37,8 @@ export const useMainStore = defineStore("main", () => {
         const me = await axios.get("/api/user-product/my-product");
         const user = me.data.data;
         if (user && user.products) {
-          const rec = await axios.post("/rec/recommend", { product_idx: user.products[0].productIdx, result_num: 8 });
+          const index = Math.floor(Math.random() * user.products.length);
+          const rec = await axios.post("/rec/recommend", { product_idx: user.products[index].productIdx, result_num: 8 });
           const recs = rec.data.recommended_products;
           if (Array.isArray(recs) && recs.length) {
             suggestion.value = recs.slice(0, 8).map(mapToItem);

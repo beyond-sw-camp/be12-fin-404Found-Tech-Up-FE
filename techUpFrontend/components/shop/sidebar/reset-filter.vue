@@ -8,6 +8,7 @@
 
 <script setup>
 import { useProductFilterBackStore } from '@/pinia/useProductFilterBackStore';
+import { useRouter } from 'vue-router';
 
 const store = useProductFilterBackStore();
 const router = useRouter();
