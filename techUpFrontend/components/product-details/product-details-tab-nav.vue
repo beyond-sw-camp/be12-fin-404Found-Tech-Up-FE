@@ -80,7 +80,8 @@
                           </h3>
                           <small class="text-muted">{{ formatDate(item.reviewDate) }}</small>
                         </div>
-                        <button v-if="item.reviewUserId === userStore.user?.userIdx" class="btn btn-sm btn-outline-danger" @click="remove(item.reviewIdx)">
+                        <button v-if="item.reviewUserId === userStore.user?.userIdx"
+                          class="btn btn-sm btn-outline-danger" @click="remove(item.reviewIdx)">
                           <i class="fa-solid fa-trash"></i> 삭제
                         </button>
                       </div>
@@ -110,7 +111,7 @@
             <!-- right 4 columns: summary up top, write‐form below -->
             <div class="col-lg-4">
               <div class="tp-product-details-review-statics mb-5">
-                <h3 class="tp-product-details-review-number-title">Customer reviews</h3>
+                <h3 class="tp-product-details-review-number-title">고객 리뷰</h3>
                 <div class="tp-product-details-review-summery d-flex align-items-center mb-3">
                   <div class="tp-product-details-review-summery-value me-3">
                     <span class="h1">{{ averageRating }}</span>
@@ -123,7 +124,8 @@
                   </div>
                 </div>
                 <div class="tp-product-details-review-rating-list">
-                  <product-details-rating-item v-for="s in [5, 4, 3, 2, 1]" :key="s" :star="s" :width="ratingPercent(s)" />
+                  <product-details-rating-item v-for="s in [5, 4, 3, 2, 1]" :key="s" :star="s"
+                    :width="ratingPercent(s)" />
                 </div>
               </div>
 
@@ -133,7 +135,7 @@
 
               </div>
             </div>
-            
+
           </div>
         </div>
       </div>
@@ -145,9 +147,9 @@
 import { onMounted, ref, computed } from 'vue';
 import { useRuntimeConfig } from '#imports'
 import { useReviewStore } from '@/pinia/useReviewStore'
-import { useUserStore }     from '@/pinia/useUserStore'
+import { useUserStore } from '@/pinia/useUserStore'
 
-const userStore   = useUserStore()
+const userStore = useUserStore()
 
 const handleActiveMarker = (event) => {
   const marker = document.getElementById("productTabMarker");

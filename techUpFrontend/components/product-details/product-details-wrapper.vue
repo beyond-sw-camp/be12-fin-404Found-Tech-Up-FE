@@ -31,7 +31,7 @@
           : (product.description?.substring(0, 100) ?? '') + '...'
       }}
       <span v-if="product.description" @click="textMore = !textMore">
-        {{ textMore ? 'See less' : 'See more' }}
+        {{ textMore ? '간단히 보기' : '더 보기' }}
       </span>
     </p>
 
@@ -94,25 +94,25 @@
         <div class="tp-product-details-add-to-cart mb-15 w-100">
           <button @click="cartStore.addCartProduct(product, product.idx, cartStore.orderQuantity)"
             class="tp-product-details-add-to-cart-btn w-100">
-            Add To Cart
+            장바구니
           </button>
         </div>
       </div>
       <nuxt-link :to="`/checkout`"
         @click.prevent="cartStore.addCartProduct(product, product.idx, cartStore.orderQuantity)"
         class="tp-product-details-buy-now-btn w-100 text-center">
-        Buy Now
+        바로 구입
       </nuxt-link>
     </div>
 
     <div class="tp-product-details-action-sm">
       <button @click="compareStore.add_compare_product(product)" type="button" class="tp-product-details-action-sm-btn">
         <svg-compare-3 />
-        Compare
+        비교
       </button>
       <button @click="wishlistStore.toggleWishlist(product.idx)" type="button" class="tp-product-details-action-sm-btn">
         <svg-wishlist-3 />
-        Add Wishlist
+        위시리스트 추가
       </button>
       <button type="button" class="tp-product-details-action-sm-btn">
         <svg-ask-question />
@@ -123,8 +123,6 @@
     <div v-if="isShowBottom">
       <div class="tp-product-details-query">
         <div class="tp-product-details-query-item d-flex align-items-center">
-          <span>SKU: </span>
-          <p>{{ product.sku }}</p>
         </div>
         <div class="tp-product-details-query-item d-flex align-items-center">
           <span>Category: </span>
@@ -132,7 +130,7 @@
         </div>
         <div class="tp-product-details-query-item d-flex align-items-center">
           <span>Tag: </span>
-          <p>Android</p>
+          <p>PC</p>
         </div>
       </div>
       <div class="tp-product-details-social">
@@ -144,13 +142,14 @@
       </div>
       <div class="tp-product-details-msg mb-15">
         <ul>
-          <li>30 days easy returns</li>
-          <li>Order yours before 2.30pm for same day dispatch</li>
+          <li>30일 내 환불 가능</li>
+          <li>2시 반 이전 주문은 다음 날 배송됩니다</li>
         </ul>
       </div>
       <div class="tp-product-details-payment d-flex align-items-center flex-wrap justify-content-between">
-        <p>Guaranteed safe <br> & secure checkout</p>
-        <img src="/img/product/icons/payment-option.png" alt="" />
+        <p>결제 수단</p>
+        <img src="/img/product/icons/payment-option.png" alt="card" />
+        <img src="/img/login/kakao.png" alt="kakaopay" />
       </div>
     </div>
   </div>

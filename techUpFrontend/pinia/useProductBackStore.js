@@ -43,15 +43,37 @@ export const useProductBackStore = defineStore("productDetail", () => {
     allProducts.value = res.data?.data?.content || []
   }
 
+  function mapToItem(x) {
+    return {
+      idx:    x.idx ?? x.productIdx,
+      category:      x.category,
+      productType:   x.category,
+      img:     (x.images?.[0] || x.productImageUrl || x.imageUrl) || "",
+      images : x.images,
+      name:    x.name  || x.productName,
+      price:   x.price || x.productPrice,
+      discount: x.discount ?? x.productDiscount,
+      brand:   x.brand,
+      reviews: x.reviews ?? [],
+      discount: x.rating ?? x.ratings ?? 0,
+      reviewHalf:    ((x.rating ?? x.ratings) % 1) >= 0.5,
+      imageURLs: (x.images || [ x.imageUrl || x.productImageUrl ]).map(u => ({ img: u })),
+    };
+  }
+
   async function fetchRelatedProducts(id) {
     if (!product.value) return
-    const config = useRuntimeConfig()
     try {
       const rec = await axios.post(
         '/rec/recommend',
-        { product_idx: id, result_num: 1 }
+        { product_name: product.value.name, result_num: 4 }
       )
-      related.value = rec.data?.recommended_products || []
+      related.value = [];
+      for await (let prod of rec.data.similar_products) {
+        const info = await axios.get(`/api/product/search?keyword=${prod.name}&page=0&size=1`);
+        const page = info.data.data.content;
+        related.value = related.value.concat(page);
+      }
     } catch {
       related.value = allProducts.value
         .filter(p =>
